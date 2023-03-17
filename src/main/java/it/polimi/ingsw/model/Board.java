@@ -3,12 +3,12 @@ package it.polimi.ingsw.model;
 public class Board {
     private TileSlot[][] board;
     private CardCommonTarget commonTarget1;
-    private CardCommontarget commonTarget2;
+    private CardCommonTarget commonTarget2;
     private CommonDeck commonDeck;
     private EndGameToken endGameToken;
     private TileDeck bag;
 
-    private static boolean[][] dueGiocatori=
+    private static final boolean[][] dueGiocatori=
                     {{false,false,false,false,false,false,false,false,false},
                     {false,false,false,true,true,false,false,false,false},
                     {false,false,false,true,true,true,false,false,false},
@@ -19,7 +19,7 @@ public class Board {
                     {false,false,false,false,true,true,false,false,false},
                     {false,false,false,false,false,false,false,false,false}};
 
-    private static boolean[][] treGiocatori=
+    private static final boolean[][] treGiocatori=
                     {{false,false,false,true,false,false,false,false,false},
                     {false,false,false,true,true,false,false,false,false},
                     {false,false,true,true,true,true,true,false,false},
@@ -30,7 +30,7 @@ public class Board {
                     {false,false,false,false,true,true,false,false,false},
                     {false,false,false,false,false,true,false,false,false}};
 
-    private static boolean[][] quattroGiocatori=
+    private static final boolean[][] quattroGiocatori=
                     {{false,false,false,true,true,false,false,false,false},
                     {false,false,false,true,true,true,false,false,false},
                     {false,false,true,true,true,true,true,false,false},
@@ -47,31 +47,60 @@ public class Board {
        this.commonDeck=new CommonDeck();
        this.commonTarget1=new CardCommonTarget(commonDeck.RandomDraw());
        this.commonTarget2=new CardCommonTarget(commonDeck.RandomDraw());
+       this.board=new TileSlot[9][9];
 
        if (numOfPlayers==2){
-           this.board=new TileSlot[9][9];
            for (int j=0;j<=8;j++) {
                for (int k = 0; k <= 8; k++) {
-                   if (dueGiocatori[j][k]) board[j][k]=bag.RandomDraw();
-               }
+                   if (dueGiocatori[j][k]) board[j][k].AssignTile(bag.RandomDraw());
                }
            }
+       }
        if (numOfPlayers==3){
-           this.board=new TileSlot[9][9];
            for (int j=0;j<=8;j++) {
                for (int k = 0; k <= 8; k++) {
-                   if (treGiocatori[j][k]) board[j][k]=bag.RandomDraw();
+                   if (treGiocatori[j][k]) board[j][k].AssignTile(bag.RandomDraw());
                }
            }
        }
        if (numOfPlayers==4){
-           this.board=new TileSlot[9][9];
            for (int j=0;j<=8;j++) {
                for (int k = 0; k <= 8; k++) {
-                   if (quattroGiocatori[j][k]) board[j][k]=bag.RandomDraw();
+                   if (quattroGiocatori[j][k]) board[j][k].AssignTile(bag.RandomDraw());
                }
            }
        }
 
    }
+
+   public void RefillBoard(int numOfPlayers){
+
+       if (numOfPlayers==2){
+           for (int j=0;j<=8;j++) {
+               for (int k = 0; k <= 8; k++) {
+                   if ((dueGiocatori[j][k])&&(board[j][k].IsFree())) board[j][k].AssignTile(bag.RandomDraw());
+               }
+           }
+       }
+       if (numOfPlayers==3){
+           for (int j=0;j<=8;j++) {
+               for (int k = 0; k <= 8; k++) {
+                   if ((treGiocatori[j][k])&&(board[j][k].IsFree())) board[j][k].AssignTile(bag.RandomDraw());
+               }
+           }
+       }
+       if (numOfPlayers==4){
+           for (int j=0;j<=8;j++) {
+               for (int k = 0; k <= 8; k++) {
+                   if ((quattroGiocatori[j][k])&&(board[j][k].IsFree())) board[j][k].AssignTile(bag.RandomDraw());
+               }
+           }
+       }
+   }
+
+
+
+
+
+
 }

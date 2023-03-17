@@ -8,6 +8,6 @@ public class TileSlot {
     }
 
     public boolean IsFree(){
-        return this.assignedTile != null;
+        return this.assignedTile == null;
     }
 }
