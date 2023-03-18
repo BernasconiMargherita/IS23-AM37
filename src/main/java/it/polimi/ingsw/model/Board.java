@@ -98,6 +98,14 @@ public class Board {
        }
    }
 
+   public Tile[] RemoveCardFromBoard(Coordinates[] positions) throws InvalidSlotException{
+       for (Coordinates position : positions) {
+           if (board[position.getX()][position.getY()].IsFree()) throw new InvalidSlotException();
+
+           Tile[] selectedTile = new Tile[positions.length];
+
+
+       }
 
 
 
