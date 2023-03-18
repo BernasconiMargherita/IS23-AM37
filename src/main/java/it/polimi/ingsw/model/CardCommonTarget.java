@@ -3,20 +3,21 @@ package it.polimi.ingsw.model;
 import java.util.Stack;
 
 public class CardCommonTarget {
+    //first or second common card of the board
     private boolean assignedCommonCard;
+
+    //typeOfCommonCard
+    private int commonType;
 
     //token pile
     private Stack<ScoringToken> stackToken;
 
-    private CommonList commonType;
+    public CardCommonTarget(int commonType, boolean assignedCommonCard, int numOfPlayers){
 
-    public CardCommonTarget(CommonList commonType, boolean assignedCommonCard, int numOfPlayers){
-
-        //inizializzo la pila di token
+        //initializing the stack of tokens
         stackToken = new Stack<ScoringToken>();
 
         this.commonType = commonType;
-
         this.assignedCommonCard = assignedCommonCard;
 
 
@@ -46,17 +47,17 @@ public class CardCommonTarget {
             stackToken.push(new ScoringToken(assignedCommonCard,8));
         }
     }
-    //ritorna il valore int del token
+    //return the int value of the Scoringtoken
     public int getScoringToken(){
         return stackToken.pop().getValueToken();
     }
 
-    //ritorna il valore del numero romano dietro al token
+    //return the value of assignedCommonCard
     public boolean getAssignedCommonCard() {
         return assignedCommonCard;
     }
-
-    public CommonList getCommonType() {
+//return the ''type'' of the commonCard
+    public int getCommonType() {
         return commonType;
     }
 }

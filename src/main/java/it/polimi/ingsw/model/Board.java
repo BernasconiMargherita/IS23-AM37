@@ -2,8 +2,7 @@ package it.polimi.ingsw.model;
 
 public class Board {
     private TileSlot[][] board;
-    private CardCommonTarget commonTarget1;
-    private CardCommonTarget commonTarget2;
+
     private CommonDeck commonDeck;
     private EndGameToken endGameToken;
     private TileDeck bag;
@@ -44,9 +43,7 @@ public class Board {
 
     Board(int numOfPlayers) {
         this.bag = new TileDeck();
-        this.commonDeck = new CommonDeck();
-        this.commonTarget1 = new CardCommonTarget(commonDeck.RandomDraw());
-        this.commonTarget2 = new CardCommonTarget(commonDeck.RandomDraw());
+        this.commonDeck = new CommonDeck(numOfPlayers);
         this.board = new TileSlot[9][9];
 
         if (numOfPlayers == 2) {
@@ -106,5 +103,7 @@ public class Board {
 
 
         }
+
+
     }
 }
