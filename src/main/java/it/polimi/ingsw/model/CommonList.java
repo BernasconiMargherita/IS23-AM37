@@ -1,17 +1,20 @@
 package it.polimi.ingsw.model;
 
+/**
+ * Enum for distinguish the common goal cards, used by Utils to generate the corresponding card
+ */
 public enum CommonList {
 
-    CARTA1,
-    CARTA2,
-    CARTA3,
-    CARTA4,
-    CARTA5,
-    CARTA6,
-    CARTA7,
-    CARTA8,
-    CARTA9,
-    CARTA10,
-    CARTA11,
-    CARTA12;
+    SIX_GROUPS_OF_TWO,
+    FOUR_EQUALS_ANGLES,
+    FOUR_GROUPS_OF_FOUR,
+    TWO_GROUPS_IN_SQUARE,
+    THREE_FULL_COLUMNS_WITH_MAX_THREE_DIFFERENT_TYPES,
+    EIGHT_EQUALS,
+    FIVE_IN_DIGONAL,
+    FOUR_FULL_ROWS_WITH_MAX_THREE_DIFFERENT_TYPES,
+    TWO_FULL_COLUMNS_ALL_DIFFERENT,
+    TWO_FULL_ROWS_ALL_DIFFERENT,
+    FIVE_IN_A_X,
+    IN_DESCENDING_ORDER;
 }
