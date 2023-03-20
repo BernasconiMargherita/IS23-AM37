@@ -2,22 +2,27 @@ package it.polimi.ingsw.model;
 
 import java.util.Stack;
 
+
+
+import java.util.Stack;
+
 public class CardCommonTarget {
     //first or second common card of the board
     private boolean assignedCommonCard;
 
     //typeOfCommonCard
-    private int commonType;
+    private CommonList commonType;
 
     //token pile
     private Stack<ScoringToken> stackToken;
 
-    public CardCommonTarget(int commonType, boolean assignedCommonCard, int numOfPlayers){
+    public CardCommonTarget(CommonList commonType, boolean assignedCommonCard, int numOfPlayers){
 
-        //initializing the stack of tokens
+        //initializing the stack of ScoringTokens
         stackToken = new Stack<ScoringToken>();
-
+        //CommonCard type
         this.commonType = commonType;
+        //first or second CommonCard on the Board
         this.assignedCommonCard = assignedCommonCard;
 
 
@@ -29,7 +34,7 @@ public class CardCommonTarget {
         }
 
 
-        //case: 2 players
+        //case: 3 players
         if(numOfPlayers == 3){
             //push the values of the ScoringToken
             stackToken.push(new ScoringToken(assignedCommonCard,4));
@@ -38,7 +43,7 @@ public class CardCommonTarget {
         }
 
 
-        //case: 2 players
+        //case: 4 players
         if(numOfPlayers == 4){
             //push the values of the ScoringToken
             stackToken.push(new ScoringToken(assignedCommonCard,2));
@@ -47,7 +52,7 @@ public class CardCommonTarget {
             stackToken.push(new ScoringToken(assignedCommonCard,8));
         }
     }
-    //return the int value of the Scoringtoken
+    //return the CommonList value (enum) of the Scoringtoken
     public int getScoringToken(){
         return stackToken.pop().getValueToken();
     }
@@ -56,8 +61,8 @@ public class CardCommonTarget {
     public boolean getAssignedCommonCard() {
         return assignedCommonCard;
     }
-//return the ''type'' of the commonCard
-    public int getCommonType() {
+    //return the type of the commonCard
+    public CommonList getCommonType() {
         return commonType;
     }
 }
