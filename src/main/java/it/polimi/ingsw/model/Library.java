@@ -1,10 +1,16 @@
 package it.polimi.ingsw.model;
 
+
+/**
+ * class that represents player's library
+ */
 public class Library {
+
     private TileSlot[][] tileMatrix = new TileSlot[6][5];
 
     public Library(){
-        /**inizializza la matrice con slot vuoti**/
+        /**initialize library with empty slots*
+         */
         for(int i=0; i<5;i++){
             for(int j=0;j<5;j++){
                 tileMatrix[i][j] = new TileSlot();
@@ -12,21 +18,27 @@ public class Library {
         }
     }
 
-    /**metodo per aggiungere fino a tre carte nella colonna scelta**/
-    public void addCardInColumn (int col, Card tile1, Card tile2, Card tile3){
+    /**method that adds up to three cards in the chosen column*
+     */
+    public void addCardInColumn (int col, Tile tile1, Tile tile2, Tile tile3) throws InvalidColumnException, FullColumnException{
+
         if(col<0 || col>=5){
-            System.out.println("colonna non valida");
+            throw new InvalidColumnException();
             return;
         }
-        /**se la colonna non è vuota**/
+        /**
+         * if column is not empty
+         */
         if (tileMatrix[0][col] != 0){
             int row=0;
             while(row<6 && tileMatrix[row][col]!=0){
                 row++;
             }
-            /**se la colonna è piena**/
+            /**
+             * if column is completely full
+             */
             if (row == 5){
-                System.out.println("la colonna è piena");
+                throw new FullColumnException();
                 return;
             }
         }
@@ -38,7 +50,9 @@ public class Library {
 
         }
 
-        /**metodo per verificare se la libreria è piena**/
+        /**
+         * method that verifies if library is full
+         */
         public boolean isFull(){
             int count =0;
             for (int i= 0; i<5; i++){
@@ -46,7 +60,9 @@ public class Library {
                     if (tileMatrix[i][j] != 0) {
                         count++;
                     }
-                    /**se la libreria è piena**/
+                    /**
+                     * if library full
+                     */
                     if (count == 30){
                         isFull() = true;
                         return true;
