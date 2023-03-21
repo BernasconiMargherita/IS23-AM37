@@ -68,21 +68,21 @@ public class Board {
         if (numOfPlayers == 2) {
             for (int j = 0; j <= 8; j++) {
                 for (int k = 0; k <= 8; k++) {
-                    if (dueGiocatori[j][k]) board[j][k].AssignTile(bag.RandomDraw());
+                    if (dueGiocatori[j][k]) board[j][k].AssignTile(bag.randomDraw());
                 }
             }
         }
         if (numOfPlayers == 3) {
             for (int j = 0; j <= 8; j++) {
                 for (int k = 0; k <= 8; k++) {
-                    if (treGiocatori[j][k]) board[j][k].AssignTile(bag.RandomDraw());
+                    if (treGiocatori[j][k]) board[j][k].AssignTile(bag.randomDraw());
                 }
             }
         }
         if (numOfPlayers == 4) {
             for (int j = 0; j <= 8; j++) {
                 for (int k = 0; k <= 8; k++) {
-                    if (quattroGiocatori[j][k]) board[j][k].AssignTile(bag.RandomDraw());
+                    if (quattroGiocatori[j][k]) board[j][k].AssignTile(bag.randomDraw());
                 }
             }
         }
@@ -97,21 +97,21 @@ public class Board {
         if (numOfPlayers == 2) {
             for (int j = 0; j <= 8; j++) {
                 for (int k = 0; k <= 8; k++) {
-                    if ((dueGiocatori[j][k]) && (board[j][k].IsFree())) board[j][k].AssignTile(bag.RandomDraw());
+                    if ((dueGiocatori[j][k]) && (board[j][k].IsFree())) board[j][k].AssignTile(bag.randomDraw());
                 }
             }
         }
         if (numOfPlayers == 3) {
             for (int j = 0; j <= 8; j++) {
                 for (int k = 0; k <= 8; k++) {
-                    if ((treGiocatori[j][k]) && (board[j][k].IsFree())) board[j][k].AssignTile(bag.RandomDraw());
+                    if ((treGiocatori[j][k]) && (board[j][k].IsFree())) board[j][k].AssignTile(bag.randomDraw());
                 }
             }
         }
         if (numOfPlayers == 4) {
             for (int j = 0; j <= 8; j++) {
                 for (int k = 0; k <= 8; k++) {
-                    if ((quattroGiocatori[j][k]) && (board[j][k].IsFree())) board[j][k].AssignTile(bag.RandomDraw());
+                    if ((quattroGiocatori[j][k]) && (board[j][k].IsFree())) board[j][k].AssignTile(bag.randomDraw());
                 }
             }
         }
