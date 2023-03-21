@@ -25,10 +25,11 @@ public class Library {
 
 
     /**
-     *
+     * method that adds up to three selected tiles in Library. It counts, in the given column, how many rows are full with method isFree (form TileSlot)
+     * Tiles are stored in array created by Board and put in the library with assignTile method
      * @param col
-     * @throws FullColumnException
-     * @throws NoSpaceInColumnException
+     * @throws FullColumnException if column is full
+     * @throws NoSpaceInColumnException if there is not enough space for the selected numbers of tiles
      */
     public void addCardInColumn (int col, Tile[] selectedTile) throws FullColumnException, NoSpaceInColumnException {
 
@@ -51,9 +52,9 @@ public class Library {
 
         } else {
 
-            for(int i=0; i < selectedTile.length; i++) {
+            for (Tile tile : selectedTile) {
 
-                tileMatrix[row][col].AssignTile(selectedTile[i]);
+                tileMatrix[row][col].AssignTile(tile);
 
             }
 
@@ -62,25 +63,23 @@ public class Library {
     }
 
 
-
-
     /**
-     * method that verifies if library is full
+     * method that verifies if library is completely full. It controls if every slot of the last row is full
+     * @return
      */
     public boolean isFull(){
+
         int count =0;
-        for (int i= 0; i<5; i++){
-            for(int j=0; j<4; j++){
-                if (!tileMatrix[i][j].IsFree()) {
+        for (int i= 0; i<4; i++){
+                if (!tileMatrix[5][i].IsFree()) {
                     count++;
                 }
 
-                if (count == 30){
+                if (count == 5){
                     return true;
 
                 }
             }
-        }
         return false;
     }
 
