@@ -7,7 +7,7 @@ public class Player {
         this.nickname=nickname;
     }
     public void addTilesinLibrary( Library library, int row, int column) {
-        library.setValue(row, column, 1);
+        library.addCardInColumn(row, column, 1);
     }
 
     /** metodo completamente da modificare

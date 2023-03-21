@@ -18,18 +18,11 @@ public class PersonalDeck {
      */
     private int[] numbers = new int[4];
 
-    /**
-     * costructor of PersonalDeck thet extracts the (numOfPlayers) personalCards
-     * @param numOfPlayers
-     */
     public PersonalDeck(int numOfPlayers) {
 
         personalDeck = new ArrayList<>();
 
         Random random = new Random();
-        /**
-         * generating 4 random numbers between 1 and 12 different from each other in order to extract 2,3 or 4 PersonalCards (based on the number of players)
-         */
 
         numbers[0] = random.nextInt(12) + 1;
         numbers[1] = random.nextInt(12) + 1;
