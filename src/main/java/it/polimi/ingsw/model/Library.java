@@ -32,20 +32,14 @@ public class Library {
      */
     public void addCardInColumn (int col, int tileNumber, Tile tile1, Tile tile2, Tile tile3) throws InvalidColumnException, FullColumnException, NoSpaceInColumnException {
 
-        /**
-         * forse inutile
-         */
-        if (col < 0 || col >= 5) {
-            throw new InvalidColumnException();
-            return;
-        }
+
 
         /**
          * if column is not empty
          */
         int row = 0;
-        if (tileMatrix[row][col].free = false) {
-            while (row < 6 && tileMatrix[row][col].free = false) {
+        if (tileMatrix[row][col].IsFree() == false) {
+            while (row < 6 && tileMatrix[row][col].IsFree()== false) {
                 row++;
             }
 
@@ -69,11 +63,13 @@ public class Library {
 
 
         /**
-         * if column is completely empty or has enough space
+         * if column is completely empty or has enough space.
          */
+
         else {
-            while ()
-                tileMatrix[row][col] = tile1;
+
+                tileMatrix[row][col].AssignTile(tile1);
+            if ()
         }
     }
 
@@ -87,7 +83,7 @@ public class Library {
         int count =0;
         for (int i= 0; i<5; i++){
             for(int j=0; j<4; j++){
-                if (tileMatrix[i][j].free=false) {
+                if (tileMatrix[i][j].IsFree()==false) {
                     count++;
                 }
 
