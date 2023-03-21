@@ -30,7 +30,7 @@ public class Library {
     /**
      * method that adds up to three cards in the chosen column
      */
-    public void addCardInColumn (int col, int tileNumber, Tile tile1, Tile tile2, Tile tile3) throws InvalidColumnException, FullColumnException, NoSpaceInColumnException {
+    public void addCardInColumn (int col, int tileNumber, Tile tile1, Tile tile2, Tile tile3) throws FullColumnException, NoSpaceInColumnException {
 
 
 
