@@ -6,11 +6,16 @@ package it.polimi.ingsw.model;
  */
 public class Library {
 
+    /**
+     * Library is a 6x5 matrix
+     */
     private TileSlot[][] tileMatrix = new TileSlot[6][5];
 
+
+    /**
+     * initialize library with empty slots
+     */
     public Library(){
-        /**initialize library with empty slots*
-         */
         for(int i=0; i<5;i++){
             for(int j=0;j<5;j++){
                 tileMatrix[i][j] = new TileSlot();
@@ -18,61 +23,84 @@ public class Library {
         }
     }
 
-    /**method that adds up to three cards in the chosen column*
-     */
-    public void addCardInColumn (int col, Tile tile1, Tile tile2, Tile tile3) throws InvalidColumnException, FullColumnException{
 
-        if(col<0 || col>=5){
+
+
+
+    /**
+     * method that adds up to three cards in the chosen column
+     */
+    public void addCardInColumn (int col, int tileNumber, Tile tile1, Tile tile2, Tile tile3) throws InvalidColumnException, FullColumnException, NoSpaceInColumnException {
+
+        /**
+         * forse inutile
+         */
+        if (col < 0 || col >= 5) {
             throw new InvalidColumnException();
             return;
         }
+
         /**
          * if column is not empty
          */
-        if (tileMatrix[0][col] != 0){
-            int row=0;
-            while(row<6 && tileMatrix[row][col]!=0){
+        int row = 0;
+        if (tileMatrix[row][col].free = false) {
+            while (row < 6 && tileMatrix[row][col].free = false) {
                 row++;
             }
+
+
             /**
              * if column is completely full
              */
-            if (row == 5){
+            if (row == 5) {
                 throw new FullColumnException();
                 return;
             }
-        }
-        tileMatrix[0][col]= tile1;
-        if(tile2 !=0){
-            tileMatrix[1][col] = tile3;
-        }
-        if(tile3 !=0){
 
+
+            /**
+             * if column has not enough space
+             */
+            if (row > 5 - tileNumber) {
+                throw new NoSpaceInColumnException();
+            }
         }
+
 
         /**
-         * method that verifies if library is full
+         * if column is completely empty or has enough space
          */
-        public boolean isFull(){
-            int count =0;
-            for (int i= 0; i<5; i++){
-                for(int j=0; j<4; j++){
-                    if (tileMatrix[i][j] != 0) {
-                        count++;
-                    }
-                    /**
-                     * if library full
-                     */
-                    if (count == 30){
-                        isFull() = true;
-                        return true;
-
-                    }
-                }
-            }
-            isFull() = false;
-            return false;
+        else {
+            while ()
+                tileMatrix[row][col] = tile1;
         }
     }
-    tileMatrix[2][col] = tile3;
+
+
+
+
+    /**
+     * method that verifies if library is full
+     */
+    public boolean isFull(){
+        int count =0;
+        for (int i= 0; i<5; i++){
+            for(int j=0; j<4; j++){
+                if (tileMatrix[i][j].free=false) {
+                    count++;
+                }
+
+                if (count == 30){
+                    isFull() = true;
+                    return true;
+
+                }
+            }
         }
+        isFull() = false;
+        return false;
+    }
+
+
+}
