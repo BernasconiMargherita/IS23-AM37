@@ -30,7 +30,7 @@ public class Library {
     /**
      * method that adds up to three cards in the chosen column
      */
-    public void addCardInColumn (int col, int tileNumber, Tile tile1, Tile tile2, Tile tile3) throws FullColumnException, NoSpaceInColumnException {
+    public void addCardInColumn (int col, array) throws FullColumnException, NoSpaceInColumnException {
 
 
 
@@ -38,7 +38,7 @@ public class Library {
          * if column is not empty
          */
         int row = 0;
-        if (tileMatrix[row][col].IsFree() == false) {
+        if (!tileMatrix[row][col].IsFree()) {
             while (row < 6 && tileMatrix[row][col].IsFree()== false) {
                 row++;
             }
@@ -56,7 +56,7 @@ public class Library {
             /**
              * if column has not enough space
              */
-            if (row > 5 - tileNumber) {
+            if (row > 5 - tileNumber) {         array.lengh
                 throw new NoSpaceInColumnException();
             }
         }
@@ -69,7 +69,7 @@ public class Library {
         else {
 
                 tileMatrix[row][col].AssignTile(tile1);
-            if ()
+
         }
     }
 
@@ -88,13 +88,11 @@ public class Library {
                 }
 
                 if (count == 30){
-                    isFull() = true;
                     return true;
 
                 }
             }
         }
-        isFull() = false;
         return false;
     }
 
