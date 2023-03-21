@@ -32,54 +32,36 @@ public class CardCommonTarget extends Card {
      */
     public CardCommonTarget(CommonList commonType, boolean assignedCommonCard, int numOfPlayers){
 
-        /**
-         * initializing the stack of ScoringTokens
-         */
+
 
         stackToken = new Stack<ScoringToken>();
-        /**
-         * assigning commonType
-         */
+
         this.commonType = commonType;
-        /**
-         * assigning assignedCommonCard
-         */
+
         this.assignedCommonCard = assignedCommonCard;
 
 
-        /**
-         * case: 2 players
-         */
+
         if(numOfPlayers == 2){
-            /**
-             * push the values of the ScoringToken
-             */
+
 
             stackToken.push(new ScoringToken(assignedCommonCard,4));
             stackToken.push(new ScoringToken(assignedCommonCard,8));
         }
 
 
-        /**
-         * case: 3 players
-         */
+
         if(numOfPlayers == 3){
-            /**
-             * push the values of the ScoringToken
-             */
+
             stackToken.push(new ScoringToken(assignedCommonCard,4));
             stackToken.push(new ScoringToken(assignedCommonCard,6));
             stackToken.push(new ScoringToken(assignedCommonCard,8));
         }
 
 
-        /**
-         * case: 4 players
-         */
+
         if(numOfPlayers == 4){
-            /**
-             * push the values of the ScoringToken
-             */
+
             stackToken.push(new ScoringToken(assignedCommonCard,2));
             stackToken.push(new ScoringToken(assignedCommonCard,4));
             stackToken.push(new ScoringToken(assignedCommonCard,6));

@@ -18,36 +18,22 @@ public class TileDeck {
      * costructor of TileDeck that adds 132 Tiles in tileDeck
      */
     public TileDeck(){
-        /**
-         * adding 132 cards in tileDeck
-         */
+
 
 
         tileDeck = new ArrayList<>();
 
-        /**
-         * adding 22 ''CATS''
-         */
+
         for(int i = 0; i < 22; i++) tileDeck.add(new Tile(ColourTile.CATS));
-        /**
-         * adding 22 ''BOOKS''
-         */
+
         for(int i = 0; i < 22; i++) tileDeck.add(new Tile(ColourTile.BOOKS));
-        /**
-         * adding 22 ''GAMES''
-         */
+
         for(int i = 0; i < 22; i++) tileDeck.add(new Tile(ColourTile.GAMES));
-        /**
-         * adding 22 ''FRAMES''
-         */
+
         for(int i = 0; i < 22; i++) tileDeck.add(new Tile(ColourTile.FRAMES));
-        /**
-         * adding 22 ''TROPHIES''
-         */
+
         for(int i = 0; i < 22; i++) tileDeck.add(new Tile(ColourTile.TROPHIES));
-        /**
-         * adding 22 ''PLANTS''
-         */
+
         for(int i = 0; i < 22; i++) tileDeck.add(new Tile(ColourTile.PLANTS));
     }
 
