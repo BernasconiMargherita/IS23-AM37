@@ -24,51 +24,39 @@ public class Library {
     }
 
 
-
-
-
     /**
-     * method that adds up to three cards in the chosen column
+     *
+     * @param col
+     * @throws FullColumnException
+     * @throws NoSpaceInColumnException
      */
-    public void addCardInColumn (int col, array) throws FullColumnException, NoSpaceInColumnException {
+    public void addCardInColumn (int col, Tile[] selectedTile) throws FullColumnException, NoSpaceInColumnException {
 
 
-
-        /**
-         * if column is not empty
-         */
         int row = 0;
         if (!tileMatrix[row][col].IsFree()) {
-            while (row < 6 && tileMatrix[row][col].IsFree()== false) {
+            while (row < 6 && !tileMatrix[row][col].IsFree()) {
                 row++;
             }
 
 
-            /**
-             * if column is completely full
-             */
             if (row == 5) {
                 throw new FullColumnException();
-                return;
             }
 
 
-            /**
-             * if column has not enough space
-             */
-            if (row > 5 - tileNumber) {         array.lengh
+            if (row > 5 - selectedTile.length) {
                 throw new NoSpaceInColumnException();
             }
-        }
 
+        } else {
 
-        /**
-         * if column is completely empty or has enough space.
-         */
+            for(int i=0; i < selectedTile.length; i++) {
 
-        else {
+                tileMatrix[row][col].AssignTile(selectedTile[i]);
 
-                tileMatrix[row][col].AssignTile(tile1);
+            }
+
 
         }
     }
@@ -83,7 +71,7 @@ public class Library {
         int count =0;
         for (int i= 0; i<5; i++){
             for(int j=0; j<4; j++){
-                if (tileMatrix[i][j].IsFree()==false) {
+                if (!tileMatrix[i][j].IsFree()) {
                     count++;
                 }
 
