@@ -12,21 +12,17 @@ public class CardPersonalTarget extends Card {
 
 
     /**
-     * costructor of CardPersonalTarget that assign the personalType
+     * costructor of CardPersonalTarget that assigns the personalType and fills the matrix
      * @param personalType : identifies the goal of the personalCard
      */
     public CardPersonalTarget(PersonalList personalType) {
         utils = new Utils();
 
-        /**
-         * initializing personalMatrix
-         */
+
         personalMatrix = new TileSlot[6][5];
 
 
-        /**
-         * filling of the personal matrix
-         */
+
         personalMatrix = utils.fillPersonalMatrix(personalMatrix, personalType);
     }
 

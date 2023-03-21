@@ -24,13 +24,15 @@ public class Library {
     }
 
 
-
-
-
     /**
-     * method that adds up to three cards in the chosen column
+     * method that adds up to three selected tiles in Library. It counts, in the given column, how many rows are full with method isFree (form TileSlot)
+     * Tiles are stored in array created by Board and put in the library with assignTile method
+     * @param col
+     * @throws FullColumnException if column is full
+     * @throws NoSpaceInColumnException if there is not enough space for the selected numbers of tiles
      */
-    public void addCardInColumn (int col, int tileNumber, Tile tile1, Tile tile2, Tile tile3) throws FullColumnException, NoSpaceInColumnException {
+    public void addCardInColumn (int col, Tile[] selectedTile) throws FullColumnException, NoSpaceInColumnException {
+
 
         int row = 0;
         if (!tileMatrix[row][col].IsFree()) {
@@ -41,37 +43,45 @@ public class Library {
 
             if (row == 5) {
                 throw new FullColumnException();
-                return;
             }
 
 
-            if (row > 5 - tileNumber) {
+            if (row > 5 - selectedTile.length) {
                 throw new NoSpaceInColumnException();
             }
+
         } else {
 
-            tileMatrix[row][col].AssignTile(tile1);
+            for (Tile tile : selectedTile) {
+
+                tileMatrix[row][col].AssignTile(tile);
+
+            }
+
 
         }
-
     }
-        public boolean isFull(){
+
+
+    /**
+     * method that verifies if library is completely full. It controls if every slot of the last row is full
+     * @return
+     */
+    public boolean isFull(){
+
         int count =0;
-        for (int i= 0; i<5; i++){
-            for(int j=0; j<4; j++){
-                if (!tileMatrix[i][j].IsFree()) {
+        for (int i= 0; i<4; i++){
+                if (!tileMatrix[5][i].IsFree()) {
                     count++;
                 }
 
-                if (count == 30){
+                if (count == 5){
                     return true;
 
                 }
             }
-        }
         return false;
     }
-
 
 
 }

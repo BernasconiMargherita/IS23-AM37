@@ -8,6 +8,7 @@ public class PersonalDeck {
      * ArrayList<CardPersonalTarget> personalDeck : arrayList that cointains (numOfPlayers) personalCards
      */
     private ArrayList<CardPersonalTarget> personalDeck;
+    private String[] personalList = {"CARTA1","CARTA2","CARTA3","CARTA4","CARTA5","CARTA6","CARTA7","CARTA8","CARTA9","CARTA10","CARTA11","CARTA12"};
     /**
      * int numOfPlayers : number of players in game
      */
@@ -18,11 +19,18 @@ public class PersonalDeck {
      */
     private int[] numbers = new int[4];
 
+    /**
+     * costructor of PersonalDeck thet extracts the (numOfPlayers) personalCards
+     * @param numOfPlayers
+     */
     public PersonalDeck(int numOfPlayers) {
 
         personalDeck = new ArrayList<>();
 
+
         Random random = new Random();
+
+        //extraction of 4 different casual numbers
 
         numbers[0] = random.nextInt(12) + 1;
         numbers[1] = random.nextInt(12) + 1;
@@ -33,59 +41,17 @@ public class PersonalDeck {
         while (numbers[3] == numbers[0] || numbers[3] == numbers[1] || numbers[3] == numbers[2])
             numbers[3] = random.nextInt(12) + 1;
 
-        /**
-         * adding 2,3 or 4 (depending on the number of players) personalCards to the deck
-         */
-        for (int i = 0; i < numOfPlayers; i++) {
-            if (numbers[i] == 1) {
-                personalDeck.add(new CardPersonalTarget(PersonalList.CARTA1));
-            }
 
 
-            if (numbers[i] == 2) {
-                personalDeck.add(new CardPersonalTarget(PersonalList.CARTA2));
-            }
-
-            if (numbers[i] == 3) {
-                personalDeck.add(new CardPersonalTarget(PersonalList.CARTA3));
-            }
-
-            if (numbers[i] == 4) {
-                personalDeck.add(new CardPersonalTarget(PersonalList.CARTA4));
-            }
-
-            if (numbers[i] == 5) {
-                personalDeck.add(new CardPersonalTarget(PersonalList.CARTA5));
-            }
-
-            if (numbers[i] == 6) {
-                personalDeck.add(new CardPersonalTarget(PersonalList.CARTA6));
-            }
-
-            if (numbers[i] == 7) {
-                personalDeck.add(new CardPersonalTarget(PersonalList.CARTA7));
-            }
-
-            if (numbers[i] == 8) {
-                personalDeck.add(new CardPersonalTarget(PersonalList.CARTA8));
-            }
-
-            if (numbers[i] == 9) {
-                personalDeck.add(new CardPersonalTarget(PersonalList.CARTA9));
-            }
-
-            if (numbers[i] == 10) {
-                personalDeck.add(new CardPersonalTarget(PersonalList.CARTA10));
-            }
-
-            if (numbers[i] == 11) {
-                personalDeck.add(new CardPersonalTarget(PersonalList.CARTA11));
-            }
-
-            if (numbers[i] == 12) {
-                personalDeck.add(new CardPersonalTarget(PersonalList.CARTA12));
+        personalDeck.add(new CardPersonalTarget(PersonalList.valueOf(personalList[numbers[0]])));
+        personalDeck.add(new CardPersonalTarget(PersonalList.valueOf(personalList[numbers[1]])));
+        if(numOfPlayers==3){
+            personalDeck.add(new CardPersonalTarget(PersonalList.valueOf(personalList[numbers[2]])));
+            if(numOfPlayers==4){
+                personalDeck.add(new CardPersonalTarget(PersonalList.valueOf(personalList[numbers[3]])));
             }
         }
+
 
     }
 
