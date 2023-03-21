@@ -5,25 +5,38 @@ import java.util.Random;
 
 
 public class CommonDeck {
-    //ArrayList of commonCard (2)
+    /**
+     *  ArrayList<CrdCommonTarget> commonDeck : ArrayList of commonCard (lenght -> 2)
+     */
     private ArrayList<CardCommonTarget> commonDeck;
 
-    //number of players
+    /**
+     * int numOfPlayers : number of players
+     */
     private int numOfPlayers;
 
 
-
+    /**
+     * costructor of CommonDeck that extracts 2 commonCards
+     * @param numOfPlayers
+     */
     public CommonDeck(int numOfPlayers){
 
+        commonDeck = new ArrayList<>();
 
-        //extraction of the first commonCard
+
+        /**
+         * extraction of the first commonCard
+         */
 
         Random random = new Random();
         int number = random.nextInt(12) + 1;
         int oldNumber = number;
 
 
-        //creation of the first commonCard
+        /**
+         * creation of the first commonCard
+         */
 
         if(number==1) {
             commonDeck.add(new CardCommonTarget(CommonList.SIX_GROUPS_OF_TWO, false, this.numOfPlayers));
@@ -72,13 +85,17 @@ public class CommonDeck {
             commonDeck.add(new CardCommonTarget(CommonList.IN_DESCENDING_ORDER, false, this.numOfPlayers));
         }
 
-        //extraction of the second commonCard so that it is a different commonCard from the first
+        /**
+         * extraction of the second commonCard so that it is a different commonCard from the first
+         */
 
 
         number = random.nextInt(12) + 1;
         while(number == oldNumber) number = random.nextInt(12) + 1;
 
-        //creation of the second commonCard
+        /**
+         * creation of the second commonCard
+         */
 
         if(number==1) {
             commonDeck.add(new CardCommonTarget(CommonList.SIX_GROUPS_OF_TWO, true, this.numOfPlayers));
@@ -128,7 +145,10 @@ public class CommonDeck {
         }
     }
 
-    //return of the CommonCards Arraylist
+    /**
+     * getter of the CommonCards Arraylist
+     * @return commonDeck
+     */
     public ArrayList<CardCommonTarget> getCommonDeck() {
         return commonDeck;
     }
