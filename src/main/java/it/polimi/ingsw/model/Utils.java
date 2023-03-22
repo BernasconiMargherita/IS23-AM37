@@ -13,7 +13,7 @@ public class Utils {
         return false;
     }
 
-    public TileSlot[][] fillPersonalMatrix(TileSlot[][] personalMatrix, PersonalList personalType){
+    public TileSlot[][] assignPersonalCard(PersonalCardTile[] personalCardTiles, PersonalList personalType){
         if(personalType==PersonalList.CARTA1){
 
         }

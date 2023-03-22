@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="ProgettoSoftware" />
         <module name="AM37" />
+        <module name="ProgettoIngegneriaDelSoftware" />
       </profile>
     </annotationProcessing>
   </component>
