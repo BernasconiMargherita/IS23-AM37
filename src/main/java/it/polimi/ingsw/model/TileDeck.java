@@ -12,10 +12,10 @@ public class TileDeck {
     /**
      * tileDeck : ArrayList of tiles
      */
-    private ArrayList<Tile> tileDeck;
+    private final ArrayList<Tile> tileDeck;
 
     /**
-     * costructor of TileDeck that adds 132 Tiles in tileDeck
+     * constructor of TileDeck that adds 132 Tiles in tileDeck
      */
     public TileDeck(){
 
@@ -42,7 +42,7 @@ public class TileDeck {
 
     /**
      * random draw from TileDeck without re-entering i.e. removed from tileDeck
-     * @return tileDeck.remove(...) : return a tile thet it's removed from the tileDeck
+     * @return tileDeck.remove(...) : return a tile that it's removed from the tileDeck
      */
 
     public Tile randomDraw(){
