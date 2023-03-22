@@ -1,13 +1,28 @@
 package it.polimi.ingsw.model;
 
 public class Utils {
-    public int CheckPersonalTarget(Library library,CardPersonalTarget personalCard){
-        int check=0;
+
+    /**
+     * method that compares the player's library and the personalCard, and returns the number of the completed objectives (0,...,6)
+     * @param library
+     * @param cardPersonalTarget
+     * @return completedGoals
+     */
 
 
+    public int CheckPersonalTarget(Library library, CardPersonalTarget cardPersonalTarget){
+        int completedGoals = 0;
 
-        return check;
+
+        for(int i = 0; i < 6 ; i++)
+            if (!(library.getLibrary()[cardPersonalTarget.getPersonalCardTiles()[i].getCoordinates().getX()][cardPersonalTarget.getPersonalCardTiles()[i].getCoordinates().getY()].IsFree()) && cardPersonalTarget.getPersonalCardTiles()[i].getColourTile() == library.getLibrary()[cardPersonalTarget.getPersonalCardTiles()[i].getCoordinates().getX()][cardPersonalTarget.getPersonalCardTiles()[i].getCoordinates().getY()].getAssignedTile().getColour()) {
+                completedGoals++;
+            }
+
+        return completedGoals;
     }
+
+
     public boolean CheckCommonTarget(Library library,CardCommonTarget commonCard){
 
         return false;
@@ -54,6 +69,9 @@ public class Utils {
 
 
     }
+
+
+
 
 }
 

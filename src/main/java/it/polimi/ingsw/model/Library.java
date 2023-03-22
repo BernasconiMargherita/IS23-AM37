@@ -83,5 +83,7 @@ public class Library {
         return false;
     }
 
-
+    public TileSlot[][] getLibrary() {
+        return tileMatrix;
+    }
 }
