@@ -35,8 +35,8 @@ public class Library {
 
 
         int row = 0;
-        if (!tileMatrix[row][col].IsFree()) {
-            while (row < 6 && !tileMatrix[row][col].IsFree()) {
+        if (!tileMatrix[row][col].isFree()) {
+            while (row < 6 && !tileMatrix[row][col].isFree()) {
                 row++;
             }
 
@@ -54,7 +54,7 @@ public class Library {
 
             for (Tile tile : selectedTile) {
 
-                tileMatrix[row][col].AssignTile(tile);
+                tileMatrix[row][col].assignTile(tile);
 
             }
 
@@ -71,7 +71,7 @@ public class Library {
 
         int count =0;
         for (int i= 0; i<4; i++){
-                if (!tileMatrix[5][i].IsFree()) {
+                if (!tileMatrix[5][i].isFree()) {
                     count++;
                 }
 
