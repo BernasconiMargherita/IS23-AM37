@@ -11,9 +11,9 @@ public class ScoringToken {
     int valueToken;
 
     /**
-     * costructor of ScoringToken that assign the prameters to assignedCommonCard and valueToken
-     * @param assignedCommonCard
-     * @param valueToken
+     * constructor of ScoringToken that assign the parameters to assignedCommonCard and valueToken
+     * @param assignedCommonCard Common card which the Token is assigned to
+     * @param valueToken The value in points of the Token
      */
     public ScoringToken(boolean assignedCommonCard, int valueToken){
         this.assignedCommonCard = assignedCommonCard;
@@ -21,7 +21,7 @@ public class ScoringToken {
     }
 
     /**
-     * getter of getValueToken
+     * getter of ValueToken
      * @return valueToken
      */
 
