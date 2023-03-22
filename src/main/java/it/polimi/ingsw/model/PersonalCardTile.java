@@ -12,7 +12,9 @@ public class PersonalCardTile {
     private final ColourTile colourTile;
 
     /**
-     * constructor : assign the values to coordinates and colourTile
+     * costructor : assign the values to coordinates and colourTile
+     * @param coordinates
+     * @param colourTile
      */
     public PersonalCardTile(Coordinates coordinates, ColourTile colourTile) {
         this.coordinates = coordinates;
@@ -35,6 +37,4 @@ public class PersonalCardTile {
     public ColourTile getColourTile() {
         return colourTile;
     }
-
-
 }

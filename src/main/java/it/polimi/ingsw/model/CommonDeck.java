@@ -41,8 +41,8 @@ public class CommonDeck {
         number = random.nextInt(12);
         while(number == oldNumber) number = random.nextInt(12);
 
-        commonDeck.add(new CardCommonTarget(CommonList.valueOf(commonList[oldNumber]),false,this.numOfPlayers));
-        commonDeck.add(new CardCommonTarget(CommonList.valueOf(commonList[number]),true,this.numOfPlayers));
+        commonDeck.add(new CardCommonTarget(CommonList.valueOf(commonList[oldNumber]),false,this.numOfPlayers)))
+        commonDeck.add(new CardCommonTarget(CommonList.valueOf(commonList[number]),true,this.numOfPlayers)))
     }
 
     /**

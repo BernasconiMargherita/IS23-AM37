@@ -23,7 +23,7 @@ public class Board {
     /**
      * this three boolean arrays are masks, used by the initializer and the refill method to, based on the number of players, know which tile slot has to be checked to fill or refill
      */
-    private static final boolean[][] twoPlayersTiles =
+    private static final boolean[][] dueGiocatori =
             {{false, false, false, false, false, false, false, false, false},
                     {false, false, false, true, true, false, false, false, false},
                     {false, false, false, true, true, true, false, false, false},
@@ -34,7 +34,7 @@ public class Board {
                     {false, false, false, false, true, true, false, false, false},
                     {false, false, false, false, false, false, false, false, false}};
 
-    private static final boolean[][] threePlayersTiles =
+    private static final boolean[][] treGiocatori =
             {{false, false, false, true, false, false, false, false, false},
                     {false, false, false, true, true, false, false, false, false},
                     {false, false, true, true, true, true, true, false, false},
@@ -45,7 +45,7 @@ public class Board {
                     {false, false, false, false, true, true, false, false, false},
                     {false, false, false, false, false, true, false, false, false}};
 
-    private static final boolean[][] fourPlayersTiles =
+    private static final boolean[][] quattroGiocatori =
             {{false, false, false, true, true, false, false, false, false},
                     {false, false, false, true, true, true, false, false, false},
                     {false, false, true, true, true, true, true, false, false},
@@ -68,21 +68,21 @@ public class Board {
         if (numOfPlayers == 2) {
             for (int j = 0; j <= 8; j++) {
                 for (int k = 0; k <= 8; k++) {
-                    if (twoPlayersTiles[j][k]) board[j][k].assignTile(bag.randomDraw());
+                    if (dueGiocatori[j][k]) board[j][k].AssignTile(bag.randomDraw());
                 }
             }
         }
         if (numOfPlayers == 3) {
             for (int j = 0; j <= 8; j++) {
                 for (int k = 0; k <= 8; k++) {
-                    if (threePlayersTiles[j][k]) board[j][k].assignTile(bag.randomDraw());
+                    if (treGiocatori[j][k]) board[j][k].AssignTile(bag.randomDraw());
                 }
             }
         }
         if (numOfPlayers == 4) {
             for (int j = 0; j <= 8; j++) {
                 for (int k = 0; k <= 8; k++) {
-                    if (fourPlayersTiles[j][k]) board[j][k].assignTile(bag.randomDraw());
+                    if (quattroGiocatori[j][k]) board[j][k].AssignTile(bag.randomDraw());
                 }
             }
         }
@@ -92,26 +92,26 @@ public class Board {
     /**
      * method for refilling the board if necessary,leaving the already filled TileSlots untouched
      */
-    public void refillBoard(int numOfPlayers) {
+    public void RefillBoard(int numOfPlayers) {
 
         if (numOfPlayers == 2) {
             for (int j = 0; j <= 8; j++) {
                 for (int k = 0; k <= 8; k++) {
-                    if ((twoPlayersTiles[j][k]) && (board[j][k].isFree())) board[j][k].assignTile(bag.randomDraw());
+                    if ((dueGiocatori[j][k]) && (board[j][k].IsFree())) board[j][k].AssignTile(bag.randomDraw());
                 }
             }
         }
         if (numOfPlayers == 3) {
             for (int j = 0; j <= 8; j++) {
                 for (int k = 0; k <= 8; k++) {
-                    if ((threePlayersTiles[j][k]) && (board[j][k].isFree())) board[j][k].assignTile(bag.randomDraw());
+                    if ((treGiocatori[j][k]) && (board[j][k].IsFree())) board[j][k].AssignTile(bag.randomDraw());
                 }
             }
         }
         if (numOfPlayers == 4) {
             for (int j = 0; j <= 8; j++) {
                 for (int k = 0; k <= 8; k++) {
-                    if ((fourPlayersTiles[j][k]) && (board[j][k].isFree())) board[j][k].assignTile(bag.randomDraw());
+                    if ((quattroGiocatori[j][k]) && (board[j][k].IsFree())) board[j][k].AssignTile(bag.randomDraw());
                 }
             }
         }
@@ -125,13 +125,13 @@ public class Board {
      * @throws InvalidSlotException exception for managing the selection of a Tile with no free spaces around
      */
 
-    public Tile[] removeCardFromBoard(Coordinates[] positions) throws EmptySlotException,InvalidSlotException {
+    public Tile[] RemoveCardFromBoard(Coordinates[] positions) throws EmptySlotException,InvalidSlotException {
         Tile[] selectedTile = new Tile[positions.length];
         for (int i = 0; i < positions.length; i++) {
             Coordinates position = positions[i];
-            if (board[position.getX()][position.getY()].isFree()) throw new EmptySlotException();
+            if (board[position.getX()][position.getY()].IsFree()) throw new EmptySlotException();
 
-            if ((board[(position.getX())+1][position.getY()].isFree())||(board[(position.getX())-1][position.getY()].isFree())||(board[(position.getX())][position.getY()+1].isFree())||(board[(position.getX())][position.getY()-1].isFree())) {
+            if ((board[(position.getX())+1][position.getY()].IsFree())||(board[(position.getX())-1][position.getY()].IsFree())||(board[(position.getX())][position.getY()+1].IsFree())||(board[(position.getX())][position.getY()-1].IsFree())) {
                 selectedTile[i]=board[position.getX()][position.getY()].getAssignedTile();
             }
             else throw new InvalidSlotException();
@@ -139,7 +139,7 @@ public class Board {
         }
 
         for (Coordinates position : positions) {
-            board[position.getX()][position.getY()].removeAssignedTile();
+            board[position.getX()][position.getY()].RemoveAssignedTile();
         }
 
             return selectedTile;
