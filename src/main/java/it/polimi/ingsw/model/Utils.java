@@ -21,12 +21,12 @@ public class Utils {
         PersonalCardTile[] personalCardTiles = new PersonalCardTile[6];
         switch (personalType){
             case CARTA1 -> {
-                personalCardTiles[0]=new PersonalCardTile(new Coordinates(0,0),ColourTile.CATS); //CATS
-                personalCardTiles[1]=new PersonalCardTile(new Coordinates(4,1),ColourTile.GAMES);//giallo
-                personalCardTiles[2]=new PersonalCardTile(new Coordinates(3,2),ColourTile.TROPHIES);//azzurro
-                personalCardTiles[3]=new PersonalCardTile(new Coordinates(2,3),ColourTile.FRAMES);//FRAMES
-                personalCardTiles[4]=new PersonalCardTile(new Coordinates(1,4),ColourTile.PLANTS);//PLANTS
-                personalCardTiles[5]=new PersonalCardTile(new Coordinates(2,5),ColourTile.BOOKS);//bianco
+                personalCardTiles[0]=new PersonalCardTile(new Coordinates(0,0),ColourTile.CATS);
+                personalCardTiles[1]=new PersonalCardTile(new Coordinates(4,1),ColourTile.GAMES);
+                personalCardTiles[2]=new PersonalCardTile(new Coordinates(3,2),ColourTile.TROPHIES);
+                personalCardTiles[3]=new PersonalCardTile(new Coordinates(2,3),ColourTile.FRAMES);
+                personalCardTiles[4]=new PersonalCardTile(new Coordinates(1,4),ColourTile.PLANTS);
+                personalCardTiles[5]=new PersonalCardTile(new Coordinates(2,5),ColourTile.BOOKS);
             }
             case CARTA2 -> {
                 personalCardTiles[0]=new PersonalCardTile(new Coordinates(2,0),ColourTile.TROPHIES);

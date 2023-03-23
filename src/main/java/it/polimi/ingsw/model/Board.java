@@ -9,7 +9,7 @@ public class Board {
      */
     private TileSlot[][] board;
     /**
-     * A Deck of Common Objective Cards, used for randomly select two among the 12 possibilities
+     * A Deck of Common Goal Cards, used for randomly select two among the 12 possibilities
      */
     private CommonDeck commonDeck;
     /**
@@ -19,7 +19,7 @@ public class Board {
     /**
      * The bag that contains all the tiles of the game, used by the board to initialize and refill itself
      */
-    private TileDeck bag;
+    private final TileDeck bag;
     /**
      * this three boolean arrays are masks, used by the initializer and the refill method to, based on the number of players, know which tile slot has to be checked to fill or refill
      */
