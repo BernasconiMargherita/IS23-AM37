@@ -9,7 +9,7 @@ public class Library {
     /**
      * Library is a 6x5 matrix
      */
-    private final TileSlot[][] tileMatrix = new TileSlot[5][6];
+    private TileSlot[][] tileMatrix = new TileSlot[6][5];
 
 
     /**
@@ -27,6 +27,7 @@ public class Library {
     /**
      * method that adds up to three selected tiles in Library. It counts, in the given column, how many rows are full with method isFree (form TileSlot)
      * Tiles are stored in array created by Board and put in the library with assignTile method
+     * @param col
      * @throws FullColumnException if column is full
      * @throws NoSpaceInColumnException if there is not enough space for the selected numbers of tiles
      */
@@ -34,7 +35,7 @@ public class Library {
 
 
         int row = 0;
-        if (!tileMatrix[col][row].isFree()) {
+        if (!tileMatrix[row][col].isFree()) {
             while (row < 6 && !tileMatrix[row][col].isFree()) {
                 row++;
             }
@@ -64,12 +65,13 @@ public class Library {
 
     /**
      * method that verifies if library is completely full. It controls if every slot of the last row is full
+     * @return
      */
     public boolean isFull(){
 
         int count =0;
         for (int i= 0; i<4; i++){
-                if (!tileMatrix[i][5].isFree()) {
+                if (!tileMatrix[5][i].isFree()) {
                     count++;
                 }
 
@@ -81,7 +83,7 @@ public class Library {
         return false;
     }
 
-    public TileSlot[][] getTileMatrix() {
+    public TileSlot[][] getLibrary() {
         return tileMatrix;
     }
 }
