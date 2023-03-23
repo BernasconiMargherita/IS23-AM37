@@ -34,6 +34,11 @@ public class Player {
         int[] points = {0,1,2,4,6,9,12};
         this.score += points[utils.checkPersonalTarget(personalLibrary, cardPersonalTarget)];
     }
+
+
+
+
+
 }
 
 

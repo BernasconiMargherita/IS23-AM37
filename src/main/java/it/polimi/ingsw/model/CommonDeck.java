@@ -36,13 +36,15 @@ public class CommonDeck {
 
         commonDeck = new ArrayList<>();
         Random random = new Random();
-        int number = random.nextInt(12);
-        int oldNumber = number;
-        number = random.nextInt(12);
-        while(number == oldNumber) number = random.nextInt(12);
+        int num1 = random.nextInt(12);
+        int num2;
+        do{
+            num2 = random.nextInt(12);
+        }
+        while(num2 == num1);
 
-        commonDeck.add(new CardCommonTarget(CommonList.valueOf(commonList[oldNumber]),false,this.numOfPlayers));
-        commonDeck.add(new CardCommonTarget(CommonList.valueOf(commonList[number]),true,this.numOfPlayers));
+        commonDeck.add(new CardCommonTarget(CommonList.valueOf(commonList[num1]),false,this.numOfPlayers));
+        commonDeck.add(new CardCommonTarget(CommonList.valueOf(commonList[num2]),true,this.numOfPlayers));
     }
 
     /**
