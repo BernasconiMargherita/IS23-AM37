@@ -25,4 +25,20 @@ public class Player {
     public boolean checkCommonTarget(){
         utils.checkCommonTarget();
     }
+
+    /**
+     * method that calls the checkPersonalTarget of utils,
+     * and transforms the value returned by the latter into points, finally adds these points to score
+     */
+    public void checkPersonalTarget(){
+        int[] points = {0,1,2,4,6,9,12};
+        this.score += points[utils.checkPersonalTarget(personalLibrary, cardPersonalTarget)];
+    }
+
+
+
+
+
 }
+
+

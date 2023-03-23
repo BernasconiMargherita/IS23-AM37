@@ -60,7 +60,7 @@ public class Board {
      * the constructor of this class, that uses the boolean masks to fill the "true" marked spots
      * @param numOfPlayers number of players at the start of the game,used for switch cases
      */
-    Board(int numOfPlayers) {
+    Board(int numOfPlayers) throws SoldOutTilesException {
         this.bag = new TileDeck();
         this.commonDeck = new CommonDeck(numOfPlayers);
         this.board = new TileSlot[9][9];
@@ -92,7 +92,7 @@ public class Board {
     /**
      * method for refilling the board if necessary,leaving the already filled TileSlots untouched
      */
-    public void refillBoard(int numOfPlayers) {
+    public void refillBoard(int numOfPlayers) throws SoldOutTilesException {
 
         if (numOfPlayers == 2) {
             for (int j = 0; j <= 8; j++) {
