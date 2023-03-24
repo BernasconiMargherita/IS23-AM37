@@ -6,5 +6,6 @@ public enum ColourTile {
     GAMES,
     FRAMES,
     TROPHIES,
-    PLANTS;
+    PLANTS,
+    VUOTO;
 }

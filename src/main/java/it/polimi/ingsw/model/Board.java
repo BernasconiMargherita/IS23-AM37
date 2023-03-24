@@ -60,28 +60,34 @@ public class Board {
      * the constructor of this class, that uses the boolean masks to fill the "true" marked spots
      * @param numOfPlayers number of players at the start of the game,used for switch cases
      */
-    Board(int numOfPlayers) {
+    Board(int numOfPlayers) throws SoldOutTilesException {
         this.bag = new TileDeck();
         this.commonDeck = new CommonDeck(numOfPlayers);
         this.board = new TileSlot[9][9];
 
+        for (int i=0;i<9;i++){
+            for (int j=0;j<9;j++){
+                board[i][j]= new TileSlot();
+            }
+        }
+
         if (numOfPlayers == 2) {
-            for (int j = 0; j <= 8; j++) {
-                for (int k = 0; k <= 8; k++) {
+            for (int j = 0; j < 9; j++) {
+                for (int k = 0; k < 9; k++) {
                     if (twoPlayersTiles[j][k]) board[j][k].assignTile(bag.randomDraw());
                 }
             }
         }
         if (numOfPlayers == 3) {
-            for (int j = 0; j <= 8; j++) {
-                for (int k = 0; k <= 8; k++) {
+            for (int j = 0; j < 9; j++) {
+                for (int k = 0; k < 9; k++) {
                     if (threePlayersTiles[j][k]) board[j][k].assignTile(bag.randomDraw());
                 }
             }
         }
         if (numOfPlayers == 4) {
-            for (int j = 0; j <= 8; j++) {
-                for (int k = 0; k <= 8; k++) {
+            for (int j = 0; j < 9; j++) {
+                for (int k = 0; k < 9; k++) {
                     if (fourPlayersTiles[j][k]) board[j][k].assignTile(bag.randomDraw());
                 }
             }
@@ -92,7 +98,7 @@ public class Board {
     /**
      * method for refilling the board if necessary,leaving the already filled TileSlots untouched
      */
-    public void refillBoard(int numOfPlayers) {
+    public void refillBoard(int numOfPlayers) throws SoldOutTilesException {
 
         if (numOfPlayers == 2) {
             for (int j = 0; j <= 8; j++) {

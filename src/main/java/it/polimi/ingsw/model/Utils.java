@@ -15,6 +15,9 @@ public class Utils {
 
 
         for(int i = 0; i < 6 ; i++)
+
+            // if(  (true if the library's TileSlot is NOT EMPTY) &&  (true if the tile in the TileSlot is the same color as the Personal Card (in position i)   )
+
             if (!(library.getLibrary()[cardPersonalTarget.getPersonalCardTiles()[i].getCoordinates().getX()][cardPersonalTarget.getPersonalCardTiles()[i].getCoordinates().getY()].isFree()) && cardPersonalTarget.getPersonalCardTiles()[i].getColourTile() == library.getLibrary()[cardPersonalTarget.getPersonalCardTiles()[i].getCoordinates().getX()][cardPersonalTarget.getPersonalCardTiles()[i].getCoordinates().getY()].getAssignedTile().getColour()) {
                 completedGoals++;
             }

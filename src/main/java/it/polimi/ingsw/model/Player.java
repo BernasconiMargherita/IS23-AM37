@@ -27,21 +27,21 @@ public class Player {
         personalLibrary.addCardInColumn(col, selectedTile);
     }
 
-    public void checkPersonalTarget(){
-        int checks=utils.checkPersonalTarget(personalLibrary,cardPersonalTarget);
-        switch (checks){
-            case 0: setScore(0);
-            case 1: setScore(1);
-            case 2: setScore(2);
-            case 3: setScore(3);
-            case 4: setScore(6);
-            case 5: setScore(9);
-            case 6: setScore(12);
-        }
-
-    }
 
     public boolean checkCommonTarget(){
         utils.checkCommonTarget();
     }
+
+    /**
+     * method that calls the checkPersonalTarget of utils,
+     * and transforms the value returned by the latter into points, finally adds these points to score
+     */
+    public void checkPersonalTarget(){
+        int[] points = {0,1,2,4,6,9,12};
+        this.score += points[utils.checkPersonalTarget(personalLibrary, cardPersonalTarget)];
+    }
+
+
 }
+
+
