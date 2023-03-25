@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model;
 
+/**
+ * Class that represent the Player
+ */
 public class Player {
     private final Utils utils;
     private final String nickname;
@@ -29,7 +32,7 @@ public class Player {
 
 
     public boolean checkCommonTarget(){
-        utils.checkCommonTarget();
+        return utils.checkCommonTarget(personalLibrary);
     }
 
     /**

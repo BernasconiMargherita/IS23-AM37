@@ -11,9 +11,9 @@ public class ScoringToken {
     int valueToken;
 
     /**
-     * costructor of ScoringToken that assign the prameters to assignedCommonCard and valueToken
-     * @param assignedCommonCard
-     * @param valueToken
+     * constructor of ScoringToken that assign the prameters to assignedCommonCard and valueToken
+     * @param assignedCommonCard identifies the first or second common card of the board
+     * @param valueToken value of the ScoringToken
      */
     public ScoringToken(boolean assignedCommonCard, int valueToken){
         this.assignedCommonCard = assignedCommonCard;

@@ -7,7 +7,7 @@ public class Tile extends Card{
     private ColourTile colour;
 
     /**
-     * costructor of Tile : assigning the value of colour
+     * constructor of Tile : assigning the value of colour
      */
     public Tile(ColourTile colour){
         this.colour = colour;

@@ -7,5 +7,5 @@ public enum ColourTile {
     FRAMES,
     TROPHIES,
     PLANTS,
-    VUOTO;
+    EMPTY;
 }

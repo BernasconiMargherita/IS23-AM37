@@ -7,11 +7,7 @@ public class Board {
     /**
      * A TileSlot Matrix, big enough for all the number of players, with extra space to make it a square for simplify operation like refilling
      */
-    private TileSlot[][] board;
-    /**
-     * A Deck of Common Goal Cards, used for randomly select two among the 12 possibilities
-     */
-    private CommonDeck commonDeck;
+    private final TileSlot[][] board;
     /**
      * The token that begins the final turn
      */
@@ -62,7 +58,8 @@ public class Board {
      */
     Board(int numOfPlayers) throws SoldOutTilesException {
         this.bag = new TileDeck();
-        this.commonDeck = new CommonDeck(numOfPlayers);
+
+        CommonDeck commonDeck = new CommonDeck(numOfPlayers);
         this.board = new TileSlot[9][9];
 
         for (int i=0;i<9;i++){
@@ -101,22 +98,22 @@ public class Board {
     public void refillBoard(int numOfPlayers) throws SoldOutTilesException {
 
         if (numOfPlayers == 2) {
-            for (int j = 0; j <= 8; j++) {
-                for (int k = 0; k <= 8; k++) {
+            for (int j = 0; j <9; j++) {
+                for (int k = 0; k <9; k++) {
                     if ((twoPlayersTiles[j][k]) && (board[j][k].isFree())) board[j][k].assignTile(bag.randomDraw());
                 }
             }
         }
         if (numOfPlayers == 3) {
-            for (int j = 0; j <= 8; j++) {
-                for (int k = 0; k <= 8; k++) {
+            for (int j = 0; j <9; j++) {
+                for (int k = 0; k <9; k++) {
                     if ((threePlayersTiles[j][k]) && (board[j][k].isFree())) board[j][k].assignTile(bag.randomDraw());
                 }
             }
         }
         if (numOfPlayers == 4) {
-            for (int j = 0; j <= 8; j++) {
-                for (int k = 0; k <= 8; k++) {
+            for (int j = 0; j <9; j++) {
+                for (int k = 0; k <9; k++) {
                     if ((fourPlayersTiles[j][k]) && (board[j][k].isFree())) board[j][k].assignTile(bag.randomDraw());
                 }
             }
@@ -152,5 +149,7 @@ public class Board {
     }
 
 
-
+    public TileSlot[][] getBoard() {
+        return this.board;
+    }
 }

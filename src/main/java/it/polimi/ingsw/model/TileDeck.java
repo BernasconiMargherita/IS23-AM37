@@ -12,10 +12,10 @@ public class TileDeck {
     /**
      * tileDeck : ArrayList of tiles
      */
-    private ArrayList<Tile> tileDeck;
+    private final ArrayList<Tile> tileDeck;
 
     /**
-     * costructor of TileDeck that adds 132 Tiles in tileDeck
+     * constructor of TileDeck that adds 132 Tiles in tileDeck
      */
     public TileDeck(){
 
@@ -46,10 +46,9 @@ public class TileDeck {
      */
 
     public Tile randomDraw() throws SoldOutTilesException{
-        tilesLeft = tilesLeft - 1;
-        if(tilesLeft < 0) throw new SoldOutTilesException();
+        if(tileDeck.size() == 0) throw new SoldOutTilesException();
         Random random = new Random();
-        int number = random.nextInt(tilesLeft);
+        int number = random.nextInt(tileDeck.size());
         return tileDeck.remove(number);
     }
 

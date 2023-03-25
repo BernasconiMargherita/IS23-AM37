@@ -11,16 +11,13 @@ public class CardPersonalTarget {
 
 
     /**
-     * costructor : assignment of personal card
+     * constructor : assignment of personal card
      */
 
     public CardPersonalTarget(PersonalList personalType){
-        /**
-         *Utils utils : used for the assignment of the personal card
-         */
         Utils utils = new Utils();
-        personalCardTiles = new PersonalCardTile[6];
-        utils.assignPersonalCard(personalCardTiles, personalType);
+        personalCardTiles = utils.assignPersonalCard(personalType);
+
     }
 
     /**
