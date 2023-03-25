@@ -9,7 +9,7 @@ public class Library {
     /**
      * Library is a 6x5 matrix
      */
-    private TileSlot[][] tileMatrix = new TileSlot[6][5];
+    private final TileSlot[][] library = new TileSlot[6][5];
 
 
     /**
@@ -18,7 +18,7 @@ public class Library {
     public Library(){
         for(int i=0; i<5;i++){
             for(int j=0;j<5;j++){
-                tileMatrix[i][j] = new TileSlot();
+                library[i][j] = new TileSlot();
             }
         }
     }
@@ -27,7 +27,6 @@ public class Library {
     /**
      * method that adds up to three selected tiles in Library. It counts, in the given column, how many rows are full with method isFree (form TileSlot)
      * Tiles are stored in array created by Board and put in the library with assignTile method
-     * @param col
      * @throws FullColumnException if column is full
      * @throws NoSpaceInColumnException if there is not enough space for the selected numbers of tiles
      */
@@ -35,8 +34,8 @@ public class Library {
 
 
         int row = 0;
-        if (!tileMatrix[row][col].isFree()) {
-            while (row < 6 && !tileMatrix[row][col].isFree()) {
+        if (!library[row][col].isFree()) {
+            while (row < 6 && !library[row][col].isFree()) {
                 row++;
             }
 
@@ -54,7 +53,7 @@ public class Library {
 
             for (Tile tile : selectedTile) {
 
-                tileMatrix[row][col].assignTile(tile);
+                library[row][col].assignTile(tile);
 
             }
 
@@ -65,13 +64,12 @@ public class Library {
 
     /**
      * method that verifies if library is completely full. It controls if every slot of the last row is full
-     * @return
      */
     public boolean isFull(){
 
         int count =0;
         for (int i= 0; i<4; i++){
-                if (!tileMatrix[5][i].isFree()) {
+                if (!library[5][i].isFree()) {
                     count++;
                 }
 
@@ -84,6 +82,6 @@ public class Library {
     }
 
     public TileSlot[][] getLibrary() {
-        return tileMatrix;
+        return library;
     }
 }

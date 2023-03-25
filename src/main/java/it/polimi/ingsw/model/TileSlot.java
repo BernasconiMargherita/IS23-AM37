@@ -11,7 +11,12 @@ public class TileSlot {
     /**
      * a boolean to know if the Slot is empty or not
      */
-    private boolean free=true;
+    private boolean free;
+
+    public TileSlot() {
+        this.assignedTile = new EmptySpace();
+        this.free = true;
+    }
 
     /**
      * given a Tile, this method assigns the Tile at the space and makes the Slot full
@@ -39,7 +44,7 @@ public class TileSlot {
      * method that reverts the TileSlot to empty if requested
      */
     public void removeAssignedTile(){
-        this.assignedTile=null;
+        this.assignedTile=new EmptySpace();
         this.free=true;
     }
 }
