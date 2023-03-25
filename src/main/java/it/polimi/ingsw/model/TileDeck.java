@@ -45,8 +45,9 @@ public class TileDeck {
      * @return tileDeck.remove(...) : return a tile thet it's removed from the tileDeck
      */
 
-    public Tile randomDraw(){
+    public Tile randomDraw() throws SoldOutTilesException{
         tilesLeft = tilesLeft - 1;
+        if(tilesLeft < 0) throw new SoldOutTilesException();
         Random random = new Random();
         int number = random.nextInt(tilesLeft);
         return tileDeck.remove(number);

@@ -9,7 +9,7 @@ public class Board {
      */
     private TileSlot[][] board;
     /**
-     * A Deck of Common Objective Cards, used for randomly select two among the 12 possibilities
+     * A Deck of Common Goal Cards, used for randomly select two among the 12 possibilities
      */
     private CommonDeck commonDeck;
     /**
@@ -19,11 +19,11 @@ public class Board {
     /**
      * The bag that contains all the tiles of the game, used by the board to initialize and refill itself
      */
-    private TileDeck bag;
+    private final TileDeck bag;
     /**
      * this three boolean arrays are masks, used by the initializer and the refill method to, based on the number of players, know which tile slot has to be checked to fill or refill
      */
-    private static final boolean[][] dueGiocatori =
+    private static final boolean[][] twoPlayersTiles =
             {{false, false, false, false, false, false, false, false, false},
                     {false, false, false, true, true, false, false, false, false},
                     {false, false, false, true, true, true, false, false, false},
@@ -34,7 +34,7 @@ public class Board {
                     {false, false, false, false, true, true, false, false, false},
                     {false, false, false, false, false, false, false, false, false}};
 
-    private static final boolean[][] treGiocatori =
+    private static final boolean[][] threePlayersTiles =
             {{false, false, false, true, false, false, false, false, false},
                     {false, false, false, true, true, false, false, false, false},
                     {false, false, true, true, true, true, true, false, false},
@@ -45,7 +45,7 @@ public class Board {
                     {false, false, false, false, true, true, false, false, false},
                     {false, false, false, false, false, true, false, false, false}};
 
-    private static final boolean[][] quattroGiocatori =
+    private static final boolean[][] fourPlayersTiles =
             {{false, false, false, true, true, false, false, false, false},
                     {false, false, false, true, true, true, false, false, false},
                     {false, false, true, true, true, true, true, false, false},
@@ -60,29 +60,35 @@ public class Board {
      * the constructor of this class, that uses the boolean masks to fill the "true" marked spots
      * @param numOfPlayers number of players at the start of the game,used for switch cases
      */
-    Board(int numOfPlayers) {
+    Board(int numOfPlayers) throws SoldOutTilesException {
         this.bag = new TileDeck();
         this.commonDeck = new CommonDeck(numOfPlayers);
         this.board = new TileSlot[9][9];
 
+        for (int i=0;i<9;i++){
+            for (int j=0;j<9;j++){
+                board[i][j]= new TileSlot();
+            }
+        }
+
         if (numOfPlayers == 2) {
-            for (int j = 0; j <= 8; j++) {
-                for (int k = 0; k <= 8; k++) {
-                    if (dueGiocatori[j][k]) board[j][k].AssignTile(bag.randomDraw());
+            for (int j = 0; j < 9; j++) {
+                for (int k = 0; k < 9; k++) {
+                    if (twoPlayersTiles[j][k]) board[j][k].assignTile(bag.randomDraw());
                 }
             }
         }
         if (numOfPlayers == 3) {
-            for (int j = 0; j <= 8; j++) {
-                for (int k = 0; k <= 8; k++) {
-                    if (treGiocatori[j][k]) board[j][k].AssignTile(bag.randomDraw());
+            for (int j = 0; j < 9; j++) {
+                for (int k = 0; k < 9; k++) {
+                    if (threePlayersTiles[j][k]) board[j][k].assignTile(bag.randomDraw());
                 }
             }
         }
         if (numOfPlayers == 4) {
-            for (int j = 0; j <= 8; j++) {
-                for (int k = 0; k <= 8; k++) {
-                    if (quattroGiocatori[j][k]) board[j][k].AssignTile(bag.randomDraw());
+            for (int j = 0; j < 9; j++) {
+                for (int k = 0; k < 9; k++) {
+                    if (fourPlayersTiles[j][k]) board[j][k].assignTile(bag.randomDraw());
                 }
             }
         }
@@ -92,26 +98,26 @@ public class Board {
     /**
      * method for refilling the board if necessary,leaving the already filled TileSlots untouched
      */
-    public void RefillBoard(int numOfPlayers) {
+    public void refillBoard(int numOfPlayers) throws SoldOutTilesException {
 
         if (numOfPlayers == 2) {
             for (int j = 0; j <= 8; j++) {
                 for (int k = 0; k <= 8; k++) {
-                    if ((dueGiocatori[j][k]) && (board[j][k].IsFree())) board[j][k].AssignTile(bag.randomDraw());
+                    if ((twoPlayersTiles[j][k]) && (board[j][k].isFree())) board[j][k].assignTile(bag.randomDraw());
                 }
             }
         }
         if (numOfPlayers == 3) {
             for (int j = 0; j <= 8; j++) {
                 for (int k = 0; k <= 8; k++) {
-                    if ((treGiocatori[j][k]) && (board[j][k].IsFree())) board[j][k].AssignTile(bag.randomDraw());
+                    if ((threePlayersTiles[j][k]) && (board[j][k].isFree())) board[j][k].assignTile(bag.randomDraw());
                 }
             }
         }
         if (numOfPlayers == 4) {
             for (int j = 0; j <= 8; j++) {
                 for (int k = 0; k <= 8; k++) {
-                    if ((quattroGiocatori[j][k]) && (board[j][k].IsFree())) board[j][k].AssignTile(bag.randomDraw());
+                    if ((fourPlayersTiles[j][k]) && (board[j][k].isFree())) board[j][k].assignTile(bag.randomDraw());
                 }
             }
         }
@@ -125,13 +131,13 @@ public class Board {
      * @throws InvalidSlotException exception for managing the selection of a Tile with no free spaces around
      */
 
-    public Tile[] RemoveCardFromBoard(Coordinates[] positions) throws EmptySlotException,InvalidSlotException {
+    public Tile[] removeCardFromBoard(Coordinates[] positions) throws EmptySlotException,InvalidSlotException {
         Tile[] selectedTile = new Tile[positions.length];
         for (int i = 0; i < positions.length; i++) {
             Coordinates position = positions[i];
-            if (board[position.getX()][position.getY()].IsFree()) throw new EmptySlotException();
+            if (board[position.getX()][position.getY()].isFree()) throw new EmptySlotException();
 
-            if ((board[(position.getX())+1][position.getY()].IsFree())||(board[(position.getX())-1][position.getY()].IsFree())||(board[(position.getX())][position.getY()+1].IsFree())||(board[(position.getX())][position.getY()-1].IsFree())) {
+            if ((board[(position.getX())+1][position.getY()].isFree())||(board[(position.getX())-1][position.getY()].isFree())||(board[(position.getX())][position.getY()+1].isFree())||(board[(position.getX())][position.getY()-1].isFree())) {
                 selectedTile[i]=board[position.getX()][position.getY()].getAssignedTile();
             }
             else throw new InvalidSlotException();
@@ -139,7 +145,7 @@ public class Board {
         }
 
         for (Coordinates position : positions) {
-            board[position.getX()][position.getY()].RemoveAssignedTile();
+            board[position.getX()][position.getY()].removeAssignedTile();
         }
 
             return selectedTile;

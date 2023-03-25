@@ -11,12 +11,17 @@ public class TileSlot {
     /**
      * a boolean to know if the Slot is empty or not
      */
-    private boolean free=true;
+    private boolean free;
+
+    public TileSlot() {
+        this.assignedTile = new EmptySpace();
+        this.free = true;
+    }
 
     /**
      * given a Tile, this method assigns the Tile at the space and makes the Slot full
      */
-    public void AssignTile(Tile assignedTile) {
+    public void assignTile(Tile assignedTile) {
         this.assignedTile = assignedTile;
         this.free=false;
     }
@@ -24,12 +29,12 @@ public class TileSlot {
     /**
      * method for knowing if the space is empty or not
      */
-    public boolean IsFree(){
+    public boolean isFree(){
         return this.free;
     }
 
     /**
-     * @return thi method returns the slot's assigned tile
+     * @return this method returns the slot's assigned tile
      */
     public Tile getAssignedTile() {
         return assignedTile;
@@ -38,8 +43,8 @@ public class TileSlot {
     /**
      * method that reverts the TileSlot to empty if requested
      */
-    public void RemoveAssignedTile(){
-        this.assignedTile=null;
+    public void removeAssignedTile(){
+        this.assignedTile=new EmptySpace();
         this.free=true;
     }
 }

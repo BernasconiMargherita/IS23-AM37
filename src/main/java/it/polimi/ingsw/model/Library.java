@@ -9,7 +9,7 @@ public class Library {
     /**
      * Library is a 6x5 matrix
      */
-    private TileSlot[][] tileMatrix = new TileSlot[6][5];
+    private TileSlot[][] library = new TileSlot[6][5];
 
 
     /**
@@ -18,7 +18,7 @@ public class Library {
     public Library(){
         for(int i=0; i<5;i++){
             for(int j=0;j<5;j++){
-                tileMatrix[i][j] = new TileSlot();
+                library[i][j] = new TileSlot();
             }
         }
     }
@@ -35,8 +35,8 @@ public class Library {
 
 
         int row = 0;
-        if (!tileMatrix[row][col].IsFree()) {
-            while (row < 6 && !tileMatrix[row][col].IsFree()) {
+        if (!library[row][col].isFree()) {
+            while (row < 6 && !library[row][col].isFree()) {
                 row++;
             }
 
@@ -54,7 +54,7 @@ public class Library {
 
             for (Tile tile : selectedTile) {
 
-                tileMatrix[row][col].AssignTile(tile);
+                library[row][col].assignTile(tile);
 
             }
 
@@ -71,7 +71,7 @@ public class Library {
 
         int count =0;
         for (int i= 0; i<4; i++){
-                if (!tileMatrix[5][i].IsFree()) {
+                if (!library[5][i].isFree()) {
                     count++;
                 }
 
@@ -83,5 +83,7 @@ public class Library {
         return false;
     }
 
-
+    public TileSlot[][] getLibrary() {
+        return library;
+    }
 }

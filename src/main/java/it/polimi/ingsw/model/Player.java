@@ -1,21 +1,47 @@
 package it.polimi.ingsw.model;
 
 public class Player {
-    private String nickname;
+    private final Utils utils;
+    private final String nickname;
+    private final Library personalLibrary;
+    private final CardPersonalTarget cardPersonalTarget;
+    private int score;
 
-    public Player(String nickname){
+    public String getNickname() {
+        return nickname;
+    }
+
+    public Player(String nickname,CardPersonalTarget cardPersonalTarget){
         this.nickname=nickname;
-    }
-    public void addTilesinLibrary( Library library, int row, int column) {
-        library.setValue(row, column, 1);
+        this.cardPersonalTarget=cardPersonalTarget;
+        this.personalLibrary=new Library();
+        this.utils=new Utils();
+        this.score=0;
     }
 
-    /** metodo completamente da modificare
-     *
-     * @param library
-     * @param cardCommonTarget
-     * @return
-     */
-    public boolean checkCommonTarget( Library library, CardCommonTarget cardCommonTarget){
+    public void setScore(int addedScore){
+        this.score += addedScore;
     }
+
+    public void addTilesInLibrary(int col,Tile[] selectedTile) throws NoSpaceInColumnException, FullColumnException {
+        personalLibrary.addCardInColumn(col, selectedTile);
+    }
+
+
+    public boolean checkCommonTarget(){
+        utils.checkCommonTarget();
+    }
+
+    /**
+     * method that calls the checkPersonalTarget of utils,
+     * and transforms the value returned by the latter into points, finally adds these points to score
+     */
+    public void checkPersonalTarget(){
+        int[] points = {0,1,2,4,6,9,12};
+        this.score += points[utils.checkPersonalTarget(personalLibrary, cardPersonalTarget)];
+    }
+
+
 }
+
+
