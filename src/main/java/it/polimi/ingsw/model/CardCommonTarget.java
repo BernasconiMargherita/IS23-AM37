@@ -12,23 +12,22 @@ public class CardCommonTarget extends Card {
      *  boolean assignedCommonCard: identifies the first or second common card of the board
      */
 
-    private boolean assignedCommonCard;
+    private final boolean assignedCommonCard;
 
     /**
      * CommonList typeOfCommonCard: identifies the goal of the common card
      */
 
-    private CommonList commonType;
+    private final CommonList commonType;
 
     /**
      *Stack<ScoringToken> stackToken : stack of scoring tokens
      */
-    private Stack<ScoringToken> stackToken;
+    private final Stack<ScoringToken> stackToken;
     /**
      * constructor that assign to the card:
-     * @param commonType
-     * @param assignedCommonCard
-     * @param numOfPlayers
+     * @param commonType enum value of the common card
+     * @param assignedCommonCard which of the two card the scoring token is assigned to
      */
     public CardCommonTarget(CommonList commonType, boolean assignedCommonCard, int numOfPlayers){
 
@@ -70,7 +69,7 @@ public class CardCommonTarget extends Card {
     }
 
     /**
-     * getter of the CommonList value (enum) of the Scoringtoken  -> also removes the scoringToken from the stack
+     * getter of the CommonList value (enum) of the Scoring token  -> also removes the scoringToken from the stack
      * @return stackToken.pop().getValueToken()  ->  scoringToken
      */
     public int getScoringToken(){

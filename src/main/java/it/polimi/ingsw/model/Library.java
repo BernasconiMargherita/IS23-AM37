@@ -9,7 +9,7 @@ public class Library {
     /**
      * Library is a 6x5 matrix
      */
-    private TileSlot[][] library = new TileSlot[6][5];
+    private final TileSlot[][] library = new TileSlot[6][5];
 
 
     /**
@@ -27,7 +27,6 @@ public class Library {
     /**
      * method that adds up to three selected tiles in Library. It counts, in the given column, how many rows are full with method isFree (form TileSlot)
      * Tiles are stored in array created by Board and put in the library with assignTile method
-     * @param col
      * @throws FullColumnException if column is full
      * @throws NoSpaceInColumnException if there is not enough space for the selected numbers of tiles
      */
@@ -65,7 +64,6 @@ public class Library {
 
     /**
      * method that verifies if library is completely full. It controls if every slot of the last row is full
-     * @return
      */
     public boolean isFull(){
 
