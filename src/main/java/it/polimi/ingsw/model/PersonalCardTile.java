@@ -35,6 +35,4 @@ public class PersonalCardTile {
     public ColourTile getColourTile() {
         return colourTile;
     }
-
-
 }
