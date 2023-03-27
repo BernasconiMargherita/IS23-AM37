@@ -69,4 +69,60 @@ public class BoardTest {
             }
         }
     }
+
+    @Test
+    void emptySlotOnBoard() throws EmptySlotException, InvalidSlotException , SoldOutTilesException{
+        Board board = new Board(2);
+        Tile[] tiles = new Tile[1];
+
+        Coordinates[] positions = new Coordinates[1];
+        positions[0] = new Coordinates(0,0);
+        try {
+            tiles = board.removeCardFromBoard(positions);
+
+        } catch(EmptySlotException e) {
+            System.out.println("EmptySlotException");
+          } catch (InvalidPositionsException e) {
+            System.out.println("InvalidPositionsException");
+        }
+    }
+
+
+    @Test
+
+    void invalidSlotOnBoard() throws EmptySlotException, InvalidSlotException , SoldOutTilesException, InvalidPositionsException{
+        Board board = new Board(2);
+        Tile[] tiles = new Tile[1];
+
+        Coordinates[] positions = new Coordinates[1];
+        positions[0] = new Coordinates(5,5);
+        try {
+            tiles = board.removeCardFromBoard(positions);
+
+        } catch(InvalidSlotException e) {
+            System.out.println("InvalidSlotException");
+        }
+    }
+
+
+
+
+    @Test
+
+
+    void invalidPositionsInBoard() throws InvalidPositionsException, InvalidSlotException, EmptySlotException, SoldOutTilesException{
+        Board board = new Board(4);
+        Tile[] tiles;
+        Coordinates[] positions = new Coordinates[2];
+        positions[0] = new Coordinates(0,3);
+        positions[1] = new Coordinates(0,4);
+        try{
+            tiles = board.removeCardFromBoard(positions);
+        }
+         catch (InvalidPositionsException e){
+            System.out.println("invalidPositions");
+         }
+
+        System.out.println("validPositions");
+    }
 }

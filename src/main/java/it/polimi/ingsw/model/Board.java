@@ -20,7 +20,7 @@ public class Board {
      * this three boolean arrays are masks, used by the initializer and the refill method to, based on the number of players, know which tile slot has to be checked to fill or refill
      */
     private static final boolean[][] twoPlayersTiles =
-            {{false, false, false, false, false, false, false, false, false},
+            {       {false, false, false, false, false, false, false, false, false},
                     {false, false, false, true, true, false, false, false, false},
                     {false, false, false, true, true, true, false, false, false},
                     {false, false, true, true, true, true, true, true, false},
@@ -31,7 +31,7 @@ public class Board {
                     {false, false, false, false, false, false, false, false, false}};
 
     private static final boolean[][] threePlayersTiles =
-            {{false, false, false, true, false, false, false, false, false},
+            {       {false, false, false, true, false, false, false, false, false},
                     {false, false, false, true, true, false, false, false, false},
                     {false, false, true, true, true, true, true, false, false},
                     {false, false, true, true, true, true, true, true, true},
@@ -42,7 +42,7 @@ public class Board {
                     {false, false, false, false, false, true, false, false, false}};
 
     private static final boolean[][] fourPlayersTiles =
-            {{false, false, false, true, true, false, false, false, false},
+            {       {false, false, false, true, true, false, false, false, false},
                     {false, false, false, true, true, true, false, false, false},
                     {false, false, true, true, true, true, true, false, false},
                     {false, true, true, true, true, true, true, true, true},
@@ -128,18 +128,83 @@ public class Board {
      * @throws InvalidSlotException exception for managing the selection of a Tile with no free spaces around
      */
 
-    public Tile[] removeCardFromBoard(Coordinates[] positions) throws EmptySlotException,InvalidSlotException {
+    public Tile[] removeCardFromBoard(Coordinates[] positions) throws EmptySlotException,InvalidSlotException, InvalidPositionsException {
+
+
+        for(int i = 1 ; i< positions.length ; i++ ){
+
+                if(positions[i-1].getX() != positions[i].getX() && positions[i-1].getY() != positions[i].getY()) {
+                    throw new InvalidPositionsException();
+                }
+
+        }
+
+
+
+
         Tile[] selectedTile = new Tile[positions.length];
         for (int i = 0; i < positions.length; i++) {
             Coordinates position = positions[i];
             if (board[position.getX()][position.getY()].isFree()) throw new EmptySlotException();
 
-            if ((board[(position.getX())+1][position.getY()].isFree())||(board[(position.getX())-1][position.getY()].isFree())||(board[(position.getX())][position.getY()+1].isFree())||(board[(position.getX())][position.getY()-1].isFree())) {
-                selectedTile[i]=board[position.getX()][position.getY()].getAssignedTile();
+            //aggiunto da RAMIRO
+
+
+            if (position.getX() == 0) {
+
+                if (position.getY() == 0) {
+                    if ((board[(position.getX()) + 1][position.getY()].isFree()) || (board[(position.getX())][position.getY() + 1].isFree())) {
+                        selectedTile[i] = board[position.getX()][position.getY()].getAssignedTile();
+                    } else throw new InvalidSlotException();
+                } else {
+                    if ((board[(position.getX()) + 1][position.getY()].isFree()) || (board[(position.getX())][position.getY() + 1].isFree()) || (board[(position.getX())][position.getY() - 1].isFree())) {
+                        selectedTile[i] = board[position.getX()][position.getY()].getAssignedTile();
+                    } else throw new InvalidSlotException();
+                }
+            } else {
+                if (position.getY() == 0) {
+                    if ((board[(position.getX()) + 1][position.getY()].isFree()) || (board[(position.getX()) - 1][position.getY()].isFree()) || (board[(position.getX())][position.getY() + 1].isFree())) {
+                        selectedTile[i] = board[position.getX()][position.getY()].getAssignedTile();
+                    } else throw new InvalidSlotException();
+                }
             }
-            else throw new InvalidSlotException();
-            
+
+            //2nda parte
+
+            if (position.getX() == 8) {
+
+                if (position.getY() == 8) {
+                    if ((board[(position.getX()) - 1][position.getY()].isFree()) || (board[(position.getX())][position.getY() - 1].isFree())) {
+                        selectedTile[i] = board[position.getX()][position.getY()].getAssignedTile();
+                    } else throw new InvalidSlotException();
+                } else {
+                    if ((board[(position.getX()) - 1][position.getY()].isFree()) || (board[(position.getX())][position.getY() + 1].isFree()) || (board[(position.getX())][position.getY() - 1].isFree())) {
+                        selectedTile[i] = board[position.getX()][position.getY()].getAssignedTile();
+                    } else throw new InvalidSlotException();
+                }
+            } else {
+                if (position.getY() == 8) {
+                    if ((board[(position.getX()) + 1][position.getY()].isFree()) || (board[(position.getX()) - 1][position.getY()].isFree()) || (board[(position.getX())][position.getY() - 1].isFree())) {
+                        selectedTile[i] = board[position.getX()][position.getY()].getAssignedTile();
+                    } else throw new InvalidSlotException();
+                }
+            }
+
+
+            if (position.getX() != 0 && position.getY() != 0 && position.getX() != 8 && position.getX() != 8) {
+
+               //Prima con Nicola c'era solo questo
+
+                if ((board[(position.getX()) + 1][position.getY()].isFree()) || (board[(position.getX()) - 1][position.getY()].isFree()) || (board[(position.getX())][position.getY() + 1].isFree()) || (board[(position.getX())][position.getY() - 1].isFree())) {
+                    selectedTile[i] = board[position.getX()][position.getY()].getAssignedTile();
+                } else throw new InvalidSlotException();
+
+                //fine Nicola
+
+            }
         }
+        //fine codice modificato da Ramiro
+
 
         for (Coordinates position : positions) {
             board[position.getX()][position.getY()].removeAssignedTile();
