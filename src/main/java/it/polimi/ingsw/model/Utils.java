@@ -4,21 +4,18 @@ public class Utils {
 
     /**
      * method that compares the player's library and the personalCard, and returns the number of the completed objectives (0,...,6)
-     * @param library
-     * @param cardPersonalTarget
+     * the if statement is true if the library's TileSlot is NOT EMPTY and true if the tile in the TileSlot is the same color as the Personal Card (in position i)
+     * @param library Library of the player
+     * @param cardPersonalTarget his personal target card
      * @return completedGoals
      */
-
-
     public int checkPersonalTarget(Library library, CardPersonalTarget cardPersonalTarget){
         int completedGoals = 0;
 
 
         for(int i = 0; i < 6 ; i++)
 
-            // if(  (true if the library's TileSlot is NOT EMPTY) &&  (true if the tile in the TileSlot is the same color as the Personal Card (in position i)   )
-
-            if (!(library.getLibrary()[cardPersonalTarget.getPersonalCardTiles()[i].getCoordinates().getX()][cardPersonalTarget.getPersonalCardTiles()[i].getCoordinates().getY()].isFree()) && cardPersonalTarget.getPersonalCardTiles()[i].getColourTile() == library.getLibrary()[cardPersonalTarget.getPersonalCardTiles()[i].getCoordinates().getX()][cardPersonalTarget.getPersonalCardTiles()[i].getCoordinates().getY()].getAssignedTile().getColour()) {
+            if (!(library.getLibrary()[cardPersonalTarget.getPersonalCardTiles()[i].coordinates().getX()][cardPersonalTarget.getPersonalCardTiles()[i].coordinates().getY()].isFree()) && cardPersonalTarget.getPersonalCardTiles()[i].colourTile() == library.getLibrary()[cardPersonalTarget.getPersonalCardTiles()[i].coordinates().getX()][cardPersonalTarget.getPersonalCardTiles()[i].coordinates().getY()].getAssignedTile().getColour()) {
                 completedGoals++;
             }
 
@@ -26,7 +23,7 @@ public class Utils {
     }
 
 
-    public boolean checkCommonTarget(Library library,CardCommonTarget commonCard){
+    public boolean checkCommonTarget(Library library){
 
         return false;
     }
@@ -39,12 +36,12 @@ public class Utils {
         PersonalCardTile[] personalCardTiles = new PersonalCardTile[6];
         switch (personalType){
             case CARTA1 -> {
-                personalCardTiles[0]=new PersonalCardTile(new Coordinates(0,0),ColourTile.CATS); //CATS
-                personalCardTiles[1]=new PersonalCardTile(new Coordinates(4,1),ColourTile.GAMES);//giallo
-                personalCardTiles[2]=new PersonalCardTile(new Coordinates(3,2),ColourTile.TROPHIES);//azzurro
-                personalCardTiles[3]=new PersonalCardTile(new Coordinates(2,3),ColourTile.FRAMES);//FRAMES
-                personalCardTiles[4]=new PersonalCardTile(new Coordinates(1,4),ColourTile.PLANTS);//PLANTS
-                personalCardTiles[5]=new PersonalCardTile(new Coordinates(2,5),ColourTile.BOOKS);//bianco
+                personalCardTiles[0]=new PersonalCardTile(new Coordinates(0,0),ColourTile.CATS);
+                personalCardTiles[1]=new PersonalCardTile(new Coordinates(4,1),ColourTile.GAMES);
+                personalCardTiles[2]=new PersonalCardTile(new Coordinates(3,2),ColourTile.TROPHIES);
+                personalCardTiles[3]=new PersonalCardTile(new Coordinates(2,3),ColourTile.FRAMES);
+                personalCardTiles[4]=new PersonalCardTile(new Coordinates(1,4),ColourTile.PLANTS);
+                personalCardTiles[5]=new PersonalCardTile(new Coordinates(2,5),ColourTile.BOOKS);
             }
             case CARTA2 -> {
                 personalCardTiles[0]=new PersonalCardTile(new Coordinates(2,0),ColourTile.TROPHIES);
@@ -144,9 +141,27 @@ public class Utils {
 
         return personalCardTiles;
 
-
-
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

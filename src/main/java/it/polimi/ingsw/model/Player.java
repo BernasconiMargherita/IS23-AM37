@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model;
 
+/**
+ * Class that represent the Player
+ */
 public class Player {
     private final Utils utils;
     private final String nickname;
@@ -18,12 +21,18 @@ public class Player {
         this.utils=new Utils();
         this.score=0;
     }
+
+    public void setScore(int addedScore){
+        this.score += addedScore;
+    }
+
     public void addTilesInLibrary(int col,Tile[] selectedTile) throws NoSpaceInColumnException, FullColumnException {
         personalLibrary.addCardInColumn(col, selectedTile);
     }
 
+
     public boolean checkCommonTarget(){
-        utils.checkCommonTarget();
+        return utils.checkCommonTarget(personalLibrary);
     }
 
     /**
@@ -34,6 +43,8 @@ public class Player {
         int[] points = {0,1,2,4,6,9,12};
         this.score += points[utils.checkPersonalTarget(personalLibrary, cardPersonalTarget)];
     }
+
+
 }
 
 

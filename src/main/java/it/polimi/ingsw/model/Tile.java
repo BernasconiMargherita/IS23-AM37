@@ -4,7 +4,7 @@ public class Tile extends Card{
     /**
      * ColourTile colour : type of the tile (CATS OR BOOKS OR GAMES OR FRAMES OR TROPHIES OR PLANTS)
      */
-    private final ColourTile colour;
+    private ColourTile colour;
 
     /**
      * constructor of Tile : assigning the value of colour

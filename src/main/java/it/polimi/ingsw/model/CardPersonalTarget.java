@@ -17,6 +17,7 @@ public class CardPersonalTarget {
     public CardPersonalTarget(PersonalList personalType){
         Utils utils = new Utils();
         personalCardTiles = utils.assignPersonalCard(personalType);
+
     }
 
     /**

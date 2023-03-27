@@ -12,16 +12,14 @@ public class PersonalDeck {
     /**
      * int numOfPlayers : number of players in game
      */
-
     private int numOfPlayers;
 
     /**
-     * constructor of PersonalDeck the extracts the (numOfPlayers) personalCards
+     * constructor of PersonalDeck that extracts the (numOfPlayers) personalCards
      */
     public PersonalDeck(int numOfPlayers) {
 
         personalDeck = new ArrayList<>();
-
 
         Random random = new Random();
 
@@ -30,10 +28,13 @@ public class PersonalDeck {
         int[] numbers = new int[4];
         numbers[0] = random.nextInt(12) + 1;
         numbers[1] = random.nextInt(12) + 1;
+
         while (numbers[0] == numbers[1]) numbers[1] = random.nextInt(12) + 1;
         numbers[2] = random.nextInt(12) + 1;
+
         while (numbers[2] == numbers[0] || numbers[2] == numbers[1]) numbers[2] = random.nextInt(12) + 1;
         numbers[3] = random.nextInt(12) + 1;
+
         while (numbers[3] == numbers[0] || numbers[3] == numbers[1] || numbers[3] == numbers[2])
             numbers[3] = random.nextInt(12) + 1;
 
@@ -41,14 +42,11 @@ public class PersonalDeck {
         String[] personalList = {"CARTA1", "CARTA2", "CARTA3", "CARTA4", "CARTA5", "CARTA6", "CARTA7", "CARTA8", "CARTA9", "CARTA10", "CARTA11", "CARTA12"};
         personalDeck.add(new CardPersonalTarget(PersonalList.valueOf(personalList[numbers[0]])));
         personalDeck.add(new CardPersonalTarget(PersonalList.valueOf(personalList[numbers[1]])));
-        if(numOfPlayers>=3){
+        if(numOfPlayers>=3) {
             personalDeck.add(new CardPersonalTarget(PersonalList.valueOf(personalList[numbers[2]])));
-            if(numOfPlayers==4){
-                personalDeck.add(new CardPersonalTarget(PersonalList.valueOf(personalList[numbers[3]])));
-            }
+            if (numOfPlayers == 4) personalDeck.add(new CardPersonalTarget(PersonalList.valueOf(personalList[numbers[3]])));
+
         }
-
-
     }
 
     /**
