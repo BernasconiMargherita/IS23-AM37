@@ -5,15 +5,16 @@ public class Utils {
     /**
      * method that compares the player's library and the personalCard, and returns the number of the completed objectives (0,...,6)
      * the if statement is true if the library's TileSlot is NOT EMPTY and true if the tile in the TileSlot is the same color as the Personal Card (in position i)
-     * @param library Library of the player
+     *
+     * @param library            Library of the player
      * @param cardPersonalTarget his personal target card
      * @return completedGoals
      */
-    public int checkPersonalTarget(Library library, CardPersonalTarget cardPersonalTarget){
+    public int checkPersonalTarget(Library library, CardPersonalTarget cardPersonalTarget) {
         int completedGoals = 0;
 
 
-        for(int i = 0; i < 6 ; i++)
+        for (int i = 0; i < 6; i++)
 
             if (!(library.getLibrary()[cardPersonalTarget.getPersonalCardTiles()[i].coordinates().getX()][cardPersonalTarget.getPersonalCardTiles()[i].coordinates().getY()].isFree()) && cardPersonalTarget.getPersonalCardTiles()[i].colourTile() == library.getLibrary()[cardPersonalTarget.getPersonalCardTiles()[i].coordinates().getX()][cardPersonalTarget.getPersonalCardTiles()[i].coordinates().getY()].getAssignedTile().getColour()) {
                 completedGoals++;
@@ -21,11 +22,13 @@ public class Utils {
 
         return completedGoals;
     }
-    public boolean checkCommonTarget(Library library,CardCommonTarget commonCard) {
 
+    public boolean checkCommonTarget(Library library, CardCommonTarget commonCard) {
         TileSlot[][] libraryMatrix = library.getLibrary();
+
         switch (commonCard.getCommonType()) {
             case SIX_GROUPS_OF_TWO -> {
+                return false;
             }
             case FOUR_EQUALS_ANGLES -> {
                 if (libraryMatrix[0][5].getAssignedTile().getColour() == libraryMatrix[0][0].getAssignedTile().getColour())
@@ -37,17 +40,20 @@ public class Utils {
 
 
             case FOUR_GROUPS_OF_FOUR -> {
+                return false;
             }
             case TWO_GROUPS_IN_SQUARE -> {
+                return false;
             }
             case THREE_FULL_COLUMNS_WITH_MAX_THREE_DIFFERENT_TYPES -> {
+                return false;
             }
             case EIGHT_EQUALS -> {
                 int count = 0;
                 while (count < 8) {
                     for (int x = 0; x < 5; x++) {
                         for (int i = 0; i < 6; i++) {
-                            for (int j = 0; j > i; j++) {
+                            for (int j = 0; j < i; j++) {
                                 if (libraryMatrix[x][i].getAssignedTile().getColour() == libraryMatrix[x][j].getAssignedTile().getColour()) {
                                     count++;
                                 }
@@ -56,44 +62,44 @@ public class Utils {
                         }
                     }
                 }
-                if (count >= 8) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return true;
 
             }
 
             case FIVE_IN_DIGONAL -> {
-                Coordinates firstDiagonal=new Coordinates(0,0);
-                Coordinates secondDiagonal=new Coordinates(0,1);
-                Coordinates thirdDiagonal=new Coordinates(0,4);
-                Coordinates fourthDiagonal=new Coordinates(0,5);
-                return ((checkDiagonal(libraryMatrix,firstDiagonal,1,1))||(checkDiagonal(libraryMatrix,secondDiagonal,1,1))||(checkDiagonal(libraryMatrix,thirdDiagonal,-1,-1))||(checkDiagonal(libraryMatrix,fourthDiagonal,-1,-1)));
+                Coordinates firstDiagonal = new Coordinates(0, 0);
+                Coordinates secondDiagonal = new Coordinates(0, 1);
+                Coordinates thirdDiagonal = new Coordinates(0, 4);
+                Coordinates fourthDiagonal = new Coordinates(0, 5);
+                return ((checkDiagonal(libraryMatrix, firstDiagonal, 1, 1)) || (checkDiagonal(libraryMatrix, secondDiagonal, 1, 1)) || (checkDiagonal(libraryMatrix, thirdDiagonal, -1, -1)) || (checkDiagonal(libraryMatrix, fourthDiagonal, -1, -1)));
             }
             case FOUR_FULL_ROWS_WITH_MAX_THREE_DIFFERENT_TYPES -> {
+                return false;
             }
             case TWO_FULL_COLUMNS_ALL_DIFFERENT -> {
+                return false;
             }
             case TWO_FULL_ROWS_ALL_DIFFERENT -> {
+                return false;
             }
             case FIVE_IN_A_X -> {
-                int found=0;
-                while(found==0){
-                    for(int i=1; i<4; i++){
-                        for(int j=0; j<5; j++){
-                            if(libraryMatrix[i][j].getAssignedTile().getColour() == libraryMatrix[i+1][j+1].getAssignedTile().getColour()
-                                    && libraryMatrix[i][j].getAssignedTile().getColour() == libraryMatrix[i-1][i-1].getAssignedTile().getColour()
-                                    && libraryMatrix[i][j].getAssignedTile().getColour() == libraryMatrix[i-1][i+1].getAssignedTile().getColour()
-                                    && libraryMatrix[i][j].getAssignedTile().getColour() == libraryMatrix[i+1][i-1].getAssignedTile().getColour()){
-                                found=1;}
+                int found = 0;
+                while (found == 0) {
+                    for (int i = 1; i < 4; i++) {
+                        for (int j = 0; j < 5; j++) {
+                            if (libraryMatrix[i][j].getAssignedTile().getColour() == libraryMatrix[i + 1][j + 1].getAssignedTile().getColour()
+                                    && libraryMatrix[i][j].getAssignedTile().getColour() == libraryMatrix[i - 1][i - 1].getAssignedTile().getColour()
+                                    && libraryMatrix[i][j].getAssignedTile().getColour() == libraryMatrix[i - 1][i + 1].getAssignedTile().getColour()
+                                    && libraryMatrix[i][j].getAssignedTile().getColour() == libraryMatrix[i + 1][i - 1].getAssignedTile().getColour()) {
+                                found = 1;
+                            }
 
                         }
                     }
                 }
-                if(found==1) {
+                if (found == 1) {
                     return true;
-                }else{
+                } else {
                     return false;
 
 
@@ -102,12 +108,16 @@ public class Utils {
             }
 
             case IN_DESCENDING_ORDER -> {
+                return false;
             }
         }
+        return false;
     }
+
+
     /** così funziona solo per le righe**/
 
-    public boolean checkAllDifferent(TileSlot[][] libraryMatrix, int max) {
+    public boolean checkAllDifferent(TileSlot[][] libraryMatrix, String Type) {
         int found = 0;
         int h=0;
         int count=0;
