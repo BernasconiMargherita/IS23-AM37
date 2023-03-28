@@ -110,19 +110,26 @@ public class BoardTest {
     @Test
 
 
-    void invalidPositionsInBoard() throws InvalidPositionsException, InvalidSlotException, EmptySlotException, SoldOutTilesException{
+    void validPositionsInBoard() throws InvalidPositionsException, InvalidSlotException, EmptySlotException, SoldOutTilesException{
         Board board = new Board(4);
         Tile[] tiles;
         Coordinates[] positions = new Coordinates[2];
-        positions[0] = new Coordinates(0,3);
+        positions[0] = new Coordinates(1,8);
         positions[1] = new Coordinates(0,4);
         try{
             tiles = board.removeCardFromBoard(positions);
         }
-         catch (InvalidPositionsException e){
+         catch (InvalidSlotException e){
+            System.out.println("invalidSlot");
+         }
+
+         catch(EmptySlotException e){
+            System.out.println("emptySlot");
+         }
+
+         catch(InvalidPositionsException e){
             System.out.println("invalidPositions");
          }
 
-        System.out.println("validPositions");
     }
 }

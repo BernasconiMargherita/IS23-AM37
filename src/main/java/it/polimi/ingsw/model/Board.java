@@ -19,6 +19,9 @@ public class Board {
     /**
      * this three boolean arrays are masks, used by the initializer and the refill method to, based on the number of players, know which tile slot has to be checked to fill or refill
      */
+
+
+     private CardPersonalTarget[] personalDeck;
     private static final boolean[][] twoPlayersTiles =
             {       {false, false, false, false, false, false, false, false, false},
                     {false, false, false, true, true, false, false, false, false},
@@ -217,4 +220,6 @@ public class Board {
     public TileSlot[][] getBoard() {
         return this.board;
     }
+
+
 }

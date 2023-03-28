@@ -1,6 +1,9 @@
 package it.polimi.ingsw.model;
 
+import static it.polimi.ingsw.model.CommonList.IN_DESCENDING_ORDER;
+
 public class Utils {
+
 
     /**
      * method that compares the player's library and the personalCard, and returns the number of the completed objectives (0,...,6)
@@ -9,6 +12,8 @@ public class Utils {
      * @param cardPersonalTarget his personal target card
      * @return completedGoals
      */
+
+
     public int checkPersonalTarget(Library library, CardPersonalTarget cardPersonalTarget){
         int completedGoals = 0;
 
@@ -43,11 +48,12 @@ public class Utils {
             case THREE_FULL_COLUMNS_WITH_MAX_THREE_DIFFERENT_TYPES -> {
             }
             case EIGHT_EQUALS -> {
+
                 int count = 0;
-                while (count < 8) {
-                    for (int x = 0; x < 5; x++) {
-                        for (int i = 0; i < 6; i++) {
-                            for (int j = 0; j > i; j++) {
+
+                    for (int x = 0; x < 6; x++) {
+                        for (int i = 0; i <5 ; i++) {
+                            for (int j = i+1; j < 5; j++) {
                                 if (libraryMatrix[x][i].getAssignedTile().getColour() == libraryMatrix[x][j].getAssignedTile().getColour()) {
                                     count++;
                                 }
@@ -55,12 +61,8 @@ public class Utils {
                             }
                         }
                     }
-                }
-                if (count >= 8) {
-                    return true;
-                } else {
-                    return false;
-                }
+
+                return count >= 8;
 
             }
 
@@ -72,65 +74,91 @@ public class Utils {
                 return ((checkDiagonal(libraryMatrix,firstDiagonal,1,1))||(checkDiagonal(libraryMatrix,secondDiagonal,1,1))||(checkDiagonal(libraryMatrix,thirdDiagonal,-1,-1))||(checkDiagonal(libraryMatrix,fourthDiagonal,-1,-1)));
             }
             case FOUR_FULL_ROWS_WITH_MAX_THREE_DIFFERENT_TYPES -> {
+
             }
             case TWO_FULL_COLUMNS_ALL_DIFFERENT -> {
+                return checkAllDifferent(libraryMatrix, "COLUMN");
             }
             case TWO_FULL_ROWS_ALL_DIFFERENT -> {
+                return checkAllDifferent(libraryMatrix,"ROW");
             }
             case FIVE_IN_A_X -> {
-                int found=0;
-                while(found==0){
-                    for(int i=1; i<4; i++){
-                        for(int j=0; j<5; j++){
-                            if(libraryMatrix[i][j].getAssignedTile().getColour() == libraryMatrix[i+1][j+1].getAssignedTile().getColour()
-                                    && libraryMatrix[i][j].getAssignedTile().getColour() == libraryMatrix[i-1][i-1].getAssignedTile().getColour()
-                                    && libraryMatrix[i][j].getAssignedTile().getColour() == libraryMatrix[i-1][i+1].getAssignedTile().getColour()
-                                    && libraryMatrix[i][j].getAssignedTile().getColour() == libraryMatrix[i+1][i-1].getAssignedTile().getColour()){
-                                found=1;}
 
+                    for(int i=1; i<4; i++){
+                        for(int j=1; j<5; j++){
+                            if (libraryMatrix[i][j].getAssignedTile().getColour() == libraryMatrix[i + 1][j + 1].getAssignedTile().getColour()
+                                    && libraryMatrix[i][j].getAssignedTile().getColour() == libraryMatrix[i - 1][i - 1].getAssignedTile().getColour()
+                                    && libraryMatrix[i][j].getAssignedTile().getColour() == libraryMatrix[i - 1][i + 1].getAssignedTile().getColour()
+                                    && libraryMatrix[i][j].getAssignedTile().getColour() == libraryMatrix[i + 1][i - 1].getAssignedTile().getColour()) {
+                                return true;
+                            }
                         }
                     }
-                }
-                if(found==1) {
-                    return true;
-                }else{
+
+
                     return false;
 
 
                 }
-
-            }
-
             case IN_DESCENDING_ORDER -> {
             }
+
+            }
+
+
         }
-    }
+
     /** così funziona solo per le righe**/
 
-    public boolean checkAllDifferent(TileSlot[][] libraryMatrix, int max) {
-        int found = 0;
-        int h=0;
-        int count=0;
-        while (found != 2 || h<max) {
-            for (int i = 0; i < max; i++) {
-                for (int j = 1; j < i; j++) {
-                    if(libraryMatrix[h][i].getAssignedTile().getColour()!= libraryMatrix[h][j].getAssignedTile().getColour()){
-                        count++;
+    public boolean checkAllDifferent(TileSlot[][] libraryMatrix, String Type) {
+
+        if(Type.equals("ROW")){
+            int found = 0;
+            int h=0;
+            int count=0;
+            while (found != 2 && h<6) {
+                for (int i = 0; i < 5; i++) {
+                    for (int j = i; j < 5; j++) {
+                        if(libraryMatrix[h][i].getAssignedTile().getColour()!= libraryMatrix[h][j].getAssignedTile().getColour()){
+                            count++;
+                        }
+
                     }
-
                 }
-            }
-            if(count==max){
-                found++;
-            }
-            count=0;
-            h++;
+                if(count==5){
+                    found++;
+                }
+                count=0;
+                h++;
 
+            }
+            return found >= 2;
         }
-        if(found>=2) {
-            return true;
-        }else {
-            return false;
+
+
+
+
+
+        if(Type.equals("COLUMN")){
+            int found = 0;
+            int h=0;
+            int count=0;
+            while (found != 2 && h<6) {
+                for (int i = 0; i < 5; i++) {
+                    for (int j = i; j < 5; j++) {
+                        if(libraryMatrix[i][h].getAssignedTile().getColour()!= libraryMatrix[j][h].getAssignedTile().getColour()){
+                            count++;
+                        }
+
+                    }
+                }
+                if(count==6){
+                    found++;
+                }
+                count=0;
+                h++;
+            }
+            return found >= 2;
         }
     }
 
