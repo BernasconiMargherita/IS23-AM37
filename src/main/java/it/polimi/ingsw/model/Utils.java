@@ -97,93 +97,52 @@ public class Utils {
 
                 }
             case IN_DESCENDING_ORDER -> {
-                int col=1;
-                int count=0;
-                int j=0;
-                int min=0;
-                for(int i=0; i<6; j++){
-                    if(!(libraryMatrix[i][j].isFree())){
-                        min++;
-                    }
-                }
-                for(int j=1; j<5; j++){
-                    count=0;
-                    for(int i=0; i<6; i++){
-                        if(!(libraryMatrix[i][j].isFree())){
-                            count++;
-                        }
-                    } if(count== min+1){
-                        min= count;
-                    }
-                col++;}
-                if(col==5){
-                    return true;
-                } else {
-                    return false;
-                }
-                min=0;
-                count=0;
-                j=4;
-                for(int i=0; i<6;i++) {
-                    if (!(libraryMatrix[i][j].isFree())) {
-                        min++;
-                    }
-                }
-                for(j=3; j>=0; j--){
-                    count=0;
-                    for(int i=0; i<6; i++){
-                        if(!(libraryMatrix[i][j].isFree())){
-                            count++;
-                        }
-                    } if(count== min+1){
-                        min= count;
 
-                    }
-                    col++;
+            int first= libraryMatrix[0].length<libraryMatrix[4].length ? 0 : 4 ;
 
-
-            } if(col==5) {
-                    return true;
-                }else{
-                    return false;
+            if (first==0){
+                for (int i=0;i<5;i++){
+                    if((libraryMatrix[i].length)+1 != libraryMatrix[i+1].length) return false;
                 }
-
+            }
+            else {
+                for (int i = 4; i >= 0; i--){
+                    if((libraryMatrix[i].length)+1 != libraryMatrix[i-1].length) return false;
+                }
+            }
+            return true;
             }
 
-            }
+            default -> throw new IllegalStateException("Unexpected value: " + commonCard.getCommonType());
         }
+    }
 
 
     public boolean checkAllDifferent(TileSlot[][] libraryMatrix, String Type) {
-
-        if(Type.equals("ROW")){
+        if (Type.equals("ROW")) {
             int found = 0;
-            int h=0;
-            int count=0;
-            while (found != 2 && h<6) {
+            int h = 0;
+            int count = 0;
+            while (found != 2 && h < 6) {
                 for (int i = 0; i < 5; i++) {
-                    for (int j = i+1; j < 5; j++) {
-                        if(libraryMatrix[h][i].getAssignedTile().getColour()!= libraryMatrix[h][j].getAssignedTile().getColour()){
+                    for (int j = i + 1; j < 5; j++) {
+                        if (libraryMatrix[h][i].getAssignedTile().getColour() != libraryMatrix[h][j].getAssignedTile().getColour()) {
                             count++;
                         }
 
                     }
                 }
-                if(count==5){
+                if (count == 5) {
                     found++;
                 }
-                count=0;
+                count = 0;
                 h++;
 
             }
             return found >= 2;
         }
 
-
-
-
-
-        if(Type.equals("COLUMN")){
+        else if(Type.equals("COLUMN")){
             int found = 0;
             int h=0;
             int count=0;
@@ -204,6 +163,7 @@ public class Utils {
             }
             return found >= 2;
         }
+        return false;
     }
 
 
