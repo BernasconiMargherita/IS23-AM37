@@ -42,9 +42,36 @@ public class Utils {
             case TWO_GROUPS_IN_SQUARE -> {
             }
             case THREE_FULL_COLUMNS_WITH_MAX_THREE_DIFFERENT_TYPES -> {
+                int trovato = 0;
+                int count=0;
+                int diff=0;
+                for (int j = 0; j < 5; j++) {
+                    for (int i = 0; i < 6; i++) {
+                        if(!(libraryMatrix[i][j].isFree())){
+                            count++;
+                        }
+                    } if(count==6){
+                        for(int i=0; i<6; i++){
+                            for(int x=i+1; x<6; x++){
+                                if(libraryMatrix[i][j].getAssignedTile().getColour()!= libraryMatrix[x][j].getAssignedTile().getColour()){
+                                    diff++;
+                                }
+                            }
+                        }
+                        if(diff<=3){
+                            trovato++;
+                        }
+                    }
+                    count=0;
+
+                }
+                if(trovato==3){
+                    return true;
+                } else {
+                    return false;
+                }
             }
             case EIGHT_EQUALS -> {
-
                 int count = 0;
 
                     for (int x = 0; x < 6; x++) {
@@ -70,9 +97,36 @@ public class Utils {
                 return ((checkDiagonal(libraryMatrix,firstDiagonal,1,1))||(checkDiagonal(libraryMatrix,secondDiagonal,1,1))||(checkDiagonal(libraryMatrix,thirdDiagonal,-1,-1))||(checkDiagonal(libraryMatrix,fourthDiagonal,-1,-1)));
             }
             case FOUR_FULL_ROWS_WITH_MAX_THREE_DIFFERENT_TYPES -> {
+                int trovato = 0;
+                int count=0;
+                int diff=0;
+                for (int i= 0; i < 6; i++) {
+                    for (int j = 0; j < 5; j++) {
+                        if(!(libraryMatrix[i][j].isFree())){
+                            count++;
+                        }
+                    } if(count==5){
+                        for(int j=0; j<5; j++){
+                            for(int y=i+1; y<5; y++){
+                                if(libraryMatrix[i][j].getAssignedTile().getColour()!= libraryMatrix[i][y].getAssignedTile().getColour()){
+                                    diff++;
+                                }
+                            }
+                        }
+                        if(diff<=3){
+                            trovato++;
+                        }
+                    }
+                    count=0;
 
-            }
-            case TWO_FULL_COLUMNS_ALL_DIFFERENT -> {
+                }
+                if(trovato==4){
+                    return true;
+                } else {
+                    return false;
+                }
+
+}           case TWO_FULL_COLUMNS_ALL_DIFFERENT -> {
                 return checkAllDifferent(libraryMatrix, "COLUMN");
             }
             case TWO_FULL_ROWS_ALL_DIFFERENT -> {
