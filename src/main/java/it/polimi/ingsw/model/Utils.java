@@ -97,6 +97,57 @@ public class Utils {
 
                 }
             case IN_DESCENDING_ORDER -> {
+                int col=1;
+                int count=0;
+                int j=0;
+                int min=0;
+                for(int i=0; i<6; j++){
+                    if(!(libraryMatrix[i][j].isFree())){
+                        min++;
+                    }
+                }
+                for(int j=1; j<5; j++){
+                    count=0;
+                    for(int i=0; i<6; i++){
+                        if(!(libraryMatrix[i][j].isFree())){
+                            count++;
+                        }
+                    } if(count== min+1){
+                        min= count;
+                    }
+                col++;}
+                if(col==5){
+                    return true;
+                } else {
+                    return false;
+                }
+                min=0;
+                count=0;
+                j=4;
+                for(int i=0; i<6;i++) {
+                    if (!(libraryMatrix[i][j].isFree())) {
+                        min++;
+                    }
+                }
+                for(j=3; j>=0; j--){
+                    count=0;
+                    for(int i=0; i<6; i++){
+                        if(!(libraryMatrix[i][j].isFree())){
+                            count++;
+                        }
+                    } if(count== min+1){
+                        min= count;
+
+                    }
+                    col++;
+
+
+            } if(col==5) {
+                    return true;
+                }else{
+                    return false;
+                }
+
             }
 
             }
@@ -111,7 +162,7 @@ public class Utils {
             int count=0;
             while (found != 2 && h<6) {
                 for (int i = 0; i < 5; i++) {
-                    for (int j = i; j < 5; j++) {
+                    for (int j = i+1; j < 5; j++) {
                         if(libraryMatrix[h][i].getAssignedTile().getColour()!= libraryMatrix[h][j].getAssignedTile().getColour()){
                             count++;
                         }
