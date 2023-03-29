@@ -1,9 +1,6 @@
 package it.polimi.ingsw.model;
 
-import static it.polimi.ingsw.model.CommonList.IN_DESCENDING_ORDER;
-
 public class Utils {
-
 
     /**
      * method that compares the player's library and the personalCard, and returns the number of the completed objectives (0,...,6)
@@ -31,15 +28,14 @@ public class Utils {
         TileSlot[][] libraryMatrix = library.getLibrary();
         switch (commonCard.getCommonType()) {
             case SIX_GROUPS_OF_TWO -> {
+
             }
             case FOUR_EQUALS_ANGLES -> {
                 if (libraryMatrix[0][5].getAssignedTile().getColour() == libraryMatrix[0][0].getAssignedTile().getColour())
                     if ((libraryMatrix[0][5].getAssignedTile().getColour() == libraryMatrix[5][4].getAssignedTile().getColour()) && (libraryMatrix[0][4].getAssignedTile().getColour() == libraryMatrix[0][5].getAssignedTile().getColour())) {
                         return true;
-
                     }
             }
-
 
             case FOUR_GROUPS_OF_FOUR -> {
             }
@@ -104,11 +100,8 @@ public class Utils {
             }
 
             }
-
-
         }
 
-    /** così funziona solo per le righe**/
 
     public boolean checkAllDifferent(TileSlot[][] libraryMatrix, String Type) {
 
@@ -143,9 +136,9 @@ public class Utils {
             int found = 0;
             int h=0;
             int count=0;
-            while (found != 2 && h<6) {
-                for (int i = 0; i < 5; i++) {
-                    for (int j = i; j < 5; j++) {
+            while (found != 2 && h<5) {
+                for (int i = 0; i < 6; i++) {
+                    for (int j = i; j < 6; j++) {
                         if(libraryMatrix[i][h].getAssignedTile().getColour()!= libraryMatrix[j][h].getAssignedTile().getColour()){
                             count++;
                         }
@@ -173,11 +166,6 @@ public class Utils {
             }
         }
         return count == 5;
-    }
-
-    public boolean checkCommonTarget(Library library){
-
-        return false;
     }
 
     /**
