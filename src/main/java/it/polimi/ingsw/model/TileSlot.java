@@ -14,7 +14,7 @@ public class TileSlot {
     private boolean free;
 
     public TileSlot() {
-        this.assignedTile = new EmptySpace();
+        this.assignedTile = null;
         this.free = true;
     }
 
@@ -44,7 +44,7 @@ public class TileSlot {
      * method that reverts the TileSlot to empty if requested
      */
     public void removeAssignedTile(){
-        this.assignedTile=new EmptySpace();
+        this.assignedTile=null;
         this.free=true;
     }
 }

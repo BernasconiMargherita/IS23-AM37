@@ -5,19 +5,21 @@ package it.polimi.ingsw.model;
  * class that represents player's library
  */
 public class Library {
+    public static final int MAX_SHELF_ROWS = 6;
+    public static final int MAX_SHELF_COLUMNS = 5;
 
     /**
-     * Library is a 6x5 matrix
+     * Library is a MAX_SHELF_ROWSxMAX_SHELF_COLUMNS matrix
      */
-    private final TileSlot[][] library = new TileSlot[6][5];
+    private final TileSlot[][] library = new TileSlot[MAX_SHELF_ROWS][MAX_SHELF_COLUMNS];
 
 
     /**
      * initialize library with empty slots
      */
     public Library(){
-        for(int i=0; i<5;i++){
-            for(int j=0;j<5;j++){
+        for(int i=0; i<MAX_SHELF_ROWS;i++){
+            for(int j=0;j<MAX_SHELF_COLUMNS;j++){
                 library[i][j] = new TileSlot();
             }
         }
@@ -25,7 +27,7 @@ public class Library {
 
 
     /**
-     * method that adds up to three selected tiles in Library. It counts, in the given column, how many rows are full with method isFree (form TileSlot)
+     * method that adds up to three selected tiles in Library. It counts, in the given column, how many rows are full using the method isFree (form TileSlot)
      * Tiles are stored in array created by Board and put in the library with assignTile method
      * @throws FullColumnException if column is full
      * @throws NoSpaceInColumnException if there is not enough space for the selected numbers of tiles
@@ -35,17 +37,17 @@ public class Library {
 
         int row = 0;
         if (!library[row][col].isFree()) {
-            while (row < 6 && !library[row][col].isFree()) {
+            while (row < MAX_SHELF_ROWS && !library[row][col].isFree()) {
                 row++;
             }
 
 
-            if (row == 5) {
+            if (row == MAX_SHELF_COLUMNS) {
                 throw new FullColumnException();
             }
 
 
-            if (row > 5 - selectedTile.length) {
+            if (row > MAX_SHELF_COLUMNS - selectedTile.length) {
                 throw new NoSpaceInColumnException();
             }
 
@@ -69,11 +71,11 @@ public class Library {
 
         int count =0;
         for (int i= 0; i<4; i++){
-                if (!library[5][i].isFree()) {
+                if (!library[MAX_SHELF_COLUMNS][i].isFree()) {
                     count++;
                 }
 
-                if (count == 5){
+                if (count == MAX_SHELF_COLUMNS){
                     return true;
 
                 }
