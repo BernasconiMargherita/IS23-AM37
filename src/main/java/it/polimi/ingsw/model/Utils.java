@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model;
 
 public class Utils {
+    public static final int MAX_SHELF_COLUMNS = 5;
+    private static final int MAX_SHELF_ROWS = 6;
 
     /**
      * method that compares the player's library and the personalCard, and returns the number of the completed objectives (0,...,6)
@@ -15,7 +17,7 @@ public class Utils {
         int completedGoals = 0;
 
 
-        for(int i = 0; i < 6 ; i++)
+        for(int i = 0; i < MAX_SHELF_ROWS ; i++)
 
             if (!(library.getLibrary()[cardPersonalTarget.getPersonalCardTiles()[i].coordinates().getX()][cardPersonalTarget.getPersonalCardTiles()[i].coordinates().getY()].isFree()) && cardPersonalTarget.getPersonalCardTiles()[i].colourTile() == library.getLibrary()[cardPersonalTarget.getPersonalCardTiles()[i].coordinates().getX()][cardPersonalTarget.getPersonalCardTiles()[i].coordinates().getY()].getAssignedTile().getColour()) {
                 completedGoals++;
@@ -31,25 +33,28 @@ public class Utils {
 
             }
             case FOUR_EQUALS_ANGLES -> {
-                if (libraryMatrix[0][5].getAssignedTile().getColour() == libraryMatrix[0][0].getAssignedTile().getColour())
-                    if ((libraryMatrix[0][5].getAssignedTile().getColour() == libraryMatrix[5][4].getAssignedTile().getColour()) && (libraryMatrix[0][4].getAssignedTile().getColour() == libraryMatrix[0][5].getAssignedTile().getColour())) {
+                if (libraryMatrix[0][MAX_SHELF_COLUMNS].getAssignedTile().getColour() == libraryMatrix[0][0].getAssignedTile().getColour())
+                    if ((libraryMatrix[0][MAX_SHELF_COLUMNS].getAssignedTile().getColour() == libraryMatrix[MAX_SHELF_COLUMNS][4].getAssignedTile().getColour()) && (libraryMatrix[0][4].getAssignedTile().getColour() == libraryMatrix[0][MAX_SHELF_COLUMNS].getAssignedTile().getColour())) {
                         return true;
                     }
             }
 
             case FOUR_GROUPS_OF_FOUR -> {
+
             }
             case TWO_GROUPS_IN_SQUARE -> {
+
             }
             case THREE_FULL_COLUMNS_WITH_MAX_THREE_DIFFERENT_TYPES -> {
+
             }
             case EIGHT_EQUALS -> {
 
                 int count = 0;
 
-                    for (int x = 0; x < 6; x++) {
-                        for (int i = 0; i <5 ; i++) {
-                            for (int j = i+1; j < 5; j++) {
+                    for (int x = 0; x < MAX_SHELF_ROWS; x++) {
+                        for (int i = 0; i <MAX_SHELF_COLUMNS ; i++) {
+                            for (int j = i+1; j < MAX_SHELF_COLUMNS; j++) {
                                 if (libraryMatrix[x][i].getAssignedTile().getColour() == libraryMatrix[x][j].getAssignedTile().getColour()) {
                                     count++;
                                 }
@@ -81,7 +86,7 @@ public class Utils {
             case FIVE_IN_A_X -> {
 
                     for(int i=1; i<4; i++){
-                        for(int j=1; j<5; j++){
+                        for(int j=1; j<MAX_SHELF_COLUMNS; j++){
                             if (libraryMatrix[i][j].getAssignedTile().getColour() == libraryMatrix[i + 1][j + 1].getAssignedTile().getColour()
                                     && libraryMatrix[i][j].getAssignedTile().getColour() == libraryMatrix[i - 1][i - 1].getAssignedTile().getColour()
                                     && libraryMatrix[i][j].getAssignedTile().getColour() == libraryMatrix[i - 1][i + 1].getAssignedTile().getColour()
@@ -101,7 +106,7 @@ public class Utils {
             int first= libraryMatrix[0].length<libraryMatrix[4].length ? 0 : 4 ;
 
             if (first==0){
-                for (int i=0;i<5;i++){
+                for (int i=0;i<MAX_SHELF_COLUMNS;i++){
                     if((libraryMatrix[i].length)+1 != libraryMatrix[i+1].length) return false;
                 }
             }
@@ -115,6 +120,7 @@ public class Utils {
 
             default -> throw new IllegalStateException("Unexpected value: " + commonCard.getCommonType());
         }
+        return false;
     }
 
 
@@ -123,16 +129,16 @@ public class Utils {
             int found = 0;
             int h = 0;
             int count = 0;
-            while (found != 2 && h < 6) {
-                for (int i = 0; i < 5; i++) {
-                    for (int j = i + 1; j < 5; j++) {
+            while (found != 2 && h < MAX_SHELF_ROWS) {
+                for (int i = 0; i < MAX_SHELF_COLUMNS; i++) {
+                    for (int j = i + 1; j < MAX_SHELF_COLUMNS; j++) {
                         if (libraryMatrix[h][i].getAssignedTile().getColour() != libraryMatrix[h][j].getAssignedTile().getColour()) {
                             count++;
                         }
 
                     }
                 }
-                if (count == 5) {
+                if (count == MAX_SHELF_COLUMNS) {
                     found++;
                 }
                 count = 0;
@@ -146,16 +152,16 @@ public class Utils {
             int found = 0;
             int h=0;
             int count=0;
-            while (found != 2 && h<5) {
-                for (int i = 0; i < 6; i++) {
-                    for (int j = i; j < 6; j++) {
+            while (found != 2 && h<MAX_SHELF_COLUMNS) {
+                for (int i = 0; i < MAX_SHELF_ROWS; i++) {
+                    for (int j = i; j < MAX_SHELF_ROWS; j++) {
                         if(libraryMatrix[i][h].getAssignedTile().getColour()!= libraryMatrix[j][h].getAssignedTile().getColour()){
                             count++;
                         }
 
                     }
                 }
-                if(count==6){
+                if(count==MAX_SHELF_ROWS){
                     found++;
                 }
                 count=0;
@@ -170,13 +176,13 @@ public class Utils {
     public boolean checkDiagonal(TileSlot[][] libraryMatrix, Coordinates coordinates, int k, int h){
         int j = coordinates.getY();
         int count = 0;
-        for(int i= coordinates.getX(); i<5; i+=k){
+        for(int i= coordinates.getX(); i<MAX_SHELF_COLUMNS; i+=k){
             if (libraryMatrix[i][j].getAssignedTile().getColour() == libraryMatrix[i+k][j+h].getAssignedTile().getColour()) {
                 j+=k;
                 count++;
             }
         }
-        return count == 5;
+        return count == MAX_SHELF_COLUMNS;
     }
 
     /**

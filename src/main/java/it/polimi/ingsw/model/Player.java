@@ -4,21 +4,23 @@ package it.polimi.ingsw.model;
  * Class that represent the Player
  */
 public class Player {
-    private final Utils utils;
+
     private final String nickname;
     private final Library personalLibrary;
     private final CardPersonalTarget cardPersonalTarget;
     private int score;
 
+    private final boolean isFirstPlayer;
+
     public String getNickname() {
         return nickname;
     }
 
-    public Player(String nickname,CardPersonalTarget cardPersonalTarget){
+    public Player(String nickname, CardPersonalTarget cardPersonalTarget, boolean isFirstPlayer){
         this.nickname=nickname;
         this.cardPersonalTarget=cardPersonalTarget;
+        this.isFirstPlayer = isFirstPlayer;
         this.personalLibrary=new Library();
-        this.utils=new Utils();
         this.score=0;
     }
 
@@ -32,7 +34,7 @@ public class Player {
 
 
     public boolean checkCommonTarget(){
-        return utils.checkCommonTarget(personalLibrary);
+        return false;
     }
 
     /**
@@ -45,7 +47,9 @@ public class Player {
     }
 
 
-
+    public boolean isFirstPlayer() {
+        return isFirstPlayer;
+    }
 }
 
 
