@@ -18,7 +18,7 @@ public class Game {
 
     public Game(ArrayList<Player> playerArray) throws SoldOutTilesException {
         this.players= new ArrayList<>();
-        this.board = new Board(playerArray.size());
+        this.board = null;
         this.personalDeck = new PersonalDeck(playerArray.size());
         this.gameState = GameState.WAITING_PLAYERS;
         this.isLastTurn = false;

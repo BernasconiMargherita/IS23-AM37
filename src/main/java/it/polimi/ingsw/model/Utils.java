@@ -17,7 +17,7 @@ public class Utils {
         int completedGoals = 0;
 
 
-        for(int i = 0; i < MAX_SHELF_ROWS ; i++)
+        for(int i = 0; i < 6 ; i++)
 
             if (!(library.getLibrary()[cardPersonalTarget.getPersonalCardTiles()[i].coordinates().getX()][cardPersonalTarget.getPersonalCardTiles()[i].coordinates().getY()].isFree()) && cardPersonalTarget.getPersonalCardTiles()[i].colourTile() == library.getLibrary()[cardPersonalTarget.getPersonalCardTiles()[i].coordinates().getX()][cardPersonalTarget.getPersonalCardTiles()[i].coordinates().getY()].getAssignedTile().getColour()) {
                 completedGoals++;
@@ -33,10 +33,10 @@ public class Utils {
 
             }
             case FOUR_EQUALS_ANGLES -> {
-                if (libraryMatrix[0][MAX_SHELF_COLUMNS].getAssignedTile().getColour() == libraryMatrix[0][0].getAssignedTile().getColour())
-                    if ((libraryMatrix[0][MAX_SHELF_COLUMNS].getAssignedTile().getColour() == libraryMatrix[MAX_SHELF_COLUMNS][4].getAssignedTile().getColour()) && (libraryMatrix[0][4].getAssignedTile().getColour() == libraryMatrix[0][MAX_SHELF_COLUMNS].getAssignedTile().getColour())) {
-                        return true;
-                    }
+                if ((!libraryMatrix[0][0].isFree()) && (!libraryMatrix[MAX_SHELF_ROWS - 1][0].isFree()) && (!libraryMatrix[MAX_SHELF_ROWS - 1][MAX_SHELF_COLUMNS - 1].isFree()) && (!libraryMatrix[0][MAX_SHELF_COLUMNS - 1].isFree())) {
+                    return (libraryMatrix[0][0].getAssignedTile().getColour() == libraryMatrix[MAX_SHELF_ROWS - 1][0].getAssignedTile().getColour()) && (libraryMatrix[0][MAX_SHELF_COLUMNS - 1].getAssignedTile().getColour() == libraryMatrix[MAX_SHELF_ROWS - 1][MAX_SHELF_COLUMNS - 1].getAssignedTile().getColour())
+                            && (libraryMatrix[0][MAX_SHELF_COLUMNS - 1].getAssignedTile().getColour() == libraryMatrix[MAX_SHELF_ROWS - 1][0].getAssignedTile().getColour());
+                }
             }
 
             case FOUR_GROUPS_OF_FOUR -> {
@@ -45,16 +45,13 @@ public class Utils {
             }
             case THREE_FULL_COLUMNS_WITH_MAX_THREE_DIFFERENT_TYPES -> {
                 int trovato = 0;
-                int count=0;
                 int diff=0;
-                for (int j = 0; j < 5; j++) {
-                    for (int i = 0; i < 6; i++) {
-                        if(!(libraryMatrix[i][j].isFree())){
-                            count++;
-                        }
-                    } if(count==6){
-                        for(int i=0; i<6; i++){
-                            for(int x=i+1; x<6; x++){
+                for (int j = 0; j < MAX_SHELF_COLUMNS; j++) {
+
+                    if(libraryMatrix[j].length==6){
+
+                        for(int i=0; i<MAX_SHELF_ROWS; i++){
+                            for(int x=i+1; x<MAX_SHELF_ROWS; x++){
                                 if(libraryMatrix[i][j].getAssignedTile().getColour()!= libraryMatrix[x][j].getAssignedTile().getColour()){
                                     diff++;
                                 }
@@ -64,14 +61,8 @@ public class Utils {
                             trovato++;
                         }
                     }
-                    count=0;
-
                 }
-                if(trovato==3){
-                    return true;
-                } else {
-                    return false;
-                }
+                return trovato == 3;
             }
             case EIGHT_EQUALS -> {
                 int count = 0;
@@ -122,11 +113,7 @@ public class Utils {
                     count=0;
 
                 }
-                if(trovato==4){
-                    return true;
-                } else {
-                    return false;
-                }
+                return trovato == 4;
 
 }           case TWO_FULL_COLUMNS_ALL_DIFFERENT -> {
                 return checkAllDifferent(libraryMatrix, "COLUMN");
@@ -174,6 +161,8 @@ public class Utils {
         return false;
     }
 
+//Idea:rendere più generica la funzione per utilizzarla anche per FOUR_FULL_ROWS_WITH_MAX_THREE_DIFFERENT_TYPES e THREE_FULL_COLUMNS_WITH_MAX_THREE_DIFFERENT_TYPES
+// (per esempio potrebbe ritornare il numero di tessere diverse, e poi il controllo specifico sarebbe nei vari case)
 
     public boolean checkAllDifferent(TileSlot[][] libraryMatrix, String Type) {
         if (Type.equals("ROW")) {
