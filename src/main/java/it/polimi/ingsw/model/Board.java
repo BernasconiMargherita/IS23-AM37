@@ -11,7 +11,6 @@ public class Board {
      */
     private final TileSlot[][] board;
 
-    private final int numOfPlayers;
     /**
      * The token that begins the final turn
      */
@@ -20,12 +19,12 @@ public class Board {
      * The bag that contains all the tiles of the game, used by the board to initialize and refill itself
      */
     private final TileDeck bag;
+
+    private final boolean[][] boardMask;
     /**
      * this three boolean arrays are masks, used by the initializer and the refill method to, based on the number of players, know which tile slot has to be checked to fill or refill
      */
 
-
-     private CardPersonalTarget[] personalDeck;
     private static final boolean[][] twoPlayersTiles =
             {       {false,false,false, false, false, false, false, false, false, false, false},
                     {false,false, false, false, false, false, false, false, false, false,false},
@@ -73,96 +72,30 @@ public class Board {
      */
     Board(int numOfPlayers) throws SoldOutTilesException {
         this.bag = new TileDeck();
-
-        this.numOfPlayers=numOfPlayers;
-
         CommonDeck commonDeck = new CommonDeck(numOfPlayers);
-
         this.board = new TileSlot[11][11];
+        this.boardMask = choseMask(numOfPlayers);
 
         for (int i=0;i<11;i++){
-
             for (int j=0;j<11;j++){
                 board[i][j]= new TileSlot();
             }
-
         }
-
-
-
-        if (numOfPlayers == 2) {
-
             for (int j = 0; j < 11; j++) {
-
                 for (int k = 0; k < 11; k++) {
-
-                    if (twoPlayersTiles[j][k]) board[j][k].assignTile(bag.randomDraw());
+                    if (boardMask[j][k]) board[j][k].assignTile(bag.randomDraw());
                 }
             }
-        }
-
-
-
-        if (numOfPlayers == 3) {
-
-            for (int j = 0; j < 11; j++) {
-
-                for (int k = 0; k < 11; k++) {
-
-                    if (threePlayersTiles[j][k]) board[j][k].assignTile(bag.randomDraw());
-
-                }
-            }
-        }
-
-
-        if (numOfPlayers == 4) {
-
-            for (int j = 0; j < 11; j++) {
-
-                for (int k = 0; k < 11; k++) {
-
-                    if (fourPlayersTiles[j][k]) board[j][k].assignTile(bag.randomDraw());
-
-                }
-
-            }
-
-        }
-
     }
 
     /**
      * method for refilling the board if necessary,leaving the already filled TileSlots untouched
      */
     public void refillBoard() throws SoldOutTilesException {
-
-        if (numOfPlayers == 2) {
-
-            for (int j = 0; j <11; j++) {
-
-                for (int k = 0; k <11; k++) {
-
-                    if ((twoPlayersTiles[j][k]) && (board[j][k].isFree())) board[j][k].assignTile(bag.randomDraw());
-
-                }
-
-            }
-
-        }
-
-
-        if (numOfPlayers == 3) {
-            for (int j = 0; j <11; j++) {
-                for (int k = 0; k <11; k++) {
-                    if ((threePlayersTiles[j][k]) && (board[j][k].isFree())) board[j][k].assignTile(bag.randomDraw());
-                }
-            }
-        }
-        if (numOfPlayers == 4) {
-            for (int j = 0; j <11; j++) {
-                for (int k = 0; k <11; k++) {
-                    if ((fourPlayersTiles[j][k]) && (board[j][k].isFree())) board[j][k].assignTile(bag.randomDraw());
+        if (refillIsNecessary()) {
+            for (int j = 0; j < 11; j++) {
+                for (int k = 0; k < 11; k++) {
+                    if ((boardMask[j][k]) && (board[j][k].isFree())) board[j][k].assignTile(bag.randomDraw());
                 }
             }
         }
@@ -190,8 +123,7 @@ public class Board {
             Coordinates position = positions[i];
             
             if (board[position.getX()][position.getY()].isFree()) throw new EmptySlotException();
-            if (((numOfPlayers==2)&&(!twoPlayersTiles[position.getX()][position.getY()]))||((numOfPlayers==3)&&(!threePlayersTiles[position.getX()][position.getY()]))||((numOfPlayers==4)&&(!fourPlayersTiles[position.getX()][position.getY()])))
-                throw new InvalidSlotException();
+            if (!boardMask[position.getX()][position.getY()]) throw new InvalidSlotException();
             
             if ((board[(position.getX()) + 1][position.getY()].isFree()) || (board[(position.getX()) - 1][position.getY()].isFree()) || (board[(position.getX())][position.getY() + 1].isFree()) || (board[(position.getX())][position.getY() - 1].isFree())) {
                     selectedTile[i] = board[position.getX()][position.getY()].getAssignedTile();
@@ -203,10 +135,29 @@ public class Board {
             return selectedTile;
     }
 
+    /**
+     * method to see if on the board are only tiles with free spaces near them
+     */
+    public boolean refillIsNecessary(){
+        for (int i=0;i<11;i++){
+            for (int j=0;j<11;j++){
+                if ((boardMask[i][j])&&((!(board[i+1][j].isFree()))||(!(board[i-1][j].isFree()))||(!(board[i][j+1].isFree()))||(!(board[i][j-1].isFree())))) return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * method to choose a mask for the board based on the number of players
+     */
+    private boolean[][] choseMask(int numOfPlayers){
+        if (numOfPlayers==2) return twoPlayersTiles;
+        else if (numOfPlayers==3) return threePlayersTiles;
+        else if (numOfPlayers==4) return fourPlayersTiles;
+        throw new RuntimeException("Too much players"); //??
+    }
 
     public TileSlot[][] getBoard() {
         return this.board;
     }
-
-
 }

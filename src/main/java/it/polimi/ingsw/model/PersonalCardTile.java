@@ -3,15 +3,11 @@ package it.polimi.ingsw.model;
 import java.util.Objects;
 
 /**
- *
+ * @param coordinates identify the position in the library
+ * @param colourTile  identify the colour of the tile in a specific position
  */
 public record PersonalCardTile(Coordinates coordinates, ColourTile colourTile) {
-    /**
-     * @param coordinates identify the position in the library
-     * @param colourTile  identify the colour of the tile in a specific position
-     */
-    public PersonalCardTile {
-    }
+
 
     @Override
     public boolean equals(Object obj) {

@@ -25,7 +25,7 @@ public class Library {
 
 
     /**
-     * method that adds up to three selected tiles in Library. It counts, in the given column, how many rows are full with method isFree (form TileSlot)
+     * method that adds up to three selected tiles in Library. It counts, in the given column, how many rows are full using the method isFree (form TileSlot)
      * Tiles are stored in array created by Board and put in the library with assignTile method
      * @throws FullColumnException if column is full
      * @throws NoSpaceInColumnException if there is not enough space for the selected numbers of tiles

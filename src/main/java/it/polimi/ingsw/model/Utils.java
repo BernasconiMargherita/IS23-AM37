@@ -1,9 +1,6 @@
 package it.polimi.ingsw.model;
 
-import static it.polimi.ingsw.model.CommonList.IN_DESCENDING_ORDER;
-
 public class Utils {
-
 
     /**
      * method that compares the player's library and the personalCard, and returns the number of the completed objectives (0,...,6)
@@ -31,24 +28,50 @@ public class Utils {
         TileSlot[][] libraryMatrix = library.getLibrary();
         switch (commonCard.getCommonType()) {
             case SIX_GROUPS_OF_TWO -> {
+
             }
             case FOUR_EQUALS_ANGLES -> {
                 if (libraryMatrix[0][5].getAssignedTile().getColour() == libraryMatrix[0][0].getAssignedTile().getColour())
                     if ((libraryMatrix[0][5].getAssignedTile().getColour() == libraryMatrix[5][4].getAssignedTile().getColour()) && (libraryMatrix[0][4].getAssignedTile().getColour() == libraryMatrix[0][5].getAssignedTile().getColour())) {
                         return true;
-
                     }
             }
-
 
             case FOUR_GROUPS_OF_FOUR -> {
             }
             case TWO_GROUPS_IN_SQUARE -> {
             }
             case THREE_FULL_COLUMNS_WITH_MAX_THREE_DIFFERENT_TYPES -> {
+                int trovato = 0;
+                int count=0;
+                int diff=0;
+                for (int j = 0; j < 5; j++) {
+                    for (int i = 0; i < 6; i++) {
+                        if(!(libraryMatrix[i][j].isFree())){
+                            count++;
+                        }
+                    } if(count==6){
+                        for(int i=0; i<6; i++){
+                            for(int x=i+1; x<6; x++){
+                                if(libraryMatrix[i][j].getAssignedTile().getColour()!= libraryMatrix[x][j].getAssignedTile().getColour()){
+                                    diff++;
+                                }
+                            }
+                        }
+                        if(diff<=3){
+                            trovato++;
+                        }
+                    }
+                    count=0;
+
+                }
+                if(trovato==3){
+                    return true;
+                } else {
+                    return false;
+                }
             }
             case EIGHT_EQUALS -> {
-
                 int count = 0;
 
                     for (int x = 0; x < 6; x++) {
@@ -74,9 +97,36 @@ public class Utils {
                 return ((checkDiagonal(libraryMatrix,firstDiagonal,1,1))||(checkDiagonal(libraryMatrix,secondDiagonal,1,1))||(checkDiagonal(libraryMatrix,thirdDiagonal,-1,-1))||(checkDiagonal(libraryMatrix,fourthDiagonal,-1,-1)));
             }
             case FOUR_FULL_ROWS_WITH_MAX_THREE_DIFFERENT_TYPES -> {
+                int trovato = 0;
+                int count=0;
+                int diff=0;
+                for (int i= 0; i < 6; i++) {
+                    for (int j = 0; j < 5; j++) {
+                        if(!(libraryMatrix[i][j].isFree())){
+                            count++;
+                        }
+                    } if(count==5){
+                        for(int j=0; j<5; j++){
+                            for(int y=i+1; y<5; y++){
+                                if(libraryMatrix[i][j].getAssignedTile().getColour()!= libraryMatrix[i][y].getAssignedTile().getColour()){
+                                    diff++;
+                                }
+                            }
+                        }
+                        if(diff<=3){
+                            trovato++;
+                        }
+                    }
+                    count=0;
 
-            }
-            case TWO_FULL_COLUMNS_ALL_DIFFERENT -> {
+                }
+                if(trovato==4){
+                    return true;
+                } else {
+                    return false;
+                }
+
+}           case TWO_FULL_COLUMNS_ALL_DIFFERENT -> {
                 return checkAllDifferent(libraryMatrix, "COLUMN");
             }
             case TWO_FULL_ROWS_ALL_DIFFERENT -> {
@@ -101,51 +151,58 @@ public class Utils {
 
                 }
             case IN_DESCENDING_ORDER -> {
+
+            int first= libraryMatrix[0].length<libraryMatrix[4].length ? 0 : 4 ;
+
+            if (first==0){
+                for (int i=0;i<5;i++){
+                    if((libraryMatrix[i].length)+1 != libraryMatrix[i+1].length) return false;
+                }
+            }
+            else {
+                for (int i = 4; i >= 0; i--){
+                    if((libraryMatrix[i].length)+1 != libraryMatrix[i-1].length) return false;
+                }
+            }
+            return true;
             }
 
-            }
-
-
+            default -> throw new IllegalStateException("Unexpected value: " + commonCard.getCommonType());
         }
-
+    }
 
 
     public boolean checkAllDifferent(TileSlot[][] libraryMatrix, String Type) {
-
-        int found = 0;
-        int h=0;
-        int count=0;
-
-        if(Type.equals("ROW")){
-
-            while (found != 2 && h<6) {
+        if (Type.equals("ROW")) {
+            int found = 0;
+            int h = 0;
+            int count = 0;
+            while (found != 2 && h < 6) {
                 for (int i = 0; i < 5; i++) {
                     for (int j = i + 1; j < 5; j++) {
-                        if(libraryMatrix[h][i].getAssignedTile().getColour()!= libraryMatrix[h][j].getAssignedTile().getColour()){
+                        if (libraryMatrix[h][i].getAssignedTile().getColour() != libraryMatrix[h][j].getAssignedTile().getColour()) {
                             count++;
                         }
 
                     }
                 }
-                if(count==5){
+                if (count == 5) {
                     found++;
                 }
-                count=0;
+                count = 0;
                 h++;
 
             }
             return found >= 2;
         }
 
-
-
-
-
-        if(Type.equals("COLUMN")){
-
-            while (found != 2 && h<6) {
-                for (int i = 0; i < 5; i++) {
-                    for (int j = i; j < 5; j++) {
+        else if(Type.equals("COLUMN")){
+            int found = 0;
+            int h=0;
+            int count=0;
+            while (found != 2 && h<5) {
+                for (int i = 0; i < 6; i++) {
+                    for (int j = i; j < 6; j++) {
                         if(libraryMatrix[i][h].getAssignedTile().getColour()!= libraryMatrix[j][h].getAssignedTile().getColour()){
                             count++;
                         }
@@ -160,7 +217,6 @@ public class Utils {
             }
             return found >= 2;
         }
-
         return false;
     }
 
@@ -176,8 +232,6 @@ public class Utils {
         }
         return count == 5;
     }
-
-
 
     /**
      * Method for link a personal card to an array of Coordinates and TileColour,used for check later if the player has reached his personal target
