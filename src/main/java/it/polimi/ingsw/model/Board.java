@@ -73,36 +73,61 @@ public class Board {
      */
     Board(int numOfPlayers) throws SoldOutTilesException {
         this.bag = new TileDeck();
+
         this.numOfPlayers=numOfPlayers;
+
         CommonDeck commonDeck = new CommonDeck(numOfPlayers);
+
         this.board = new TileSlot[11][11];
 
         for (int i=0;i<11;i++){
+
             for (int j=0;j<11;j++){
                 board[i][j]= new TileSlot();
             }
+
         }
 
+
+
         if (numOfPlayers == 2) {
+
             for (int j = 0; j < 11; j++) {
+
                 for (int k = 0; k < 11; k++) {
+
                     if (twoPlayersTiles[j][k]) board[j][k].assignTile(bag.randomDraw());
                 }
             }
         }
+
+
+
         if (numOfPlayers == 3) {
+
             for (int j = 0; j < 11; j++) {
+
                 for (int k = 0; k < 11; k++) {
+
                     if (threePlayersTiles[j][k]) board[j][k].assignTile(bag.randomDraw());
+
                 }
             }
         }
+
+
         if (numOfPlayers == 4) {
+
             for (int j = 0; j < 11; j++) {
+
                 for (int k = 0; k < 11; k++) {
+
                     if (fourPlayersTiles[j][k]) board[j][k].assignTile(bag.randomDraw());
+
                 }
+
             }
+
         }
 
     }
@@ -113,12 +138,20 @@ public class Board {
     public void refillBoard() throws SoldOutTilesException {
 
         if (numOfPlayers == 2) {
+
             for (int j = 0; j <11; j++) {
+
                 for (int k = 0; k <11; k++) {
+
                     if ((twoPlayersTiles[j][k]) && (board[j][k].isFree())) board[j][k].assignTile(bag.randomDraw());
+
                 }
+
             }
+
         }
+
+
         if (numOfPlayers == 3) {
             for (int j = 0; j <11; j++) {
                 for (int k = 0; k <11; k++) {

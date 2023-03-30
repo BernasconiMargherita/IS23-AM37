@@ -108,17 +108,19 @@ public class Utils {
 
         }
 
-    /** così funziona solo per le righe**/
+
 
     public boolean checkAllDifferent(TileSlot[][] libraryMatrix, String Type) {
 
+        int found = 0;
+        int h=0;
+        int count=0;
+
         if(Type.equals("ROW")){
-            int found = 0;
-            int h=0;
-            int count=0;
+
             while (found != 2 && h<6) {
                 for (int i = 0; i < 5; i++) {
-                    for (int j = i; j < 5; j++) {
+                    for (int j = i + 1; j < 5; j++) {
                         if(libraryMatrix[h][i].getAssignedTile().getColour()!= libraryMatrix[h][j].getAssignedTile().getColour()){
                             count++;
                         }
@@ -140,9 +142,7 @@ public class Utils {
 
 
         if(Type.equals("COLUMN")){
-            int found = 0;
-            int h=0;
-            int count=0;
+
             while (found != 2 && h<6) {
                 for (int i = 0; i < 5; i++) {
                     for (int j = i; j < 5; j++) {
@@ -160,6 +160,8 @@ public class Utils {
             }
             return found >= 2;
         }
+
+        return false;
     }
 
 
@@ -175,10 +177,7 @@ public class Utils {
         return count == 5;
     }
 
-    public boolean checkCommonTarget(Library library){
 
-        return false;
-    }
 
     /**
      * Method for link a personal card to an array of Coordinates and TileColour,used for check later if the player has reached his personal target
