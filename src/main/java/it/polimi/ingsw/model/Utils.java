@@ -37,11 +37,11 @@ public class Utils {
                 int found=0;
                 for(int i=0; i<5; i++){
                     for(int j=0; j<4; j++){
-                        if(checkGroupsOfTwo(copy[i][j],copy[i][j+1]){
+                        if(checkGroupsOfTwo(copy[i][j],copy[i][j+1])){
                             found++;
                             if(found==6) return true;
                         }
-                        if (checkGroupsOfTwo(copy[i][j],copy[i+1][j]){
+                        if (checkGroupsOfTwo(copy[i][j],copy[i+1][j])){
                             found++;
                             if(found==6) return true;
                         }
@@ -316,7 +316,7 @@ public class Utils {
          return false;
     }
 
-    public boolean checkGroupsOfTwo(TileSlot tileSlot1, TileSlot tileSlot2{
+    public boolean checkGroupsOfTwo(TileSlot tileSlot1, TileSlot tileSlot2){
         if(!(tileSlot1.isFree()) &&  !(tileSlot2.isFree()) &&
                 tileSlot1.getAssignedTile().getColour()==tileSlot2.getAssignedTile().getColour()){
 
