@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+
 public class Utils {
     public static final int MAX_SHELF_COLUMNS = 5;
     private static final int MAX_SHELF_ROWS = 6;
@@ -30,6 +33,35 @@ public class Utils {
         TileSlot[][] libraryMatrix = library.getLibrary();
         switch (commonCard.getCommonType()) {
             case SIX_GROUPS_OF_TWO -> {
+                TileSlot[][] copy = libraryMatrix.clone();
+                int found=0;
+                for(int i=0; i<5; i++){
+                    for(int j=0; j<4; j++){
+                        if(checkGroupsOfTwo(copy[i][j],copy[i][j+1])){
+                            found++;
+                            if(found==6) return true;
+                        }
+                        if (checkGroupsOfTwo(copy[i][j],copy[i+1][j])){
+                            found++;
+                            if(found==6) return true;
+                        }
+
+                    }
+                } for(int i=0; i<5; i++){
+                        if(checkGroupsOfTwo(copy[i][4],copy[i+1][4])){
+                            found++;
+                            if(found==6) return true;
+                        }
+
+                }
+                    for(int j=0; j<4; j++){
+                        if (checkGroupsOfTwo(copy[5][j],copy[5][j+1])){
+                            found++;
+                            if(found==6) return true;
+                        }
+                    }
+                return false;
+
 
             }
             case FOUR_EQUALS_ANGLES -> {
@@ -40,29 +72,69 @@ public class Utils {
             }
 
             case FOUR_GROUPS_OF_FOUR -> {
-            }
-            case TWO_GROUPS_IN_SQUARE -> {
-            }
-            case THREE_FULL_COLUMNS_WITH_MAX_THREE_DIFFERENT_TYPES -> {
-                int trovato = 0;
-                int diff=0;
-                for (int j = 0; j < MAX_SHELF_COLUMNS; j++) {
-
-                    if(libraryMatrix[j].length==6){
-
-                        for(int i=0; i<MAX_SHELF_ROWS; i++){
-                            for(int x=i+1; x<MAX_SHELF_ROWS; x++){
-                                if(libraryMatrix[i][j].getAssignedTile().getColour()!= libraryMatrix[x][j].getAssignedTile().getColour()){
-                                    diff++;
-                                }
-                            }
+                TileSlot[][] copy = libraryMatrix.clone();
+                int found=0;
+                for(int i=0; i<3; i++){
+                    for(int j=0; j<2; j++){
+                        if(checkGroupsOfFour(copy[i][j],copy[i][j+1],copy[i][j+2],copy[i][j+3])){
+                            found++;
+                            if(found==4) return true;
                         }
-                        if(diff<=3){
-                            trovato++;
+                        if (checkGroupsOfFour(copy[i][j],copy[i+1][j],copy[i+2][j],copy[i+3][j])){
+                            found++;
+                            if(found==4) return true;
+                        }
+
+                    }
+                } for(int i=3; i<6; i++){
+                    for(int j=0; j<2; j++){
+                        if(checkGroupsOfFour(copy[i][j],copy[i][j+1],copy[i][j+2],copy[i][j+3])){
+                            found++;
+                            if(found==4) return true;
+                        }
+                    }
+                } for(int i=0; i<3; i++){
+                    for(int j=2; j<5; j++){
+                        if (checkGroupsOfFour(copy[i][j],copy[i+1][j],copy[i+2][j],copy[i+3][j])){
+                            found++;
+                            if(found==4) return true;
                         }
                     }
                 }
-                return trovato == 3;
+                return false;
+            }
+
+            case TWO_GROUPS_IN_SQUARE -> {
+                HashSet<ColourTile> differentColours= new HashSet<ColourTile>();
+                TileSlot[][] copy = libraryMatrix.clone();
+                int found=0;
+
+                for (int i = 0; i < MAX_SHELF_ROWS - 1; i++) {
+                    for (int j = 0; j < MAX_SHELF_COLUMNS - 1; j++) {
+                        if (checkGroupsOfFour(copy[i][j], copy[i+1][j], copy[i][j+1], copy[i+1][j+1])) {
+                            if(differentColours.contains(libraryMatrix[i][j].getAssignedTile().getColour())) return true;
+                            else differentColours.add(libraryMatrix[i][j].getAssignedTile().getColour());
+                        }
+                    }
+                }
+                return false;
+            }
+
+            case THREE_FULL_COLUMNS_WITH_MAX_THREE_DIFFERENT_TYPES -> {
+                int found = 0;
+                for(int i = 0; i < MAX_SHELF_COLUMNS; i++){
+                    TileSlot[] temp = new TileSlot[MAX_SHELF_ROWS];
+                    for(int j = 0; j < MAX_SHELF_ROWS; j++){
+                        temp[j] = libraryMatrix[j][i];
+                    }
+                    if (checkAllDifferent(temp, "COLUMN") < 4 ){
+                        found++;
+                    }
+                }
+                if(found>2) {
+                    return true;
+                }
+
             }
             case EIGHT_EQUALS -> {
                 int count = 0;
@@ -90,37 +162,51 @@ public class Utils {
                 return ((checkDiagonal(libraryMatrix,firstDiagonal,1,1))||(checkDiagonal(libraryMatrix,secondDiagonal,1,1))||(checkDiagonal(libraryMatrix,thirdDiagonal,-1,-1))||(checkDiagonal(libraryMatrix,fourthDiagonal,-1,-1)));
             }
             case FOUR_FULL_ROWS_WITH_MAX_THREE_DIFFERENT_TYPES -> {
-                int trovato = 0;
-                int count=0;
-                int diff=0;
-                for (int i= 0; i < 6; i++) {
-                    for (int j = 0; j < 5; j++) {
-                        if(!(libraryMatrix[i][j].isFree())){
-                            count++;
-                        }
-                    } if(count==5){
-                        for(int j=0; j<5; j++){
-                            for(int y=i+1; y<5; y++){
-                                if(libraryMatrix[i][j].getAssignedTile().getColour()!= libraryMatrix[i][y].getAssignedTile().getColour()){
-                                    diff++;
-                                }
-                            }
-                        }
-                        if(diff<=3){
-                            trovato++;
-                        }
+                int found = 0;
+                for(int i = 0; i < MAX_SHELF_ROWS; i++){
+                    if (checkAllDifferent(libraryMatrix[i], "ROW") < 4){
+                        found++;
                     }
-                    count=0;
-
                 }
-                return trovato == 4;
+                if(found>3){
+                    return true;
+                }
 
-}           case TWO_FULL_COLUMNS_ALL_DIFFERENT -> {
-                return checkAllDifferent(libraryMatrix, "COLUMN");
+
+            }
+
+
+            case TWO_FULL_COLUMNS_ALL_DIFFERENT -> {
+                int found = 0;
+                for(int i = 0; i < MAX_SHELF_COLUMNS; i++){
+                    TileSlot[] temp = new TileSlot[MAX_SHELF_ROWS];
+                    for(int j = 0; j < MAX_SHELF_ROWS; j++){
+                        temp[j] = libraryMatrix[j][i];
+                    }
+                    if (checkAllDifferent(temp, "COLUMN") == MAX_SHELF_ROWS ){
+                        found++;
+                    }
+                }
+                if(found>1) {
+                    return true;
+                }
+
+
             }
             case TWO_FULL_ROWS_ALL_DIFFERENT -> {
-                return checkAllDifferent(libraryMatrix,"ROW");
+                int found = 0;
+                for(int i = 0; i < MAX_SHELF_ROWS; i++){
+                    if (checkAllDifferent(libraryMatrix[i], "ROW") == MAX_SHELF_COLUMNS){
+                        found++;
+                    }
+                }
+                if(found>1){
+                    return true;
+                }
             }
+
+
+
             case FIVE_IN_A_X -> {
 
                     for(int i=1; i<4; i++){
@@ -164,52 +250,41 @@ public class Utils {
 //Idea:rendere più generica la funzione per utilizzarla anche per FOUR_FULL_ROWS_WITH_MAX_THREE_DIFFERENT_TYPES e THREE_FULL_COLUMNS_WITH_MAX_THREE_DIFFERENT_TYPES
 // (per esempio potrebbe ritornare il numero di tessere diverse, e poi il controllo specifico sarebbe nei vari case)
 
-    public boolean checkAllDifferent(TileSlot[][] libraryMatrix, String Type) {
-        if (Type.equals("ROW")) {
-            int found = 0;
-            int h = 0;
-            int count = 0;
-            while (found != 2 && h < MAX_SHELF_ROWS) {
-                for (int i = 0; i < MAX_SHELF_COLUMNS; i++) {
-                    for (int j = i + 1; j < MAX_SHELF_COLUMNS; j++) {
-                        if (libraryMatrix[h][i].getAssignedTile().getColour() != libraryMatrix[h][j].getAssignedTile().getColour()) {
-                            count++;
-                        }
+    public int checkAllDifferent(TileSlot[] libraryMatrix, String type) {
 
-                    }
-                }
-                if (count == MAX_SHELF_COLUMNS) {
-                    found++;
-                }
-                count = 0;
-                h++;
+        int numColours = 0;
 
+        HashSet<ColourTile> differentColours= new HashSet<ColourTile>();
+
+        if (type.equals("ROW")) {
+
+            for (int i = 0; i < MAX_SHELF_COLUMNS; i++) {
+                    if(libraryMatrix[i].isFree()) return 0;
+                    differentColours.add(libraryMatrix[i].getAssignedTile().getColour());
             }
-            return found >= 2;
+
+            numColours = differentColours.size();
+
+            return numColours;
+
         }
 
-        else if(Type.equals("COLUMN")){
-            int found = 0;
-            int h=0;
-            int count=0;
-            while (found != 2 && h<MAX_SHELF_COLUMNS) {
-                for (int i = 0; i < MAX_SHELF_ROWS; i++) {
-                    for (int j = i; j < MAX_SHELF_ROWS; j++) {
-                        if(libraryMatrix[i][h].getAssignedTile().getColour()!= libraryMatrix[j][h].getAssignedTile().getColour()){
-                            count++;
-                        }
 
-                    }
-                }
-                if(count==MAX_SHELF_ROWS){
-                    found++;
-                }
-                count=0;
-                h++;
+
+        if(type.equals("COLUMN")){
+
+            for (int i = 0; i < MAX_SHELF_ROWS; i++) {
+                if(libraryMatrix[i].isFree()) return 0;
+                differentColours.add(libraryMatrix[i].getAssignedTile().getColour());
             }
-            return found >= 2;
+
+            numColours = differentColours.size();
+
+            return numColours;
+
         }
-        return false;
+
+        return 0;
     }
 
 
@@ -225,121 +300,33 @@ public class Utils {
         return count == MAX_SHELF_COLUMNS;
     }
 
-    /**
-     * Method for link a personal card to an array of Coordinates and TileColour,used for check later if the player has reached his personal target
-     * @param personalType one of the element of PersonalList enum
-     */
-    public PersonalCardTile[] assignPersonalCard(PersonalList personalType){
-        PersonalCardTile[] personalCardTiles = new PersonalCardTile[6];
-        switch (personalType){
-            case CARTA1 -> {
-                personalCardTiles[0]=new PersonalCardTile(new Coordinates(0,0),ColourTile.CATS);
-                personalCardTiles[1]=new PersonalCardTile(new Coordinates(4,1),ColourTile.GAMES);
-                personalCardTiles[2]=new PersonalCardTile(new Coordinates(3,2),ColourTile.TROPHIES);
-                personalCardTiles[3]=new PersonalCardTile(new Coordinates(2,3),ColourTile.FRAMES);
-                personalCardTiles[4]=new PersonalCardTile(new Coordinates(1,4),ColourTile.PLANTS);
-                personalCardTiles[5]=new PersonalCardTile(new Coordinates(2,5),ColourTile.BOOKS);
-            }
-            case CARTA2 -> {
-                personalCardTiles[0]=new PersonalCardTile(new Coordinates(2,0),ColourTile.TROPHIES);
-                personalCardTiles[1]=new PersonalCardTile(new Coordinates(1,2),ColourTile.GAMES);
-                personalCardTiles[2]=new PersonalCardTile(new Coordinates(3,3),ColourTile.BOOKS);
-                personalCardTiles[3]=new PersonalCardTile(new Coordinates(4,4),ColourTile.CATS);
-                personalCardTiles[4]=new PersonalCardTile(new Coordinates(0,5),ColourTile.PLANTS);
-                personalCardTiles[5]=new PersonalCardTile(new Coordinates(2,5),ColourTile.FRAMES);
 
-            }
-            case CARTA3 -> {
-                personalCardTiles[0]=new PersonalCardTile(new Coordinates(1,1),ColourTile.BOOKS);
-                personalCardTiles[1]=new PersonalCardTile(new Coordinates(2,1),ColourTile.CATS);
-                personalCardTiles[2]=new PersonalCardTile(new Coordinates(3,2),ColourTile.PLANTS);
-                personalCardTiles[3]=new PersonalCardTile(new Coordinates(0,3),ColourTile.TROPHIES);
-                personalCardTiles[4]=new PersonalCardTile(new Coordinates(2,3),ColourTile.FRAMES);
-                personalCardTiles[5]=new PersonalCardTile(new Coordinates(4,5),ColourTile.GAMES);
 
-            }
-            case CARTA4 -> {
-                personalCardTiles[0]=new PersonalCardTile(new Coordinates(3,0),ColourTile.PLANTS);
-                personalCardTiles[1]=new PersonalCardTile(new Coordinates(1,1),ColourTile.FRAMES);
-                personalCardTiles[2]=new PersonalCardTile(new Coordinates(3,2),ColourTile.CATS);
-                personalCardTiles[3]=new PersonalCardTile(new Coordinates(0,3),ColourTile.BOOKS);
-                personalCardTiles[4]=new PersonalCardTile(new Coordinates(1,4),ColourTile.GAMES);
-                personalCardTiles[5]=new PersonalCardTile(new Coordinates(4,5),ColourTile.TROPHIES);
+    public boolean checkGroupsOfFour(TileSlot tileSlot1, TileSlot tileSlot2, TileSlot tileSlot3, TileSlot tileSlot4){
+        if(!(tileSlot1.isFree()) &&  !(tileSlot2.isFree()) && !(tileSlot3.isFree()) && !(tileSlot4.isFree())&&
+                tileSlot1.getAssignedTile().getColour()==tileSlot2.getAssignedTile().getColour() &&
+                tileSlot1.getAssignedTile().getColour()== tileSlot3.getAssignedTile().getColour() &&
+                tileSlot1.getAssignedTile().getColour() == tileSlot4.getAssignedTile().getColour()){
 
-            }
-            case CARTA5 -> {
-                personalCardTiles[0]=new PersonalCardTile(new Coordinates(0,0),ColourTile.BOOKS);
-                personalCardTiles[1]=new PersonalCardTile(new Coordinates(1,2),ColourTile.CATS);
-                personalCardTiles[2]=new PersonalCardTile(new Coordinates(4,2),ColourTile.TROPHIES);
-                personalCardTiles[3]=new PersonalCardTile(new Coordinates(2,3),ColourTile.PLANTS);
-                personalCardTiles[4]=new PersonalCardTile(new Coordinates(0,4),ColourTile.FRAMES);
-                personalCardTiles[5]=new PersonalCardTile(new Coordinates(3,4),ColourTile.GAMES);
-
-            }
-            case CARTA6 -> {
-                personalCardTiles[0]=new PersonalCardTile(new Coordinates(0,0),ColourTile.PLANTS);
-                personalCardTiles[1]=new PersonalCardTile(new Coordinates(1,1),ColourTile.GAMES);
-                personalCardTiles[2]=new PersonalCardTile(new Coordinates(3,1),ColourTile.FRAMES);
-                personalCardTiles[3]=new PersonalCardTile(new Coordinates(3,3),ColourTile.BOOKS);
-                personalCardTiles[4]=new PersonalCardTile(new Coordinates(2,5),ColourTile.TROPHIES);
-                personalCardTiles[5]=new PersonalCardTile(new Coordinates(4,5),ColourTile.CATS);
-
-            }
-            case CARTA7 -> {
-                personalCardTiles[0]=new PersonalCardTile(new Coordinates(3,0),ColourTile.TROPHIES);
-                personalCardTiles[1]=new PersonalCardTile(new Coordinates(4,1),ColourTile.CATS);
-                personalCardTiles[2]=new PersonalCardTile(new Coordinates(2,2),ColourTile.FRAMES);
-                personalCardTiles[3]=new PersonalCardTile(new Coordinates(0,3),ColourTile.GAMES);
-                personalCardTiles[4]=new PersonalCardTile(new Coordinates(1,4),ColourTile.BOOKS);
-                personalCardTiles[5]=new PersonalCardTile(new Coordinates(2,5),ColourTile.PLANTS);
-            }
-            case CARTA8 -> {
-                personalCardTiles[5]=new PersonalCardTile(new Coordinates(4,0),ColourTile.FRAMES);
-                personalCardTiles[3]=new PersonalCardTile(new Coordinates(3,1),ColourTile.TROPHIES);
-                personalCardTiles[4]=new PersonalCardTile(new Coordinates(4,2),ColourTile.BOOKS);
-                personalCardTiles[0]=new PersonalCardTile(new Coordinates(0,3),ColourTile.CATS);
-                personalCardTiles[2]=new PersonalCardTile(new Coordinates(2,3),ColourTile.GAMES);
-                personalCardTiles[1]=new PersonalCardTile(new Coordinates(1,4),ColourTile.PLANTS);
-
-            }
-            case CARTA9 -> {
-                personalCardTiles[0]=new PersonalCardTile(new Coordinates(0,0),ColourTile.FRAMES);
-                personalCardTiles[1]=new PersonalCardTile(new Coordinates(1,1),ColourTile.TROPHIES);
-                personalCardTiles[2]=new PersonalCardTile(new Coordinates(4,1),ColourTile.PLANTS);
-                personalCardTiles[3]=new PersonalCardTile(new Coordinates(4,2),ColourTile.BOOKS);
-                personalCardTiles[4]=new PersonalCardTile(new Coordinates(2,3),ColourTile.CATS);
-                personalCardTiles[5]=new PersonalCardTile(new Coordinates(2,5),ColourTile.GAMES);
-            }
-            case CARTA10 -> {
-                personalCardTiles[0]=new PersonalCardTile(new Coordinates(0,0),ColourTile.GAMES);
-                personalCardTiles[1]=new PersonalCardTile(new Coordinates(0,3),ColourTile.CATS);
-                personalCardTiles[2]=new PersonalCardTile(new Coordinates(4,1),ColourTile.PLANTS);
-                personalCardTiles[3]=new PersonalCardTile(new Coordinates(1,2),ColourTile.FRAMES);
-                personalCardTiles[4]=new PersonalCardTile(new Coordinates(2,2),ColourTile.BOOKS);
-                personalCardTiles[5]=new PersonalCardTile(new Coordinates(1,4),ColourTile.TROPHIES);
-            }
-            case CARTA11 -> {
-                personalCardTiles[0]=new PersonalCardTile(new Coordinates(0,2),ColourTile.BOOKS);
-                personalCardTiles[1]=new PersonalCardTile(new Coordinates(4,1),ColourTile.GAMES);
-                personalCardTiles[2]=new PersonalCardTile(new Coordinates(0,2),ColourTile.TROPHIES);
-                personalCardTiles[3]=new PersonalCardTile(new Coordinates(1,3),ColourTile.PLANTS);
-                personalCardTiles[4]=new PersonalCardTile(new Coordinates(3,4),ColourTile.FRAMES);
-                personalCardTiles[5]=new PersonalCardTile(new Coordinates(0,5),ColourTile.CATS);
-            }
-            case CARTA12 -> {
-                personalCardTiles[0]=new PersonalCardTile(new Coordinates(3,0),ColourTile.GAMES);
-                personalCardTiles[1]=new PersonalCardTile(new Coordinates(3,1),ColourTile.BOOKS);
-                personalCardTiles[2]=new PersonalCardTile(new Coordinates(0,2),ColourTile.PLANTS);
-                personalCardTiles[3]=new PersonalCardTile(new Coordinates(2,3),ColourTile.TROPHIES);
-                personalCardTiles[4]=new PersonalCardTile(new Coordinates(1,4),ColourTile.CATS);
-                personalCardTiles[5]=new PersonalCardTile(new Coordinates(4,5),ColourTile.FRAMES);
-            }
+            tileSlot1.removeAssignedTile();
+            tileSlot2.removeAssignedTile();
+            tileSlot3.removeAssignedTile();
+            tileSlot4.removeAssignedTile();
+            return true;
         }
-
-        return personalCardTiles;
-
+        return false;
     }
 
+    public boolean checkGroupsOfTwo(TileSlot tileSlot1, TileSlot tileSlot2){
+        if(!(tileSlot1.isFree()) &&  !(tileSlot2.isFree()) &&
+                tileSlot1.getAssignedTile().getColour()==tileSlot2.getAssignedTile().getColour()){
+
+            tileSlot1.removeAssignedTile();
+            tileSlot2.removeAssignedTile();
+            return true;
+        }
+        return false;
+    }
 
 
 

@@ -7,22 +7,13 @@ import java.util.Objects;
  * @param colourTile  identify the colour of the tile in a specific position
  */
 public record PersonalCardTile(Coordinates coordinates, ColourTile colourTile) {
-
-
     @Override
-    public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (PersonalCardTile) obj;
-        return Objects.equals(this.coordinates, that.coordinates) &&
-                Objects.equals(this.colourTile, that.colourTile);
+    public Coordinates coordinates() {
+        return coordinates;
     }
 
     @Override
-    public String toString() {
-        return "PersonalCardTile[" +
-                "coordinates=" + coordinates + ", " +
-                "colourTile=" + colourTile + ']';
+    public ColourTile colourTile() {
+        return colourTile;
     }
-
 }

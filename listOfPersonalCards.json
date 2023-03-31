@@ -1,0 +1,907 @@
+[
+  {
+    "personalCardTiles" : [
+
+      {
+        "coordinates" :
+        {
+          "X" : 0,
+          "Y" : 0
+        },
+
+        "colourTile" : "CATS"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 4,
+          "Y" : 1
+        },
+
+        "colourTile" : "GAMES"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 3,
+          "Y" : 2
+        },
+
+        "colourTile" : "TROPHIES"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 2,
+          "Y" : 3
+        },
+
+        "colourTile" : "FRAMES"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 1,
+          "Y" : 4
+        },
+
+        "colourTile" : "PLANTS"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 2,
+          "Y" : 5
+        },
+
+        "colourTile" : "BOOKS"
+
+      }
+
+
+    ]
+  },
+
+
+  {
+    "personalCardTiles" : [
+
+      {
+        "coordinates" :
+        {
+          "X" : 2,
+          "Y" : 0
+        },
+
+        "colourTile" : "TROPHIES"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 1,
+          "Y" : 2
+        },
+
+        "colourTile" : "GAMES"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 3,
+          "Y" : 3
+        },
+
+        "colourTile" : "BOOKS"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 4,
+          "Y" : 4
+        },
+
+        "colourTile" : "CATS"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 0,
+          "Y" : 5
+        },
+
+        "colourTile" : "PLANTS"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 2,
+          "Y" : 5
+        },
+
+        "colourTile" : "FRAMES"
+
+      }
+
+
+    ]
+  },
+
+
+  {
+    "personalCardTiles" : [
+
+      {
+        "coordinates" :
+        {
+          "X" : 1,
+          "Y" : 1
+        },
+
+        "colourTile" : "BOOKS"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 2,
+          "Y" : 1
+        },
+
+        "colourTile" : "CATS"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 3,
+          "Y" : 2
+        },
+
+        "colourTile" : "PLANTS"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 0,
+          "Y" : 3
+        },
+
+        "colourTile" : "TROPHIES"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 2,
+          "Y" : 3
+        },
+
+        "colourTile" : "FRAMES"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 4,
+          "Y" : 5
+        },
+
+        "colourTile" : "GAMES"
+
+      }
+
+
+    ]
+  },
+
+
+
+  {
+    "personalCardTiles" : [
+
+      {
+        "coordinates" :
+        {
+          "X" : 3,
+          "Y" : 0
+        },
+
+        "colourTile" : "PLANTS"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 1,
+          "Y" : 1
+        },
+
+        "colourTile" : "FRAMES"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 3,
+          "Y" : 2
+        },
+
+        "colourTile" : "CATS"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 0,
+          "Y" : 3
+        },
+
+        "colourTile" : "BOOKS"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 1,
+          "Y" : 4
+        },
+
+        "colourTile" : "GAMES"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 4,
+          "Y" : 5
+        },
+
+        "colourTile" : "TROPHIES"
+
+      }
+
+
+    ]
+  },
+
+
+
+  {
+    "personalCardTiles" : [
+
+      {
+        "coordinates" :
+        {
+          "X" : 0,
+          "Y" : 0
+        },
+
+        "colourTile" : "BOOKS"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 1,
+          "Y" : 2
+        },
+
+        "colourTile" : "CATS"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 4,
+          "Y" : 2
+        },
+
+        "colourTile" : "TROPHIES"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 2,
+          "Y" : 3
+        },
+
+        "colourTile" : "PLANTS"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 0,
+          "Y" : 4
+        },
+
+        "colourTile" : "FRAMES"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 3,
+          "Y" : 4
+        },
+
+        "colourTile" : "GAMES"
+
+      }
+
+
+    ]
+  },
+
+
+
+
+  {
+    "personalCardTiles" : [
+
+      {
+        "coordinates" :
+        {
+          "X" : 0,
+          "Y" : 0
+        },
+
+        "colourTile" : "PLANTS"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 1,
+          "Y" : 1
+        },
+
+        "colourTile" : "GAMES"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 3,
+          "Y" : 1
+        },
+
+        "colourTile" : "FRAMES"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 3,
+          "Y" : 3
+        },
+
+        "colourTile" : "BOOKS"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 2,
+          "Y" : 5
+        },
+
+        "colourTile" : "TROPHIES"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 4,
+          "Y" : 5
+        },
+
+        "colourTile" : "CATS"
+
+      }
+
+
+    ]
+  },
+
+
+
+  {
+    "personalCardTiles" : [
+
+      {
+        "coordinates" :
+        {
+          "X" : 3,
+          "Y" : 0
+        },
+
+        "colourTile" : "TROPHIES"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 4,
+          "Y" : 1
+        },
+
+        "colourTile" : "CATS"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 2,
+          "Y" : 2
+        },
+
+        "colourTile" : "FRAMES"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 0,
+          "Y" : 3
+        },
+
+        "colourTile" : "GAMES"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 1,
+          "Y" : 4
+        },
+
+        "colourTile" : "BOOKS"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 2,
+          "Y" : 5
+        },
+
+        "colourTile" : "PLANTS"
+
+      }
+
+
+    ]
+  },
+
+
+
+
+  {
+    "personalCardTiles" : [
+
+      {
+        "coordinates" :
+        {
+          "X" : 4,
+          "Y" : 0
+        },
+
+        "colourTile" : "FRAMES"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 3,
+          "Y" : 1
+        },
+
+        "colourTile" : "TROPHIES"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 4,
+          "Y" : 2
+        },
+
+        "colourTile" : "BOOKS"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 0,
+          "Y" : 3
+        },
+
+        "colourTile" : "CATS"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 2,
+          "Y" : 3
+        },
+
+        "colourTile" : "GAMES"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 1,
+          "Y" : 4
+        },
+
+        "colourTile" : "PLANTS"
+
+      }
+
+
+    ]
+  },
+
+
+
+
+
+  {
+    "personalCardTiles" : [
+
+      {
+        "coordinates" :
+        {
+          "X" : 0,
+          "Y" : 0
+        },
+
+        "colourTile" : "FRAMES"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 1,
+          "Y" : 1
+        },
+
+        "colourTile" : "TROPHIES"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 4,
+          "Y" : 1
+        },
+
+        "colourTile" : "PLANTS"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 4,
+          "Y" : 2
+        },
+
+        "colourTile" : "BOOKS"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 2,
+          "Y" : 3
+        },
+
+        "colourTile" : "CATS"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 2,
+          "Y" : 5
+        },
+
+        "colourTile" : "GAMES"
+
+      }
+
+
+    ]
+  },
+
+
+
+
+
+  {
+    "personalCardTiles" : [
+
+      {
+        "coordinates" :
+        {
+          "X" : 0,
+          "Y" : 0
+        },
+
+        "colourTile" : "GAMES"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 0,
+          "Y" : 3
+        },
+
+        "colourTile" : "CATS"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 4,
+          "Y" : 1
+        },
+
+        "colourTile" : "PLANTS"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 1,
+          "Y" : 2
+        },
+
+        "colourTile" : "FRAMES"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 2,
+          "Y" : 2
+        },
+
+        "colourTile" : "BOOKS"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 1,
+          "Y" : 4
+        },
+
+        "colourTile" : "TROPHIES"
+
+      }
+
+
+    ]
+  },
+
+
+
+
+
+
+  {
+    "personalCardTiles" : [
+
+      {
+        "coordinates" :
+        {
+          "X" : 0,
+          "Y" : 2
+        },
+
+        "colourTile" : "BOOKS"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 4,
+          "Y" : 1
+        },
+
+        "colourTile" : "GAMES"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 0,
+          "Y" : 2
+        },
+
+        "colourTile" : "TROPHIES"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 1,
+          "Y" : 3
+        },
+
+        "colourTile" : "PLANTS"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 3,
+          "Y" : 4
+        },
+
+        "colourTile" : "FRAMES"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 0,
+          "Y" : 5
+        },
+
+        "colourTile" : "CATS"
+
+      }
+
+
+    ]
+  },
+
+
+
+
+  {
+    "personalCardTiles" : [
+
+      {
+        "coordinates" :
+        {
+          "X" : 3,
+          "Y" : 0
+        },
+
+        "colourTile" : "GAMES"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 3,
+          "Y" : 1
+        },
+
+        "colourTile" : "BOOKS"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 0,
+          "Y" : 2
+        },
+
+        "colourTile" : "PLANTS"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 2,
+          "Y" : 3
+        },
+
+        "colourTile" : "TROPHIES"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 1,
+          "Y" : 4
+        },
+
+        "colourTile" : "CATS"
+
+      },
+
+      {
+        "coordinates" :
+        {
+          "X" : 4,
+          "Y" : 5
+        },
+
+        "colourTile" : "FRAMES"
+
+      }
+
+
+    ]
+  }
+]
