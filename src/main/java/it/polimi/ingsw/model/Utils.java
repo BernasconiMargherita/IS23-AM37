@@ -28,6 +28,8 @@ public class Utils {
         TileSlot[][] libraryMatrix = library.getLibrary();
         switch (commonCard.getCommonType()) {
             case SIX_GROUPS_OF_TWO -> {
+                int found=0;
+
 
             }
             case FOUR_EQUALS_ANGLES -> {
@@ -38,7 +40,33 @@ public class Utils {
             }
 
             case FOUR_GROUPS_OF_FOUR -> {
+                int found=0;
+                int count=0;
+                if(libraryMatrix[0][0].getAssignedTile().getColour()== libraryMatrix[0][1].getAssignedTile().getColour()){
+                    for(int i=0; i<6; i++){
+                        for(int j=1; j<4; j++){
+                            if(libraryMatrix[i][j].getAssignedTile().getColour()== libraryMatrix[i][j+1].getAssignedTile().getColour()){
+                                count++;
+                            }
+
+
+                        } if(count>=4){
+                            found++;
+                        } count=0;
+                    }
+                } else if(libraryMatrix[0][4].getAssignedTile().getColour()==libraryMatrix[0][3].getAssignedTile().getColour()){
+                    for(int i=0; i<6; i++){
+                        for(int j=3; j>=1; j++){
+                            if(libraryMatrix[i][j].getAssignedTile().getColour()== libraryMatrix[i][j-1].getAssignedTile().getColour()) {
+                                count++;
+                            }
+                        } if(count>=4){
+                            found++;
+                        } count=0;
+                    }
+                }
             }
+
             case TWO_GROUPS_IN_SQUARE -> {
             }
             case THREE_FULL_COLUMNS_WITH_MAX_THREE_DIFFERENT_TYPES -> {
