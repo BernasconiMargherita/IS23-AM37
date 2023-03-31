@@ -207,39 +207,10 @@ public class Utils {
             numColours = differentColours.size();
 
             return numColours;
-
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return 0;
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
     public boolean checkDiagonal(TileSlot[][] libraryMatrix, Coordinates coordinates, int k, int h){
         int j = coordinates.getY();
