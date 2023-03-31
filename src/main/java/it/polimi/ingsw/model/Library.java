@@ -42,26 +42,24 @@ public class Library {
             }
 
 
-            if (row == MAX_SHELF_COLUMNS) {
+            if (row == MAX_SHELF_ROWS) {
                 throw new FullColumnException();
             }
 
 
-            if (row > MAX_SHELF_COLUMNS - selectedTile.length) {
+            if (row > MAX_SHELF_ROWS - selectedTile.length) {
                 throw new NoSpaceInColumnException();
             }
+        }
 
-        } else {
-
-            for (Tile tile : selectedTile) {
-
-                library[row][col].assignTile(tile);
+        for (Tile tile : selectedTile) {
+            library[row][col].assignTile(tile);
 
             }
 
 
-        }
     }
+
 
 
     /**
