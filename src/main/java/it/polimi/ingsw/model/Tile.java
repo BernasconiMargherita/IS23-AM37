@@ -9,9 +9,11 @@ public class Tile extends Card{
     /**
      * constructor of Tile : assigning the value of colour
      */
-    public Tile(ColourTile colour){
+    public Tile(ColourTile colour)
+    {
         this.colour = colour;
     }
+
 
     /**
      * getter of colour

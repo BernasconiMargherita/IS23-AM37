@@ -5,19 +5,21 @@ package it.polimi.ingsw.model;
  * class that represents player's library
  */
 public class Library {
+    public static final int MAX_SHELF_ROWS = 6;
+    public static final int MAX_SHELF_COLUMNS = 5;
 
     /**
-     * Library is a 6x5 matrix
+     * Library is a MAX_SHELF_ROWSxMAX_SHELF_COLUMNS matrix
      */
-    private final TileSlot[][] library = new TileSlot[6][5];
+    private final TileSlot[][] library = new TileSlot[MAX_SHELF_ROWS][MAX_SHELF_COLUMNS];
 
 
     /**
      * initialize library with empty slots
      */
     public Library(){
-        for(int i=0; i<6;i++){
-            for(int j=0;j<5;j++){
+        for(int i=0; i<MAX_SHELF_ROWS;i++){
+            for(int j=0;j<MAX_SHELF_COLUMNS;j++){
                 library[i][j] = new TileSlot();
             }
         }
@@ -35,31 +37,29 @@ public class Library {
 
         int row = 0;
         if (!library[row][col].isFree()) {
-            while (row < 6 && !library[row][col].isFree()) {
+            while (row < MAX_SHELF_ROWS && !library[row][col].isFree()) {
                 row++;
             }
 
 
-            if (row == 5) {
+            if (row == MAX_SHELF_ROWS) {
                 throw new FullColumnException();
             }
 
 
-            if (row > 5 - selectedTile.length) {
+            if (row > MAX_SHELF_ROWS - selectedTile.length) {
                 throw new NoSpaceInColumnException();
             }
+        }
 
-        } else {
-
-            for (Tile tile : selectedTile) {
-
-                library[row][col].assignTile(tile);
+        for (Tile tile : selectedTile) {
+            library[row][col].assignTile(tile);
 
             }
 
 
-        }
     }
+
 
 
     /**
@@ -69,11 +69,11 @@ public class Library {
 
         int count =0;
         for (int i= 0; i<4; i++){
-                if (!library[5][i].isFree()) {
+                if (!library[MAX_SHELF_COLUMNS][i].isFree()) {
                     count++;
                 }
 
-                if (count == 5){
+                if (count == MAX_SHELF_COLUMNS){
                     return true;
 
                 }
