@@ -12,10 +12,18 @@ public class Player {
     private final boolean isFirstPlayer;
     private final Utils utils;
 
+
+
     public String getNickname() {
         return nickname;
     }
 
+    /**
+     * Constructor that assigns to the player a nickname, personalTarget and a boolean indicating if the player is the first one
+     * @param nickname
+     * @param cardPersonalTarget
+     * @param isFirstPlayer tells if this player is the first one
+     */
     public Player(String nickname, CardPersonalTarget cardPersonalTarget, boolean isFirstPlayer){
         this.utils=new Utils();
         this.nickname=nickname;
@@ -25,11 +33,21 @@ public class Player {
         this.score=0;
     }
 
+    /**
+     * Method that stores and modifies score value
+     * @param addedScore
+     */
     public void setScore(int addedScore){
         this.score += addedScore;
     }
 
-    public void addTilesInLibrary(int col,Tile[] selectedTile) throws NoSpaceInColumnException, FullColumnException {
+    /**
+     * Method that allows the player to add the selected tiles from the board to the library
+     * @param col chosen column
+     * @param selectedTile array of selected tiles
+     * @throws NoSpaceInColumnException
+     */
+    public void addTilesInLibrary(int col,Tile[] selectedTile) throws NoSpaceInColumnException {
         personalLibrary.addCardInColumn(col, selectedTile);
     }
 

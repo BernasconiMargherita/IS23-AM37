@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class TileDeck {
-    /**
-     * int tilesLeft : used for the extraction in RandomDraw
-     */
-    private int tilesLeft = 133;
 
     /**
      * tileDeck : ArrayList of tiles

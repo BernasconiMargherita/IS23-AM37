@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+
 public class Utils {
     public static final int MAX_SHELF_COLUMNS = 5;
     private static final int MAX_SHELF_ROWS = 6;
@@ -30,6 +33,35 @@ public class Utils {
         TileSlot[][] libraryMatrix = library.getLibrary();
         switch (commonCard.getCommonType()) {
             case SIX_GROUPS_OF_TWO -> {
+                TileSlot[][] copy = libraryMatrix.clone();
+                int found=0;
+                for(int i=0; i<5; i++){
+                    for(int j=0; j<4; j++){
+                        if(checkGroupsOfTwo(copy[i][j],copy[i][j+1])){
+                            found++;
+                            if(found==6) return true;
+                        }
+                        if (checkGroupsOfTwo(copy[i][j],copy[i+1][j])){
+                            found++;
+                            if(found==6) return true;
+                        }
+
+                    }
+                } for(int i=0; i<5; i++){
+                        if(checkGroupsOfTwo(copy[i][4],copy[i+1][4])){
+                            found++;
+                            if(found==6) return true;
+                        }
+
+                }
+                    for(int j=0; j<4; j++){
+                        if (checkGroupsOfTwo(copy[5][j],copy[5][j+1])){
+                            found++;
+                            if(found==6) return true;
+                        }
+                    }
+                return false;
+
 
             }
             case FOUR_EQUALS_ANGLES -> {
@@ -40,29 +72,69 @@ public class Utils {
             }
 
             case FOUR_GROUPS_OF_FOUR -> {
-            }
-            case TWO_GROUPS_IN_SQUARE -> {
-            }
-            case THREE_FULL_COLUMNS_WITH_MAX_THREE_DIFFERENT_TYPES -> {
-                int trovato = 0;
-                int diff=0;
-                for (int j = 0; j < MAX_SHELF_COLUMNS; j++) {
-
-                    if(libraryMatrix[j].length==6){
-
-                        for(int i=0; i<MAX_SHELF_ROWS; i++){
-                            for(int x=i+1; x<MAX_SHELF_ROWS; x++){
-                                if(libraryMatrix[i][j].getAssignedTile().getColour()!= libraryMatrix[x][j].getAssignedTile().getColour()){
-                                    diff++;
-                                }
-                            }
+                TileSlot[][] copy = libraryMatrix.clone();
+                int found=0;
+                for(int i=0; i<3; i++){
+                    for(int j=0; j<2; j++){
+                        if(checkGroupsOfFour(copy[i][j],copy[i][j+1],copy[i][j+2],copy[i][j+3])){
+                            found++;
+                            if(found==4) return true;
                         }
-                        if(diff<=3){
-                            trovato++;
+                        if (checkGroupsOfFour(copy[i][j],copy[i+1][j],copy[i+2][j],copy[i+3][j])){
+                            found++;
+                            if(found==4) return true;
+                        }
+
+                    }
+                } for(int i=3; i<6; i++){
+                    for(int j=0; j<2; j++){
+                        if(checkGroupsOfFour(copy[i][j],copy[i][j+1],copy[i][j+2],copy[i][j+3])){
+                            found++;
+                            if(found==4) return true;
+                        }
+                    }
+                } for(int i=0; i<3; i++){
+                    for(int j=2; j<5; j++){
+                        if (checkGroupsOfFour(copy[i][j],copy[i+1][j],copy[i+2][j],copy[i+3][j])){
+                            found++;
+                            if(found==4) return true;
                         }
                     }
                 }
-                return trovato == 3;
+                return false;
+            }
+
+            case TWO_GROUPS_IN_SQUARE -> {
+                HashSet<ColourTile> differentColours= new HashSet<ColourTile>();
+                TileSlot[][] copy = libraryMatrix.clone();
+                int found=0;
+
+                for (int i = 0; i < MAX_SHELF_ROWS - 1; i++) {
+                    for (int j = 0; j < MAX_SHELF_COLUMNS - 1; j++) {
+                        if (checkGroupsOfFour(copy[i][j], copy[i+1][j], copy[i][j+1], copy[i+1][j+1])) {
+                            if(differentColours.contains(libraryMatrix[i][j].getAssignedTile().getColour())) return true;
+                            else differentColours.add(libraryMatrix[i][j].getAssignedTile().getColour());
+                        }
+                    }
+                }
+                return false;
+            }
+
+            case THREE_FULL_COLUMNS_WITH_MAX_THREE_DIFFERENT_TYPES -> {
+                int found = 0;
+                for(int i = 0; i < MAX_SHELF_COLUMNS; i++){
+                    TileSlot[] temp = new TileSlot[MAX_SHELF_ROWS];
+                    for(int j = 0; j < MAX_SHELF_ROWS; j++){
+                        temp[j] = libraryMatrix[j][i];
+                    }
+                    if (checkAllDifferent(temp, "COLUMN") < 4 ){
+                        found++;
+                    }
+                }
+                if(found>2) {
+                    return true;
+                }
+
             }
             case EIGHT_EQUALS -> {
                 int count = 0;
@@ -90,37 +162,51 @@ public class Utils {
                 return ((checkDiagonal(libraryMatrix,firstDiagonal,1,1))||(checkDiagonal(libraryMatrix,secondDiagonal,1,1))||(checkDiagonal(libraryMatrix,thirdDiagonal,-1,-1))||(checkDiagonal(libraryMatrix,fourthDiagonal,-1,-1)));
             }
             case FOUR_FULL_ROWS_WITH_MAX_THREE_DIFFERENT_TYPES -> {
-                int trovato = 0;
-                int count=0;
-                int diff=0;
-                for (int i= 0; i < 6; i++) {
-                    for (int j = 0; j < 5; j++) {
-                        if(!(libraryMatrix[i][j].isFree())){
-                            count++;
-                        }
-                    } if(count==5){
-                        for(int j=0; j<5; j++){
-                            for(int y=i+1; y<5; y++){
-                                if(libraryMatrix[i][j].getAssignedTile().getColour()!= libraryMatrix[i][y].getAssignedTile().getColour()){
-                                    diff++;
-                                }
-                            }
-                        }
-                        if(diff<=3){
-                            trovato++;
-                        }
+                int found = 0;
+                for(int i = 0; i < MAX_SHELF_ROWS; i++){
+                    if (checkAllDifferent(libraryMatrix[i], "ROW") < 4){
+                        found++;
                     }
-                    count=0;
-
                 }
-                return trovato == 4;
+                if(found>3){
+                    return true;
+                }
 
-}           case TWO_FULL_COLUMNS_ALL_DIFFERENT -> {
-                return checkAllDifferent(libraryMatrix, "COLUMN");
+
+            }
+
+
+            case TWO_FULL_COLUMNS_ALL_DIFFERENT -> {
+                int found = 0;
+                for(int i = 0; i < MAX_SHELF_COLUMNS; i++){
+                    TileSlot[] temp = new TileSlot[MAX_SHELF_ROWS];
+                    for(int j = 0; j < MAX_SHELF_ROWS; j++){
+                        temp[j] = libraryMatrix[j][i];
+                    }
+                    if (checkAllDifferent(temp, "COLUMN") == MAX_SHELF_ROWS ){
+                        found++;
+                    }
+                }
+                if(found>1) {
+                    return true;
+                }
+
+
             }
             case TWO_FULL_ROWS_ALL_DIFFERENT -> {
-                return checkAllDifferent(libraryMatrix,"ROW");
+                int found = 0;
+                for(int i = 0; i < MAX_SHELF_ROWS; i++){
+                    if (checkAllDifferent(libraryMatrix[i], "ROW") == MAX_SHELF_COLUMNS){
+                        found++;
+                    }
+                }
+                if(found>1){
+                    return true;
+                }
             }
+
+
+
             case FIVE_IN_A_X -> {
 
                     for(int i=1; i<4; i++){
@@ -164,52 +250,41 @@ public class Utils {
 //Idea:rendere più generica la funzione per utilizzarla anche per FOUR_FULL_ROWS_WITH_MAX_THREE_DIFFERENT_TYPES e THREE_FULL_COLUMNS_WITH_MAX_THREE_DIFFERENT_TYPES
 // (per esempio potrebbe ritornare il numero di tessere diverse, e poi il controllo specifico sarebbe nei vari case)
 
-    public boolean checkAllDifferent(TileSlot[][] libraryMatrix, String Type) {
-        if (Type.equals("ROW")) {
-            int found = 0;
-            int h = 0;
-            int count = 0;
-            while (found != 2 && h < MAX_SHELF_ROWS) {
-                for (int i = 0; i < MAX_SHELF_COLUMNS; i++) {
-                    for (int j = i + 1; j < MAX_SHELF_COLUMNS; j++) {
-                        if (libraryMatrix[h][i].getAssignedTile().getColour() != libraryMatrix[h][j].getAssignedTile().getColour()) {
-                            count++;
-                        }
+    public int checkAllDifferent(TileSlot[] libraryMatrix, String type) {
 
-                    }
-                }
-                if (count == MAX_SHELF_COLUMNS) {
-                    found++;
-                }
-                count = 0;
-                h++;
+        int numColours = 0;
 
+        HashSet<ColourTile> differentColours= new HashSet<ColourTile>();
+
+        if (type.equals("ROW")) {
+
+            for (int i = 0; i < MAX_SHELF_COLUMNS; i++) {
+                    if(libraryMatrix[i].isFree()) return 0;
+                    differentColours.add(libraryMatrix[i].getAssignedTile().getColour());
             }
-            return found >= 2;
+
+            numColours = differentColours.size();
+
+            return numColours;
+
         }
 
-        else if(Type.equals("COLUMN")){
-            int found = 0;
-            int h=0;
-            int count=0;
-            while (found != 2 && h<MAX_SHELF_COLUMNS) {
-                for (int i = 0; i < MAX_SHELF_ROWS; i++) {
-                    for (int j = i; j < MAX_SHELF_ROWS; j++) {
-                        if(libraryMatrix[i][h].getAssignedTile().getColour()!= libraryMatrix[j][h].getAssignedTile().getColour()){
-                            count++;
-                        }
 
-                    }
-                }
-                if(count==MAX_SHELF_ROWS){
-                    found++;
-                }
-                count=0;
-                h++;
+
+        if(type.equals("COLUMN")){
+
+            for (int i = 0; i < MAX_SHELF_ROWS; i++) {
+                if(libraryMatrix[i].isFree()) return 0;
+                differentColours.add(libraryMatrix[i].getAssignedTile().getColour());
             }
-            return found >= 2;
+
+            numColours = differentColours.size();
+
+            return numColours;
+
         }
-        return false;
+
+        return 0;
     }
 
 

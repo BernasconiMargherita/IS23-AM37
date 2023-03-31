@@ -29,10 +29,9 @@ public class Library {
     /**
      * method that adds up to three selected tiles in Library. It counts, in the given column, how many rows are full using the method isFree (form TileSlot)
      * Tiles are stored in array created by Board and put in the library with assignTile method
-     * @throws FullColumnException if column is full
      * @throws NoSpaceInColumnException if there is not enough space for the selected numbers of tiles
      */
-    public void addCardInColumn (int col, Tile[] selectedTile) throws FullColumnException, NoSpaceInColumnException {
+    public void addCardInColumn (int col, Tile[] selectedTile) throws NoSpaceInColumnException {
 
 
         int row = 0;
@@ -42,14 +41,10 @@ public class Library {
             }
 
 
-            if (row == MAX_SHELF_ROWS) {
-                throw new FullColumnException();
-            }
-
-
             if (row > MAX_SHELF_ROWS - selectedTile.length) {
                 throw new NoSpaceInColumnException();
             }
+
         }
 
         for (Tile tile : selectedTile) {
