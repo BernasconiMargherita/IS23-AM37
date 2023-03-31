@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class Utils {
@@ -32,6 +33,35 @@ public class Utils {
         TileSlot[][] libraryMatrix = library.getLibrary();
         switch (commonCard.getCommonType()) {
             case SIX_GROUPS_OF_TWO -> {
+                TileSlot[][] copy = libraryMatrix.clone();
+                int found=0;
+                for(int i=0; i<5; i++){
+                    for(int j=0; j<4; j++){
+                        if(checkGroupsOfTwo(copy[i][j],copy[i][j+1]){
+                            found++;
+                            if(found==6) return true;
+                        }
+                        if (checkGroupsOfTwo(copy[i][j],copy[i+1][j]){
+                            found++;
+                            if(found==6) return true;
+                        }
+
+                    }
+                } for(int i=0; i<5; i++){
+                        if(checkGroupsOfTwo(copy[i][4],copy[i+1][4])){
+                            found++;
+                            if(found==6) return true;
+                        }
+
+                }
+                    for(int j=0; j<4; j++){
+                        if (checkGroupsOfTwo(copy[5][j],copy[5][j+1])){
+                            found++;
+                            if(found==6) return true;
+                        }
+                    }
+                return false;
+
 
             }
             case FOUR_EQUALS_ANGLES -> {
@@ -75,20 +105,21 @@ public class Utils {
             }
 
             case TWO_GROUPS_IN_SQUARE -> {
-
+                HashSet<ColourTile> differentColours= new HashSet<ColourTile>();
                 TileSlot[][] copy = libraryMatrix.clone();
                 int found=0;
 
                 for (int i = 0; i < MAX_SHELF_ROWS - 1; i++) {
                     for (int j = 0; j < MAX_SHELF_COLUMNS - 1; j++) {
                         if (checkGroupsOfFour(copy[i][j], copy[i+1][j], copy[i][j+1], copy[i+1][j+1])) {
-                            found++;
-                            if (found==2) return true;
+                            if(differentColours.contains(libraryMatrix[i][j].getAssignedTile().getColour())) return true;
+                            else differentColours.add(libraryMatrix[i][j].getAssignedTile().getColour());
                         }
                     }
                 }
                 return false;
             }
+
             case THREE_FULL_COLUMNS_WITH_MAX_THREE_DIFFERENT_TYPES -> {
                 int found = 0;
                 for(int i = 0; i < MAX_SHELF_COLUMNS; i++){
@@ -253,23 +284,7 @@ public class Utils {
 
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return 0;
     }
 
 
@@ -301,6 +316,16 @@ public class Utils {
          return false;
     }
 
+    public boolean checkGroupsOfTwo(TileSlot tileSlot1, TileSlot tileSlot2{
+        if(!(tileSlot1.isFree()) &&  !(tileSlot2.isFree()) &&
+                tileSlot1.getAssignedTile().getColour()==tileSlot2.getAssignedTile().getColour()){
+
+            tileSlot1.removeAssignedTile();
+            tileSlot2.removeAssignedTile();
+            return true;
+        }
+        return false;
+    }
     /**
      * Method for link a personal card to an array of Coordinates and TileColour,used for check later if the player has reached his personal target
      * @param personalType one of the element of PersonalList enum
