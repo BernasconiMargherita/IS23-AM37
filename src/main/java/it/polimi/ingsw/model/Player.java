@@ -29,7 +29,7 @@ public class Player {
         this.score += addedScore;
     }
 
-    public void addTilesInLibrary(int col,Tile[] selectedTile) throws NoSpaceInColumnException, FullColumnException {
+    public void addTilesInLibrary(int col,Tile[] selectedTile) throws NoSpaceInColumnException {
         personalLibrary.addCardInColumn(col, selectedTile);
     }
 
