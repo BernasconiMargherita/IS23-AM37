@@ -142,4 +142,15 @@ public class BoardTest {
 
         System.out.println("validPositions");
     }
+
+    @Test
+    void getNullTile(){
+        try {
+            Board board=new Board(2);
+            ColourTile colourTile = board.getBoard()[0][0].getAssignedTile().getColour();
+        } catch (NullPointerException | SoldOutTilesException e) {
+            System.out.println("Exception!");
+        }
+
+    }
 }

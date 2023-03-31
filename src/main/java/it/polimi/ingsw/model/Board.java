@@ -6,6 +6,8 @@ import java.util.Objects;
  * Class that represents the gaming board
  */
 public class Board {
+    public static final int MAX_BOARD_ROWS = 11;
+    public static final int MAX_BOARD_COLUMNS = 11;
     /**
      * A TileSlot Matrix, big enough for all the number of players, with extra space to make it a square for simplify operation like refilling
      */
@@ -72,17 +74,16 @@ public class Board {
      */
     Board(int numOfPlayers) throws SoldOutTilesException {
         this.bag = new TileDeck();
-        CommonDeck commonDeck = new CommonDeck(numOfPlayers);
-        this.board = new TileSlot[11][11];
+        this.board = new TileSlot[MAX_BOARD_ROWS][MAX_BOARD_COLUMNS];
         this.boardMask = choseMask(numOfPlayers);
 
-        for (int i=0;i<11;i++){
-            for (int j=0;j<11;j++){
+        for (int i=0;i<MAX_BOARD_ROWS;i++){
+            for (int j=0;j<MAX_BOARD_COLUMNS;j++){
                 board[i][j]= new TileSlot();
             }
         }
-            for (int j = 0; j < 11; j++) {
-                for (int k = 0; k < 11; k++) {
+            for (int j = 0; j < MAX_BOARD_ROWS; j++) {
+                for (int k = 0; k < MAX_BOARD_COLUMNS; k++) {
                     if (boardMask[j][k]) board[j][k].assignTile(bag.randomDraw());
                 }
             }
@@ -92,13 +93,11 @@ public class Board {
      * method for refilling the board if necessary,leaving the already filled TileSlots untouched
      */
     public void refillBoard() throws SoldOutTilesException {
-        if (refillIsNecessary()) {
-            for (int j = 0; j < 11; j++) {
-                for (int k = 0; k < 11; k++) {
+            for (int j = 0; j < MAX_BOARD_ROWS; j++) {
+                for (int k = 0; k < MAX_BOARD_COLUMNS; k++) {
                     if ((boardMask[j][k]) && (board[j][k].isFree())) board[j][k].assignTile(bag.randomDraw());
                 }
             }
-        }
     }
 
     /**
@@ -124,7 +123,7 @@ public class Board {
             
             if (board[position.getX()][position.getY()].isFree()) throw new EmptySlotException();
             if (!boardMask[position.getX()][position.getY()]) throw new InvalidSlotException();
-            
+
             if ((board[(position.getX()) + 1][position.getY()].isFree()) || (board[(position.getX()) - 1][position.getY()].isFree()) || (board[(position.getX())][position.getY() + 1].isFree()) || (board[(position.getX())][position.getY() - 1].isFree())) {
                     selectedTile[i] = board[position.getX()][position.getY()].getAssignedTile();
                 } else throw new InvalidSlotException();
@@ -139,8 +138,8 @@ public class Board {
      * method to see if on the board are only tiles with free spaces near them
      */
     public boolean refillIsNecessary(){
-        for (int i=0;i<11;i++){
-            for (int j=0;j<11;j++){
+        for (int i=0;i<MAX_BOARD_ROWS;i++){
+            for (int j=0;j<MAX_BOARD_COLUMNS;j++){
                 if ((boardMask[i][j])&&((!(board[i+1][j].isFree()))||(!(board[i-1][j].isFree()))||(!(board[i][j+1].isFree()))||(!(board[i][j-1].isFree())))) return false;
             }
         }
