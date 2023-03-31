@@ -7,7 +7,13 @@ import java.util.Objects;
  * @param colourTile  identify the colour of the tile in a specific position
  */
 public record PersonalCardTile(Coordinates coordinates, ColourTile colourTile) {
+    @Override
+    public Coordinates coordinates() {
+        return coordinates;
+    }
 
-
-
+    @Override
+    public ColourTile colourTile() {
+        return colourTile;
+    }
 }

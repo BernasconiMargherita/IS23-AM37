@@ -6,13 +6,13 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 
 public class PersonalParser {
-    private final Gson gson = new Gson();
-    private final FileReader reader ;
+
 
     CardPersonalTarget[] cardPersonalTargets ;
 
     public PersonalParser() throws FileNotFoundException {
-        reader = new FileReader("C:\\Users\\ramir\\Desktop\\ProgettoIngegneriaDelSoftware\\src\\main\\java\\it\\polimi\\ingsw\\model\\listOfPersonalCards.json");
+        FileReader reader = new FileReader("listOfPersonalCards.json");
+        Gson gson = new Gson();
         cardPersonalTargets = gson.fromJson(reader, CardPersonalTarget[].class);
     }
 
