@@ -42,9 +42,52 @@ public class Utils {
             }
 
             case FOUR_GROUPS_OF_FOUR -> {
+                TileSlot[][] copy = libraryMatrix.clone();
+                int found=0;
+                for(int i=0; i<3; i++){
+                    for(int j=0; j<2; j++){
+                        if(checkGroupsOfFour(copy[i][j],copy[i][j+1],copy[i][j+2],copy[i][j+3])){
+                            found++;
+                            if(found==4) return true;
+                        }
+                        if (checkGroupsOfFour(copy[i][j],copy[i+1][j],copy[i+2][j],copy[i+3][j])){
+                            found++;
+                            if(found==4) return true;
+                        }
+
+                    }
+                } for(int i=3; i<6; i++){
+                    for(int j=0; j<2; j++){
+                        if(checkGroupsOfFour(copy[i][j],copy[i][j+1],copy[i][j+2],copy[i][j+3])){
+                            found++;
+                            if(found==4) return true;
+                        }
+                    }
+                } for(int i=0; i<3; i++){
+                    for(int j=2; j<5; j++){
+                        if (checkGroupsOfFour(copy[i][j],copy[i+1][j],copy[i+2][j],copy[i+3][j])){
+                            found++;
+                            if(found==4) return true;
+                        }
+                    }
+                }
+                return false;
             }
+
             case TWO_GROUPS_IN_SQUARE -> {
 
+                TileSlot[][] copy = libraryMatrix.clone();
+                int found=0;
+
+                for (int i = 0; i < MAX_SHELF_ROWS - 1; i++) {
+                    for (int j = 0; j < MAX_SHELF_COLUMNS - 1; j++) {
+                        if (checkGroupsOfFour(copy[i][j], copy[i+1][j], copy[i][j+1], copy[i+1][j+1])) {
+                            found++;
+                            if (found==2) return true;
+                        }
+                    }
+                }
+                return false;
             }
             case THREE_FULL_COLUMNS_WITH_MAX_THREE_DIFFERENT_TYPES -> {
                 int found = 0;
@@ -207,10 +250,28 @@ public class Utils {
             numColours = differentColours.size();
 
             return numColours;
+
         }
 
-        return 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
+
 
     public boolean checkDiagonal(TileSlot[][] libraryMatrix, Coordinates coordinates, int k, int h){
         int j = coordinates.getY();
@@ -222,6 +283,22 @@ public class Utils {
             }
         }
         return count == MAX_SHELF_COLUMNS;
+    }
+
+
+    public boolean checkGroupsOfFour(TileSlot tileSlot1, TileSlot tileSlot2, TileSlot tileSlot3, TileSlot tileSlot4){
+         if(!(tileSlot1.isFree()) &&  !(tileSlot2.isFree()) && !(tileSlot3.isFree()) && !(tileSlot4.isFree())&&
+                tileSlot1.getAssignedTile().getColour()==tileSlot2.getAssignedTile().getColour() &&
+                tileSlot1.getAssignedTile().getColour()== tileSlot3.getAssignedTile().getColour() &&
+                tileSlot1.getAssignedTile().getColour() == tileSlot4.getAssignedTile().getColour()){
+
+             tileSlot1.removeAssignedTile();
+             tileSlot2.removeAssignedTile();
+             tileSlot3.removeAssignedTile();
+             tileSlot4.removeAssignedTile();
+             return true;
+         }
+         return false;
     }
 
     /**
