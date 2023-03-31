@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class Game {
     private boolean isLastTurn;
     private Utils utils;
 
-    public Game(ArrayList<Player> playerArray) throws SoldOutTilesException {
+    public Game(ArrayList<Player> playerArray) throws SoldOutTilesException, FileNotFoundException {
         this.players= new ArrayList<>();
         this.board = null;
         this.personalDeck = new PersonalDeck(playerArray.size());
