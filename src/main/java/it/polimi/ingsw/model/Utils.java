@@ -302,7 +302,31 @@ public class Utils {
 
 
 
+    public boolean checkGroupsOfFour(TileSlot tileSlot1, TileSlot tileSlot2, TileSlot tileSlot3, TileSlot tileSlot4){
+        if(!(tileSlot1.isFree()) &&  !(tileSlot2.isFree()) && !(tileSlot3.isFree()) && !(tileSlot4.isFree())&&
+                tileSlot1.getAssignedTile().getColour()==tileSlot2.getAssignedTile().getColour() &&
+                tileSlot1.getAssignedTile().getColour()== tileSlot3.getAssignedTile().getColour() &&
+                tileSlot1.getAssignedTile().getColour() == tileSlot4.getAssignedTile().getColour()){
 
+            tileSlot1.removeAssignedTile();
+            tileSlot2.removeAssignedTile();
+            tileSlot3.removeAssignedTile();
+            tileSlot4.removeAssignedTile();
+            return true;
+        }
+        return false;
+    }
+
+    public boolean checkGroupsOfTwo(TileSlot tileSlot1, TileSlot tileSlot2){
+        if(!(tileSlot1.isFree()) &&  !(tileSlot2.isFree()) &&
+                tileSlot1.getAssignedTile().getColour()==tileSlot2.getAssignedTile().getColour()){
+
+            tileSlot1.removeAssignedTile();
+            tileSlot2.removeAssignedTile();
+            return true;
+        }
+        return false;
+    }
 
 
 
