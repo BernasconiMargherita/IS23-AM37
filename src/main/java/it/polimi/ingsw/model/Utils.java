@@ -42,6 +42,7 @@ public class Utils {
             case FOUR_GROUPS_OF_FOUR -> {
             }
             case TWO_GROUPS_IN_SQUARE -> {
+
             }
             case THREE_FULL_COLUMNS_WITH_MAX_THREE_DIFFERENT_TYPES -> {
                 int trovato = 0;
