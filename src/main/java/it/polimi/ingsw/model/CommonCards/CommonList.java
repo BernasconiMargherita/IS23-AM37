@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.CommonCards;
 
 /**
  * Enum for distinguish the common goal cards, used by Utils to generate the corresponding card

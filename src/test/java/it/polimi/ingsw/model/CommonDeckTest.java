@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.CommonCards.CardCommonTarget;
+import it.polimi.ingsw.model.CommonCards.CommonDeck;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -1,6 +1,15 @@
 package it.polimi.ingsw.model;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import it.polimi.ingsw.Exception.EmptySlotException;
+import it.polimi.ingsw.Exception.InvalidPositionsException;
+import it.polimi.ingsw.Exception.InvalidSlotException;
+import it.polimi.ingsw.Exception.SoldOutTilesException;
+import it.polimi.ingsw.Utils.Coordinates;
+import it.polimi.ingsw.model.Board.Board;
+import it.polimi.ingsw.model.Tile.ColourTile;
+import it.polimi.ingsw.model.Tile.Tile;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -80,7 +89,7 @@ public class BoardTest {
     }
 
     @Test
-    void emptySlotOnBoard() throws EmptySlotException, InvalidSlotException , SoldOutTilesException{
+    void emptySlotOnBoard() throws EmptySlotException, InvalidSlotException, SoldOutTilesException{
         Board board = new Board(2);
         Tile[] tiles = new Tile[1];
 
@@ -148,7 +157,7 @@ public class BoardTest {
         try {
             Board board=new Board(2);
             ColourTile colourTile = board.getBoard()[0][0].getAssignedTile().getColour();
-        } catch (NullPointerException | SoldOutTilesException e) {
+        } catch (NullPointerException e) {
             System.out.println("Exception!");
         }
 

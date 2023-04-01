@@ -1,17 +1,21 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.Player;
+
+import it.polimi.ingsw.Exception.NoSpaceInColumnException;
+import it.polimi.ingsw.Utils.Utils;
+import it.polimi.ingsw.model.PersonalCards.CardPersonalTarget;
+import it.polimi.ingsw.model.Tile.Tile;
 
 /**
  * Class that represent the Player
  */
 public class Player {
     private final String nickname;
-    private final Library personalLibrary;
-    private final CardPersonalTarget cardPersonalTarget;
+    private final Shelf personalShelf;
+    private CardPersonalTarget cardPersonalTarget;
     private int score;
 
-    private final boolean isFirstPlayer;
+    private boolean isFirstPlayer=false;
     private final Utils utils;
-
 
 
     public String getNickname() {
@@ -21,15 +25,11 @@ public class Player {
     /**
      * Constructor that assigns to the player a nickname, personalTarget and a boolean indicating if the player is the first one
      * @param nickname
-     * @param cardPersonalTarget
-     * @param isFirstPlayer tells if this player is the first one
      */
-    public Player(String nickname, CardPersonalTarget cardPersonalTarget, boolean isFirstPlayer){
+    public Player(String nickname){
         this.utils=new Utils();
         this.nickname=nickname;
-        this.cardPersonalTarget=cardPersonalTarget;
-        this.isFirstPlayer = isFirstPlayer;
-        this.personalLibrary=new Library();
+        this.personalShelf =new Shelf();
         this.score=0;
     }
 
@@ -47,8 +47,8 @@ public class Player {
      * @param selectedTile array of selected tiles
      * @throws NoSpaceInColumnException
      */
-    public void addTilesInLibrary(int col,Tile[] selectedTile) throws NoSpaceInColumnException {
-        personalLibrary.addCardInColumn(col, selectedTile);
+    public void addTilesInLibrary(int col, Tile[] selectedTile) throws NoSpaceInColumnException {
+        personalShelf.addCardInColumn(col, selectedTile);
     }
 
 
@@ -58,10 +58,16 @@ public class Player {
      */
     public void checkPersonalTarget(){
         int[] points = {0,1,2,4,6,9,12};
-        this.score += points[utils.checkPersonalTarget(personalLibrary, cardPersonalTarget)];
+        this.score += points[utils.checkPersonalTarget(personalShelf, cardPersonalTarget)];
     }
 
+    public void setPersonalCard(CardPersonalTarget personalCard) {
+        this.cardPersonalTarget=personalCard;
+    }
 
+    public void setFirstPlayer(){
+        this.isFirstPlayer=true;
+    }
     public boolean isFirstPlayer() {
         return isFirstPlayer;
     }

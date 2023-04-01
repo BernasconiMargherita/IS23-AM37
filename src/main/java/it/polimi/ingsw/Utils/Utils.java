@@ -1,6 +1,10 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.Utils;
 
-import java.util.ArrayList;
+import it.polimi.ingsw.model.CommonCards.CardCommonTarget;
+import it.polimi.ingsw.model.PersonalCards.CardPersonalTarget;
+import it.polimi.ingsw.model.Player.Shelf;
+import it.polimi.ingsw.model.Tile.ColourTile;
+
 import java.util.HashSet;
 
 public class Utils {
@@ -8,29 +12,29 @@ public class Utils {
     private static final int MAX_SHELF_ROWS = 6;
 
     /**
-     * method that compares the player's library and the personalCard, and returns the number of the completed objectives (0,...,6)
-     * the if statement is true if the library's TileSlot is NOT EMPTY and true if the tile in the TileSlot is the same color as the Personal Card (in position i)
-     * @param library Library of the player
+     * method that compares the player's shelf and the personalCard, and returns the number of the completed objectives (0,...,6)
+     * the if statement is true if the shelf's TileSlot is NOT EMPTY and true if the tile in the TileSlot is the same color as the Personal Card (in position i)
+     * @param shelf Shelf of the player
      * @param cardPersonalTarget his personal target card
      * @return completedGoals
      */
 
 
-    public int checkPersonalTarget(Library library, CardPersonalTarget cardPersonalTarget){
+    public int checkPersonalTarget(Shelf shelf, CardPersonalTarget cardPersonalTarget){
         int completedGoals = 0;
 
 
         for(int i = 0; i < 6 ; i++)
 
-            if (!(library.getLibrary()[cardPersonalTarget.getPersonalCardTiles()[i].coordinates().getX()][cardPersonalTarget.getPersonalCardTiles()[i].coordinates().getY()].isFree()) && cardPersonalTarget.getPersonalCardTiles()[i].colourTile() == library.getLibrary()[cardPersonalTarget.getPersonalCardTiles()[i].coordinates().getX()][cardPersonalTarget.getPersonalCardTiles()[i].coordinates().getY()].getAssignedTile().getColour()) {
+            if (!(shelf.getShelf()[cardPersonalTarget.getPersonalCardTiles()[i].coordinates().getX()][cardPersonalTarget.getPersonalCardTiles()[i].coordinates().getY()].isFree()) && cardPersonalTarget.getPersonalCardTiles()[i].colourTile() == shelf.getShelf()[cardPersonalTarget.getPersonalCardTiles()[i].coordinates().getX()][cardPersonalTarget.getPersonalCardTiles()[i].coordinates().getY()].getAssignedTile().getColour()) {
                 completedGoals++;
             }
 
         return completedGoals;
     }
-    public boolean checkCommonTarget(Library library,CardCommonTarget commonCard) {
+    public boolean checkCommonTarget(Shelf shelf, CardCommonTarget commonCard) {
 
-        TileSlot[][] libraryMatrix = library.getLibrary();
+        TileSlot[][] libraryMatrix = shelf.getShelf();
         switch (commonCard.getCommonType()) {
             case SIX_GROUPS_OF_TWO -> {
                 TileSlot[][] copy = libraryMatrix.clone();
@@ -327,26 +331,6 @@ public class Utils {
         }
         return false;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }
