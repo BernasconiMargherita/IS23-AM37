@@ -37,7 +37,7 @@ public class Player {
      * Method that stores and modifies score value
      * @param addedScore
      */
-    public void setScore(int addedScore){
+    public void addScore(int addedScore){
         this.score += addedScore;
     }
 
@@ -56,9 +56,14 @@ public class Player {
      * method that calls the checkPersonalTarget of utils,
      * and transforms the value returned by the latter into points, finally adds these points to score
      */
-    public void checkPersonalTarget(){
+    public boolean checkPersonalTarget(){
         int[] points = {0,1,2,4,6,9,12};
-        this.score += points[utils.checkPersonalTarget(personalShelf, cardPersonalTarget)];
+        int check=utils.checkPersonalTarget(personalShelf, cardPersonalTarget);
+        if (check>0) {
+            this.score += points[check];
+            return true;
+        }
+        return false;
     }
 
     public void setPersonalCard(CardPersonalTarget personalCard) {
@@ -70,6 +75,14 @@ public class Player {
     }
     public boolean isFirstPlayer() {
         return isFirstPlayer;
+    }
+
+    public boolean isShelfFull(){
+        return personalShelf.isFull();
+    }
+
+    public Shelf getPersonalShelf() {
+        return personalShelf;
     }
 }
 

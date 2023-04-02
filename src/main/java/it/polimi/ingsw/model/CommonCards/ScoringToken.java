@@ -21,7 +21,7 @@ public class ScoringToken {
     }
 
     /**
-     * getter of getValueToken
+     * getter of ValueToken
      * @return valueToken
      */
 
