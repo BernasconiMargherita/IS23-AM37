@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.Exception;
 
 /**
  * Exception thrown when a selected slot is not valid

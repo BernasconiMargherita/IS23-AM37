@@ -1,4 +1,6 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.Utils;
+
+import it.polimi.ingsw.model.Tile.Tile;
 
 /**
  * Class that abstracts the concept of a Slot on the board

@@ -1,5 +1,8 @@
-package it.polimi.ingsw.model;
-
+package it.polimi.ingsw.model.Board;
+import it.polimi.ingsw.Utils.Coordinates;
+import it.polimi.ingsw.model.Tile.*;
+import it.polimi.ingsw.Utils.TileSlot;
+import it.polimi.ingsw.Exception.*;
 import java.util.Objects;
 
 /**
@@ -72,7 +75,7 @@ public class Board {
      * the constructor of this class, that uses the boolean masks to fill the "true" marked spots
      * @param numOfPlayers number of players at the start of the game,used for switch cases
      */
-    Board(int numOfPlayers) throws SoldOutTilesException {
+    public Board(int numOfPlayers)  {
         this.bag = new TileDeck();
         this.board = new TileSlot[MAX_BOARD_ROWS][MAX_BOARD_COLUMNS];
         this.boardMask = choseMask(numOfPlayers);
@@ -84,7 +87,13 @@ public class Board {
         }
             for (int j = 0; j < MAX_BOARD_ROWS; j++) {
                 for (int k = 0; k < MAX_BOARD_COLUMNS; k++) {
-                    if (boardMask[j][k]) board[j][k].assignTile(bag.randomDraw());
+                    if (boardMask[j][k]) {
+                        try {
+                            board[j][k].assignTile(bag.randomDraw());
+                        } catch (SoldOutTilesException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
                 }
             }
     }
@@ -103,12 +112,12 @@ public class Board {
     /**
      * Method for removing from the board the player's selected tiles,first controlling if they are valid
      * @param positions an array of Coordinates,an Integer Pair with the coordinates of the selected tiles
-     * @return Selected tile is an array of Tiles, later used by the Player to fill his Library
+     * @return Selected tile is an array of Tiles, later used by the Player to fill his Shelf
      * @throws EmptySlotException exception for managing the selection of a free space on the board
      * @throws InvalidSlotException exception for managing the selection of a Tile with no free spaces around
      */
 
-    public Tile[] removeCardFromBoard(Coordinates[] positions) throws EmptySlotException,InvalidSlotException, InvalidPositionsException {
+    public Tile[] removeCardFromBoard(Coordinates[] positions) throws EmptySlotException, InvalidSlotException, InvalidPositionsException {
 
         for(int i = 1 ; i< positions.length ; i++ ){
                 if(!Objects.equals(positions[i - 1].getX(), positions[i].getX()) && !Objects.equals(positions[i - 1].getY(), positions[i].getY())) {

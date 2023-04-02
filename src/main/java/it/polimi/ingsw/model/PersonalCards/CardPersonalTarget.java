@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.PersonalCards;
 
 public class CardPersonalTarget {
     private final PersonalCardTile[] personalCardTiles;

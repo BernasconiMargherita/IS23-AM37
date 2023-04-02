@@ -1,4 +1,6 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.CommonCards;
+
+import it.polimi.ingsw.model.Card;
 
 import java.util.Stack;
 

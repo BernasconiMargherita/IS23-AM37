@@ -1,4 +1,6 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.Tile;
+
+import it.polimi.ingsw.Exception.SoldOutTilesException;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -41,7 +43,7 @@ public class TileDeck {
      * @return tileDeck.remove(...) : return a tile thet it's removed from the tileDeck
      */
 
-    public Tile randomDraw() throws SoldOutTilesException{
+    public Tile randomDraw() throws SoldOutTilesException {
         if(tileDeck.size() == 0) throw new SoldOutTilesException();
         Random random = new Random();
         int number = random.nextInt(tileDeck.size());

@@ -1,4 +1,7 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.PersonalCards;
+
+import it.polimi.ingsw.Utils.Coordinates;
+import it.polimi.ingsw.model.Tile.ColourTile;
 
 import java.util.Objects;
 

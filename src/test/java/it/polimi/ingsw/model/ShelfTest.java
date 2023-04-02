@@ -1,10 +1,14 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.Exception.NoSpaceInColumnException;
+import it.polimi.ingsw.model.Player.Shelf;
+import it.polimi.ingsw.model.Tile.ColourTile;
+import it.polimi.ingsw.model.Tile.Tile;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class LibraryTest {
+class ShelfTest {
 
 
 
@@ -15,7 +19,7 @@ class LibraryTest {
     public void aCaso() {
         Exception exception = assertThrows(NoSpaceInColumnException.class, ()->{
 
-            Library library = new Library();
+            Shelf shelf = new Shelf();
             Tile[] tiles = new Tile[3];
             tiles[0] = new Tile(ColourTile.CATS);
             tiles[1] = new Tile(ColourTile.CATS);
@@ -32,12 +36,12 @@ class LibraryTest {
 
 
             for(int i=0; i<3; i++) {
-                library.addCardInColumn(0, tiles);
+                shelf.addCardInColumn(0, tiles);
             }
             for(int i=0; i<3; i++) {
-                library.addCardInColumn(0, tiles1);
+                shelf.addCardInColumn(0, tiles1);
             }
-            library.addCardInColumn(0, tiles2);
+            shelf.addCardInColumn(0, tiles2);
         });
     }
 

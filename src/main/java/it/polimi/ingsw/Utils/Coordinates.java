@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.Utils;
 
 /**
  * Class for a pair of Integer that represents the coordinates of a Tile in the library or on the board

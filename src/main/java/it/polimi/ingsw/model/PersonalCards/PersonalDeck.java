@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.PersonalCards;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -20,9 +20,13 @@ public class PersonalDeck {
     /**
      * constructor of PersonalDeck that extracts the (numOfPlayers) personalCards
      */
-    public PersonalDeck(int numOfPlayers) throws FileNotFoundException {
+    public PersonalDeck(int numOfPlayers) {
+        try {
+            personalParser = new PersonalParser();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
-        PersonalParser personalParser = new PersonalParser();
         personalDeck = new ArrayList<>();
 
         Random random = new Random();

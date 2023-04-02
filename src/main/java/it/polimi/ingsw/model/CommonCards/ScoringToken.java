@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.CommonCards;
 
 public class ScoringToken {
     /**
@@ -21,7 +21,7 @@ public class ScoringToken {
     }
 
     /**
-     * getter of getValueToken
+     * getter of ValueToken
      * @return valueToken
      */
 
