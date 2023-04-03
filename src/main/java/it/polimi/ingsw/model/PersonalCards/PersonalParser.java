@@ -7,8 +7,15 @@ import java.io.FileReader;
 
 public class PersonalParser {
 
-
+    /**
+     * vector of all Personal Cards in game
+     */
     CardPersonalTarget[] cardPersonalTargets ;
+
+    /**
+     * constructor that deserializes the JSON file: listOfPersonalCards.json
+     * @throws FileNotFoundException
+     */
 
     public PersonalParser() throws FileNotFoundException {
         FileReader reader = new FileReader("listOfPersonalCards.json");
@@ -16,6 +23,10 @@ public class PersonalParser {
         cardPersonalTargets = gson.fromJson(reader, CardPersonalTarget[].class);
     }
 
+    /**
+     * getter of cardPersonalTargets
+     * @return
+     */
     public CardPersonalTarget[] getCardPersonalTargets() {
         return cardPersonalTargets;
     }

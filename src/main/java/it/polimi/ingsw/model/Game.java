@@ -54,7 +54,7 @@ public class Game {
      * method to check if there are sufficient players to start the game
      */
     public boolean isGameReadyToStart(){
-        return (players.size()>1 && players.size()<5);
+        return ( (players.size() > MIN_PLAYERS - 1)  &&  (players.size() < MAX_PLAYERS + 1) );
 
     }
 

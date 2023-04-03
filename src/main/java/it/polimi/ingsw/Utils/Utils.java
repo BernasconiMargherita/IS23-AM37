@@ -26,7 +26,7 @@ public class Utils {
 
         for(int i = 0; i < 6 ; i++)
 
-            if (!(shelf.getShelf()[cardPersonalTarget.getPersonalCardTiles()[i].coordinates().getX()][cardPersonalTarget.getPersonalCardTiles()[i].coordinates().getY()].isFree()) && cardPersonalTarget.getPersonalCardTiles()[i].colourTile() == shelf.getShelf()[cardPersonalTarget.getPersonalCardTiles()[i].coordinates().getX()][cardPersonalTarget.getPersonalCardTiles()[i].coordinates().getY()].getAssignedTile().getColour()) {
+            if (!(shelf.getShelf()[cardPersonalTarget.personalCardTiles()[i].coordinates().getX()][cardPersonalTarget.personalCardTiles()[i].coordinates().getY()].isFree()) && cardPersonalTarget.personalCardTiles()[i].colourTile() == shelf.getShelf()[cardPersonalTarget.personalCardTiles()[i].coordinates().getX()][cardPersonalTarget.personalCardTiles()[i].coordinates().getY()].getAssignedTile().getColour()) {
                 completedGoals++;
             }
 
