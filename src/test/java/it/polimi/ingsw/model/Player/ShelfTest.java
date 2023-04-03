@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.Player;
 
 import it.polimi.ingsw.Exception.NoSpaceInColumnException;
 import it.polimi.ingsw.model.Player.Shelf;

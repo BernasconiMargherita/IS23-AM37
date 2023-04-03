@@ -1,20 +1,14 @@
 package it.polimi.ingsw.model.CommonCards;
 
-import it.polimi.ingsw.model.Card;
-
 import java.util.Stack;
 
 
-
-import java.util.Stack;
-
-
-public class CardCommonTarget extends Card {
+public class CardCommonTarget {
     /**
      *  boolean assignedCommonCard: identifies the first or second common card of the board
      */
 
-    private final boolean assignedCommonCard;
+    private final int assignedCommonCard;
 
     /**
      * CommonList typeOfCommonCard: identifies the goal of the common card
@@ -31,7 +25,7 @@ public class CardCommonTarget extends Card {
      * @param commonType enum value of the common card
      * @param assignedCommonCard which of the two card the scoring token is assigned to
      */
-    public CardCommonTarget(CommonList commonType, boolean assignedCommonCard, int numOfPlayers){
+    public CardCommonTarget(CommonList commonType, int assignedCommonCard, int numOfPlayers){
 
 
 
@@ -80,9 +74,10 @@ public class CardCommonTarget extends Card {
 
     /**
      * getter of the value of assignedCommonCard
+     *
      * @return assignedCommonCard
      */
-    public boolean getAssignedCommonCard() {
+    public int getAssignedCommonCard() {
         return assignedCommonCard;
     }
 

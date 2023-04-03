@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.Tile;
 
 import it.polimi.ingsw.Exception.SoldOutTilesException;
 import it.polimi.ingsw.model.Tile.Tile;

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.PersonalCards;
 
 import it.polimi.ingsw.model.PersonalCards.PersonalDeck;
 import org.junit.jupiter.api.Test;

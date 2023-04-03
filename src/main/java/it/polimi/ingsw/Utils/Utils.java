@@ -124,7 +124,7 @@ public class Utils {
                 return false;
             }
 
-            case THREE_FULL_COLUMNS_WITH_MAX_THREE_DIFFERENT_TYPES -> {
+            case THREE_COLUMNS_THREE_DIFFERENT_TYPES -> {
                 int found = 0;
                 for(int i = 0; i < MAX_SHELF_COLUMNS; i++){
                     TileSlot[] temp = new TileSlot[MAX_SHELF_ROWS];
@@ -165,7 +165,7 @@ public class Utils {
                 Coordinates fourthDiagonal=new Coordinates(0,5);
                 return ((checkDiagonal(libraryMatrix,firstDiagonal,1,1))||(checkDiagonal(libraryMatrix,secondDiagonal,1,1))||(checkDiagonal(libraryMatrix,thirdDiagonal,-1,-1))||(checkDiagonal(libraryMatrix,fourthDiagonal,-1,-1)));
             }
-            case FOUR_FULL_ROWS_WITH_MAX_THREE_DIFFERENT_TYPES -> {
+            case FOUR_ROWS_THREE_DIFFERENT_TYPES -> {
                 int found = 0;
                 for(int i = 0; i < MAX_SHELF_ROWS; i++){
                     if (checkAllDifferent(libraryMatrix[i], "ROW") < 4){
@@ -180,7 +180,7 @@ public class Utils {
             }
 
 
-            case TWO_FULL_COLUMNS_ALL_DIFFERENT -> {
+            case TWO_COLUMNS_ALL_DIFFERENT -> {
                 int found = 0;
                 for(int i = 0; i < MAX_SHELF_COLUMNS; i++){
                     TileSlot[] temp = new TileSlot[MAX_SHELF_ROWS];
@@ -197,7 +197,7 @@ public class Utils {
 
 
             }
-            case TWO_FULL_ROWS_ALL_DIFFERENT -> {
+            case TWO_ROWS_ALL_DIFFERENT -> {
                 int found = 0;
                 for(int i = 0; i < MAX_SHELF_ROWS; i++){
                     if (checkAllDifferent(libraryMatrix[i], "ROW") == MAX_SHELF_COLUMNS){
@@ -251,7 +251,7 @@ public class Utils {
         return false;
     }
 
-//Idea:rendere più generica la funzione per utilizzarla anche per FOUR_FULL_ROWS_WITH_MAX_THREE_DIFFERENT_TYPES e THREE_FULL_COLUMNS_WITH_MAX_THREE_DIFFERENT_TYPES
+//Idea:rendere più generica la funzione per utilizzarla anche per FOUR_ROWS_THREE_DIFFERENT_TYPES e THREE_COLUMNS_THREE_DIFFERENT_TYPES
 // (per esempio potrebbe ritornare il numero di tessere diverse, e poi il controllo specifico sarebbe nei vari case)
 
     public int checkAllDifferent(TileSlot[] libraryMatrix, String type) {
