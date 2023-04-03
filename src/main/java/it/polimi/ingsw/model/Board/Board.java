@@ -3,6 +3,8 @@ import it.polimi.ingsw.Utils.Coordinates;
 import it.polimi.ingsw.model.Tile.*;
 import it.polimi.ingsw.Utils.TileSlot;
 import it.polimi.ingsw.Exception.*;
+
+import java.io.FileNotFoundException;
 import java.util.Objects;
 
 /**
@@ -26,59 +28,25 @@ public class Board {
     private final TileDeck bag;
 
     private final boolean[][] boardMask;
-    /**
-     * this three boolean arrays are masks, used by the initializer and the refill method to, based on the number of players, know which tile slot has to be checked to fill or refill
-     */
 
-    private static final boolean[][] twoPlayersTiles =
-            {       {false,false,false, false, false, false, false, false, false, false, false},
-                    {false,false, false, false, false, false, false, false, false, false,false},
-                    {false,false, false, false, true, true, false, false, false, false,false},
-                    {false,false, false, false, true, true, true, false, false, false,false},
-                    {false,false, false, true, true, true, true, true, true, false,false},
-                    {false,false, true, true, true, true, true, true, true, false,false},
-                    {false,false, true, true, true, true, true, true, false, false,false},
-                    {false,false, false, false, true, true, true, false, false, false,false},
-                    {false,false, false, false, false, true, true, false, false, false,false},
-                    {false,false, false, false, false, false, false, false, false, false,false},
-                    {false,false, false, false, false, false, false, false, false, false,false},
-            };
-
-    private static final boolean[][] threePlayersTiles =
-            {       {false,false,false, false, false, false, false, false, false, false, false},
-                    {false,false, false, false, true, false, false, false, false, false,false},
-                    {false,false, false, false, true, true, false, false, false, false,false},
-                    {false,false, false, true, true, true, true, true, false, false,false},
-                    {false,false, false, true, true, true, true, true, true, true,false},
-                    {false,false, true, true, true, true, true, true, true, false,false},
-                    {false,true, true, true, true, true, true, true, false, false,false},
-                    {false,false, false, true, true, true, true, true, false, false,false},
-                    {false,false, false, false, false, true, true, false, false, false,false},
-                    {false,false, false, false, false, false, true, false, false, false,false},
-                    {false,false,false, false, false, false, false, false, false, false, false}
-            };
-
-    private static final boolean[][] fourPlayersTiles =
-            {       {false,false,false, false, false, false, false, false, false, false, false},
-                    {false,false, false, false, true, true, false, false, false, false,false},
-                    {false,false, false, false, true, true, true, false, false, false,false},
-                    {false,false, false, true, true, true, true, true, false, false,false},
-                    {false,false, true, true, true, true, true, true, true, true,false},
-                    {false,true, true, true, true, true, true, true, true, true,false},
-                    {false,true, true, true, true, true, true, true, true, false,false},
-                    {false,false, false, true, true, true, true, true, false, false,false},
-                    {false,false, false, false, true, true, true, false, false, false,false},
-                    {false,false, false, false, false, true, true, false, false, false,false},
-                    {false,false,false, false, false, false, false, false, false, false, false}};
 
     /**
      * the constructor of this class, that uses the boolean masks to fill the "true" marked spots
      * @param numOfPlayers number of players at the start of the game,used for switch cases
      */
-    public Board(int numOfPlayers)  {
+    public Board(int numOfPlayers) {
+
         this.bag = new TileDeck();
         this.board = new TileSlot[MAX_BOARD_ROWS][MAX_BOARD_COLUMNS];
-        this.boardMask = choseMask(numOfPlayers);
+
+        BoardMaskParser boardMaskParser;
+        try{
+            boardMaskParser = new BoardMaskParser();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        this.boardMask = boardMaskParser.getBoardMask().getTiles(numOfPlayers);
 
         for (int i=0;i<MAX_BOARD_ROWS;i++){
             for (int j=0;j<MAX_BOARD_COLUMNS;j++){
@@ -155,15 +123,7 @@ public class Board {
         return true;
     }
 
-    /**
-     * method to choose a mask for the board based on the number of players
-     */
-    private boolean[][] choseMask(int numOfPlayers){
-        if (numOfPlayers==2) return twoPlayersTiles;
-        else if (numOfPlayers==3) return threePlayersTiles;
-        else if (numOfPlayers==4) return fourPlayersTiles;
-        throw new RuntimeException("Too much players"); //??
-    }
+
 
     public TileSlot[][] getBoard() {
         return this.board;
