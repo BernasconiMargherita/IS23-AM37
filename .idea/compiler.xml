@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="untitled1" />
+        <module name="MyShelfie" />
         <module name="ProgettoIngegneriaDelSoftware" />
         <module name="ProgettoSoftware" />
         <module name="AM37" />
