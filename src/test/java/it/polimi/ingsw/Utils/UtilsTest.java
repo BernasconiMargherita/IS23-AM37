@@ -1,9 +1,14 @@
 package it.polimi.ingsw.Utils;
 
+import it.polimi.ingsw.Exception.SoldOutTilesException;
 import it.polimi.ingsw.model.Tile.ColourTile;
 import it.polimi.ingsw.model.Tile.Tile;
 
+import it.polimi.ingsw.model.Tile.TileDeck;
 import org.junit.jupiter.api.Test;
+
+import java.awt.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 class UtilsTest {
 
@@ -53,14 +58,37 @@ class UtilsTest {
     }
 
     @Test
-    void checkDiagonal() {
-        Utils utils=new Utils();
+    void checkDiagonal() throws SoldOutTilesException {
+        Utils utils = new Utils();
+        TileDeck bag = new TileDeck();
         TileSlot[][] libraryMatrix = new TileSlot[6][5];
 
-        for(int i= 0; i< 6; i++){
-            for
+        Coordinates coordinates= new Coordinates(0,0);
+        int h=1;
+        int k=1;
 
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 5; j++) {
+                libraryMatrix[i][j] = new TileSlot();
+            }
+        }
+        for (int i = 0; i < 6; i++) {
+            for (int j =0; j < 5; j++) {
+                libraryMatrix[i][j].assignTile(bag.randomDraw());
+            }
+        }
+        int i = coordinates.getX();
+        for (int j = coordinates.getY(); j < 5; j+=h) {
+            while(i<5){
+            libraryMatrix[i][j].assignTile(new Tile(ColourTile.BOOKS));
+                i+=k;
+
+            }
+
+        }
+        assertTrue(utils.checkDiagonal(libraryMatrix, new Coordinates(0, 0), 1, 1));
     }
+
 
     @Test
     void checkGroupsOfFour() {
