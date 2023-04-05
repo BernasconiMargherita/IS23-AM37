@@ -295,7 +295,7 @@ public class Utils {
     public boolean checkDiagonal(TileSlot[][] libraryMatrix, Coordinates coordinates, int k, int h){
         int j = coordinates.getY();
         int count = 0;
-        for(int i= coordinates.getX(); i<MAX_SHELF_ROWS; i+=k){
+        for(int i= coordinates.getX(); i<MAX_SHELF_COLUMNS; i+=k){
             if (libraryMatrix[i][j].getAssignedTile().getColour() == libraryMatrix[i+k][j+h].getAssignedTile().getColour()) {
                 j+=k;
                 count++;
