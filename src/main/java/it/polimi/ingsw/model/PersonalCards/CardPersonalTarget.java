@@ -1,13 +1,9 @@
 package it.polimi.ingsw.model.PersonalCards;
 
-public class CardPersonalTarget {
-    private final PersonalCardTile[] personalCardTiles;
+/**
+ * class (record) that contains personal card information
+ * @param personalCardTiles -> vector of six containing the coordinates with their respective colors
+ */
 
-    public CardPersonalTarget(PersonalCardTile[] personalCardTiles) {
-        this.personalCardTiles = personalCardTiles;
-    }
-
-    public PersonalCardTile[] getPersonalCardTiles() {
-        return personalCardTiles;
-    }
+public record CardPersonalTarget(PersonalCardTile[] personalCardTiles) {
 }

@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class PersonalDeck {
-
+    /**
+     *  parser (JSON) of personalCards
+     */
     PersonalParser personalParser;
     /**
      * ArrayList<CardPersonalTarget> personalDeck : arrayList that contains (numOfPlayers) personalCards
