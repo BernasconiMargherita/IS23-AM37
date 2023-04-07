@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.Player;
 
 import it.polimi.ingsw.Exception.NoSpaceInColumnException;
 import it.polimi.ingsw.model.Player.Shelf;
@@ -13,10 +13,9 @@ class ShelfTest {
 
 
 
-
     @Test
 
-    public void aCaso() {
+    public void FullColumn() {
         Exception exception = assertThrows(NoSpaceInColumnException.class, ()->{
 
             Shelf shelf = new Shelf();

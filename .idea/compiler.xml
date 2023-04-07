@@ -11,6 +11,7 @@
         <module name="ProgettoIngegneriaDelSoftware" />
         <module name="ProgettoSoftware" />
         <module name="AM37" />
+        <module name="polimi.ingsw" />
       </profile>
     </annotationProcessing>
   </component>

@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.Player;
 
 import it.polimi.ingsw.Exception.NoSpaceInColumnException;
 import it.polimi.ingsw.Utils.Utils;
+import it.polimi.ingsw.model.CommonCards.ScoringToken;
 import it.polimi.ingsw.model.PersonalCards.CardPersonalTarget;
 import it.polimi.ingsw.model.Tile.Tile;
 
@@ -13,7 +14,7 @@ public class Player {
     private final Shelf personalShelf;
     private CardPersonalTarget cardPersonalTarget;
     private int score;
-
+    private boolean[] completedCommon;
     private boolean isFirstPlayer=false;
     private final Utils utils;
 
@@ -24,18 +25,17 @@ public class Player {
 
     /**
      * Constructor that assigns to the player a nickname, personalTarget and a boolean indicating if the player is the first one
-     * @param nickname
      */
     public Player(String nickname){
         this.utils=new Utils();
         this.nickname=nickname;
         this.personalShelf =new Shelf();
         this.score=0;
+        this.completedCommon = new boolean[]{false, false};
     }
 
     /**
      * Method that stores and modifies score value
-     * @param addedScore
      */
     public void addScore(int addedScore){
         this.score += addedScore;
@@ -45,7 +45,6 @@ public class Player {
      * Method that allows the player to add the selected tiles from the board to the library
      * @param col chosen column
      * @param selectedTile array of selected tiles
-     * @throws NoSpaceInColumnException
      */
     public void addTilesInLibrary(int col, Tile[] selectedTile) throws NoSpaceInColumnException {
         personalShelf.addCardInColumn(col, selectedTile);
@@ -83,6 +82,18 @@ public class Player {
 
     public Shelf getPersonalShelf() {
         return personalShelf;
+    }
+
+    public void setCompleted(int objective){
+        completedCommon[objective]=true;
+    }
+
+    public boolean isCompleted(int objective){
+        return completedCommon[objective];
+    }
+
+    public int getScore() {
+        return score;
     }
 }
 

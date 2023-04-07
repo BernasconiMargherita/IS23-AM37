@@ -23,11 +23,10 @@ public class Game {
     public static int MAX_PLAYERS=4;
     public static int MIN_PLAYERS=2;
     private Board board;
-    private ArrayList<CardPersonalTarget> personalDeck;
     private List<Player> players;
     private GameState gameState;
     private boolean isLastTurn;
-    private Utils utils;
+    private final Utils utils;
     private ArrayList<CardCommonTarget> commonDeck;
 
     /**
@@ -46,7 +45,7 @@ public class Game {
      */
     public void addPlayer(Player player) {
         if(gameState==GameState.IN_GAME) throw new GameAlreadyStarted("It is not possible to add a player when the game has already started");
-        if (players.size()==MAX_PLAYERS) throw new MaxPlayerException("There are already 4 players");
+        if (players.size()==MAX_PLAYERS) throw new MaxPlayerException("There are already 4 players so "+ player.getNickname()+" cannot be added");
         players.add(player);
     }
 
@@ -63,7 +62,7 @@ public class Game {
      */
     public void GameInit(){
         commonDeck=new CommonDeck(players.size()).getCommonDeck();
-        personalDeck=new PersonalDeck(players.size()).getPersonalDeck();
+        ArrayList<CardPersonalTarget> personalDeck = new PersonalDeck(players.size()).getPersonalDeck();
         board=new Board(players.size());
 
         pickFirstPlayer();
@@ -138,15 +137,16 @@ public class Game {
     }
 
     /**
-     * Method that check if the player has completed one of the two Common objective
-     * and proceeds to add the value of the ScoringToken to the player score, removing it from the card
+     * Method that check if the player has completed the two Common objective and if it has already completed them before,
+     * and proceeds to add the value of the ScoringToken to the player score, removing it from the card.
      * @param currentPlayer the player that is currently playing his turn
      */
     public void checkCommonTarget(Player currentPlayer) {
         for (CardCommonTarget cardCommonTarget : commonDeck) {
-            if (utils.checkCommonTarget(currentPlayer.getPersonalShelf(), cardCommonTarget)) {
+            if (!(currentPlayer.isCompleted(cardCommonTarget.getAssignedCommonCard()))&&(utils.checkCommonTarget(currentPlayer.getPersonalShelf(), cardCommonTarget))) {
+
+                currentPlayer.setCompleted(cardCommonTarget.getAssignedCommonCard());
                 currentPlayer.addScore(cardCommonTarget.getScoringToken());
-                //notify dei listeners
             }
         }
     }

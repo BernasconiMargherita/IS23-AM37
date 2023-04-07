@@ -30,6 +30,8 @@ public class Board {
     private final boolean[][] boardMask;
 
 
+
+
     /**
      * the constructor of this class, that uses the boolean masks to fill the "true" marked spots
      * @param numOfPlayers number of players at the start of the game,used for switch cases
