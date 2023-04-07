@@ -53,7 +53,7 @@ public class Shelf {
 
         for (Tile tile : selectedTile) {
             shelf[row][col].assignTile(tile);
-
+            row++;
             }
 
 

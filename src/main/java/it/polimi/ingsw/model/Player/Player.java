@@ -91,6 +91,10 @@ public class Player {
     public boolean isCompleted(int objective){
         return completedCommon[objective];
     }
+
+    public int getScore() {
+        return score;
+    }
 }
 
 

@@ -13,10 +13,9 @@ class ShelfTest {
 
 
 
-
     @Test
 
-    public void aCaso() {
+    public void FullColumn() {
         Exception exception = assertThrows(NoSpaceInColumnException.class, ()->{
 
             Shelf shelf = new Shelf();
