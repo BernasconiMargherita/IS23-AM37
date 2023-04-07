@@ -24,7 +24,6 @@ public class Player {
 
     /**
      * Constructor that assigns to the player a nickname, personalTarget and a boolean indicating if the player is the first one
-     * @param nickname
      */
     public Player(String nickname){
         this.utils=new Utils();
@@ -35,7 +34,6 @@ public class Player {
 
     /**
      * Method that stores and modifies score value
-     * @param addedScore
      */
     public void addScore(int addedScore){
         this.score += addedScore;
@@ -45,7 +43,6 @@ public class Player {
      * Method that allows the player to add the selected tiles from the board to the library
      * @param col chosen column
      * @param selectedTile array of selected tiles
-     * @throws NoSpaceInColumnException
      */
     public void addTilesInLibrary(int col, Tile[] selectedTile) throws NoSpaceInColumnException {
         personalShelf.addCardInColumn(col, selectedTile);
@@ -83,6 +80,10 @@ public class Player {
 
     public Shelf getPersonalShelf() {
         return personalShelf;
+    }
+
+    public int getScore() {
+        return score;
     }
 }
 

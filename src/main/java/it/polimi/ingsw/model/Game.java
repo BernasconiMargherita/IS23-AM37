@@ -23,11 +23,10 @@ public class Game {
     public static int MAX_PLAYERS=4;
     public static int MIN_PLAYERS=2;
     private Board board;
-    private ArrayList<CardPersonalTarget> personalDeck;
     private List<Player> players;
     private GameState gameState;
     private boolean isLastTurn;
-    private Utils utils;
+    private final Utils utils;
     private ArrayList<CardCommonTarget> commonDeck;
 
     /**
@@ -63,7 +62,7 @@ public class Game {
      */
     public void GameInit(){
         commonDeck=new CommonDeck(players.size()).getCommonDeck();
-        personalDeck=new PersonalDeck(players.size()).getPersonalDeck();
+        ArrayList<CardPersonalTarget> personalDeck = new PersonalDeck(players.size()).getPersonalDeck();
         board=new Board(players.size());
 
         pickFirstPlayer();
