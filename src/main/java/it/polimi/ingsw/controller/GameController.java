@@ -12,7 +12,7 @@ public class GameController {
     int turnChanger;
     Player currentPlayer;
 
-    GameController(ArrayList<Player> players){
+    public GameController(ArrayList<Player> players){
         Game game = new Game();
         this.players=players;
         this.turnChanger=0;
@@ -20,44 +20,36 @@ public class GameController {
         currentPlayer=players.get(turnChanger);
     }
 
-    private void onMessage(Message message){
-        switch (gameState){
-
-            case WAITING_PLAYERS -> {
-                loginCase((loginMessage) message);
-            }
-            case GAME_INIT -> {
-                initCase((initMessage) message);
-            }
-            case IN_GAME -> {
-                inGameCase((InGameMessage)message);
-            }
-            case END_GAME -> {
-                endGameCase((endGameMessage) message);
-            }
-        }
-    }
-
-    private void loginCase(loginMessage message) {
+    public void Login(String nickname) {
+        if (!(gameState == GameState.WAITING_PLAYERS)) throw new RuntimeException("Game already began");
+        if (nickname.equals(getPlayerByNickname(nickname))) throw new RuntimeException("Username already taken");
+        Player player=new Player(nickname);
 
     }
 
-    private void initCase(initMessage message) {
+    public void initCase(InitMessage message) {
     }
 
-    private void inGameCase(InGameMessage message) {
+    public void inGameCase(InGameMessage message) {
     }
 
-    private void endGameCase(endGameMessage message) {
+    public void endGameCase(EndGameMessage message) {
     }
 
-    private void nextTurn(){
+    public void nextTurn(){
         turnChanger=(turnChanger+1)% players.size();
         currentPlayer=players.get(turnChanger);
     }
 
     public Player getCurrentPlayer() {
         return currentPlayer;
+    }
+
+    public String getPlayerByNickname(String nickname) {
+        for (Player player : players) {
+            if (player.getNickname().equals(nickname)) return player.getNickname();
+        }
+        return null;
     }
 
 
