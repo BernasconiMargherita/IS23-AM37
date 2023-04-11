@@ -23,7 +23,7 @@ public class Game {
     public static int MAX_PLAYERS=4;
     public static int MIN_PLAYERS=2;
     private Board board;
-    private List<Player> players;
+    private ArrayList<Player> players;
     private GameState gameState;
     private boolean isLastTurn;
     private final Utils utils;
@@ -81,7 +81,7 @@ public class Game {
         int first = (new Random()).nextInt(players.size());
         players.get(first).setFirstPlayer();
 
-        List<Player> playerList = new ArrayList<>();
+        ArrayList<Player> playerList = new ArrayList<>();
 
         for (int i = first; i < players.size(); ++i) {
             playerList.add(players.get(i));

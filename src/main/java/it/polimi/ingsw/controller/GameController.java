@@ -4,51 +4,37 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.GameState;
 import it.polimi.ingsw.model.Player.Player;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class GameController {
-    private final GameState gameState;
-    private final ArrayList<Player> players;
-    int turnChanger;
-    Player currentPlayer;
+    private GameState gameState;
+    private List<Player> players;
+    private final Game game;
+    private int turnChanger;
+    private Player currentPlayer;
 
-    GameController(ArrayList<Player> players){
-        Game game = new Game();
-        this.players=players;
+    GameController(){
+        this.game = new Game();
         this.turnChanger=0;
         this.gameState= game.getGameState();
-        currentPlayer=players.get(turnChanger);
-    }
-
-    private void onMessage(Message message){
-        switch (gameState){
-
-            case WAITING_PLAYERS -> {
-                loginCase((loginMessage) message);
-            }
-            case GAME_INIT -> {
-                initCase((initMessage) message);
-            }
-            case IN_GAME -> {
-                inGameCase((InGameMessage)message);
-            }
-            case END_GAME -> {
-                endGameCase((endGameMessage) message);
-            }
-        }
     }
 
     private void loginCase(loginMessage message) {
 
     }
 
-    private void initCase(initMessage message) {
+    private void initGame() {
+        if (!game.getGameState().equals(GameState.WAITING_PLAYERS)) throw new RuntimeException("Game already begun");
+        if (!game.isGameReadyToStart()) throw new RuntimeException("Game is not ready");
+        game.GameInit();
+        players=game.getPlayers();
+        currentPlayer=players.get(turnChanger);
     }
 
-    private void inGameCase(InGameMessage message) {
+    private void inGameCase() {
     }
 
-    private void endGameCase(endGameMessage message) {
+    private void endGameCase() {
     }
 
     private void nextTurn(){
