@@ -91,7 +91,7 @@ public class Board {
 
         for(int i = 1 ; i< positions.length ; i++ ){
                 if(!Objects.equals(positions[i - 1].getX(), positions[i].getX()) && !Objects.equals(positions[i - 1].getY(), positions[i].getY())) {
-                    throw new InvalidPositionsException();
+                    throw new InvalidPositionsException("The selected positions are invalid");
                 }
         }
         
@@ -100,12 +100,12 @@ public class Board {
         for (int i = 0; i < positions.length; i++) {
             Coordinates position = positions[i];
             
-            if (board[position.getX()][position.getY()].isFree()) throw new EmptySlotException();
-            if (!boardMask[position.getX()][position.getY()]) throw new InvalidSlotException();
+            if (board[position.getX()][position.getY()].isFree()) throw new EmptySlotException("This slot is Empty");
+            if (!boardMask[position.getX()][position.getY()]) throw new InvalidSlotException("This slot is invalid");
 
             if ((board[(position.getX()) + 1][position.getY()].isFree()) || (board[(position.getX()) - 1][position.getY()].isFree()) || (board[(position.getX())][position.getY() + 1].isFree()) || (board[(position.getX())][position.getY() - 1].isFree())) {
                     selectedTile[i] = board[position.getX()][position.getY()].getAssignedTile();
-                } else throw new InvalidSlotException();
+                } else throw new InvalidSlotException("this slot is invalid");
             }
         for (Coordinates position : positions) {
             board[position.getX()][position.getY()].removeAssignedTile();

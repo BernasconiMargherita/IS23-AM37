@@ -11,7 +11,6 @@ import it.polimi.ingsw.model.PersonalCards.PersonalDeck;
 import it.polimi.ingsw.model.Player.Player;
 import it.polimi.ingsw.model.Tile.Tile;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -29,6 +28,8 @@ public class Game {
     private final Utils utils;
     private ArrayList<CardCommonTarget> commonDeck;
 
+    private int maxPlayers;
+
     /**
      * Constructor of The Game class
      */
@@ -37,15 +38,16 @@ public class Game {
         this.gameState = GameState.WAITING_PLAYERS;
         this.isLastTurn = false;
         this.utils= new Utils();
+        this.maxPlayers=MAX_PLAYERS;
     }
 
     /**
      * Method for adding a new player in the players array
      * @param player the new player to add
      */
-    public void addPlayer(Player player) {
+    public void addPlayer(Player player) throws GameAlreadyStarted, MaxPlayerException {
         if(gameState==GameState.IN_GAME) throw new GameAlreadyStarted("It is not possible to add a player when the game has already started");
-        if (players.size()==MAX_PLAYERS) throw new MaxPlayerException("There are already 4 players so "+ player.getNickname()+" cannot be added");
+        if (players.size()==maxPlayers) throw new MaxPlayerException("There are already"+ maxPlayers + "players so "+ player.getNickname() +" cannot be added");
         players.add(player);
     }
 
@@ -53,7 +55,7 @@ public class Game {
      * method to check if there are sufficient players to start the game
      */
     public boolean isGameReadyToStart(){
-        return ( (players.size() > MIN_PLAYERS - 1)  &&  (players.size() < MAX_PLAYERS + 1) );
+        return ( (players.size() > MIN_PLAYERS - 1)  &&  (players.size() < maxPlayers + 1) );
 
     }
 
@@ -75,7 +77,7 @@ public class Game {
     }
 
     /**
-     * method to randomly select a player to start the turn and redefine the turns order
+     * method to randomly select a player to start the placeInShelf and redefine the turns order
      */
     private void pickFirstPlayer() {
         int first = (new Random()).nextInt(players.size());
@@ -96,50 +98,30 @@ public class Game {
 
     /**
      * method to refill the Board if it's necessary
-     * @return a boolean for confirm
      */
-    public boolean refillBoard(){
+    public void refillBoard() throws SoldOutTilesException {
         if (board.refillIsNecessary()) {
-            try {
-                board.refillBoard();
-                return true;
-            } catch (SoldOutTilesException e) {
-                throw new RuntimeException(e);
-            }
+            board.refillBoard();
         }
-        return false;
     }
-
     /**
      * Method that manages the removing of the selected Tiles of currentPlayer from the board and places them in the shelf in the selected column
-     * @param currentPlayer the player that is currently playing his turn
+     * @param currentPlayer the player that is currently playing his placeInShelf
      * @param positions array of the selected tiles coordinates
      * @param selectedColumn the selected column in which the player wants to place the tiles
      */
-    public void placeInShelf(Player currentPlayer, Coordinates[] positions, int selectedColumn) {
+    public void placeInShelf(Player currentPlayer, Coordinates[] positions, int selectedColumn) throws InvalidPositionsException, EmptySlotException, InvalidSlotException, NoSpaceInColumnException {
         Tile[] removedTile;
-        try {
 
-            removedTile = board.removeCardFromBoard(positions);
+        removedTile = board.removeCardFromBoard(positions);
 
-        } catch (EmptySlotException | InvalidSlotException | InvalidPositionsException e) {
-
-            throw new RuntimeException("Error"); //chiedere quando è meglio usare un exception unchecked o checked;
-        }
-
-        try {
-
-            currentPlayer.addTilesInLibrary(selectedColumn, removedTile);
-
-        } catch (NoSpaceInColumnException e) {
-            throw new RuntimeException("Error");
-        }
+        currentPlayer.addTilesInLibrary(selectedColumn, removedTile);
     }
 
     /**
      * Method that check if the player has completed the two Common objective and if it has already completed them before,
      * and proceeds to add the value of the ScoringToken to the player score, removing it from the card.
-     * @param currentPlayer the player that is currently playing his turn
+     * @param currentPlayer the player that is currently playing his placeInShelf
      */
     public void checkCommonTarget(Player currentPlayer) {
         for (CardCommonTarget cardCommonTarget : commonDeck) {
@@ -153,26 +135,47 @@ public class Game {
 
     /**
      * method that checks if the player ha completed one of his personal goal and then proceeds to add the corresponding score to the player score
-     * @param currentPlayer the player that is currently playing his turn
-     * @return a boolean for confirm
+     *
+     * @param currentPlayer the player that is currently playing his placeInShelf
      */
-    public boolean checkPersonalTarget(Player currentPlayer){
-        return currentPlayer.checkPersonalTarget();
+    public void checkPersonalTarget(Player currentPlayer){
+        currentPlayer.checkPersonalTarget();
     }
 
     /**
-     * method that checks if the player shelf is full,and if it is, begins the last turn and adds the score of the EndGameToken to the player score
+     * method that checks if the player shelf is full,and if it is, begins the last placeInShelf and adds the score of the EndGameToken to the player score
+     *
      * @param currentPlayer The player currently playing
-     * @return boolean for confirm
      */
-    public boolean isShelfFull(Player currentPlayer){
+    public void isShelfFull(Player currentPlayer){
         if(currentPlayer.isShelfFull()){
             setLastTurn(true);
             currentPlayer.addScore(1);
-            return true;
         }
-        return false;
     }
+
+    /**
+     * Method to choose the Winner of the Game based on the score
+     * @return the winner Player
+     */
+    public Player chooseWinner() {
+        Player winner=null;
+        int max=0;
+
+        for (Player player:players){
+            if (player.getScore()>max)
+                winner=player;
+        }
+        return winner;
+    }
+
+    /**
+     * Method to set the max players of the game
+     */
+    public void setMaxPlayers(int maxPlayers) {
+        this.maxPlayers = maxPlayers;
+    }
+
 
 
     public List<Player> getPlayers() {
@@ -194,6 +197,11 @@ public class Game {
     public void setLastTurn(boolean lastTurn) {
         isLastTurn = lastTurn;
     }
+
+    public int getMaxPlayers() {
+        return maxPlayers;
+    }
+
 
 
 }

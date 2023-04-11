@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.Player;
 
 import it.polimi.ingsw.Exception.NoSpaceInColumnException;
 import it.polimi.ingsw.Utils.Utils;
-import it.polimi.ingsw.model.CommonCards.ScoringToken;
 import it.polimi.ingsw.model.PersonalCards.CardPersonalTarget;
 import it.polimi.ingsw.model.Tile.Tile;
 
@@ -14,7 +13,7 @@ public class Player {
     private final Shelf personalShelf;
     private CardPersonalTarget cardPersonalTarget;
     private int score;
-    private boolean[] completedCommon;
+    private final boolean[] completedCommon;
     private boolean isFirstPlayer=false;
     private final Utils utils;
 
@@ -55,14 +54,12 @@ public class Player {
      * method that calls the checkPersonalTarget of utils,
      * and transforms the value returned by the latter into points, finally adds these points to score
      */
-    public boolean checkPersonalTarget(){
+    public void checkPersonalTarget(){
         int[] points = {0,1,2,4,6,9,12};
         int check=utils.checkPersonalTarget(personalShelf, cardPersonalTarget);
         if (check>0) {
             this.score += points[check];
-            return true;
         }
-        return false;
     }
 
     public void setPersonalCard(CardPersonalTarget personalCard) {
@@ -94,6 +91,10 @@ public class Player {
 
     public int getScore() {
         return score;
+    }
+
+    public void groupScore() {
+        utils.groupScore(personalShelf);
     }
 }
 

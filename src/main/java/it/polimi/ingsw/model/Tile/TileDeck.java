@@ -40,11 +40,11 @@ public class TileDeck {
 
     /**
      * random draw from TileDeck without re-entering i.e. removed from tileDeck
-     * @return tileDeck.remove(...) : return a tile thet it's removed from the tileDeck
+     * @return tileDeck.remove(...) : return a tile that it's removed from the tileDeck
      */
 
     public Tile randomDraw() throws SoldOutTilesException {
-        if(tileDeck.size() == 0) throw new SoldOutTilesException();
+        if(tileDeck.size() == 0) throw new SoldOutTilesException("The bag is empty!");
         Random random = new Random();
         int number = random.nextInt(tileDeck.size());
         return tileDeck.remove(number);

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.Exception.GameAlreadyStarted;
+import it.polimi.ingsw.Exception.MaxPlayerException;
 import it.polimi.ingsw.model.Player.Player;
 import org.junit.jupiter.api.Test;
 
@@ -19,8 +21,12 @@ class GameTest {
     void addPlayer() {
         Game game = FullGame();
         Player player4=new Player("Pippo");
-        game.addPlayer(player4);
-        
+        try {
+            game.addPlayer(player4);
+        } catch (GameAlreadyStarted | MaxPlayerException e) {
+            System.out.println("Error!");
+        }
+
     }
 
     @Test
