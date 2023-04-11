@@ -10,9 +10,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ShelfTest {
 
-
-
-
     @Test
 
     public void FullColumn() {

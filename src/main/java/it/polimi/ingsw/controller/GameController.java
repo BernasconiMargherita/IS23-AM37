@@ -4,19 +4,22 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.GameState;
 import it.polimi.ingsw.model.Player.Player;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class GameController {
-    private final GameState gameState;
-    private final ArrayList<Player> players;
-    int turnChanger;
-    Player currentPlayer;
+    private GameState gameState;
+    private List<Player> players;
+    private final Game game;
+    private int turnChanger;
+    private Player currentPlayer;
 
-    public GameController(ArrayList<Player> players){
-        Game game = new Game();
-        this.players=players;
+    GameController(){
+        this.game = new Game();
         this.turnChanger=0;
         this.gameState= game.getGameState();
+    }
+
+    private void loginCase(loginMessage message) {
         currentPlayer=players.get(turnChanger);
     }
 
@@ -27,7 +30,12 @@ public class GameController {
 
     }
 
-    public void initCase(InitMessage message) {
+    private void initGame() {
+        if (!game.getGameState().equals(GameState.WAITING_PLAYERS)) throw new RuntimeException("Game already begun");
+        if (!game.isGameReadyToStart()) throw new RuntimeException("Game is not ready");
+        game.GameInit();
+        players=game.getPlayers();
+        currentPlayer=players.get(turnChanger);
     }
 
     public void inGameCase(InGameMessage message) {
