@@ -8,11 +8,25 @@ import it.polimi.ingsw.model.Player.Player;
 
 import java.util.List;
 
+/**
+ * Class that Manages a Game
+ */
 public class GameController {
-
+    /**
+     * List of the player in this game
+     */
     private List<Player> players;
+    /**
+     * the associated Game
+     */
     private final Game game;
+    /**
+     * Int used to travel across the player list to determine which is the current player
+     */
     private int turnChanger;
+    /**
+     * the player that is currently playing
+     */
     private Player currentPlayer;
 
     /**
