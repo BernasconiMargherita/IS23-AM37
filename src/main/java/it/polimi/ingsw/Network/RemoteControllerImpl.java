@@ -50,9 +50,7 @@ public class RemoteControllerImpl implements RemoteController {
     public void initGame(int gameID) throws RemoteException{
         try{
             this.masterController.getGameController(gameID).initGame();
-        } catch (GameNotReadyException e) {
-            throw new RuntimeException(e);
-        } catch (GameAlreadyStarted e) {
+        } catch (GameNotReadyException | GameAlreadyStarted e) {
             throw new RuntimeException(e);
         }
     }
@@ -82,17 +80,23 @@ public class RemoteControllerImpl implements RemoteController {
         try{
             masterController.getGameController(gameID).placeInShelf(positionsArray, scanner.nextInt());
         } catch (EmptySlotException e) {
+            System.out.println("empty slot selected, select valid slots");
+            placeInShelf(gameID);
+        } catch (GameAlreadyStarted | SoldOutTilesException e) {
             throw new RuntimeException(e);
-        } catch (GameAlreadyStarted e) {
-            throw new RuntimeException(e);
-        } catch (InvalidPositionsException e) {
-            throw new RuntimeException(e);
-        } catch (SoldOutTilesException e) {
-            throw new RuntimeException(e);
-        } catch (InvalidSlotException e) {
-            throw new RuntimeException(e);
+        } catch (InvalidPositionsException | InvalidSlotException e) {
+            System.out.println("invalid slot selected, select valid slots");
+            placeInShelf(gameID);
         } catch (NoSpaceInColumnException e) {
-            throw new RuntimeException(e);
+            System.out.println("there is no space in the selected column select another one");
+
+
+
+            //bisogna cambiare perchè non riesco a chiamare solo l'inserimento in colonna
+
+
+
+
         } catch (EndGameException e) {
             System.out.println("game is over !");
             System.out.println("the winner is " + masterController.getGameController(gameID).endGame().getNickname());
