@@ -14,24 +14,7 @@ import java.util.Scanner;
 
 public class MyClient {
 
-    private RemoteController server;
-    private Player player;
-    private boolean myTurn;
 
-    protected MyClient(RemoteController server, Player player) throws Exception{
-        super();
-        Scanner scanner = new Scanner(System.in);
-        this.server = server;
-        this.player = player;
-        server.registerPlayer(this.player);
-        myTurn = player.equals(server.getCurrentPlayer());
-        System.out.println("Connected as " + player);
-        if (myTurn) {
-            System.out.println("It's your turn");
-        } else {
-            System.out.println("Waiting for opponent to move...");
-        }
-    }
 
 
 
@@ -39,6 +22,7 @@ public class MyClient {
 
         int portNumber;
         String hostName;
+        Scanner scanner = new Scanner(System.in)
 
         Gson gson = new Gson();
         try{
@@ -56,25 +40,17 @@ public class MyClient {
         }
         Registry registry = LocateRegistry.getRegistry(hostName, portNumber);
         RemoteController server = (RemoteController)  registry.lookup("RemoteController");
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter your name: ");
-        String name = scanner.nextLine();
-        MyClient client = new MyClient(server, new Player(name));
 
+        System.out.print("Enter your Nickname: ");
+        ClientImpl client = new ClientImpl(server, new Player((scanner.next())));
 
         while(true){
             if(client.isMyTurn()){
-                server.removeFromBoard();
-                server.addCardInColumn();
-                server.checkCommon();
-                if(server.isLastTurn()){
-                    server.checkPersonal();
-                }
+                server.placeInShelf(client.getGameID());
             }
-         }
+        }
     }
 
-    public boolean isMyTurn(){
-        return myTurn;
-    }
+
+
 }

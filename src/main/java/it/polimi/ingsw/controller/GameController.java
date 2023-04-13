@@ -55,7 +55,7 @@ public class GameController {
      * @throws GameAlreadyStarted throw when the game is already started
      * @throws GameNotReadyException throw when the game has not sufficient players
      */
-    private void initGame() throws GameNotReadyException, GameAlreadyStarted {
+    public void initGame() throws GameNotReadyException, GameAlreadyStarted {
         if (!game.getGameState().equals(GameState.WAITING_PLAYERS)) throw new GameAlreadyStarted("Game already started");
         if (!game.isGameReadyToStart()) throw new GameNotReadyException("Game is not ready");
         game.GameInit();
@@ -144,5 +144,9 @@ public class GameController {
     }
     public Player getCurrentPlayer() {
         return currentPlayer;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
     }
 }
