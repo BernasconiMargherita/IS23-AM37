@@ -46,7 +46,7 @@ public class GameController {
      */
     public void login(String nickname) throws UsernameException, GameAlreadyStarted, MaxPlayerException {
         if (nickname.equals(getPlayerByNickname(nickname))) throw new UsernameException("Username already taken");
-        Player newplayer =new Player(nickname);
+        Player newplayer = new Player(nickname);
         game.addPlayer(newplayer);
     }
 
