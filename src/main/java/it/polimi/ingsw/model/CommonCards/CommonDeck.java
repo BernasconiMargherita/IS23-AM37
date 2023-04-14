@@ -34,17 +34,17 @@ public class CommonDeck {
                 "FOUR_EQUALS_ANGLES",
                 "FOUR_GROUPS_OF_FOUR",
                 "TWO_GROUPS_IN_SQUARE",
-                "THREE_FULL_COLUMNS_WITH_MAX_THREE_DIFFERENT_TYPES",
+                "THREE_COLUMNS_THREE_DIFFERENT_TYPES",
                 "EIGHT_EQUALS",
                 "FIVE_IN_DIGONAL",
-                "FOUR_FULL_ROWS_WITH_MAX_THREE_DIFFERENT_TYPES",
-                "TWO_FULL_COLUMNS_ALL_DIFFERENT",
-                "TWO_FULL_ROWS_ALL_DIFFERENT",
+                "FOUR_ROWS_THREE_DIFFERENT_TYPES",
+                "TWO_COLUMNS_ALL_DIFFERENT",
+                "TWO_ROWS_ALL_DIFFERENT",
                 "FIVE_IN_A_X",
                 "IN_DESCENDING_ORDER"};
 
-        commonDeck.add(new CardCommonTarget(CommonList.valueOf(commonList[num1]),false,this.numOfPlayers));
-        commonDeck.add(new CardCommonTarget(CommonList.valueOf(commonList[num2]),true,this.numOfPlayers));
+        commonDeck.add(new CardCommonTarget(CommonList.valueOf(commonList[num1]),0,this.numOfPlayers));
+        commonDeck.add(new CardCommonTarget(CommonList.valueOf(commonList[num2]),1,this.numOfPlayers));
     }
 
     /**

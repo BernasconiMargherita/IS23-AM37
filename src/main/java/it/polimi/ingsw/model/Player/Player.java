@@ -13,7 +13,7 @@ public class Player {
     private final Shelf personalShelf;
     private CardPersonalTarget cardPersonalTarget;
     private int score;
-
+    private final boolean[] completedCommon;
     private boolean isFirstPlayer=false;
     private final Utils utils;
 
@@ -24,18 +24,17 @@ public class Player {
 
     /**
      * Constructor that assigns to the player a nickname, personalTarget and a boolean indicating if the player is the first one
-     * @param nickname
      */
     public Player(String nickname){
         this.utils=new Utils();
         this.nickname=nickname;
         this.personalShelf =new Shelf();
         this.score=0;
+        this.completedCommon = new boolean[]{false, false};
     }
 
     /**
      * Method that stores and modifies score value
-     * @param addedScore
      */
     public void addScore(int addedScore){
         this.score += addedScore;
@@ -45,7 +44,6 @@ public class Player {
      * Method that allows the player to add the selected tiles from the board to the library
      * @param col chosen column
      * @param selectedTile array of selected tiles
-     * @throws NoSpaceInColumnException
      */
     public void addTilesInLibrary(int col, Tile[] selectedTile) throws NoSpaceInColumnException {
         personalShelf.addCardInColumn(col, selectedTile);
@@ -56,14 +54,12 @@ public class Player {
      * method that calls the checkPersonalTarget of utils,
      * and transforms the value returned by the latter into points, finally adds these points to score
      */
-    public boolean checkPersonalTarget(){
+    public void checkPersonalTarget(){
         int[] points = {0,1,2,4,6,9,12};
         int check=utils.checkPersonalTarget(personalShelf, cardPersonalTarget);
         if (check>0) {
             this.score += points[check];
-            return true;
         }
-        return false;
     }
 
     public void setPersonalCard(CardPersonalTarget personalCard) {
@@ -83,6 +79,22 @@ public class Player {
 
     public Shelf getPersonalShelf() {
         return personalShelf;
+    }
+
+    public void setCompleted(int objective){
+        completedCommon[objective]=true;
+    }
+
+    public boolean isCompleted(int objective){
+        return completedCommon[objective];
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void groupScore() {
+        utils.groupScore(personalShelf);
     }
 }
 

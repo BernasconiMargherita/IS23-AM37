@@ -1,8 +1,6 @@
 package it.polimi.ingsw.model.Tile;
 
-import it.polimi.ingsw.model.Card;
-
-public class Tile extends Card {
+public class Tile {
     /**
      * ColourTile colour : type of the tile (CATS OR BOOKS OR GAMES OR FRAMES OR TROPHIES OR PLANTS)
      */

@@ -4,7 +4,7 @@ public class ScoringToken {
     /**
      *  boolean assignedCommonCard: identifies the first or second common card of the board
      */
-    boolean assignedCommonCard;
+    int assignedCommonCard;
     /**
      * int valueToken : value of the ScoringToken (2 or 4 or 6 or 8)
      */
@@ -15,7 +15,7 @@ public class ScoringToken {
      * @param assignedCommonCard identifies the first or second common card of the board
      * @param valueToken value of the ScoringToken
      */
-    public ScoringToken(boolean assignedCommonCard, int valueToken){
+    public ScoringToken(int assignedCommonCard, int valueToken){
         this.assignedCommonCard = assignedCommonCard;
         this.valueToken = valueToken;
     }
