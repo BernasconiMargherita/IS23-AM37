@@ -5,6 +5,7 @@ import it.polimi.ingsw.Utils.Coordinates;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.GameState;
 import it.polimi.ingsw.model.Player.Player;
+import it.polimi.ingsw.model.Tile.Tile;
 
 import java.util.List;
 
@@ -73,15 +74,19 @@ public class GameController {
      * @throws EndGameException if the Game is Ended
      * @throws SoldOutTilesException if the Tiles in the Bag are ended
      */
-    public void turn(Coordinates[] positions, int column) throws EmptySlotException, InvalidPositionsException, InvalidSlotException, NoSpaceInColumnException, EndGameException, SoldOutTilesException, GameAlreadyStarted {
+    public void turn(Tile[] tilesToAdd, int column) throws EmptySlotException, InvalidPositionsException, InvalidSlotException, NoSpaceInColumnException, EndGameException, SoldOutTilesException, GameAlreadyStarted {
         if  (!game.getGameState().equals(GameState.IN_GAME)) throw new GameAlreadyStarted("Game already started");
 
-        game.remove(currentPlayer,positions,column);
+        game.addInShelf(tilesToAdd,currentPlayer, column);
         game.checkCommonTarget(currentPlayer);
         game.checkPersonalTarget(currentPlayer);
         game.isShelfFull(currentPlayer);
         nextTurn();
         game.refillBoard();
+    }
+
+    public void remove(Coordinates positions){
+        game.remove(currentPlayer,positions)
     }
 
     /**
