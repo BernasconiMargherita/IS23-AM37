@@ -77,18 +77,12 @@ class UtilsTest {
                 libraryMatrix[i][j].assignTile(bag.randomDraw());
             }
         }
-        int i = coordinates.getX();
-        for (int j = coordinates.getY(); j < 5; j+=h) {
-            while(i<5){
-                libraryMatrix[i][j].assignTile(new Tile(ColourTile.BOOKS));
-                i+=k;
+        for (int i = coordinates.getX(); i < 5; i++) {
+                libraryMatrix[i][i].assignTile(new Tile(ColourTile.BOOKS));
 
             }
-
-        }
         assertTrue(utils.checkDiagonal(libraryMatrix, new Coordinates(0, 0), 1, 1));
-    }
-
+        }
 
     @Test
     void checkGroupsOfFour() {
