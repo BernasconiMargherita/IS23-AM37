@@ -112,7 +112,7 @@ public class Game {
      * @param selectedColumn the selected column in which the player wants to place the tiles
      * @return
      */
-    public Tile[] remove(Player currentPlayer, Coordinates[] positions, int selectedColumn) throws InvalidPositionsException, EmptySlotException, InvalidSlotException {
+    public Tile[] remove(Player currentPlayer, Coordinates[] positions) throws InvalidPositionsException, EmptySlotException, InvalidSlotException {
         Tile[] removedTile;
 
         removedTile = board.removeCardFromBoard(positions);
