@@ -163,7 +163,7 @@ public class Utils {
                 Coordinates secondDiagonal=new Coordinates(0,1);
                 Coordinates thirdDiagonal=new Coordinates(0,4);
                 Coordinates fourthDiagonal=new Coordinates(0,5);
-                return ((checkDiagonal(shelfMatrix,firstDiagonal,1,1))||(checkDiagonal(shelfMatrix,secondDiagonal,1,1))||(checkDiagonal(shelfMatrix,thirdDiagonal,-1,-1))||(checkDiagonal(shelfMatrix,fourthDiagonal,-1,-1)));
+                return ((checkDiagonal(shelfMatrix,firstDiagonal))||(checkDiagonal(shelfMatrix,secondDiagonal))||(checkDiagonal(shelfMatrix,thirdDiagonal))||(checkDiagonal(shelfMatrix,fourthDiagonal)));
             }
             case FOUR_ROWS_THREE_DIFFERENT_TYPES -> {
                 int found = 0;
@@ -292,20 +292,63 @@ public class Utils {
     }
 
 
-    public boolean checkDiagonal(TileSlot[][] shelfMatrix, Coordinates coordinates, int k, int h){
-        int j = coordinates.getY();
-        int count = 0;
+    public boolean checkDiagonal(TileSlot[][] shelfMatrix, Coordinates coordinates) {
 
-        for(int i= coordinates.getX(); i<MAX_SHELF_COLUMNS-1; i+=k) {
 
-                if (shelfMatrix[i][j].getAssignedTile().getColour() == shelfMatrix[i + k][j + h].getAssignedTile().getColour()) {
-                    j += k;
-                    count++;
+        if(coordinates.getX() == 0 && coordinates.getY() == 0){
+            for(int i = 0; i < MAX_SHELF_COLUMNS-1; i++){
+               if(shelfMatrix[i][i] != shelfMatrix[i+1][i+1]){
+                   return false;
+               }
+           }
+           return true;
+       }
+
+
+
+        if(coordinates.getX() == 1 && coordinates.getY() == 0){
+
+            for(int i = 0; i < MAX_SHELF_COLUMNS-1; i++){
+                if(shelfMatrix[i+1][i] != shelfMatrix[i+1][i+1]){
+                    return false;
                 }
             }
+            return true;
+        }
 
 
-    return (count + 1) == MAX_SHELF_COLUMNS;}
+
+        if(coordinates.getX() == 1 && coordinates.getY() == 4){
+            for(int i = 1; i < MAX_SHELF_ROWS; i++){
+                if(shelfMatrix[i][coordinates.getY()] == shelfMatrix[i+1][coordinates.getY()-1]){
+                    coordinates.setY(coordinates.getY()-1);
+                } else{
+                    return false;
+                }
+            }
+            return true;
+        }
+
+
+
+        if(coordinates.getX() == 0 && coordinates.getY() == 4){
+            for(int i = 0; i < MAX_SHELF_COLUMNS - 1; i++){
+                if(shelfMatrix[i][coordinates.getY()].getAssignedTile().getColour()==(shelfMatrix[i+1][coordinates.getY()-1].getAssignedTile().getColour())){
+                    coordinates.setY(coordinates.getY()-1);
+                } else{
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        return false;
+
+
+    }
+
+
+
 
 
 

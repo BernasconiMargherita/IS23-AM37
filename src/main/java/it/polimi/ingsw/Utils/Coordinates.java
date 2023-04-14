@@ -7,11 +7,11 @@ public class Coordinates {
     /**
      * Coordinate of the column
      */
-    private final Integer X;
+    private Integer X;
     /**
      * Coordinate of the row
      */
-    private final Integer Y;
+    private Integer Y;
 
     /**
      * constructor to set the coordinates x and y
@@ -27,5 +27,13 @@ public class Coordinates {
 
     public Integer getY() {
         return Y;
+    }
+
+    public void setY(int Y){
+        this.Y = Y;
+    }
+
+    public void setX(int X) {
+        this.X = X;
     }
 }
