@@ -8,15 +8,13 @@ import java.rmi.RemoteException;
 //ogni metodo deve dichiarare java.rmi.remoteexception
 public interface RemoteController extends Remote {
 
-    void registerPlayer(Player player) throws RemoteException;
 
-    void setNumPlayers(int numPlayers) throws RemoteException;
+    void initGame(int gameID) throws RemoteException;
+
     void startGame() throws RemoteException;
-    void removeFromBoard() throws RemoteException;
-    void addCardInColumn() throws RemoteException;
-    void checkPersonal() throws RemoteException;
-    void checkCommon() throws RemoteException;
-    void checkWin();
-    Player getCurrentPlayer();
-    boolean isLastTurn();
+    void placeInShelf(int gameID) throws RemoteException;
+
+    abstract int registerPlayer(Player player, int gameID) throws RemoteException;
+    public int getCurrentGameID() throws RemoteException;
+    public Player getCurrentPlayer(int gameID) throws RemoteException;
 }

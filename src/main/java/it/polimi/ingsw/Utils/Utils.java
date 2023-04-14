@@ -295,14 +295,17 @@ public class Utils {
     public boolean checkDiagonal(TileSlot[][] shelfMatrix, Coordinates coordinates, int k, int h){
         int j = coordinates.getY();
         int count = 0;
-        for(int i= coordinates.getX(); i<MAX_SHELF_COLUMNS; i+=k){
-            if (shelfMatrix[i][j].getAssignedTile().getColour() == shelfMatrix[i+k][j+h].getAssignedTile().getColour()) {
-                j+=k;
-                count++;
+
+        for(int i= coordinates.getX(); i<MAX_SHELF_COLUMNS-1; i+=k) {
+
+                if (shelfMatrix[i][j].getAssignedTile().getColour() == shelfMatrix[i + k][j + h].getAssignedTile().getColour()) {
+                    j += k;
+                    count++;
+                }
             }
-        }
-        return count == MAX_SHELF_COLUMNS;
-    }
+
+
+    return (count + 1) == MAX_SHELF_COLUMNS;}
 
 
 
