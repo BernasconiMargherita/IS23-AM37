@@ -105,23 +105,36 @@ public class Game {
         }
     }
     /**
-     * Method that manages the removing of the selected Tiles of currentPlayer from the board and places them in the shelf in the selected column
-     * @param currentPlayer the player that is currently playing his placeInShelf
-     * @param positions array of the selected tiles coordinates
+     * Method that manages the removing of the selected Tiles of currentPlayer from the board
+     *
+     * @param currentPlayer  the player that is currently playing his turn
+     * @param positions      array of the selected tiles coordinates
      * @param selectedColumn the selected column in which the player wants to place the tiles
+     * @return
      */
-    public void placeInShelf(Player currentPlayer, Coordinates[] positions, int selectedColumn) throws InvalidPositionsException, EmptySlotException, InvalidSlotException, NoSpaceInColumnException {
+    public Tile[] remove(Player currentPlayer, Coordinates[] positions, int selectedColumn) throws InvalidPositionsException, EmptySlotException, InvalidSlotException {
         Tile[] removedTile;
 
         removedTile = board.removeCardFromBoard(positions);
+        return removedTile;
 
-        currentPlayer.addTilesInLibrary(selectedColumn, removedTile);
+    }
+
+    /**
+     * method that manages places them in the shelf in the selected column.
+     * @param tilesToAdd tiles to add to the shelf
+     * @param currentPlayer player currently playing
+     * @param selectedColumn the selected column
+     * @throws NoSpaceInColumnException throw when the colum has not enough space
+     */
+    public void addInShelf(Tile[] tilesToAdd,Player currentPlayer,int selectedColumn) throws NoSpaceInColumnException {
+        currentPlayer.addTilesInLibrary(selectedColumn, tilesToAdd);
     }
 
     /**
      * Method that check if the player has completed the two Common objective and if it has already completed them before,
      * and proceeds to add the value of the ScoringToken to the player score, removing it from the card.
-     * @param currentPlayer the player that is currently playing his placeInShelf
+     * @param currentPlayer the player that is currently playing his turn
      */
     public void checkCommonTarget(Player currentPlayer) {
         for (CardCommonTarget cardCommonTarget : commonDeck) {
@@ -136,14 +149,14 @@ public class Game {
     /**
      * method that checks if the player ha completed one of his personal goal and then proceeds to add the corresponding score to the player score
      *
-     * @param currentPlayer the player that is currently playing his placeInShelf
+     * @param currentPlayer the player that is currently playing his turn
      */
     public void checkPersonalTarget(Player currentPlayer){
         currentPlayer.checkPersonalTarget();
     }
 
     /**
-     * method that checks if the player shelf is full,and if it is, begins the last placeInShelf and adds the score of the EndGameToken to the player score
+     * method that checks if the player shelf is full,and if it is, begins the last turn and adds the score of the EndGameToken to the player score
      *
      * @param currentPlayer The player currently playing
      */
