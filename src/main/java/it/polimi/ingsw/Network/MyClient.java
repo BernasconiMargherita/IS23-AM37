@@ -22,7 +22,7 @@ public class MyClient {
 
         int portNumber;
         String hostName;
-        Scanner scanner = new Scanner(System.in)
+        Scanner scanner = new Scanner(System.in);
 
         Gson gson = new Gson();
         try{

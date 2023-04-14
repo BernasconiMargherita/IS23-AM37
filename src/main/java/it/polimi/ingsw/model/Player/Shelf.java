@@ -46,7 +46,7 @@ public class Shelf {
 
 
             if (row > MAX_SHELF_ROWS - selectedTile.length) {
-                throw new NoSpaceInColumnException();
+                throw new NoSpaceInColumnException("The column is full");
             }
 
         }

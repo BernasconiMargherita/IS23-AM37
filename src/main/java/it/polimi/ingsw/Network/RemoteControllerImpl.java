@@ -78,7 +78,7 @@ public class RemoteControllerImpl implements RemoteController {
 
 
         try{
-            masterController.getGameController(gameID).placeInShelf(positionsArray, scanner.nextInt());
+            masterController.getGameController(gameID).turn(positionsArray, scanner.nextInt());
         } catch (EmptySlotException e) {
             System.out.println("empty slot selected, select valid slots");
             placeInShelf(gameID);

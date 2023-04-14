@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Network;
 
-import it.polimi.ingsw.model.Controller;
+import it.polimi.ingsw.controller.GameController;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,9 +10,9 @@ import java.net.Socket;
 
 public class TCPServerThread extends Thread{
     private Socket socket = null;
-    private Controller controller;
+    private GameController controller;
 
-    public TCPServerThread(Socket socket, Controller controller){
+    public TCPServerThread(Socket socket, GameController controller){
         super("TCPServerThread");
         this.socket = socket;
         this.controller = controller;
