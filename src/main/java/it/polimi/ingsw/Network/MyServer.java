@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
+import it.polimi.ingsw.Network.RemoteController;
 
 
 
@@ -28,5 +29,8 @@ public class MyServer {
         Registry registry = LocateRegistry.createRegistry(5005);
         registry.rebind("RemoteController", server);
         System.out.println("Server is running...");
+        while(true){
+            int i = 0;
+        }
     }
 }

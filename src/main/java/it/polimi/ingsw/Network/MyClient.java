@@ -11,6 +11,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Scanner;
+import it.polimi.ingsw.Network.RemoteController;
 
 public class MyClient {
 
@@ -45,7 +46,12 @@ public class MyClient {
             throw new RuntimeException(e);
         }
         Registry registry = LocateRegistry.getRegistry("localhost", 5005);
-        RemoteController server = (RemoteController)  registry.lookup("RemoteController");
+        RemoteController server = null;
+        try {
+            server = (RemoteController) registry.lookup("RemoteController");
+        } catch (RemoteException | NotBoundException e) {
+            e.printStackTrace();
+        }
 
         System.out.print("Enter your Nickname: ");
         ClientImpl client = new ClientImpl(server, new Player((scanner.next())));

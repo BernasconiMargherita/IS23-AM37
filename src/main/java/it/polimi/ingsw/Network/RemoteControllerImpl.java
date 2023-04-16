@@ -6,6 +6,7 @@ import it.polimi.ingsw.controller.MasterController;
 import it.polimi.ingsw.model.Player.Player;
 import it.polimi.ingsw.model.Tile.Tile;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -14,12 +15,12 @@ import java.util.Scanner;
  * This class represents the implementation of the RemoteController interface. It provides the methods
  * to manage the remote operations of the game.
  */
-public class RemoteControllerImpl implements RemoteController {
+public class RemoteControllerImpl implements RemoteController, Serializable {
 
     private final MasterController masterController;
     private Tile[] tiles;
     private int currentGameID;
-    Scanner scanner = new Scanner(System.in);
+
 
     /**
      * Constructor for RemoteControllerImpl class.
@@ -51,6 +52,7 @@ public class RemoteControllerImpl implements RemoteController {
      */
     @Override
     public int registerPlayer(Player player, int gameID) throws RemoteException {
+        Scanner scanner  = new Scanner(System.in);
         try{
             masterController.getGameController(gameID).login(player.getNickname());
         } catch (UsernameException e) {
@@ -101,6 +103,7 @@ public class RemoteControllerImpl implements RemoteController {
     @Override
     public void placeInShelf(int gameID) throws RemoteException {
 
+        Scanner scanner  = new Scanner(System.in);
         ArrayList<Coordinates> positions = new ArrayList<>();
 
         System.out.println("Give me the positions of the tiles, in order with respect to column insertion \n");
