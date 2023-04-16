@@ -10,6 +10,10 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * This class represents the implementation of the RemoteController interface. It provides the methods
+ * to manage the remote operations of the game.
+ */
 public class RemoteControllerImpl implements RemoteController {
 
     private final MasterController masterController;
@@ -17,18 +21,34 @@ public class RemoteControllerImpl implements RemoteController {
     private int currentGameID;
     Scanner scanner = new Scanner(System.in);
 
-
+    /**
+     * Constructor for RemoteControllerImpl class.
+     * Creates a new instance of MasterController and sets the currentGameID to 0.
+     */
     public RemoteControllerImpl() {
         masterController = new MasterController();
         currentGameID = 0;
     }
-
+    /**
+     * Creates a new game controller instance and increments the currentGameID.
+     * @throws RemoteException if there is an issue with the remote method call
+     */
     @Override
     public void startGame() throws RemoteException {
         masterController.newGameController();
         currentGameID++;
     }
 
+
+
+    /**
+     * Registers a player in the game with the given gameID and returns the gameID.
+     * If the game is already full, a new game is started and the player is registered there instead.
+     * @param player the player to register
+     * @param gameID the game ID to register the player in
+     * @return the game ID that the player is registered in
+     * @throws RemoteException if there is an issue with the remote method call
+     */
     @Override
     public int registerPlayer(Player player, int gameID) throws RemoteException {
         try{
@@ -44,11 +64,25 @@ public class RemoteControllerImpl implements RemoteController {
         if(masterController.getGameController(gameID).getPlayers().size() == 1){
             masterController.getGameController(gameID).setMaxPlayers((scanner.nextInt()));
         }
+
+        if(masterController.getGameController(gameID).getMaxPlayers() == masterController.getGameController(gameID).getPlayers().size()){
+           try{
+               masterController.getGameController(gameID).initGame();
+           } catch (GameNotReadyException | GameAlreadyStarted e) {
+               throw new RuntimeException(e);
+           }
+        }
+
+
         return gameID;
     }
 
 
-
+    /**
+     * Initializes the game with the given game ID.
+     * @param gameID the game ID to initialize
+     * @throws RemoteException if there is an issue with the remote method call
+     */
     public void initGame(int gameID) throws RemoteException{
         try{
             this.masterController.getGameController(gameID).initGame();
@@ -56,6 +90,14 @@ public class RemoteControllerImpl implements RemoteController {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Allows the player to place tiles in their shelf and then insert them into a column.
+     * If the slot is invalid or empty, prompts the player to select a valid slot.
+     * If there is no space in the selected column, prompts the player to select a different column.
+     * @param gameID ID of the game
+     * @throws RemoteException if there is an issue with the remote method call
+     */
     @Override
     public void placeInShelf(int gameID) throws RemoteException {
 
@@ -103,14 +145,33 @@ public class RemoteControllerImpl implements RemoteController {
                 retry = false;
                 System.out.println("game is over !");
                 System.out.println("the winner is " + masterController.getGameController(gameID).endGame().getNickname());
+            } catch (EmptySlotException e) {
+                throw new RuntimeException(e);
+            } catch (GameAlreadyStarted e) {
+                throw new RuntimeException(e);
+            } catch (InvalidPositionsException e) {
+                throw new RuntimeException(e);
+            } catch (SoldOutTilesException e) {
+                throw new RuntimeException(e);
+            } catch (InvalidSlotException e) {
+                throw new RuntimeException(e);
             }
         }
     }
 
+    /**
+     * Returns the current game ID.
+     * @return the current game ID
+     */
     public int getCurrentGameID() {
         return currentGameID;
     }
 
+    /**
+     * Returns the current player for the given game ID.
+     * @param gameID the ID of the game
+     * @return the current player for the given game ID
+     */
     public Player getCurrentPlayer(int gameID){
         return masterController.getGameController(gameID).getCurrentPlayer();
     }

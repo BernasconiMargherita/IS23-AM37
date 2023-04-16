@@ -15,7 +15,13 @@ import java.util.Scanner;
 public class MyClient {
 
 
+    /**
 
+     * The main method that starts the client application. It creates a client object, connects to the server via RMI,
+     * and continuously prompts the user to enter their nickname and play the game until the game is over.
+     * @param args an array of command-line arguments
+     * @throws Exception if there is an error while connecting to the server
+     */
 
 
     public static void main(String[] args) throws Exception {
@@ -38,7 +44,7 @@ public class MyClient {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-        Registry registry = LocateRegistry.getRegistry(hostName, portNumber);
+        Registry registry = LocateRegistry.getRegistry("localhost", 5005);
         RemoteController server = (RemoteController)  registry.lookup("RemoteController");
 
         System.out.print("Enter your Nickname: ");

@@ -63,9 +63,9 @@ public class Game {
      * method to initialize effectively the Game, knowing the number of players, also chose a first player to start the game
      */
     public void GameInit(){
-        commonDeck=new CommonDeck(players.size()).getCommonDeck();
+        commonDeck = new CommonDeck(players.size()).getCommonDeck();
         ArrayList<CardPersonalTarget> personalDeck = new PersonalDeck(players.size()).getPersonalDeck();
-        board=new Board(players.size());
+        board = new Board(players.size());
 
         pickFirstPlayer();
         setGameState(GameState.GAME_INIT);
