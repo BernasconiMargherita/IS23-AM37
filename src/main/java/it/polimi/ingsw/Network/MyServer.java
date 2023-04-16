@@ -30,7 +30,7 @@ public class MyServer {
         registry.rebind("RemoteController", server);
         System.out.println("Server is running...");
         while(true){
-            int i = 0;
+
         }
     }
 }

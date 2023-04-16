@@ -28,7 +28,7 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
      */
     public RemoteControllerImpl() {
         masterController = new MasterController();
-        currentGameID = 0;
+        currentGameID = -1;
     }
     /**
      * Creates a new game controller instance and increments the currentGameID.
@@ -61,9 +61,16 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
             System.out.println("new game creation...");
             startGame();
             registerPlayer(player, gameID);
+        } catch (NullPointerException e){
+            startGame();
+            System.out.println("new game creation...");
+            gameID = gameID + 1;
+            registerPlayer(player, gameID);
+
         }
 
         if(masterController.getGameController(gameID).getPlayers().size() == 1){
+            System.out.println("How many players ?");
             masterController.getGameController(gameID).setMaxPlayers((scanner.nextInt()));
         }
 

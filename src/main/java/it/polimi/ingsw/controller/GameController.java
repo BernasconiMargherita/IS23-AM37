@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.GameState;
 import it.polimi.ingsw.model.Player.Player;
 import it.polimi.ingsw.model.Tile.Tile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,6 +37,7 @@ public class GameController {
     GameController(){
         this.game = new Game();
         this.turnChanger=0;
+        players = new ArrayList<>();
     }
 
     /**
@@ -46,9 +48,12 @@ public class GameController {
      * @throws MaxPlayerException throw when the Game is already full
      */
     public void login(String nickname) throws UsernameException, GameAlreadyStarted, MaxPlayerException {
-        if (nickname.equals(getPlayerByNickname(nickname))) throw new UsernameException("Username already taken");
+        if(!players.isEmpty()){
+            if (nickname.equals(getPlayerByNickname(nickname))) throw new UsernameException("Username already taken");
+        }
         Player newplayer = new Player(nickname);
         game.addPlayer(newplayer);
+        players.add(newplayer);
     }
 
     /**
