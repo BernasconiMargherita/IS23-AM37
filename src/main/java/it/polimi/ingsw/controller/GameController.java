@@ -85,8 +85,8 @@ public class GameController {
         game.refillBoard();
     }
 
-    public void remove(Coordinates positions){
-        game.remove(currentPlayer,positions)
+    public Tile[] remove(Coordinates[] positions) throws EmptySlotException, InvalidPositionsException, InvalidSlotException {
+        return game.remove(currentPlayer,positions);
     }
 
     /**

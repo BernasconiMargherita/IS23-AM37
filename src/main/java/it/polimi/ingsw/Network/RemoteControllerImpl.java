@@ -4,6 +4,7 @@ import it.polimi.ingsw.Exception.*;
 import it.polimi.ingsw.Utils.Coordinates;
 import it.polimi.ingsw.controller.MasterController;
 import it.polimi.ingsw.model.Player.Player;
+import it.polimi.ingsw.model.Tile.Tile;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.Scanner;
 public class RemoteControllerImpl implements RemoteController {
 
     private final MasterController masterController;
+    private Tile[] tiles;
     private int currentGameID;
     Scanner scanner = new Scanner(System.in);
 
@@ -69,7 +71,7 @@ public class RemoteControllerImpl implements RemoteController {
                 positions.add(new Coordinates(scanner.nextInt(), scanner.nextInt()));
             }
         }
-        System.out.println("please tell me the number of the column where you want to insert the tiles");
+
 
         Coordinates[] positionsArray = new Coordinates[positions.size()];
         for(int i = 0 ; i < positions.size(); i++){
@@ -78,30 +80,31 @@ public class RemoteControllerImpl implements RemoteController {
 
 
         try{
-            masterController.getGameController(gameID).turn(positionsArray, scanner.nextInt());
+            tiles = masterController.getGameController(gameID).remove(positionsArray);
+
         } catch (EmptySlotException e) {
             System.out.println("empty slot selected, select valid slots");
             placeInShelf(gameID);
-        } catch (GameAlreadyStarted | SoldOutTilesException e) {
-            throw new RuntimeException(e);
         } catch (InvalidPositionsException | InvalidSlotException e) {
             System.out.println("invalid slot selected, select valid slots");
             placeInShelf(gameID);
-        } catch (NoSpaceInColumnException e) {
-            System.out.println("there is no space in the selected column select another one");
-
-
-
-            //bisogna cambiare perchè non riesco a chiamare solo l'inserimento in colonna
-
-
-
-
-        } catch (EndGameException e) {
-            System.out.println("game is over !");
-            System.out.println("the winner is " + masterController.getGameController(gameID).endGame().getNickname());
         }
 
+
+        boolean retry = true;
+        while (retry) {
+            try {
+                System.out.println("insert the column please : ");
+                masterController.getGameController(gameID).turn(tiles, scanner.nextInt());
+                retry = false; // se la funzione ha successo, esci dal ciclo
+            } catch (NoSpaceInColumnException e) {
+                System.out.println("no space in this column, retry please");
+            }catch (EndGameException e) {
+                retry = false;
+                System.out.println("game is over !");
+                System.out.println("the winner is " + masterController.getGameController(gameID).endGame().getNickname());
+            }
+        }
     }
 
     public int getCurrentGameID() {
