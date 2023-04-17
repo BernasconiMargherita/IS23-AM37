@@ -66,6 +66,7 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
             System.out.println("new game creation...");
             gameID = gameID + 1;
             registerPlayer(player, gameID);
+            return gameID;
 
         }
 
@@ -184,5 +185,9 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
      */
     public Player getCurrentPlayer(int gameID){
         return masterController.getGameController(gameID).getCurrentPlayer();
+    }
+
+    public MasterController getMasterController(){
+        return this.masterController;
     }
 }

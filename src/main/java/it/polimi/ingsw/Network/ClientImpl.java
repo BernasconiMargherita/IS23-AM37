@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Network;
 
+import it.polimi.ingsw.model.GameState;
 import it.polimi.ingsw.model.Player.Player;
 
 import java.rmi.RemoteException;
@@ -42,10 +43,13 @@ public class ClientImpl {
      */
     public boolean isMyTurn(){
         try {
-            return server.getCurrentPlayer(gameID).equals(player);
+            if(server.getMasterController().getGameState(gameID) != GameState.WAITING_PLAYERS  && server.getMasterController().getGameState(gameID) !=GameState.GAME_INIT){
+               return server.getCurrentPlayer(gameID).equals(player);
+            }
         } catch (java.rmi.RemoteException e) {
             throw new RuntimeException(e);
         }
+        return false;
     }
 
     /**

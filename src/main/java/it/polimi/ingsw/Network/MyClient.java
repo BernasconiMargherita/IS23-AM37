@@ -57,6 +57,7 @@ public class MyClient {
         ClientImpl client = new ClientImpl(server, new Player((scanner.next())));
 
         while(true){
+
             if(client.isMyTurn()){
                 server.placeInShelf(client.getGameID());
             }

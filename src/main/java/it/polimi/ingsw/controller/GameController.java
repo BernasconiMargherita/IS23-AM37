@@ -159,4 +159,8 @@ public class GameController {
     public List<Player> getPlayers() {
         return players;
     }
+
+    public GameState getGameState(){
+        return game.getGameState();
+    }
 }
