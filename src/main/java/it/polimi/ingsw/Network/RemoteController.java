@@ -2,8 +2,10 @@ package it.polimi.ingsw.Network;
 import it.polimi.ingsw.controller.MasterController;
 import it.polimi.ingsw.model.Player.Player;
 
+import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 
 public interface RemoteController extends Remote {

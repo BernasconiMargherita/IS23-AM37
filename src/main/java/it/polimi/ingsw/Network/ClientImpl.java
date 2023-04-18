@@ -41,13 +41,9 @@ public class ClientImpl {
      * Returns whether it is currently the client's turn to play.
      * @return true if it is the client's turn to play, false otherwise
      */
-    public boolean isMyTurn(){
-        try {
-            if(server.getMasterController().getGameState(gameID) != GameState.WAITING_PLAYERS  && server.getMasterController().getGameState(gameID) !=GameState.GAME_INIT){
-               return server.getCurrentPlayer(gameID).equals(player);
-            }
-        } catch (java.rmi.RemoteException e) {
-            throw new RuntimeException(e);
+    public boolean isMyTurn() throws RemoteException {
+        if(server.getMasterController().getGameState(gameID) != GameState.WAITING_PLAYERS  && server.getMasterController().getGameState(gameID) !=GameState.GAME_INIT){
+           return server.getCurrentPlayer(gameID).equals(player);
         }
         return false;
     }
