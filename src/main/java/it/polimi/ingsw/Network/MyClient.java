@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Network;
 
 import com.google.gson.Gson;
+import it.polimi.ingsw.Network.ClientImpl;
 import it.polimi.ingsw.model.Player.Player;
 
 import java.io.*;
@@ -45,10 +46,10 @@ public class MyClient {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-        Registry registry = LocateRegistry.getRegistry("localhost", 5005);
-        RemoteController server = null;
+        Registry registry = LocateRegistry.getRegistry(hostName, portNumber);
+        RemoteControllerImpl server = null;
         try {
-            server = (RemoteController) registry.lookup("RemoteController");
+            server = (RemoteControllerImpl) registry.lookup("RemoteController");
         } catch (RemoteException | NotBoundException e) {
             e.printStackTrace();
         }
@@ -57,6 +58,7 @@ public class MyClient {
         ClientImpl client = new ClientImpl(server, new Player((scanner.next())));
 
         while(true){
+
             if(client.isMyTurn()){
                 server.placeInShelf(client.getGameID());
             }

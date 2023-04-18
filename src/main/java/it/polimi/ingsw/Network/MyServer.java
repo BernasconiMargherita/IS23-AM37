@@ -1,10 +1,13 @@
 package it.polimi.ingsw.Network;
 
+import com.google.gson.Gson;
 import it.polimi.ingsw.Exception.*;
 import it.polimi.ingsw.Utils.Coordinates;
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.model.Player.Player;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -25,8 +28,21 @@ public class MyServer {
      * @throws Exception If an error occurs while creating the registry or binding the object to it.
      */
     public static void main(String[] args) throws Exception {
+
+        int portNumber;
+        String hostName;
+        Gson gson = new Gson();
+
+
+        try{
+            FileReader filePort = new FileReader("ServerPort.json");
+            portNumber = gson.fromJson(filePort, Integer.class);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
         RemoteController server = new RemoteControllerImpl();
-        Registry registry = LocateRegistry.createRegistry(5005);
+        Registry registry = LocateRegistry.createRegistry(portNumber);
         registry.rebind("RemoteController", server);
         System.out.println("Server is running...");
         while(true){

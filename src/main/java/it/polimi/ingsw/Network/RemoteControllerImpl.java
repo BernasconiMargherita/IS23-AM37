@@ -8,7 +8,9 @@ import it.polimi.ingsw.model.Tile.Tile;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -22,11 +24,13 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
     private int currentGameID;
 
 
+
     /**
      * Constructor for RemoteControllerImpl class.
      * Creates a new instance of MasterController and sets the currentGameID to 0.
      */
-    public RemoteControllerImpl() {
+    public RemoteControllerImpl() throws RemoteException {
+        super();
         masterController = new MasterController();
         currentGameID = -1;
     }
@@ -66,6 +70,7 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
             System.out.println("new game creation...");
             gameID = gameID + 1;
             registerPlayer(player, gameID);
+            return gameID;
 
         }
 
@@ -184,5 +189,9 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
      */
     public Player getCurrentPlayer(int gameID){
         return masterController.getGameController(gameID).getCurrentPlayer();
+    }
+
+    public MasterController getMasterController(){
+        return this.masterController;
     }
 }

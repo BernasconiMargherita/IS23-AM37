@@ -1,5 +1,7 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.model.GameState;
+
 import java.io.Serializable;
 import java.util.HashMap;
 
@@ -57,5 +59,9 @@ public class MasterController implements Serializable {
         gameMap.remove(gameID);
 
         this.gameID=gameID;
+    }
+
+    public  synchronized GameState getGameState(int gameID){
+        return gameMap.get(gameID).getGameState();
     }
 }

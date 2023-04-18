@@ -1,8 +1,11 @@
 package it.polimi.ingsw.Network;
+import it.polimi.ingsw.controller.MasterController;
 import it.polimi.ingsw.model.Player.Player;
 
+import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 
 public interface RemoteController extends Remote {
@@ -51,4 +54,7 @@ public interface RemoteController extends Remote {
      * @return the current player for the given game ID
      */
     public Player getCurrentPlayer(int gameID) throws RemoteException;
+
+
+    public MasterController getMasterController() throws RemoteException;
 }

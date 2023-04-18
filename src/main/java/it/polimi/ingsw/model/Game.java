@@ -23,7 +23,7 @@ public class Game {
     public static int MIN_PLAYERS=2;
     private Board board;
     private ArrayList<Player> players;
-    private GameState gameState;
+    private GameState gameState = GameState.WAITING_PLAYERS;
     private boolean isLastTurn;
     private final Utils utils;
     private ArrayList<CardCommonTarget> commonDeck;
@@ -214,6 +214,8 @@ public class Game {
     public int getMaxPlayers() {
         return maxPlayers;
     }
+
+
 
 
 
