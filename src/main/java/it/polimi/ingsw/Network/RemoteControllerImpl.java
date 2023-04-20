@@ -81,21 +81,12 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
             registerPlayer(player, gameID);
         }
 
-
-
-
-
-
         return gameID;
     }
 
 
     public boolean imTheFirst(int gameID) throws RemoteException{
-        Scanner scanner = new Scanner(System.in);
-        if(masterController.getGameController(gameID).getPlayers().size() == 1){
-            return true;
-        }
-        return false;
+        return masterController.getGameController(gameID).getPlayers().size() == 1;
     }
 
     @Override
