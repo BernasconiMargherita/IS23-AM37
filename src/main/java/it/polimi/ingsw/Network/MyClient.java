@@ -47,9 +47,9 @@ public class MyClient {
             throw new RuntimeException(e);
         }
         Registry registry = LocateRegistry.getRegistry(hostName, portNumber);
-        RemoteControllerImpl server = null;
+        RemoteController server = null;
         try {
-            server = (RemoteControllerImpl) registry.lookup("RemoteController");
+            server = (RemoteController) registry.lookup("RemoteController");
         } catch (RemoteException | NotBoundException e) {
             e.printStackTrace();
         }

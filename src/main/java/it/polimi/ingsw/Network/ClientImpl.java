@@ -3,15 +3,17 @@ package it.polimi.ingsw.Network;
 import it.polimi.ingsw.model.GameState;
 import it.polimi.ingsw.model.Player.Player;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.Scanner;
 
 /**
  *The ClientImpl class represents a client object that connects to the server via RMI and interacts with the game.
  */
-public class ClientImpl {
+public class ClientImpl implements Serializable {
 
     private final int gameID;
+    public int positionInArrayServer;
     private final RemoteController server;
 
     private final Player player;
@@ -29,11 +31,20 @@ public class ClientImpl {
         Scanner scanner = new Scanner(System.in);
         this.server = server;
         this.player = player;
+
         try{
             gameID = server.registerPlayer(player, server.getCurrentGameID());
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
+        server.addClient(this);
+        positionInArrayServer = server.getConnectedClients().size();
+        if(server.imTheFirst(gameID)){
+            System.out.println("New Game Creation...");
+            System.out.println("How many players ?");
+            server.getMasterController().getGameController(gameID).setMaxPlayers((scanner.nextInt()));
+        };
+        server.initGame(gameID);
         System.out.println("Connected as " + player.getNickname());
     }
 
@@ -54,5 +65,14 @@ public class ClientImpl {
      */
     public int getGameID() {
         return gameID;
+    }
+
+
+    public void sendMessage(String message) {
+        System.out.println(message);
+    }
+
+    public int getPositionInArrayServer() throws RemoteException{
+        return positionInArrayServer;
     }
 }

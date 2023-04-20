@@ -7,13 +7,14 @@ import it.polimi.ingsw.model.GameState;
 import it.polimi.ingsw.model.Player.Player;
 import it.polimi.ingsw.model.Tile.Tile;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Class that Manages a Game
  */
-public class GameController {
+public class GameController implements Serializable {
     /**
      * List of the player in this game
      */
