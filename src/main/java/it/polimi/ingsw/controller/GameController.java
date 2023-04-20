@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.GameState;
 import it.polimi.ingsw.model.Player.Player;
 import it.polimi.ingsw.model.Tile.Tile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,6 +35,7 @@ public class GameController {
      * Constructor of the GameController, that initialize an empty game, and also has a reference to the ChatController of the Game
      */
     GameController(){
+        this.players=new ArrayList<>();
         this.game = new Game();
         this.turnChanger=0;
     }
@@ -46,9 +48,12 @@ public class GameController {
      * @throws MaxPlayerException throw when the Game is already full
      */
     public void login(String nickname) throws UsernameException, GameAlreadyStarted, MaxPlayerException {
-        if (nickname.equals(getPlayerByNickname(nickname))) throw new UsernameException("Username already taken");
-        Player newplayer = new Player(nickname);
-        game.addPlayer(newplayer);
+        if (!game.getGameState().equals(GameState.WAITING_PLAYERS)) throw new GameAlreadyStarted("game is already started");
+        if (game.getPlayers().size()==0) game.addPlayer(new Player(nickname));
+        else {
+            if (nickname.equals(getPlayerByNickname(nickname))) throw new UsernameException("Username already taken");
+            game.addPlayer(new Player(nickname));
+        }
     }
 
     /**
@@ -74,8 +79,7 @@ public class GameController {
      * @throws EndGameException if the Game is Ended
      * @throws SoldOutTilesException if the Tiles in the Bag are ended
      */
-    public void turn(Tile[] tilesToAdd, int column) throws EmptySlotException, InvalidPositionsException, InvalidSlotException, NoSpaceInColumnException, EndGameException, SoldOutTilesException, GameAlreadyStarted {
-        if  (!game.getGameState().equals(GameState.IN_GAME)) throw new GameAlreadyStarted("Game already started");
+    public void turn(Tile[] tilesToAdd, int column) throws EmptySlotException, InvalidPositionsException, InvalidSlotException, NoSpaceInColumnException, EndGameException, SoldOutTilesException{
 
         game.addInShelf(tilesToAdd,currentPlayer, column);
         game.checkCommonTarget(currentPlayer);
@@ -123,10 +127,10 @@ public class GameController {
      * @return the nickname or null if not found
      */
     public String getPlayerByNickname(String nickname) {
-        for (Player player : players) {
+        for (Player player : game.getPlayers()) {
             if (player.getNickname().equals(nickname)) return player.getNickname();
         }
-        return null;
+        return "?";
     }
 
     /**
