@@ -15,7 +15,6 @@ public class ClientImpl implements Serializable {
     private final int gameID;
     public int positionInArrayServer;
     private final RemoteController server;
-
     private final Player player;
     private boolean myTurn;
     static Scanner scanner = new Scanner(System.in);
@@ -38,7 +37,7 @@ public class ClientImpl implements Serializable {
             throw new RuntimeException(e);
         }
         server.addClient(this);
-        positionInArrayServer = server.getConnectedClients().size();
+        positionInArrayServer = server.getConnectedClients().size()-1;
         if(server.imTheFirst(gameID)){
             System.out.println("New Game Creation...");
             System.out.println("How many players ?");
