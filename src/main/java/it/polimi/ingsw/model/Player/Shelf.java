@@ -5,10 +5,12 @@ import it.polimi.ingsw.Exception.NoSpaceInColumnException;
 import it.polimi.ingsw.Utils.TileSlot;
 import it.polimi.ingsw.model.Tile.Tile;
 
+import java.io.Serializable;
+
 /**
  * class that represents player's shelf
  */
-public class Shelf {
+public class Shelf implements Serializable {
     public static final int MAX_SHELF_ROWS = 6;
     public static final int MAX_SHELF_COLUMNS = 5;
 

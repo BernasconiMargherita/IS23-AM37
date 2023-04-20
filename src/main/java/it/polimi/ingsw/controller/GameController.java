@@ -7,13 +7,14 @@ import it.polimi.ingsw.model.GameState;
 import it.polimi.ingsw.model.Player.Player;
 import it.polimi.ingsw.model.Tile.Tile;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Class that Manages a Game
  */
-public class GameController {
+public class GameController implements Serializable {
     /**
      * List of the player in this game
      */
@@ -35,9 +36,9 @@ public class GameController {
      * Constructor of the GameController, that initialize an empty game, and also has a reference to the ChatController of the Game
      */
     GameController(){
+        this.players=new ArrayList<>();
         this.game = new Game();
         this.turnChanger=0;
-        players = new ArrayList<>();
     }
 
     /**
@@ -51,6 +52,7 @@ public class GameController {
         if(!players.isEmpty()){
             if (nickname.equals(getPlayerByNickname(nickname))) throw new UsernameException("Username already taken");
         }
+        if(game.getGameState()!=GameState.WAITING_PLAYERS)throw new GameAlreadyStarted("Game already started");
         Player newplayer = new Player(nickname);
         game.addPlayer(newplayer);
         players.add(newplayer);
@@ -128,10 +130,10 @@ public class GameController {
      * @return the nickname or null if not found
      */
     public String getPlayerByNickname(String nickname) {
-        for (Player player : players) {
+        for (Player player : game.getPlayers()) {
             if (player.getNickname().equals(nickname)) return player.getNickname();
         }
-        return null;
+        return "?";
     }
 
     /**

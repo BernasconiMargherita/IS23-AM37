@@ -5,10 +5,12 @@ import it.polimi.ingsw.Utils.Utils;
 import it.polimi.ingsw.model.PersonalCards.CardPersonalTarget;
 import it.polimi.ingsw.model.Tile.Tile;
 
+import java.io.Serializable;
+
 /**
  * Class that represent the Player
  */
-public class Player {
+public class Player implements Serializable {
     private final String nickname;
     private final Shelf personalShelf;
     private CardPersonalTarget cardPersonalTarget;

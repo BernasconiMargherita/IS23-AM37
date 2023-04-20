@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.PersonalCards.PersonalDeck;
 import it.polimi.ingsw.model.Player.Player;
 import it.polimi.ingsw.model.Tile.Tile;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -18,7 +19,7 @@ import java.util.Random;
 /**
  * class that manage the logic of the game, receiving messages from the controller to evolve the game
  */
-public class Game {
+public class Game implements Serializable {
     public static int MAX_PLAYERS=4;
     public static int MIN_PLAYERS=2;
     private Board board;
@@ -109,7 +110,7 @@ public class Game {
      *
      * @param currentPlayer  the player that is currently playing his turn
      * @param positions      array of the selected tiles coordinates
-     * @param selectedColumn the selected column in which the player wants to place the tiles
+
      * @return
      */
     public Tile[] remove(Player currentPlayer, Coordinates[] positions) throws InvalidPositionsException, EmptySlotException, InvalidSlotException {
