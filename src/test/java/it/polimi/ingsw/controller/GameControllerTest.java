@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.Exception.*;
 import it.polimi.ingsw.Utils.Coordinates;
+import it.polimi.ingsw.model.Player.Player;
 import it.polimi.ingsw.model.Tile.ColourTile;
 import it.polimi.ingsw.model.Tile.Tile;
 import org.junit.jupiter.api.Test;
@@ -99,6 +100,7 @@ class GameControllerTest {
     @Test
     void turn() {
         GameController gameController= new GameController();
+        Player firstPlayer=null;
         try {
             gameController.login("Nicola");
             gameController.login("Alessandra");
@@ -114,6 +116,7 @@ class GameControllerTest {
 
         try {
             gameController.initGame();
+            firstPlayer=gameController.getCurrentPlayer();
         } catch (GameNotReadyException e) {
             throw new RuntimeException("Game Not Ready");
         } catch (GameAlreadyStarted e) {
@@ -127,13 +130,14 @@ class GameControllerTest {
         }
 
         try {
+
             gameController.turn(tiles ,0);
         } catch (EmptySlotException | SoldOutTilesException | EndGameException | NoSpaceInColumnException |
                  InvalidSlotException | InvalidPositionsException | GameAlreadyStarted e) {
             throw new RuntimeException(e);
         }
 
-        assertFalse(gameController.getCurrentPlayer().getPersonalShelf().getShelf()[0][1].isFree());
+        assertFalse(firstPlayer.getPersonalShelf().getShelf()[1][0].isFree());
 
 
     }

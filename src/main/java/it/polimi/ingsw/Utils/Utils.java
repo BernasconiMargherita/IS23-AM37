@@ -160,7 +160,7 @@ public class Utils implements Serializable {
                     for (int x = 0; x < MAX_SHELF_ROWS; x++) {
                         for (int i = 0; i <MAX_SHELF_COLUMNS ; i++) {
                             for (int j = i+1; j < MAX_SHELF_COLUMNS; j++) {
-                                if (shelfMatrix[x][i].getAssignedTile().getColour() == shelfMatrix[x][j].getAssignedTile().getColour()) {
+                                if (((!shelfMatrix[x][i].isFree())&&(!shelfMatrix[x][j].isFree()))&& shelfMatrix[x][i].getAssignedTile().getColour() == shelfMatrix[x][j].getAssignedTile().getColour()) {
                                     count++;
                                 }
 
@@ -312,7 +312,7 @@ public class Utils implements Serializable {
 
         if(coordinates.getRow() == 0 && coordinates.getColumn() == 0){
             for(int i = 0; i < MAX_SHELF_COLUMNS-1; i++){
-               if(shelfMatrix[i][i] != shelfMatrix[i+1][i+1]){
+               if((shelfMatrix[i][i].isFree())||(shelfMatrix[i+1][i+1].isFree())||(shelfMatrix[i][i] != shelfMatrix[i+1][i+1])){
                    return false;
                }
            }
@@ -324,7 +324,7 @@ public class Utils implements Serializable {
         if(coordinates.getRow() == 1 && coordinates.getColumn() == 0){
 
             for(int i = 0; i < MAX_SHELF_COLUMNS-1; i++){
-                if(shelfMatrix[i+1][i] != shelfMatrix[i+1][i+1]){
+                if((shelfMatrix[i+1][i].isFree())||(shelfMatrix[i+1][i+1].isFree())||(shelfMatrix[i+1][i] != shelfMatrix[i+1][i+1])){
                     return false;
                 }
             }
@@ -335,9 +335,12 @@ public class Utils implements Serializable {
 
         if(coordinates.getRow() == 1 && coordinates.getColumn() == 4){
             for(int i = 1; i < MAX_SHELF_ROWS; i++){
-                if(shelfMatrix[i][coordinates.getColumn()] == shelfMatrix[i+1][coordinates.getColumn()-1]){
+                if(((!shelfMatrix[i][coordinates.getColumn()].isFree())&&(!shelfMatrix[i+1][coordinates.getColumn()-1].isFree()))&&
+                        (shelfMatrix[i][coordinates.getColumn()] == shelfMatrix[i+1][coordinates.getColumn()-1])){
+
                     coordinates.setColumn(coordinates.getColumn()-1);
-                } else{
+
+                } else {
                     return false;
                 }
             }
@@ -348,9 +351,13 @@ public class Utils implements Serializable {
 
         if(coordinates.getRow() == 0 && coordinates.getColumn() == 4){
             for(int i = 0; i < MAX_SHELF_COLUMNS - 1; i++){
-                if(shelfMatrix[i][coordinates.getColumn()].getAssignedTile().getColour()==(shelfMatrix[i+1][coordinates.getColumn()-1].getAssignedTile().getColour())){
+                if(((!shelfMatrix[i][coordinates.getColumn()].isFree())&&(!shelfMatrix[i+1][coordinates.getColumn()-1].isFree()))&&
+                        (shelfMatrix[i][coordinates.getColumn()].getAssignedTile().getColour()==(shelfMatrix[i+1][coordinates.getColumn()-1].getAssignedTile().getColour()))){
+
                     coordinates.setColumn(coordinates.getColumn()-1);
-                } else{
+
+                } else {
+
                     return false;
                 }
             }
