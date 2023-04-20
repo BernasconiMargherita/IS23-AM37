@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.PersonalCards.PersonalDeck;
 import it.polimi.ingsw.model.Player.Player;
 import it.polimi.ingsw.model.Tile.Tile;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -18,12 +19,12 @@ import java.util.Random;
 /**
  * class that manage the logic of the game, receiving messages from the controller to evolve the game
  */
-public class Game {
+public class Game implements Serializable {
     public static int MAX_PLAYERS=4;
     public static int MIN_PLAYERS=2;
     private Board board;
     private ArrayList<Player> players;
-    private GameState gameState;
+    private GameState gameState = GameState.WAITING_PLAYERS;
     private boolean isLastTurn;
     private final Utils utils;
     private ArrayList<CardCommonTarget> commonDeck;
@@ -63,9 +64,9 @@ public class Game {
      * method to initialize effectively the Game, knowing the number of players, also chose a first player to start the game
      */
     public void GameInit(){
-        commonDeck=new CommonDeck(players.size()).getCommonDeck();
+        commonDeck = new CommonDeck(players.size()).getCommonDeck();
         ArrayList<CardPersonalTarget> personalDeck = new PersonalDeck(players.size()).getPersonalDeck();
-        board=new Board(players.size());
+        board = new Board(players.size());
 
         pickFirstPlayer();
         setGameState(GameState.GAME_INIT);
@@ -109,7 +110,7 @@ public class Game {
      *
      * @param currentPlayer  the player that is currently playing his turn
      * @param positions      array of the selected tiles coordinates
-     * @param selectedColumn the selected column in which the player wants to place the tiles
+
      * @return
      */
     public Tile[] remove(Player currentPlayer, Coordinates[] positions) throws InvalidPositionsException, EmptySlotException, InvalidSlotException {
@@ -214,6 +215,8 @@ public class Game {
     public int getMaxPlayers() {
         return maxPlayers;
     }
+
+
 
 
 

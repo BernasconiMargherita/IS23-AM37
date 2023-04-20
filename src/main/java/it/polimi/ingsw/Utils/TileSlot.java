@@ -2,10 +2,12 @@ package it.polimi.ingsw.Utils;
 
 import it.polimi.ingsw.model.Tile.Tile;
 
+import java.io.Serializable;
+
 /**
  * Class that abstracts the concept of a Slot on the board
  */
-public class TileSlot {
+public class TileSlot implements Serializable {
     /**
      * Tile that is in this slot at the moment
      */

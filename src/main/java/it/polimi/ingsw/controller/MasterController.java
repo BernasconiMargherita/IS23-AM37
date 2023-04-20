@@ -1,12 +1,15 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.model.GameState;
+
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
  * Class that manage the multiInstance of Games on the same server. At every game is associated a GameID,
  * which will be used by Clients during communications for identify in which game they take part.
  */
-public class MasterController {
+public class MasterController implements Serializable {
     /**
      * The Map of the Games
      */
@@ -56,5 +59,9 @@ public class MasterController {
         gameMap.remove(gameID);
 
         this.gameID=gameID;
+    }
+
+    public  synchronized GameState getGameState(int gameID){
+        return gameMap.get(gameID).getGameState();
     }
 }

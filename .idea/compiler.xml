@@ -10,6 +10,7 @@
         <module name="MyShelfie" />
         <module name="ProgettoIngegneriaDelSoftware" />
         <module name="AM37" />
+        <module name="ProgettoSoftware" />
         <module name="polimi.ingsw" />
       </profile>
     </annotationProcessing>

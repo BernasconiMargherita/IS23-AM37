@@ -7,13 +7,14 @@ import it.polimi.ingsw.model.GameState;
 import it.polimi.ingsw.model.Player.Player;
 import it.polimi.ingsw.model.Tile.Tile;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Class that Manages a Game
  */
-public class GameController {
+public class GameController implements Serializable {
     /**
      * List of the player in this game
      */
@@ -48,12 +49,13 @@ public class GameController {
      * @throws MaxPlayerException throw when the Game is already full
      */
     public void login(String nickname) throws UsernameException, GameAlreadyStarted, MaxPlayerException {
-        if (!game.getGameState().equals(GameState.WAITING_PLAYERS)) throw new GameAlreadyStarted("game is already started");
-        if (game.getPlayers().size()==0) game.addPlayer(new Player(nickname));
-        else {
+        if(!players.isEmpty()){
             if (nickname.equals(getPlayerByNickname(nickname))) throw new UsernameException("Username already taken");
-            game.addPlayer(new Player(nickname));
         }
+        if(game.getGameState()!=GameState.WAITING_PLAYERS)throw new GameAlreadyStarted("Game already started");
+        Player newplayer = new Player(nickname);
+        game.addPlayer(newplayer);
+        players.add(newplayer);
     }
 
     /**
@@ -79,7 +81,8 @@ public class GameController {
      * @throws EndGameException if the Game is Ended
      * @throws SoldOutTilesException if the Tiles in the Bag are ended
      */
-    public void turn(Tile[] tilesToAdd, int column) throws EmptySlotException, InvalidPositionsException, InvalidSlotException, NoSpaceInColumnException, EndGameException, SoldOutTilesException{
+    public void turn(Tile[] tilesToAdd, int column) throws EmptySlotException, InvalidPositionsException, InvalidSlotException, NoSpaceInColumnException, EndGameException, SoldOutTilesException, GameAlreadyStarted {
+        if  (!game.getGameState().equals(GameState.IN_GAME)) throw new GameAlreadyStarted("Game already started");
 
         game.addInShelf(tilesToAdd,currentPlayer, column);
         game.checkCommonTarget(currentPlayer);
@@ -157,5 +160,9 @@ public class GameController {
 
     public List<Player> getPlayers() {
         return players;
+    }
+
+    public GameState getGameState(){
+        return game.getGameState();
     }
 }
