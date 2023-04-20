@@ -29,7 +29,7 @@ public class Utils implements Serializable {
 
         for(int i = 0; i < 6 ; i++)
 
-            if (!(shelf.getShelf()[cardPersonalTarget.personalCardTiles()[i].coordinates().getX()][cardPersonalTarget.personalCardTiles()[i].coordinates().getY()].isFree()) && cardPersonalTarget.personalCardTiles()[i].colourTile() == shelf.getShelf()[cardPersonalTarget.personalCardTiles()[i].coordinates().getX()][cardPersonalTarget.personalCardTiles()[i].coordinates().getY()].getAssignedTile().getColour()) {
+            if (!(shelf.getShelf()[cardPersonalTarget.personalCardTiles()[i].coordinates().getRow()][cardPersonalTarget.personalCardTiles()[i].coordinates().getColumn()].isFree()) && cardPersonalTarget.personalCardTiles()[i].colourTile() == shelf.getShelf()[cardPersonalTarget.personalCardTiles()[i].coordinates().getRow()][cardPersonalTarget.personalCardTiles()[i].coordinates().getColumn()].getAssignedTile().getColour()) {
                 completedGoals++;
             }
 
@@ -229,10 +229,11 @@ public class Utils implements Serializable {
 
                     for(int i=1; i<4; i++){
                         for(int j=1; j<MAX_SHELF_COLUMNS; j++){
-                            if (shelfMatrix[i][j].getAssignedTile().getColour() == shelfMatrix[i + 1][j + 1].getAssignedTile().getColour()
+                            if (((!shelfMatrix[i][j].isFree())&&(!shelfMatrix[i+1][j+1].isFree())&&(!shelfMatrix[i-1][j-1].isFree())&&(!shelfMatrix[i+1][j-1].isFree())&&(!shelfMatrix[i-1][j+1].isFree()))&&
+                                    (shelfMatrix[i][j].getAssignedTile().getColour() == shelfMatrix[i + 1][j + 1].getAssignedTile().getColour()
                                     && shelfMatrix[i][j].getAssignedTile().getColour() == shelfMatrix[i - 1][i - 1].getAssignedTile().getColour()
                                     && shelfMatrix[i][j].getAssignedTile().getColour() == shelfMatrix[i - 1][i + 1].getAssignedTile().getColour()
-                                    && shelfMatrix[i][j].getAssignedTile().getColour() == shelfMatrix[i + 1][i - 1].getAssignedTile().getColour()) {
+                                    && shelfMatrix[i][j].getAssignedTile().getColour() == shelfMatrix[i + 1][i - 1].getAssignedTile().getColour())){
                                 return true;
                             }
                         }
@@ -309,7 +310,7 @@ public class Utils implements Serializable {
     public boolean checkDiagonal(TileSlot[][] shelfMatrix, Coordinates coordinates) {
 
 
-        if(coordinates.getX() == 0 && coordinates.getY() == 0){
+        if(coordinates.getRow() == 0 && coordinates.getColumn() == 0){
             for(int i = 0; i < MAX_SHELF_COLUMNS-1; i++){
                if(shelfMatrix[i][i] != shelfMatrix[i+1][i+1]){
                    return false;
@@ -320,7 +321,7 @@ public class Utils implements Serializable {
 
 
 
-        if(coordinates.getX() == 1 && coordinates.getY() == 0){
+        if(coordinates.getRow() == 1 && coordinates.getColumn() == 0){
 
             for(int i = 0; i < MAX_SHELF_COLUMNS-1; i++){
                 if(shelfMatrix[i+1][i] != shelfMatrix[i+1][i+1]){
@@ -332,10 +333,10 @@ public class Utils implements Serializable {
 
 
 
-        if(coordinates.getX() == 1 && coordinates.getY() == 4){
+        if(coordinates.getRow() == 1 && coordinates.getColumn() == 4){
             for(int i = 1; i < MAX_SHELF_ROWS; i++){
-                if(shelfMatrix[i][coordinates.getY()] == shelfMatrix[i+1][coordinates.getY()-1]){
-                    coordinates.setY(coordinates.getY()-1);
+                if(shelfMatrix[i][coordinates.getColumn()] == shelfMatrix[i+1][coordinates.getColumn()-1]){
+                    coordinates.setColumn(coordinates.getColumn()-1);
                 } else{
                     return false;
                 }
@@ -345,10 +346,10 @@ public class Utils implements Serializable {
 
 
 
-        if(coordinates.getX() == 0 && coordinates.getY() == 4){
+        if(coordinates.getRow() == 0 && coordinates.getColumn() == 4){
             for(int i = 0; i < MAX_SHELF_COLUMNS - 1; i++){
-                if(shelfMatrix[i][coordinates.getY()].getAssignedTile().getColour()==(shelfMatrix[i+1][coordinates.getY()-1].getAssignedTile().getColour())){
-                    coordinates.setY(coordinates.getY()-1);
+                if(shelfMatrix[i][coordinates.getColumn()].getAssignedTile().getColour()==(shelfMatrix[i+1][coordinates.getColumn()-1].getAssignedTile().getColour())){
+                    coordinates.setColumn(coordinates.getColumn()-1);
                 } else{
                     return false;
                 }
@@ -414,7 +415,7 @@ public class Utils implements Serializable {
 
     public void shelfDebug(Shelf shelf, PersonalCardTile[] personalCardTiles) {
         for (PersonalCardTile personalCardTile: personalCardTiles){
-            shelf.getShelf()[personalCardTile.coordinates().getX()][personalCardTile.coordinates().getY()].assignTile(new Tile(personalCardTile.colourTile()));
+            shelf.getShelf()[personalCardTile.coordinates().getRow()][personalCardTile.coordinates().getColumn()].assignTile(new Tile(personalCardTile.colourTile()));
         }
     }
 

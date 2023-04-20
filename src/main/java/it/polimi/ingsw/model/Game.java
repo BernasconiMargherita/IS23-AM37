@@ -36,7 +36,6 @@ public class Game implements Serializable {
      */
     public Game() {
         this.players= new ArrayList<>();
-        this.gameState = GameState.WAITING_PLAYERS;
         this.isLastTurn = false;
         this.utils= new Utils();
         this.maxPlayers=MAX_PLAYERS;

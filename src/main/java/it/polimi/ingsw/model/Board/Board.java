@@ -90,7 +90,7 @@ public class Board {
     public Tile[] removeCardFromBoard(Coordinates[] positions) throws EmptySlotException, InvalidSlotException, InvalidPositionsException {
 
         for(int i = 1 ; i< positions.length ; i++ ){
-                if(!Objects.equals(positions[i - 1].getX(), positions[i].getX()) && !Objects.equals(positions[i - 1].getY(), positions[i].getY())) {
+                if(!Objects.equals(positions[i - 1].getRow(), positions[i].getRow()) && !Objects.equals(positions[i - 1].getColumn(), positions[i].getColumn())) {
                     throw new InvalidPositionsException("The selected positions are invalid");
                 }
         }
@@ -100,15 +100,15 @@ public class Board {
         for (int i = 0; i < positions.length; i++) {
             Coordinates position = positions[i];
             
-            if (board[position.getX()][position.getY()].isFree()) throw new EmptySlotException("This slot is Empty");
-            if (!boardMask[position.getX()][position.getY()]) throw new InvalidSlotException("This slot is invalid");
+            if (board[position.getRow()][position.getColumn()].isFree()) throw new EmptySlotException("This slot is Empty");
+            if (!boardMask[position.getRow()][position.getColumn()]) throw new InvalidSlotException("This slot is invalid");
 
-            if ((board[(position.getX()) + 1][position.getY()].isFree()) || (board[(position.getX()) - 1][position.getY()].isFree()) || (board[(position.getX())][position.getY() + 1].isFree()) || (board[(position.getX())][position.getY() - 1].isFree())) {
-                    selectedTile[i] = board[position.getX()][position.getY()].getAssignedTile();
+            if ((board[(position.getRow()) + 1][position.getColumn()].isFree()) || (board[(position.getRow()) - 1][position.getColumn()].isFree()) || (board[(position.getRow())][position.getColumn() + 1].isFree()) || (board[(position.getRow())][position.getColumn() - 1].isFree())) {
+                    selectedTile[i] = board[position.getRow()][position.getColumn()].getAssignedTile();
                 } else throw new InvalidSlotException("this slot is invalid");
             }
         for (Coordinates position : positions) {
-            board[position.getX()][position.getY()].removeAssignedTile();
+            board[position.getRow()][position.getColumn()].removeAssignedTile();
         }
             return selectedTile;
     }
@@ -117,8 +117,8 @@ public class Board {
      * method to see if on the board are only tiles with free spaces near them
      */
     public boolean refillIsNecessary(){
-        for (int i=0;i<MAX_BOARD_ROWS;i++){
-            for (int j=0;j<MAX_BOARD_COLUMNS;j++){
+        for (int i=1;i<MAX_BOARD_ROWS;i++){
+            for (int j=1;j<MAX_BOARD_COLUMNS;j++){
                 if ((boardMask[i][j])&&((!(board[i+1][j].isFree()))||(!(board[i-1][j].isFree()))||(!(board[i][j+1].isFree()))||(!(board[i][j-1].isFree())))) return false;
             }
         }

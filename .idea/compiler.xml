@@ -12,7 +12,11 @@
         <module name="AM37" />
         <module name="ProgettoSoftware" />
         <module name="polimi.ingsw" />
+        <module name="ing-sw-2023-Cicero-Cozzolino-Bernasconi-Bartocci" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="ing-sw-2023-Cicero-Cozzolino-Bernasconi-Bartocci" target="19" />
+    </bytecodeTargetLevel>
   </component>
 </project>
