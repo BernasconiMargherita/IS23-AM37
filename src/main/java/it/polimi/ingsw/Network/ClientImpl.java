@@ -43,7 +43,7 @@ public class ClientImpl implements Serializable {
             System.out.println("How many players ?");
             server.getMasterController().getGameController(gameID).setMaxPlayers((scanner.nextInt()));
         };
-        server.initGame(gameID);
+        boolean flagInitgameg = server.initGame(gameID);
         System.out.println("Connected as " + player.getNickname());
     }
 
