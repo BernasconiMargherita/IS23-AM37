@@ -38,7 +38,7 @@ public class ClientImpl implements Serializable {
             throw new RuntimeException(e);
         }
         server.addClient(this);
-        positionInArrayServer = server.getConnectedClients().size();
+        positionInArrayServer = server.getConnectedClients().size() - 1;
         if(server.imTheFirst(gameID)){
             System.out.println("New Game Creation...");
             System.out.println("How many players ?");

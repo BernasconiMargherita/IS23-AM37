@@ -70,16 +70,15 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
         } catch (UsernameException e) {
             throw new RuntimeException(e);
         } catch (GameAlreadyStarted | MaxPlayerException e) {
-            System.out.println("new game creation...");
             startGame();
+            System.out.println("new game creation...");
+            gameID = gameID + 1;
             registerPlayer(player, gameID);
         } catch (NullPointerException e){
             startGame();
             System.out.println("new game creation...");
             gameID = gameID + 1;
             registerPlayer(player, gameID);
-            return gameID;
-
         }
 
 
@@ -101,7 +100,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
     @Override
     public int getPositionInArrayServer() throws RemoteException {
-        return connectedClients.size();
+        return connectedClients.size() - 1;
     }
 
 
