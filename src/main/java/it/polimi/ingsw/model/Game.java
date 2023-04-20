@@ -23,51 +23,31 @@ public class Game implements Serializable {
     public static int MAX_PLAYERS=4;
     public static int MIN_PLAYERS=2;
     private Board board;
-    private ArrayList<Player> players;
     private GameState gameState = GameState.WAITING_PLAYERS;
     private boolean isLastTurn;
     private final Utils utils;
     private ArrayList<CardCommonTarget> commonDeck;
 
-    private Integer maxPlayers;
 
     /**
      * Constructor of The Game class
      */
     public Game() {
-        this.players= new ArrayList<>();
         this.isLastTurn = false;
         this.utils= new Utils();
-        this.maxPlayers=MAX_PLAYERS;
     }
 
-    /**
-     * Method for adding a new player in the players array
-     * @param player the new player to add
-     */
-    public void addPlayer(Player player) throws GameAlreadyStarted, MaxPlayerException {
-        if(gameState==GameState.IN_GAME) throw new GameAlreadyStarted("It is not possible to add a player when the game has already started");
-        if (players.size()==maxPlayers) throw new MaxPlayerException("There are already"+ maxPlayers + "players so "+ player.getNickname() +" cannot be added");
-        players.add(player);
-    }
 
-    /**
-     * method to check if there are sufficient players to start the game
-     */
-    public boolean isGameReadyToStart(){
-        return ( (players.size() > MIN_PLAYERS - 1)  &&  (players.size() < maxPlayers + 1) );
-
-    }
 
     /**
      * method to initialize effectively the Game, knowing the number of players, also chose a first player to start the game
      */
-    public void GameInit(){
+    public void GameInit(List<Player> players){
         commonDeck = new CommonDeck(players.size()).getCommonDeck();
         ArrayList<CardPersonalTarget> personalDeck = new PersonalDeck(players.size()).getPersonalDeck();
         board = new Board(players.size());
 
-        pickFirstPlayer();
+        pickFirstPlayer(players);
         setGameState(GameState.GAME_INIT);
 
         for (int i=0;i< players.size();i++){
@@ -79,7 +59,7 @@ public class Game implements Serializable {
     /**
      * method to randomly select a player to start the placeInShelf and redefine the turns order
      */
-    private void pickFirstPlayer() {
+    private void pickFirstPlayer(List<Player> players) {
         int first = (new Random()).nextInt(players.size());
         players.get(first).setFirstPlayer();
 
@@ -109,8 +89,6 @@ public class Game implements Serializable {
      *
      * @param currentPlayer  the player that is currently playing his turn
      * @param positions      array of the selected tiles coordinates
-
-     * @return
      */
     public Tile[] remove(Player currentPlayer, Coordinates[] positions) throws InvalidPositionsException, EmptySlotException, InvalidSlotException {
         Tile[] removedTile;
@@ -171,29 +149,8 @@ public class Game implements Serializable {
      * Method to choose the Winner of the Game based on the score
      * @return the winner Player
      */
-    public Player chooseWinner() {
-        Player winner=null;
-        int max=0;
-
-        for (Player player:players){
-            if (player.getScore()>max)
-                winner=player;
-        }
-        return winner;
-    }
-
-    /**
-     * Method to set the max players of the game
-     */
-    public void setMaxPlayers(int maxPlayers) {
-        this.maxPlayers = maxPlayers;
-    }
 
 
-
-    public List<Player> getPlayers() {
-        return players;
-    }
 
     public GameState getGameState() {
         return gameState;
@@ -211,9 +168,6 @@ public class Game implements Serializable {
         isLastTurn = lastTurn;
     }
 
-    public int getMaxPlayers() {
-        return this.maxPlayers;
-    }
 
 
 
