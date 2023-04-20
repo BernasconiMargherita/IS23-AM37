@@ -29,7 +29,7 @@ public class Game implements Serializable {
     private final Utils utils;
     private ArrayList<CardCommonTarget> commonDeck;
 
-    private int maxPlayers;
+    private Integer maxPlayers;
 
     /**
      * Constructor of The Game class
@@ -212,7 +212,7 @@ public class Game implements Serializable {
     }
 
     public int getMaxPlayers() {
-        return maxPlayers;
+        return this.maxPlayers;
     }
 
 

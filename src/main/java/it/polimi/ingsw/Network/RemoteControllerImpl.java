@@ -81,7 +81,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
 
     public boolean imTheFirst(int gameID) throws RemoteException{
-        return masterController.getGameController(gameID).getPlayers().size() == 1;
+        return masterController.getGameController(gameID).getNumOfPlayers() == 1;
     }
 
     @Override
@@ -97,7 +97,9 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
      */
     public boolean initGame(int gameID) throws RemoteException{
 
-        if(masterController.getGameController(gameID).getMaxPlayers() == masterController.getGameController(gameID).getPlayers().size()){
+        System.out.println("getMaxPlayers(): " + masterController.getGameController(gameID).getMaxPlayers());
+        System.out.println("getNumOfPlayers()" + masterController.getGameController(gameID).getNumOfPlayers());
+        if(masterController.getGameController(gameID).getMaxPlayers() == masterController.getGameController(gameID).getNumOfPlayers()){
             try{
                 this.masterController.getGameController(gameID).initGame();
             } catch (GameNotReadyException | GameAlreadyStarted e) {

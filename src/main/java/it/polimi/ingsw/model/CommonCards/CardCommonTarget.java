@@ -1,9 +1,10 @@
 package it.polimi.ingsw.model.CommonCards;
 
+import java.io.Serializable;
 import java.util.Stack;
 
 
-public class CardCommonTarget {
+public class CardCommonTarget implements Serializable {
     /**
      *  boolean assignedCommonCard: identifies the first or second common card of the board
      */

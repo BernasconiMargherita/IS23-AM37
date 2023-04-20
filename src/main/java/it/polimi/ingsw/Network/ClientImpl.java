@@ -31,6 +31,8 @@ public class ClientImpl implements Serializable {
         this.server = server;
         this.player = player;
 
+
+
         try{
             gameID = server.registerPlayer(player, server.getCurrentGameID());
         } catch (RemoteException e) {
@@ -42,8 +44,10 @@ public class ClientImpl implements Serializable {
             System.out.println("New Game Creation...");
             System.out.println("How many players ?");
             server.getMasterController().getGameController(gameID).setMaxPlayers((scanner.nextInt()));
+            System.out.println("maxplayers" + server.getMasterController().getGameController(gameID).getMaxPlayers());
         };
-        boolean flagInitgameg = server.initGame(gameID);
+        server.getMasterController().getGameController(gameID);
+        boolean flagInitGame = server.initGame(gameID);
         System.out.println("Connected as " + player.getNickname());
     }
 

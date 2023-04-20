@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.Board;
 
-public class BoardMask {
+import java.io.Serializable;
+
+public class BoardMask implements Serializable {
     private final boolean[][] twoPlayersTiles;
     private final boolean[][] threePlayersTiles;
     private final boolean[][] fourPlayersTiles;

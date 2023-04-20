@@ -164,10 +164,14 @@ public class GameController implements Serializable {
     }
 
     public List<Player> getPlayers() {
-        return players;
+        return game.getPlayers();
     }
 
     public GameState getGameState(){
         return game.getGameState();
+    }
+
+    public int getNumOfPlayers(){
+        return numOfPlayers;
     }
 }
