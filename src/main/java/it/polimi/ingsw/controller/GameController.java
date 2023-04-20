@@ -31,6 +31,8 @@ public class GameController implements Serializable {
      * the player that is currently playing
      */
     private Player currentPlayer;
+    private int numOfPlayers;
+
 
     /**
      * Constructor of the GameController, that initialize an empty game, and also has a reference to the ChatController of the Game
@@ -50,16 +52,14 @@ public class GameController implements Serializable {
      */
     public void login(String nickname) throws UsernameException, GameAlreadyStarted, MaxPlayerException {
         if(game.getGameState()!=GameState.WAITING_PLAYERS)throw new GameAlreadyStarted("Game already started");
-        Player newplayer = new Player(nickname);
-
 
         if(!game.getPlayers().isEmpty()){
             if (nickname.equals(getPlayerByNickname(nickname))) throw new UsernameException("Username already taken");
         }
 
+        Player newplayer = new Player(nickname);
         game.addPlayer(newplayer);
-        players.add(newplayer);
-
+        this.numOfPlayers=game.getPlayers().size();
     }
 
     /**
@@ -71,6 +71,7 @@ public class GameController implements Serializable {
         if (!game.getGameState().equals(GameState.WAITING_PLAYERS)) throw new GameAlreadyStarted("Game already started");
         if (!game.isGameReadyToStart()) throw new GameNotReadyException("Game is not ready");
         game.GameInit();
+        game.setGameState(GameState.IN_GAME);
         players=game.getPlayers();
         currentPlayer=players.get(turnChanger);
     }

@@ -43,8 +43,8 @@ public class CommonDeck {
                 "FIVE_IN_A_X",
                 "IN_DESCENDING_ORDER"};
 
-        commonDeck.add(new CardCommonTarget(CommonList.valueOf(commonList[num1]),0,this.numOfPlayers));
-        commonDeck.add(new CardCommonTarget(CommonList.valueOf(commonList[num2]),1,this.numOfPlayers));
+        commonDeck.add(new CardCommonTarget(CommonList.valueOf(commonList[num1]),0,numOfPlayers));
+        commonDeck.add(new CardCommonTarget(CommonList.valueOf(commonList[num2]),1,numOfPlayers));
     }
 
     /**

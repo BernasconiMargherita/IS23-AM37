@@ -7,35 +7,35 @@ import java.io.Serializable;
  */
 public class Coordinates implements Serializable {
     /**
-     * Coordinate of the column
-     */
-    private Integer X;
-    /**
      * Coordinate of the row
      */
-    private Integer Y;
+    private Integer Row;
+    /**
+     * Coordinate of the column
+     */
+    private Integer Column;
 
     /**
-     * constructor to set the coordinates x and y
+     * constructor to set the coordinates row and column
      */
-    public Coordinates(Integer X, Integer Y) {
-        this.X = X;
-        this.Y = Y;
+    public Coordinates(Integer Row, Integer Column) {
+        this.Row = Row;
+        this.Column = Column;
     }
 
-    public Integer getX() {
-        return X;
+    public Integer getRow() {
+        return Row;
     }
 
-    public Integer getY() {
-        return Y;
+    public Integer getColumn() {
+        return Column;
     }
 
-    public void setY(int Y){
-        this.Y = Y;
+    public void setColumn(int column){
+        this.Column = column;
     }
 
-    public void setX(int X) {
-        this.X = X;
+    public void setRow(int row) {
+        this.Row = row;
     }
 }
