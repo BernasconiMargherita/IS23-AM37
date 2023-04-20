@@ -69,18 +69,13 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
             masterController.getGameController(gameID).login(player.getNickname());
         } catch (UsernameException e) {
             throw new RuntimeException(e);
-        } catch (GameAlreadyStarted | MaxPlayerException e) {
-            startGame();
-            System.out.println("new game creation...");
-            gameID = gameID + 1;
-            registerPlayer(player, gameID);
-        } catch (NullPointerException e){
+        } catch (GameAlreadyStarted | MaxPlayerException | NullPointerException e) {
             startGame();
             System.out.println("new game creation...");
             gameID = gameID + 1;
             registerPlayer(player, gameID);
         }
-
+        gameID = currentGameID;
         return gameID;
     }
 
