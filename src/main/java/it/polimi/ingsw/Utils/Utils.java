@@ -2,8 +2,10 @@ package it.polimi.ingsw.Utils;
 
 import it.polimi.ingsw.model.CommonCards.CardCommonTarget;
 import it.polimi.ingsw.model.PersonalCards.CardPersonalTarget;
+import it.polimi.ingsw.model.PersonalCards.PersonalCardTile;
 import it.polimi.ingsw.model.Player.Shelf;
 import it.polimi.ingsw.model.Tile.ColourTile;
+import it.polimi.ingsw.model.Tile.Tile;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -106,19 +108,31 @@ public class Utils implements Serializable {
                         }
                     }
                 }
+                for (int i = 0; i < MAX_SHELF_ROWS - 1; i++) {
+                    for (int j = 0; j < MAX_SHELF_COLUMNS - 1; j++) {
+                        if (checkGroupsOfFour(copy[i][j], copy[i + 1][j], copy[i][j + 1], copy[i + 1][j + 1])) {
+                        found++;
+                        if (found==4) return true;
+                        }
+                    }
+                }
                 return false;
             }
 
             case TWO_GROUPS_IN_SQUARE -> {
                 HashSet<ColourTile> differentColours= new HashSet<ColourTile>();
                 TileSlot[][] copy = shelfMatrix.clone();
-                int found=0;
 
+                ColourTile colour = null;
                 for (int i = 0; i < MAX_SHELF_ROWS - 1; i++) {
                     for (int j = 0; j < MAX_SHELF_COLUMNS - 1; j++) {
+                        if (!copy[i][j].isFree()) {
+                            colour = copy[i][j].getAssignedTile().getColour();
+                        }
                         if (checkGroupsOfFour(copy[i][j], copy[i+1][j], copy[i][j+1], copy[i+1][j+1])) {
-                            if(differentColours.contains(shelfMatrix[i][j].getAssignedTile().getColour())) return true;
-                            else differentColours.add(shelfMatrix[i][j].getAssignedTile().getColour());
+                            if (differentColours.isEmpty() && colour!=null) differentColours.add(colour);
+                            if(differentColours.contains(colour)) return true;
+                            else differentColours.add(colour);
                         }
                     }
                 }
@@ -139,7 +153,6 @@ public class Utils implements Serializable {
                 if(found>2) {
                     return true;
                 }
-
             }
             case EIGHT_EQUALS -> {
                 int count = 0;
@@ -397,6 +410,12 @@ public class Utils implements Serializable {
         }
 
         return match;
+    }
+
+    public void shelfDebug(Shelf shelf, PersonalCardTile[] personalCardTiles) {
+        for (PersonalCardTile personalCardTile: personalCardTiles){
+            shelf.getShelf()[personalCardTile.coordinates().getX()][personalCardTile.coordinates().getY()].assignTile(new Tile(personalCardTile.colourTile()));
+        }
     }
 
 }

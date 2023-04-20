@@ -36,9 +36,9 @@ public class GameController implements Serializable {
      * Constructor of the GameController, that initialize an empty game, and also has a reference to the ChatController of the Game
      */
     GameController(){
+        this.players=new ArrayList<>();
         this.game = new Game();
         this.turnChanger=0;
-        players = new ArrayList<>();
     }
 
     /**
@@ -134,10 +134,10 @@ public class GameController implements Serializable {
      * @return the nickname or null if not found
      */
     public String getPlayerByNickname(String nickname) {
-        for (Player player : players) {
+        for (Player player : game.getPlayers()) {
             if (player.getNickname().equals(nickname)) return player.getNickname();
         }
-        return null;
+        return "?";
     }
 
     /**
