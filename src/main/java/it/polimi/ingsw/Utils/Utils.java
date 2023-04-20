@@ -160,7 +160,7 @@ public class Utils implements Serializable {
                     for (int x = 0; x < MAX_SHELF_ROWS; x++) {
                         for (int i = 0; i <MAX_SHELF_COLUMNS ; i++) {
                             for (int j = i+1; j < MAX_SHELF_COLUMNS; j++) {
-                                if (((!shelfMatrix[x][i].isFree())&&(!shelfMatrix[x][j].isFree()))&& shelfMatrix[x][i].getAssignedTile().getColour() == shelfMatrix[x][j].getAssignedTile().getColour()) {
+                                if (((!shelfMatrix[x][i].isFree())&&(!shelfMatrix[x][j].isFree()))&&(shelfMatrix[x][i].getAssignedTile().getColour() == shelfMatrix[x][j].getAssignedTile().getColour())) {
                                     count++;
                                 }
 

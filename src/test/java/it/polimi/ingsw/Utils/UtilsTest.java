@@ -139,6 +139,25 @@ class UtilsTest {
         assertTrue(utils.checkCommonTarget(shelf,new CardCommonTarget(CommonList.TWO_GROUPS_IN_SQUARE,0,3)));
     }
 
+    @Test
+    void checkEightEquals() {
+        Utils utils=new Utils();
+        Shelf shelf=new Shelf();
+        utils.shelfDebug(shelf,new PersonalCardTile[]{
+
+                new PersonalCardTile((new Coordinates(0,0)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(1,0)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(2,0)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(3,0)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(4,0)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(5,0)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(1,1)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(0,1)),ColourTile.BOOKS),});
+
+
+        assertTrue(utils.checkCommonTarget(shelf,new CardCommonTarget(CommonList.EIGHT_EQUALS,0,3)));
+    }
+
 
     @Test
     void checkAllDifferent() {
