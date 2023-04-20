@@ -49,13 +49,17 @@ public class GameController implements Serializable {
      * @throws MaxPlayerException throw when the Game is already full
      */
     public void login(String nickname) throws UsernameException, GameAlreadyStarted, MaxPlayerException {
-        if(!players.isEmpty()){
-            if (nickname.equals(getPlayerByNickname(nickname))) throw new UsernameException("Username already taken");
-        }
         if(game.getGameState()!=GameState.WAITING_PLAYERS)throw new GameAlreadyStarted("Game already started");
         Player newplayer = new Player(nickname);
+
+
+        if(!game.getPlayers().isEmpty()){
+            if (nickname.equals(getPlayerByNickname(nickname))) throw new UsernameException("Username already taken");
+        }
+
         game.addPlayer(newplayer);
         players.add(newplayer);
+
     }
 
     /**
