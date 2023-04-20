@@ -5,9 +5,10 @@ import it.polimi.ingsw.model.PersonalCards.CardPersonalTarget;
 import it.polimi.ingsw.model.Player.Shelf;
 import it.polimi.ingsw.model.Tile.ColourTile;
 
+import java.io.Serializable;
 import java.util.HashSet;
 
-public class Utils {
+public class Utils implements Serializable {
     public static final int MAX_SHELF_COLUMNS = 5;
     private static final int MAX_SHELF_ROWS = 6;
 

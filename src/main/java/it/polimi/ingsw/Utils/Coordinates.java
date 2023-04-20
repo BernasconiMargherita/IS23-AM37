@@ -1,9 +1,11 @@
 package it.polimi.ingsw.Utils;
 
+import java.io.Serializable;
+
 /**
  * Class for a pair of Integer that represents the coordinates of a Tile in the library or on the board
  */
-public class Coordinates {
+public class Coordinates implements Serializable {
     /**
      * Coordinate of the column
      */

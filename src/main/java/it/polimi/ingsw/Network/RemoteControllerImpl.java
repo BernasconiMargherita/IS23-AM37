@@ -17,11 +17,13 @@ import java.util.Scanner;
  * This class represents the implementation of the RemoteController interface. It provides the methods
  * to manage the remote operations of the game.
  */
-public class RemoteControllerImpl implements RemoteController, Serializable {
+public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteController, Serializable {
 
     private final MasterController masterController;
     private Tile[] tiles;
     private int currentGameID;
+    private List<ClientImpl> connectedClients;
+
 
 
 
@@ -31,6 +33,7 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
      */
     public RemoteControllerImpl() throws RemoteException {
         super();
+        connectedClients = new ArrayList<>();
         masterController = new MasterController();
         currentGameID = -1;
     }
@@ -45,6 +48,11 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
     }
 
 
+    public void addClient(ClientImpl client) throws RemoteException {
+        connectedClients.add(client);
+    }
+
+
 
     /**
      * Registers a player in the game with the given gameID and returns the gameID.
@@ -56,7 +64,7 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
      */
     @Override
     public int registerPlayer(Player player, int gameID) throws RemoteException {
-        Scanner scanner  = new Scanner(System.in);
+
         try{
             masterController.getGameController(gameID).login(player.getNickname());
         } catch (UsernameException e) {
@@ -74,21 +82,26 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
 
         }
 
-        if(masterController.getGameController(gameID).getPlayers().size() == 1){
-            System.out.println("How many players ?");
-            masterController.getGameController(gameID).setMaxPlayers((scanner.nextInt()));
-        }
 
-        if(masterController.getGameController(gameID).getMaxPlayers() == masterController.getGameController(gameID).getPlayers().size()){
-           try{
-               masterController.getGameController(gameID).initGame();
-           } catch (GameNotReadyException | GameAlreadyStarted e) {
-               throw new RuntimeException(e);
-           }
-        }
+
+
 
 
         return gameID;
+    }
+
+
+    public boolean imTheFirst(int gameID) throws RemoteException{
+        Scanner scanner = new Scanner(System.in);
+        if(masterController.getGameController(gameID).getPlayers().size() == 1){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public int getPositionInArrayServer() throws RemoteException {
+        return connectedClients.size();
     }
 
 
@@ -98,11 +111,16 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
      * @throws RemoteException if there is an issue with the remote method call
      */
     public void initGame(int gameID) throws RemoteException{
-        try{
-            this.masterController.getGameController(gameID).initGame();
-        } catch (GameNotReadyException | GameAlreadyStarted e) {
-            throw new RuntimeException(e);
+
+        if(masterController.getGameController(gameID).getMaxPlayers() == masterController.getGameController(gameID).getPlayers().size()){
+
+            try{
+                this.masterController.getGameController(gameID).initGame();
+            } catch (GameNotReadyException | GameAlreadyStarted e) {
+                throw new RuntimeException(e);
+            }
         }
+
     }
 
     /**
@@ -193,5 +211,9 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
 
     public MasterController getMasterController(){
         return this.masterController;
+    }
+
+    public List<ClientImpl> getConnectedClients() throws RemoteException{
+        return connectedClients;
     }
 }

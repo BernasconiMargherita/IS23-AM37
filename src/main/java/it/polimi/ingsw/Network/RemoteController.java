@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
 
 
 public interface RemoteController extends Remote {
@@ -54,6 +55,10 @@ public interface RemoteController extends Remote {
      * @return the current player for the given game ID
      */
     public Player getCurrentPlayer(int gameID) throws RemoteException;
+    public void addClient(ClientImpl client) throws RemoteException;
+    public boolean imTheFirst(int gameID) throws RemoteException;
+    public int getPositionInArrayServer() throws RemoteException;
+    public List<ClientImpl> getConnectedClients() throws RemoteException;
 
 
     public MasterController getMasterController() throws RemoteException;
