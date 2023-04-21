@@ -205,4 +205,8 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
     public List<ClientImpl> getConnectedClients() throws RemoteException{
         return connectedClients;
     }
+
+    public void setMaxPlayers(int gameID, int maxPlayers) throws RemoteException{
+        masterController.getGameController(gameID).setMaxPlayers(maxPlayers);
+    }
 }
