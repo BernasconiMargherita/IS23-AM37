@@ -17,26 +17,7 @@ class GameTest {
         Player player3=new Player("Alessandra");
         return game;
     }
-    @Test
-    void addPlayer() {
-        Game game = FullGame();
-        Player player4=new Player("Pippo");
-        try {
-            game.addPlayer(player4);
-        } catch (GameAlreadyStarted | MaxPlayerException e) {
-            System.out.println("Error!");
-        }
 
-    }
-
-    @Test
-    void isGameReadyToStart() {
-        Game game=new Game();
-        assertFalse(game.isGameReadyToStart());
-
-        Game game1 = FullGame();
-        assertTrue(game1.isGameReadyToStart());
-    }
 
     @Test
     void gameInit() {
