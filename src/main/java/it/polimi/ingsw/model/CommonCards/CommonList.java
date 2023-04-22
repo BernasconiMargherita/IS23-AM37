@@ -1,9 +1,11 @@
 package it.polimi.ingsw.model.CommonCards;
 
+import java.io.Serializable;
+
 /**
  * Enum for distinguish the common goal cards, used by Utils to generate the corresponding card
  */
-public enum CommonList {
+public enum CommonList implements Serializable {
 
     SIX_GROUPS_OF_TWO,
     FOUR_EQUALS_ANGLES,

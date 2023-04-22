@@ -1,16 +1,22 @@
 package it.polimi.ingsw.model.Board;
+
+import it.polimi.ingsw.Exception.EmptySlotException;
+import it.polimi.ingsw.Exception.InvalidPositionsException;
+import it.polimi.ingsw.Exception.InvalidSlotException;
+import it.polimi.ingsw.Exception.SoldOutTilesException;
 import it.polimi.ingsw.Utils.Coordinates;
-import it.polimi.ingsw.model.Tile.*;
 import it.polimi.ingsw.Utils.TileSlot;
-import it.polimi.ingsw.Exception.*;
+import it.polimi.ingsw.model.Tile.Tile;
+import it.polimi.ingsw.model.Tile.TileDeck;
 
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Class that represents the gaming board
  */
-public class Board {
+public class Board implements Serializable {
     public static final int MAX_BOARD_ROWS = 11;
     public static final int MAX_BOARD_COLUMNS = 11;
     /**

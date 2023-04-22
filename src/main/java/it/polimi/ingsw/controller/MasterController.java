@@ -33,7 +33,7 @@ public class MasterController implements Serializable {
      * this method creates a new game controller and associates a new gameID
      * @return the gameID, that will be used by the Client for future communications
      */
-    public synchronized Integer newGameController(){
+    public  Integer newGameController(){
         GameController gameController=new GameController();
         Integer newKey = gameID;
         gameMap.put(newKey,gameController);
@@ -48,20 +48,20 @@ public class MasterController implements Serializable {
     /**
      * Gets a game controller based on the given gameID,used by the server to call the methods of the game controller
      */
-    public synchronized GameController getGameController(int gameID){
+    public  GameController getGameController(int gameID){
         return gameMap.get(gameID);
     }
 
     /**
      * removes a game-controller from the map when a game is over, to avoid an overcrowded map
      */
-    public synchronized void removeGameController(int gameID){
+    public  void removeGameController(int gameID){
         gameMap.remove(gameID);
 
         this.gameID=gameID;
     }
 
-    public  synchronized GameState getGameState(int gameID){
+    public   GameState getGameState(int gameID){
         return gameMap.get(gameID).getGameState();
     }
 }

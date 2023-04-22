@@ -1,10 +1,11 @@
 package it.polimi.ingsw.model.CommonCards;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
 
-public class CommonDeck {
+public class CommonDeck implements Serializable {
     /**
      *  ArrayList<CrdCommonTarget> commonDeck : ArrayList of commonCard (lenght -> 2)
      */

@@ -7,16 +7,17 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="untitled1" />
-        <module name="MyShelfie" />
         <module name="ProgettoIngegneriaDelSoftware" />
-        <module name="AM37" />
-        <module name="ProgettoSoftware" />
         <module name="polimi.ingsw" />
         <module name="ing-sw-2023-Cicero-Cozzolino-Bernasconi-Bartocci" />
+        <module name="MyShelfie" />
+        <module name="AM37" />
+        <module name="ProgettoSoftware" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="ing-sw-2023-Cicero-Cozzolino-Bernasconi-Bartocci" target="19" />
+      <module name="untitled1" target="19" />
     </bytecodeTargetLevel>
   </component>
 </project>

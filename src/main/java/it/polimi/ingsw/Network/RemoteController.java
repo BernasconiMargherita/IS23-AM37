@@ -16,13 +16,14 @@ public interface RemoteController extends Remote {
      * @param gameID the game ID to initialize
      * @throws RemoteException if there is an issue with the remote method call
      */
-    void initGame(int gameID) throws RemoteException;
+    boolean initGame(int gameID) throws RemoteException;
 
     /**
      * Creates a new game controller instance and increments the currentGameID.
      * @throws RemoteException if there is an issue with the remote method call
      */
-    void startGame() throws RemoteException;
+    int startGame() throws RemoteException;
+    public void setMaxPlayers(int gameID, int maxPlayers) throws RemoteException;
 
     /**
      * Allows the player to place tiles in their shelf and then insert them into a column.

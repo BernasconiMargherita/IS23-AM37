@@ -1,10 +1,11 @@
 package it.polimi.ingsw.model.PersonalCards;
 
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class PersonalDeck {
+public class PersonalDeck implements Serializable {
     /**
      *  parser (JSON) of personalCards
      */

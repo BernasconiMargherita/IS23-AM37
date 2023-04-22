@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.CommonCards;
 
-public class ScoringToken {
+import java.io.Serializable;
+
+public class ScoringToken implements Serializable {
     /**
      *  boolean assignedCommonCard: identifies the first or second common card of the board
      */

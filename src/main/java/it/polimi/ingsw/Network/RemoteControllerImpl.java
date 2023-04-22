@@ -42,9 +42,9 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
      * @throws RemoteException if there is an issue with the remote method call
      */
     @Override
-    public void startGame() throws RemoteException {
-        masterController.newGameController();
+    public int startGame() throws RemoteException {
         currentGameID++;
+        return  masterController.newGameController();
     }
 
 
@@ -81,7 +81,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
 
     public boolean imTheFirst(int gameID) throws RemoteException{
-        return masterController.getGameController(gameID).getPlayers().size() == 1;
+        return masterController.getGameController(gameID).getNumOfPlayers() == 1;
     }
 
     @Override
@@ -95,16 +95,20 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
      * @param gameID the game ID to initialize
      * @throws RemoteException if there is an issue with the remote method call
      */
-    public void initGame(int gameID) throws RemoteException{
+    public boolean initGame(int gameID) throws RemoteException{
 
-        if(masterController.getGameController(gameID).getMaxPlayers() == masterController.getGameController(gameID).getPlayers().size()){
-
+        System.out.println("getMaxPlayers(): " + masterController.getGameController(gameID).getMaxPlayers());
+        System.out.println("getNumOfPlayers()" + masterController.getGameController(gameID).getNumOfPlayers());
+        if(masterController.getGameController(gameID).getMaxPlayers() == masterController.getGameController(gameID).getNumOfPlayers()){
             try{
                 this.masterController.getGameController(gameID).initGame();
             } catch (GameNotReadyException | GameAlreadyStarted e) {
                 throw new RuntimeException(e);
             }
+
+            return true;
         }
+        return false;
 
     }
 
@@ -200,5 +204,9 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
     public List<ClientImpl> getConnectedClients() throws RemoteException{
         return connectedClients;
+    }
+
+    public void setMaxPlayers(int gameID, int maxPlayers) throws RemoteException{
+        masterController.getGameController(gameID).setMaxPlayers(maxPlayers);
     }
 }
