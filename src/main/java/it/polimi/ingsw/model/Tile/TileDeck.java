@@ -2,10 +2,11 @@ package it.polimi.ingsw.model.Tile;
 
 import it.polimi.ingsw.Exception.SoldOutTilesException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class TileDeck {
+public class TileDeck implements Serializable {
 
     /**
      * tileDeck : ArrayList of tiles

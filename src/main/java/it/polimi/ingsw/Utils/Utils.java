@@ -155,28 +155,30 @@ public class Utils implements Serializable {
                 }
             }
             case EIGHT_EQUALS -> {
-                int count = 0;
 
                     for (int x = 0; x < MAX_SHELF_ROWS; x++) {
                         for (int i = 0; i <MAX_SHELF_COLUMNS ; i++) {
-                            for (int j = i+1; j < MAX_SHELF_COLUMNS; j++) {
-                                if (((!shelfMatrix[x][i].isFree())&&(!shelfMatrix[x][j].isFree()))&&(shelfMatrix[x][i].getAssignedTile().getColour() == shelfMatrix[x][j].getAssignedTile().getColour())) {
-                                    count++;
-                                }
 
+                            int count=0;
+
+                            for (int k = x; k <MAX_SHELF_ROWS ; k++){
+                                for (int j =i; j < MAX_SHELF_COLUMNS; j++) {
+                                    if (((!shelfMatrix[x][i].isFree()) && (!shelfMatrix[k][j].isFree())) && (shelfMatrix[x][i].getAssignedTile().getColour() == shelfMatrix[k][j].getAssignedTile().getColour())) {
+                                        count++;
+                                        if (count == 8) return true;
+                                    }
+                                }
                             }
                         }
                     }
-
-                return count >= 8;
-
+                    return false;
             }
 
             case FIVE_IN_DIGONAL -> {
                 Coordinates firstDiagonal=new Coordinates(0,0);
-                Coordinates secondDiagonal=new Coordinates(0,1);
-                Coordinates thirdDiagonal=new Coordinates(0,4);
-                Coordinates fourthDiagonal=new Coordinates(0,5);
+                Coordinates secondDiagonal=new Coordinates(1,0);
+                Coordinates thirdDiagonal=new Coordinates(1,4);
+                Coordinates fourthDiagonal=new Coordinates(0,4);
                 return ((checkDiagonal(shelfMatrix,firstDiagonal))||(checkDiagonal(shelfMatrix,secondDiagonal))||(checkDiagonal(shelfMatrix,thirdDiagonal))||(checkDiagonal(shelfMatrix,fourthDiagonal)));
             }
             case FOUR_ROWS_THREE_DIFFERENT_TYPES -> {
@@ -266,9 +268,6 @@ public class Utils implements Serializable {
         return false;
     }
 
-//Idea:rendere più generica la funzione per utilizzarla anche per FOUR_ROWS_THREE_DIFFERENT_TYPES e THREE_COLUMNS_THREE_DIFFERENT_TYPES
-// (per esempio potrebbe ritornare il numero di tessere diverse, e poi il controllo specifico sarebbe nei vari case)
-
     public int checkAllDifferent(TileSlot[] shelfMatrix, String type) {
 
         int numColours = 0;
@@ -312,7 +311,7 @@ public class Utils implements Serializable {
 
         if(coordinates.getRow() == 0 && coordinates.getColumn() == 0){
             for(int i = 0; i < MAX_SHELF_COLUMNS-1; i++){
-               if((shelfMatrix[i][i].isFree())||(shelfMatrix[i+1][i+1].isFree())||(shelfMatrix[i][i] != shelfMatrix[i+1][i+1])){
+               if((shelfMatrix[i][i].isFree())||(shelfMatrix[i+1][i+1].isFree())||(shelfMatrix[i][i].getAssignedTile().getColour() != shelfMatrix[i+1][i+1].getAssignedTile().getColour())){
                    return false;
                }
            }
@@ -324,7 +323,7 @@ public class Utils implements Serializable {
         if(coordinates.getRow() == 1 && coordinates.getColumn() == 0){
 
             for(int i = 0; i < MAX_SHELF_COLUMNS-1; i++){
-                if((shelfMatrix[i+1][i].isFree())||(shelfMatrix[i+1][i+1].isFree())||(shelfMatrix[i+1][i] != shelfMatrix[i+1][i+1])){
+                if((shelfMatrix[i+1][i].isFree())||(shelfMatrix[i+2][i+1].isFree())||(shelfMatrix[i+1][i].getAssignedTile().getColour() != shelfMatrix[i+2][i+1].getAssignedTile().getColour())){
                     return false;
                 }
             }
@@ -334,9 +333,9 @@ public class Utils implements Serializable {
 
 
         if(coordinates.getRow() == 1 && coordinates.getColumn() == 4){
-            for(int i = 1; i < MAX_SHELF_ROWS; i++){
+            for(int i = 1; i < MAX_SHELF_ROWS-1; i++){
                 if(((!shelfMatrix[i][coordinates.getColumn()].isFree())&&(!shelfMatrix[i+1][coordinates.getColumn()-1].isFree()))&&
-                        (shelfMatrix[i][coordinates.getColumn()] == shelfMatrix[i+1][coordinates.getColumn()-1])){
+                        (shelfMatrix[i][coordinates.getColumn()].getAssignedTile().getColour() == shelfMatrix[i+1][coordinates.getColumn()-1].getAssignedTile().getColour())){
 
                     coordinates.setColumn(coordinates.getColumn()-1);
 

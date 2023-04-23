@@ -51,7 +51,6 @@ class GameControllerTest {
             gameController.login("Nicola");
             gameController.login("Alessandra");
             gameController.login("Margherita");
-            gameController.login("Ramiro");
             gameController.login("Nicola");
         } catch (UsernameException e) {
             System.out.println("Username already taken");

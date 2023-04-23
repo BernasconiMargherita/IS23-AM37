@@ -58,7 +58,9 @@ public class GameController implements Serializable {
         Player newplayer = new Player(nickname);
 
         if(game.getGameState()!=GameState.WAITING_PLAYERS)throw new GameAlreadyStarted("Game already started");
+
         if (players.size()==maxPlayers) throw new MaxPlayerException("There are already"+ maxPlayers + "players so "+ newplayer.getNickname() +" cannot be added");
+
         if(!players.isEmpty()){
             if (nickname.equals(getPlayerByNickname(nickname))) throw new UsernameException("Username already taken");
         }
