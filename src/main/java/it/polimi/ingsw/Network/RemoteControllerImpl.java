@@ -21,7 +21,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
     private final MasterController masterController;
     private Tile[] tiles;
     private int currentGameID;
-    private final List<ClientImpl> connectedClients;
+    private final List<RemoteClient> connectedClients;
     private boolean gameOver;
 
 
@@ -49,7 +49,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
     }
 
 
-    public void addClient(ClientImpl client) throws RemoteException {
+    public void addClient(RemoteClient client) throws RemoteException {
         connectedClients.add(client);
     }
 
@@ -72,7 +72,8 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
             throw new RuntimeException(e);
         } catch (GameAlreadyStarted | MaxPlayerException | NullPointerException e) {
             startGame();
-            System.out.println("new game creation...");
+            connectedClients.get(connectedClients.size()-1).printMessage("New Game Creation..." + "\nHow Many Players ?");
+            setMaxPlayers(gameID + 1 , connectedClients.get(connectedClients.size()-1).setMaxPlayers());
             gameID = gameID + 1;
             registerPlayer(player, gameID);
         }
@@ -192,7 +193,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
         return this.masterController;
     }
 
-    public List<ClientImpl> getConnectedClients() throws RemoteException{
+    public List<RemoteClient> getConnectedClients() throws RemoteException{
         return connectedClients;
     }
 
@@ -205,5 +206,9 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
     public String getWinner(int gameID) throws RemoteException{
         return masterController.getGameController(gameID).endGame().getNickname();
+    }
+
+    public void ping(RemoteClient client) throws RemoteException{
+        client.pong();
     }
 }
