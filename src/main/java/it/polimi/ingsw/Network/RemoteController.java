@@ -1,4 +1,5 @@
 package it.polimi.ingsw.Network;
+import it.polimi.ingsw.Utils.Coordinates;
 import it.polimi.ingsw.controller.MasterController;
 import it.polimi.ingsw.model.Player.Player;
 
@@ -6,6 +7,7 @@ import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -32,7 +34,9 @@ public interface RemoteController extends Remote {
      * @param gameID ID of the game
      * @throws RemoteException if there is an issue with the remote method call
      */
-    void placeInShelf(int gameID) throws RemoteException;
+    boolean remove(int gameID, ArrayList<Coordinates> positions) throws RemoteException;
+    boolean isGameOver() throws RemoteException;
+    boolean turn(int gameID, int column) throws RemoteException;
 
     /**
      * Registers a player in the game with the given gameID and returns the gameID.
@@ -60,6 +64,7 @@ public interface RemoteController extends Remote {
     public boolean imTheFirst(int gameID) throws RemoteException;
     public int getPositionInArrayServer() throws RemoteException;
     public List<ClientImpl> getConnectedClients() throws RemoteException;
+    public String getWinner(int gameID) throws RemoteException;
 
 
     public MasterController getMasterController() throws RemoteException;

@@ -18,7 +18,7 @@ public class GameController implements Serializable {
     /**
      * List of the player in this game
      */
-    private List<Player> players;
+    private final List<Player> players;
     /**
      * the associated Game
      */

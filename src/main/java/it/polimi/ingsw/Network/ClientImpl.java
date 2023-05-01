@@ -1,10 +1,12 @@
 package it.polimi.ingsw.Network;
 
+import it.polimi.ingsw.Utils.Coordinates;
 import it.polimi.ingsw.model.GameState;
 import it.polimi.ingsw.model.Player.Player;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -77,5 +79,68 @@ public class ClientImpl implements Serializable {
 
     public int getPositionInArrayServer() throws RemoteException{
         return positionInArrayServer;
+    }
+
+    public void remove(){
+
+        Scanner scanner  = new Scanner(System.in);
+        ArrayList<Coordinates> positions = new ArrayList<>();
+
+        System.out.println("Give me the positions of the tiles, in order with respect to column insertion \n");
+        positions.add(new Coordinates(scanner.nextInt(), scanner.nextInt()));
+        System.out.println("if you want to select other tiles write \"yes\", otherwise write \"no\" \n");
+        if(scanner.next().equals("yes")){
+            positions.add(new Coordinates(scanner.nextInt(), scanner.nextInt()));
+            System.out.println("if you want to select other tiles write \"yes\", otherwise write \"no\" \n");
+            if(scanner.next().equals("yes")) {
+                positions.add(new Coordinates(scanner.nextInt(), scanner.nextInt()));
+            }
+        }
+        boolean retry = true;
+        while(retry){
+           try{
+               if(server.remove(gameID, positions)){
+                   positions.clear();
+
+                   System.out.println("Wrong Positions Selected... retry");
+                   System.out.println("Give me the positions of the tiles, in order with respect to column insertion \n");
+                   positions.add(new Coordinates(scanner.nextInt(), scanner.nextInt()));
+                   System.out.println("if you want to select other tiles write \"yes\", otherwise write \"no\" \n");
+                   if(scanner.next().equals("yes")) {
+                       positions.add(new Coordinates(scanner.nextInt(), scanner.nextInt()));
+                       System.out.println("if you want to select other tiles write \"yes\", otherwise write \"no\" \n");
+                       if (scanner.next().equals("yes")) {
+                           positions.add(new Coordinates(scanner.nextInt(), scanner.nextInt()));
+                       }
+                   }
+
+               } else{
+                   retry = false;
+               }
+
+        } catch (RemoteException e) {
+               throw new RuntimeException(e);
+           }
+
+        }
+    }
+
+
+    public void turn() throws RemoteException {
+        System.out.println("insert the column please : ");
+        if(!server.turn(gameID, scanner.nextInt())){
+            if(server.isGameOver()){
+                System.out.println("Game Is Over " +  "the winner is... " + server.getWinner(gameID));
+
+            }
+            else {
+                System.out.println("Wrong Column");
+                turn();
+            }
+        };
+    }
+
+    public void printMessage(String message) {
+        System.out.println(message);
     }
 }

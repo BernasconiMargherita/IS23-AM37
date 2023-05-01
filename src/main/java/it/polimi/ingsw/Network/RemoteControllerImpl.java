@@ -11,7 +11,6 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * This class represents the implementation of the RemoteController interface. It provides the methods
@@ -22,7 +21,8 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
     private final MasterController masterController;
     private Tile[] tiles;
     private int currentGameID;
-    private List<ClientImpl> connectedClients;
+    private final List<ClientImpl> connectedClients;
+    private boolean gameOver;
 
 
 
@@ -36,6 +36,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
         connectedClients = new ArrayList<>();
         masterController = new MasterController();
         currentGameID = -1;
+        gameOver = false;
     }
     /**
      * Creates a new game controller instance and increments the currentGameID.
@@ -97,17 +98,20 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
      */
     public boolean initGame(int gameID) throws RemoteException{
 
+
         System.out.println("getMaxPlayers(): " + masterController.getGameController(gameID).getMaxPlayers());
         System.out.println("getNumOfPlayers()" + masterController.getGameController(gameID).getNumOfPlayers());
         if(masterController.getGameController(gameID).getMaxPlayers() == masterController.getGameController(gameID).getNumOfPlayers()){
             try{
                 this.masterController.getGameController(gameID).initGame();
+                connectedClients.get(1).printMessage("prova prova prova");
             } catch (GameNotReadyException | GameAlreadyStarted e) {
                 throw new RuntimeException(e);
             }
 
             return true;
         }
+
         return false;
 
     }
@@ -120,53 +124,37 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
      * @throws RemoteException if there is an issue with the remote method call
      */
     @Override
-    public void placeInShelf(int gameID) throws RemoteException {
-
-        Scanner scanner  = new Scanner(System.in);
-        ArrayList<Coordinates> positions = new ArrayList<>();
-
-        System.out.println("Give me the positions of the tiles, in order with respect to column insertion \n");
-        positions.add(new Coordinates(scanner.nextInt(), scanner.nextInt()));
-        System.out.println("if you want to select other tiles write \"yes\", otherwise write \"no\" \n");
-        if(scanner.next().equals("yes")){
-            positions.add(new Coordinates(scanner.nextInt(), scanner.nextInt()));
-            System.out.println("if you want to select other tiles write \"yes\", otherwise write \"no\" \n");
-            if(scanner.next().equals("yes")) {
-                positions.add(new Coordinates(scanner.nextInt(), scanner.nextInt()));
-            }
-        }
-
+    public boolean remove(int gameID, ArrayList<Coordinates> positions) throws RemoteException {
 
         Coordinates[] positionsArray = new Coordinates[positions.size()];
         for(int i = 0 ; i < positions.size(); i++){
             positionsArray[i] = positions.get(i);
         }
 
-
         try{
             tiles = masterController.getGameController(gameID).remove(positionsArray);
-
         } catch (EmptySlotException e) {
             System.out.println("empty slot selected, select valid slots");
-            placeInShelf(gameID);
+            return false;
         } catch (InvalidPositionsException | InvalidSlotException e) {
             System.out.println("invalid slot selected, select valid slots");
-            placeInShelf(gameID);
+            return false;
         }
+        return true;
+    }
 
 
-        boolean retry = true;
-        while (retry) {
+    public boolean turn(int gameID, int column){
+
             try {
-                System.out.println("insert the column please : ");
-                masterController.getGameController(gameID).turn(tiles, scanner.nextInt());
-                retry = false; // se la funzione ha successo, esci dal ciclo
+                masterController.getGameController(gameID).turn(tiles, column);
             } catch (NoSpaceInColumnException e) {
-                System.out.println("no space in this column, retry please");
+                return false;
             }catch (EndGameException e) {
-                retry = false;
+                gameOver = true;
                 System.out.println("game is over !");
                 System.out.println("the winner is " + masterController.getGameController(gameID).endGame().getNickname());
+                return false;
             } catch (EmptySlotException e) {
                 throw new RuntimeException(e);
             } catch (GameAlreadyStarted e) {
@@ -178,8 +166,10 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
             } catch (InvalidSlotException e) {
                 throw new RuntimeException(e);
             }
+            return true;
         }
-    }
+
+
 
     /**
      * Returns the current game ID.
@@ -208,5 +198,12 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
     public void setMaxPlayers(int gameID, int maxPlayers) throws RemoteException{
         masterController.getGameController(gameID).setMaxPlayers(maxPlayers);
+    }
+    public boolean isGameOver(){
+        return gameOver;
+    }
+
+    public String getWinner(int gameID) throws RemoteException{
+        return masterController.getGameController(gameID).endGame().getNickname();
     }
 }

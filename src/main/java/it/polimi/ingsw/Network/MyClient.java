@@ -60,7 +60,8 @@ public class MyClient {
         while(true){
 
             if(client.isMyTurn()){
-                server.placeInShelf(client.getGameID());
+                client.remove();
+                client.turn();
             }
         }
     }
