@@ -17,6 +17,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="ing-sw-2023-Cicero-Cozzolino-Bernasconi-Bartocci" target="19" />
+      <module name="ProgettoSoftware" target="19" />
       <module name="untitled1" target="19" />
     </bytecodeTargetLevel>
   </component>

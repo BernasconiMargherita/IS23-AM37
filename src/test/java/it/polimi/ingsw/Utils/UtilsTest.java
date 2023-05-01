@@ -15,10 +15,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class UtilsTest {
 
     @Test
-    void checkPersonalTarget() {
-    }
-
-    @Test
     void checkSixGroupsOfTwo() {
         Utils utils=new Utils();
         Shelf shelf=new Shelf();
@@ -146,19 +142,157 @@ class UtilsTest {
         utils.shelfDebug(shelf,new PersonalCardTile[]{
 
                 new PersonalCardTile((new Coordinates(0,0)),ColourTile.BOOKS),
-                new PersonalCardTile((new Coordinates(1,0)),ColourTile.BOOKS),
-                new PersonalCardTile((new Coordinates(2,0)),ColourTile.BOOKS),
-                new PersonalCardTile((new Coordinates(3,0)),ColourTile.BOOKS),
-                new PersonalCardTile((new Coordinates(4,0)),ColourTile.BOOKS),
-                new PersonalCardTile((new Coordinates(5,0)),ColourTile.BOOKS),
                 new PersonalCardTile((new Coordinates(1,1)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(2,3)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(3,0)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(4,1)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(5,3)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(2,0)),ColourTile.BOOKS),
                 new PersonalCardTile((new Coordinates(0,1)),ColourTile.BOOKS),});
 
 
         assertTrue(utils.checkCommonTarget(shelf,new CardCommonTarget(CommonList.EIGHT_EQUALS,0,3)));
     }
 
+    @Test
+    void checkFiveInDiagonal() {
+        Utils utils=new Utils();
+        Shelf shelf=new Shelf();
+        utils.shelfDebug(shelf,new PersonalCardTile[]{
 
+                new PersonalCardTile((new Coordinates(4,0)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(3,1)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(2,2)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(1,3)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(0,4)),ColourTile.BOOKS)});
+
+
+        assertTrue(utils.checkCommonTarget(shelf,new CardCommonTarget(CommonList.FIVE_IN_DIGONAL,0,3)));
+    }
+    @Test
+    void checkFourRowsThreeDifferentTypes() {
+        Utils utils=new Utils();
+        Shelf shelf=new Shelf();
+        utils.shelfDebug(shelf,new PersonalCardTile[]{
+
+                new PersonalCardTile((new Coordinates(0,0)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(0,1)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(0,2)),ColourTile.GAMES),
+                new PersonalCardTile((new Coordinates(0,3)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(0,4)),ColourTile.TROPHIES),
+
+                new PersonalCardTile((new Coordinates(1,0)),ColourTile.CATS),
+                new PersonalCardTile((new Coordinates(1,1)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(1,2)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(1,3)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(1,4)),ColourTile.BOOKS),
+
+                new PersonalCardTile((new Coordinates(2,0)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(2,1)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(2,2)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(2,3)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(2,4)),ColourTile.CATS),
+
+                new PersonalCardTile((new Coordinates(3,0)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(3,1)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(3,2)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(3,3)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(3,4)),ColourTile.CATS)});
+
+
+        assertTrue(utils.checkCommonTarget(shelf,new CardCommonTarget(CommonList.FOUR_ROWS_THREE_DIFFERENT_TYPES,0,3)));
+    }
+
+    @Test
+    void checkTwoColumnAllDifferent() {
+        Utils utils=new Utils();
+        Shelf shelf=new Shelf();
+        utils.shelfDebug(shelf,new PersonalCardTile[]{
+
+                new PersonalCardTile((new Coordinates(0,0)),ColourTile.FRAMES),
+                new PersonalCardTile((new Coordinates(1,0)),ColourTile.PLANTS),
+                new PersonalCardTile((new Coordinates(2,0)),ColourTile.GAMES),
+                new PersonalCardTile((new Coordinates(3,0)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(4,0)),ColourTile.TROPHIES),
+                new PersonalCardTile((new Coordinates(5,0)),ColourTile.CATS),
+
+                new PersonalCardTile((new Coordinates(0,1)),ColourTile.FRAMES),
+                new PersonalCardTile((new Coordinates(1,1)),ColourTile.PLANTS),
+                new PersonalCardTile((new Coordinates(2,1)),ColourTile.GAMES),
+                new PersonalCardTile((new Coordinates(3,1)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(4,1)),ColourTile.TROPHIES),
+                new PersonalCardTile((new Coordinates(5,1)),ColourTile.CATS)});
+
+
+        assertTrue(utils.checkCommonTarget(shelf,new CardCommonTarget(CommonList.TWO_COLUMNS_ALL_DIFFERENT,0,3)));
+    }
+    @Test
+    void checkTwoRowsAllDifferent() {
+        Utils utils=new Utils();
+        Shelf shelf=new Shelf();
+        utils.shelfDebug(shelf,new PersonalCardTile[]{
+
+                new PersonalCardTile((new Coordinates(0,0)),ColourTile.FRAMES),
+                new PersonalCardTile((new Coordinates(0,1)),ColourTile.PLANTS),
+                new PersonalCardTile((new Coordinates(0,2)),ColourTile.GAMES),
+                new PersonalCardTile((new Coordinates(0,3)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(0,4)),ColourTile.TROPHIES),
+
+                new PersonalCardTile((new Coordinates(1,0)),ColourTile.FRAMES),
+                new PersonalCardTile((new Coordinates(1,1)),ColourTile.PLANTS),
+                new PersonalCardTile((new Coordinates(1,2)),ColourTile.CATS),
+                new PersonalCardTile((new Coordinates(1,3)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(1,4)),ColourTile.TROPHIES),});
+
+
+        assertTrue(utils.checkCommonTarget(shelf,new CardCommonTarget(CommonList.TWO_ROWS_ALL_DIFFERENT,0,3)));
+    }
+
+    @Test
+    void checkFiveInAX() {
+        Utils utils=new Utils();
+        Shelf shelf=new Shelf();
+        utils.shelfDebug(shelf,new PersonalCardTile[]{
+
+                new PersonalCardTile((new Coordinates(3,2)),ColourTile.PLANTS),
+                new PersonalCardTile((new Coordinates(4,3)),ColourTile.PLANTS),
+                new PersonalCardTile((new Coordinates(2,1)),ColourTile.PLANTS),
+                new PersonalCardTile((new Coordinates(4,1)),ColourTile.PLANTS),
+                new PersonalCardTile((new Coordinates(2,3)),ColourTile.PLANTS),});
+
+
+        assertTrue(utils.checkCommonTarget(shelf,new CardCommonTarget(CommonList.FIVE_IN_A_X,0,3)));
+    }
+
+    @Test
+    void checkInDescendingOrder() {
+        Utils utils=new Utils();
+        Shelf shelf=new Shelf();
+        utils.shelfDebug(shelf,new PersonalCardTile[]{
+
+                new PersonalCardTile((new Coordinates(0,4)),ColourTile.BOOKS),
+                new PersonalCardTile((new Coordinates(1,4)),ColourTile.PLANTS),
+                new PersonalCardTile((new Coordinates(2,4)),ColourTile.TROPHIES),
+                new PersonalCardTile((new Coordinates(3,4)),ColourTile.PLANTS),
+                new PersonalCardTile((new Coordinates(4,4)),ColourTile.CATS),
+
+                new PersonalCardTile((new Coordinates(0,3)),ColourTile.GAMES),
+                new PersonalCardTile((new Coordinates(1,3)),ColourTile.PLANTS),
+                new PersonalCardTile((new Coordinates(2,3)),ColourTile.PLANTS),
+                new PersonalCardTile((new Coordinates(3,3)),ColourTile.PLANTS),
+
+                new PersonalCardTile((new Coordinates(0,2)),ColourTile.PLANTS),
+                new PersonalCardTile((new Coordinates(1,2)),ColourTile.FRAMES),
+                new PersonalCardTile((new Coordinates(2,2)),ColourTile.PLANTS),
+
+                new PersonalCardTile((new Coordinates(0,1)),ColourTile.PLANTS),
+                new PersonalCardTile((new Coordinates(1,1)),ColourTile.BOOKS),
+
+                new PersonalCardTile((new Coordinates(0,0)),ColourTile.GAMES),});
+
+
+        assertTrue(utils.checkCommonTarget(shelf,new CardCommonTarget(CommonList.IN_DESCENDING_ORDER,0,3)));
+    }
     @Test
     void checkAllDifferent() {
         Utils utils=new Utils();
@@ -226,12 +360,4 @@ class UtilsTest {
         assertTrue(utils.checkDiagonal(libraryMatrix,coordinates));
     }
 
-
-    @Test
-    void checkGroupsOfFour() {
-    }
-
-    @Test
-    void checkGroupsOfTwo() {
-    }
 }

@@ -20,8 +20,6 @@ import java.util.Random;
  * class that manage the logic of the game, receiving messages from the controller to evolve the game
  */
 public class Game implements Serializable {
-    public static int MAX_PLAYERS=4;
-    public static int MIN_PLAYERS=2;
     private Board board;
     private GameState gameState = GameState.WAITING_PLAYERS;
     private boolean isLastTurn;
