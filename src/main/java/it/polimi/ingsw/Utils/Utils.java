@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.Tile.ColourTile;
 import it.polimi.ingsw.model.Tile.Tile;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashSet;
 
 public class Utils implements Serializable {
@@ -40,7 +41,8 @@ public class Utils implements Serializable {
         TileSlot[][] shelfMatrix = shelf.getShelf();
         switch (commonCard.getCommonType()) {
             case SIX_GROUPS_OF_TWO -> {
-                TileSlot[][] copy = shelfMatrix.clone();
+                TileSlot[][] copy = copy(shelfMatrix);
+
                 int found=0;
                 for(int i=0; i<5; i++){
                     for(int j=0; j<4; j++){
@@ -79,7 +81,7 @@ public class Utils implements Serializable {
             }
 
             case FOUR_GROUPS_OF_FOUR -> {
-                TileSlot[][] copy = shelfMatrix.clone();
+                TileSlot[][] copy = copy(shelfMatrix);
                 int found=0;
                 for(int i=0; i<3; i++){
                     for(int j=0; j<2; j++){
@@ -121,7 +123,7 @@ public class Utils implements Serializable {
 
             case TWO_GROUPS_IN_SQUARE -> {
                 HashSet<ColourTile> differentColours= new HashSet<ColourTile>();
-                TileSlot[][] copy = shelfMatrix.clone();
+                TileSlot[][] copy = copy(shelfMatrix);
 
                 ColourTile colour = null;
                 for (int i = 0; i < MAX_SHELF_ROWS - 1; i++) {
@@ -131,8 +133,10 @@ public class Utils implements Serializable {
                         }
                         if (checkGroupsOfFour(copy[i][j], copy[i+1][j], copy[i][j+1], copy[i+1][j+1])) {
                             if (differentColours.isEmpty() && colour!=null) differentColours.add(colour);
-                            if(differentColours.contains(colour)) return true;
-                            else differentColours.add(colour);
+                            else {
+                                if(differentColours.contains(colour)) return true;
+                                else differentColours.add(colour);
+                            }
                         }
                     }
                 }
@@ -146,13 +150,16 @@ public class Utils implements Serializable {
                     for(int j = 0; j < MAX_SHELF_ROWS; j++){
                         temp[j] = shelfMatrix[j][i];
                     }
-                    if (checkAllDifferent(temp, "COLUMN") < 4 ){
+                    int numbDifferent = checkAllDifferent(temp, "COLUMN");
+                    if ( (numbDifferent>0) && (numbDifferent < 4)){
                         found++;
+
+                        if(found>2) {
+                            return true;
+                        }
                     }
                 }
-                if(found>2) {
-                    return true;
-                }
+
             }
             case EIGHT_EQUALS -> {
 
@@ -183,14 +190,19 @@ public class Utils implements Serializable {
             }
             case FOUR_ROWS_THREE_DIFFERENT_TYPES -> {
                 int found = 0;
+
                 for(int i = 0; i < MAX_SHELF_ROWS; i++){
-                    if (checkAllDifferent(shelfMatrix[i], "ROW") < 4){
+
+                    int numbDifferent = checkAllDifferent(shelfMatrix[i], "ROW");
+                    if ( (numbDifferent>0) && (numbDifferent < 4)){
                         found++;
+
+                        if(found>3){
+                            return true;
+                        }
                     }
                 }
-                if(found>3){
-                    return true;
-                }
+
 
 
             }
@@ -205,11 +217,13 @@ public class Utils implements Serializable {
                     }
                     if (checkAllDifferent(temp, "COLUMN") == MAX_SHELF_ROWS ){
                         found++;
+
+                        if(found>1) {
+                            return true;
+                        }
                     }
                 }
-                if(found>1) {
-                    return true;
-                }
+
 
 
             }
@@ -218,11 +232,13 @@ public class Utils implements Serializable {
                 for(int i = 0; i < MAX_SHELF_ROWS; i++){
                     if (checkAllDifferent(shelfMatrix[i], "ROW") == MAX_SHELF_COLUMNS){
                         found++;
+
+                        if(found>1){
+                            return true;
+                        }
                     }
                 }
-                if(found>1){
-                    return true;
-                }
+
             }
 
 
@@ -230,12 +246,12 @@ public class Utils implements Serializable {
             case FIVE_IN_A_X -> {
 
                     for(int i=1; i<4; i++){
-                        for(int j=1; j<MAX_SHELF_COLUMNS; j++){
+                        for(int j=1; j<MAX_SHELF_COLUMNS-1; j++){
                             if (((!shelfMatrix[i][j].isFree())&&(!shelfMatrix[i+1][j+1].isFree())&&(!shelfMatrix[i-1][j-1].isFree())&&(!shelfMatrix[i+1][j-1].isFree())&&(!shelfMatrix[i-1][j+1].isFree()))&&
                                     (shelfMatrix[i][j].getAssignedTile().getColour() == shelfMatrix[i + 1][j + 1].getAssignedTile().getColour()
-                                    && shelfMatrix[i][j].getAssignedTile().getColour() == shelfMatrix[i - 1][i - 1].getAssignedTile().getColour()
-                                    && shelfMatrix[i][j].getAssignedTile().getColour() == shelfMatrix[i - 1][i + 1].getAssignedTile().getColour()
-                                    && shelfMatrix[i][j].getAssignedTile().getColour() == shelfMatrix[i + 1][i - 1].getAssignedTile().getColour())){
+                                    && shelfMatrix[i][j].getAssignedTile().getColour() == shelfMatrix[i - 1][j - 1].getAssignedTile().getColour()
+                                    && shelfMatrix[i][j].getAssignedTile().getColour() == shelfMatrix[i - 1][j + 1].getAssignedTile().getColour()
+                                    && shelfMatrix[i][j].getAssignedTile().getColour() == shelfMatrix[i + 1][j - 1].getAssignedTile().getColour())){
                                 return true;
                             }
                         }
@@ -248,16 +264,29 @@ public class Utils implements Serializable {
                 }
             case IN_DESCENDING_ORDER -> {
 
-            int first= shelfMatrix[0].length< shelfMatrix[4].length ? 0 : 4 ;
+            int first=1;
+
+            if ((!shelfMatrix[0][0].isFree() && shelfMatrix[1][0].isFree())||(!shelfMatrix[1][0].isFree() && shelfMatrix[2][0].isFree())) {
+                first = 0;
+            }
+
+            else if((!shelfMatrix[0][4].isFree() && shelfMatrix[1][4].isFree())||(!shelfMatrix[1][4].isFree() && shelfMatrix[2][4].isFree())){
+                first=4;
+            }
+
+
+            if (first==1) return false;
+
 
             if (first==0){
-                for (int i=0;i<MAX_SHELF_COLUMNS;i++){
-                    if((shelfMatrix[i].length)+1 != shelfMatrix[i+1].length) return false;
+                for (int j=0;j<MAX_SHELF_COLUMNS-1;j++){
+                    if (countFull(shelfMatrix,j)+1!=countFull(shelfMatrix,j+1)) return false;
                 }
             }
+
             else {
-                for (int i = 4; i >= 0; i--){
-                    if((shelfMatrix[i].length)+1 != shelfMatrix[i-1].length) return false;
+                for (int j=4;j>0;j--){
+                    if (countFull(shelfMatrix,j)+1!=countFull(shelfMatrix,j-1)) return false;
                 }
             }
             return true;
@@ -266,6 +295,12 @@ public class Utils implements Serializable {
             default -> throw new IllegalStateException("Unexpected value: " + commonCard.getCommonType());
         }
         return false;
+    }
+
+    private int countFull(TileSlot[][] shelfMatrix, int j) {
+        int i=0;
+        while ( i<6 && !shelfMatrix[i][j].isFree()) i++;
+        return i;
     }
 
     public int checkAllDifferent(TileSlot[] shelfMatrix, String type) {
@@ -401,23 +436,86 @@ public class Utils implements Serializable {
 
     public int groupScore(Shelf shelf){
         TileSlot[][] shelfMatrix = shelf.getShelf();
-        TileSlot[][] copy = shelfMatrix.clone();
+        TileSlot[][] copy = copy(shelfMatrix);
         int match=0;
-        for (int i=0;i<MAX_SHELF_ROWS;i++){
-            for (int j=0;j<MAX_SHELF_COLUMNS;j++){
-                ColourTile colour;
-                colour=copy[i][j].getAssignedTile().getColour();
 
-                for (int k=i;k<MAX_SHELF_ROWS;k++){
-                    for (int h=j;h<MAX_SHELF_COLUMNS;h++){
-                        match++;
-                    }
+        int addedScore=0;
+
+        for(int j=0; j<MAX_SHELF_ROWS-1; j++){
+            for(int k=0; k<MAX_SHELF_COLUMNS-1; k++){
+                ColourTile colour;
+                colour=copy[j][k].getAssignedTile().getColour();
+
+                boolean[][] visited =
+                        {       {false,false,false, false, false, false, false, false, false, false, false},
+                                {false,false, false, false, false, false, false, false, false, false,false},
+                                {false,false, false, false, false, false, false, false, false, false,false},
+                                {false,false, false, false, false, false, false, false, false, false,false},
+                                {false,false, false, false, false, false, false, false, false, false,false},
+                                {false,false, false, false, false, false, false, false, false, false,false}};
+
+                if(!copy[j][k].isFree() && !visited[j][k]){
+                    match = 1 + ricorsiva(copy, colour, j, k, visited);
                 }
+
             }
         }
+        if(match==3) {
+            addedScore = 2;
+        }else if(match==4) {
+            addedScore=3;
+        } else if (match==5){
+            addedScore=5;
+        } else if (match>=6){
+            addedScore=8;
+        }
 
-        return match;
+        return addedScore;
     }
+
+    public int ricorsiva (TileSlot[][] copy, ColourTile colour, int j, int k, boolean[][] visited) {
+        if(j<5 && k<4) {
+
+            if (visited[j][k] || copy[j][k].isFree() || (copy[j + 1][k].getAssignedTile().getColour() != colour && copy[j][k + 1].getAssignedTile().getColour() != colour)) {
+                return 0;
+            }
+
+            visited[j][k] = true;
+
+            if (copy[j + 1][k].getAssignedTile().getColour() == colour && copy[j][k + 1].getAssignedTile().getColour() == colour) {
+                return 2 + ricorsiva(copy, colour, j + 1, k, visited) + ricorsiva(copy, colour, j, k + 1, visited);
+            }
+            if (copy[j + 1][k].getAssignedTile().getColour() == colour && copy[j][k + 1].getAssignedTile().getColour() != colour) {
+                return 1 + ricorsiva(copy, colour, j + 1, k, visited);
+
+            }
+            if (copy[j + 1][k].getAssignedTile().getColour() != colour && copy[j][k + 1].getAssignedTile().getColour() == colour) {
+                return 1 + ricorsiva(copy, colour, j, k + 1, visited);
+            }
+        } else if (j==5 && k<4) {
+            if (copy[j][k + 1].getAssignedTile().getColour() == colour) {
+                return 1 + ricorsiva(copy, colour, j, k + 1, visited);
+            }
+            else return 0;
+
+        } else if (j<5 && k == 4) {
+            if (copy[j + 1][k].getAssignedTile().getColour() == colour) {
+                return 1 + ricorsiva(copy, colour, j + 1, k, visited);
+            }
+            else return 0;
+
+        } else if(j==5 && k==4){
+            if (copy[j][k].getAssignedTile().getColour() == colour) {
+                return 1;
+            }
+            else return 0;
+        }
+
+        return 0;
+    }
+
+
+
 
     public void shelfDebug(Shelf shelf, PersonalCardTile[] personalCardTiles) {
         for (PersonalCardTile personalCardTile: personalCardTiles){
@@ -425,5 +523,21 @@ public class Utils implements Serializable {
         }
     }
 
+    public TileSlot[][] copy(TileSlot[][] shelfMatrix){
+        TileSlot[][] copy= new TileSlot[6][5];
+
+        for(int i=0; i<MAX_SHELF_ROWS;i++){
+            for(int j=0;j<MAX_SHELF_COLUMNS;j++){
+                copy[i][j] = new TileSlot();
+            }
+        }
+        for (int i=0;i<MAX_SHELF_ROWS;i++){
+            for (int j=0;j<MAX_SHELF_COLUMNS;j++) {
+                if (!shelfMatrix[i][j].isFree()) copy[i][j].assignTile(new Tile(shelfMatrix[i][j].getAssignedTile().getColour()));
+            }
+        }
+        return copy;
+    }
+    
 }
 
