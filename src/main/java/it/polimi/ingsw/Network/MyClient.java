@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Network;
 
 import com.google.gson.Gson;
-import it.polimi.ingsw.Network.ClientImpl;
+import it.polimi.ingsw.Network.RemoteClient;
 import it.polimi.ingsw.model.Player.Player;
 
 import java.io.*;
@@ -54,13 +54,14 @@ public class MyClient {
             e.printStackTrace();
         }
 
-        System.out.print("Enter your Nickname: ");
-        ClientImpl client = new ClientImpl(server, new Player((scanner.next())));
+
+        ClientImpl client = new ClientImpl(server);
 
         while(true){
 
             if(client.isMyTurn()){
-                server.placeInShelf(client.getGameID());
+                client.remove();
+                client.turn();
             }
         }
     }

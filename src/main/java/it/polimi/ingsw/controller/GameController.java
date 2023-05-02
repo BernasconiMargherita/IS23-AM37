@@ -15,10 +15,11 @@ import java.util.List;
  * Class that Manages a Game
  */
 public class GameController implements Serializable {
+    public static int MAX_PLAYERS=4;
     /**
      * List of the player in this game
      */
-    private List<Player> players;
+    private final List<Player> players;
     /**
      * the associated Game
      */
@@ -42,7 +43,7 @@ public class GameController implements Serializable {
         this.players=new ArrayList<>();
         this.game = new Game();
         this.turnChanger=0;
-        this.maxPlayers=4;
+        this.maxPlayers=MAX_PLAYERS;
     }
 
 

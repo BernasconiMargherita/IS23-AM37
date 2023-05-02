@@ -1,21 +1,12 @@
 package it.polimi.ingsw.Network;
 
 import com.google.gson.Gson;
-import it.polimi.ingsw.Exception.*;
-import it.polimi.ingsw.Utils.Coordinates;
-import it.polimi.ingsw.controller.GameController;
-import it.polimi.ingsw.model.Player.Player;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.rmi.RemoteException;
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Scanner;
-import it.polimi.ingsw.Network.RemoteController;
 
 
 
@@ -44,9 +35,70 @@ public class MyServer {
         RemoteController server = new RemoteControllerImpl();
         Registry registry = LocateRegistry.createRegistry(portNumber);
         registry.rebind("RemoteController", server);
-        System.out.println("Server is running...");
-        while(true){
+        System.out.println("RMI server is running...");
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Creare un socket server TCP
+        ServerSocket serverSocket = new ServerSocket(8080);
+        System.out.println("Il server TCP è in esecuzione...");
+
+        while (true) {
+            // Accettare le connessioni dei client TCP in ingresso
+            Socket clientSocket = serverSocket.accept();
+            System.out.println("Connessione del client TCP accettata da " + clientSocket.getInetAddress());
+
+            // Gestire le richieste del client TCP
+            new Thread(new TcpHandler(clientSocket)).start();
+        }
+    }
+
+    private static class TcpHandler implements Runnable {
+        private Socket clientSocket;
+
+        public TcpHandler(Socket clientSocket) {
+            this.clientSocket = clientSocket;
+        }
+
+        public void run() {
+            try {
+                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+
+                // Leggere la richiesta del client TCP
+                String request = in.readLine();
+
+                // Gestire la richiesta del client TCP
+                String response = handleTcpRequest(request);
+
+                // Inviare la risposta del client TCP
+                out.println(response);
+
+                // Pulire le risorse
+                out.close();
+                in.close();
+                clientSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        private String handleTcpRequest(String request) {
+            // TODO: Implementare la logica per gestire le richieste del client TCP
+            return "TODO: Implementare la logica per gestire le richieste del client TCP";
         }
     }
 }
+
