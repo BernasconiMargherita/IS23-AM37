@@ -1,9 +1,14 @@
 package it.polimi.ingsw.Network;
 
+import it.polimi.ingsw.Utils.Coordinates;
+
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface RemoteClient extends Remote {
+    public int getNum() throws RemoteException;
+    public String getString() throws RemoteException;
+    public Coordinates getTilePosition() throws RemoteException;
     public boolean isMyTurn() throws RemoteException;
     public int getGameID() throws RemoteException;
     public void sendMessage(String message) throws RemoteException;

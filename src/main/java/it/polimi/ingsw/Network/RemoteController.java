@@ -19,7 +19,7 @@ public interface RemoteController extends Remote {
      * @param gameID the game ID to initialize
      * @throws RemoteException if there is an issue with the remote method call
      */
-    boolean initGame(int gameID) throws RemoteException;
+    void initGame(int gameID) throws RemoteException;
 
     /**
      * Creates a new game controller instance and increments the currentGameID.
@@ -35,9 +35,9 @@ public interface RemoteController extends Remote {
      * @param gameID ID of the game
      * @throws RemoteException if there is an issue with the remote method call
      */
-    boolean remove(int gameID, ArrayList<Coordinates> positions) throws RemoteException;
+    void remove(int gameID, int client) throws RemoteException;
     boolean isGameOver() throws RemoteException;
-    boolean turn(int gameID, int column) throws RemoteException;
+    void turn(int gameID, int column) throws RemoteException;
 
     /**
      * Registers a player in the game with the given gameID and returns the gameID.

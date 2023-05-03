@@ -47,6 +47,7 @@ public class ClientImpl extends UnicastRemoteObject implements Serializable, Rem
             throw new RuntimeException(e);
         }
         System.out.println("Connected as " + player.getNickname());
+        server.initGame(gameID);
     }
 
     /**
@@ -77,63 +78,13 @@ public class ClientImpl extends UnicastRemoteObject implements Serializable, Rem
         return positionInArrayServer;
     }
 
-    public void remove(){
-
-        Scanner scanner  = new Scanner(System.in);
-        ArrayList<Coordinates> positions = new ArrayList<>();
-
-        System.out.println("Give me the positions of the tiles, in order with respect to column insertion \n");
-        positions.add(new Coordinates(scanner.nextInt(), scanner.nextInt()));
-        System.out.println("if you want to select other tiles write \"yes\", otherwise write \"no\" \n");
-        if(scanner.next().equals("yes")){
-            positions.add(new Coordinates(scanner.nextInt(), scanner.nextInt()));
-            System.out.println("if you want to select other tiles write \"yes\", otherwise write \"no\" \n");
-            if(scanner.next().equals("yes")) {
-                positions.add(new Coordinates(scanner.nextInt(), scanner.nextInt()));
-            }
-        }
-        boolean retry = true;
-        while(retry){
-           try{
-               if(server.remove(gameID, positions)){
-                   positions.clear();
-
-                   System.out.println("Wrong Positions Selected... retry");
-                   System.out.println("Give me the positions of the tiles, in order with respect to column insertion \n");
-                   positions.add(new Coordinates(scanner.nextInt(), scanner.nextInt()));
-                   System.out.println("if you want to select other tiles write \"yes\", otherwise write \"no\" \n");
-                   if(scanner.next().equals("yes")) {
-                       positions.add(new Coordinates(scanner.nextInt(), scanner.nextInt()));
-                       System.out.println("if you want to select other tiles write \"yes\", otherwise write \"no\" \n");
-                       if (scanner.next().equals("yes")) {
-                           positions.add(new Coordinates(scanner.nextInt(), scanner.nextInt()));
-                       }
-                   }
-
-               } else{
-                   retry = false;
-               }
-
-        } catch (RemoteException e) {
-               throw new RuntimeException(e);
-           }
-
-        }
+    public void remove() throws RemoteException {
+        server.remove(gameID, positionInArrayServer);
     }
 
 
     public void turn() throws RemoteException {
-        System.out.println("insert the column please : ");
-        if(!server.turn(gameID, scanner.nextInt())){
-            if(server.isGameOver()){
-                System.out.println("Game Is Over " +  "the winner is... " + server.getWinner(gameID));
-
-            }
-            else {
-                System.out.println("Wrong Column");
-                turn();
-            }
-        };
+        server.turn(gameID, positionInArrayServer);
     }
 
     public void printMessage(String message) {
@@ -148,5 +99,16 @@ public class ClientImpl extends UnicastRemoteObject implements Serializable, Rem
 
     public void setNickname(){
         this.player = new Player(scanner.next());
+    }
+    public Coordinates getTilePosition() throws RemoteException{
+        return new Coordinates(scanner.nextInt(), scanner.nextInt());
+    }
+
+    public String getString() throws RemoteException{
+        return scanner.next();
+    }
+
+    public int getNum() throws RemoteException{
+        return scanner.nextInt();
     }
 }

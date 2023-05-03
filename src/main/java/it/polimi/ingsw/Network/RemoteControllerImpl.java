@@ -97,23 +97,23 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
      * @param gameID the game ID to initialize
      * @throws RemoteException if there is an issue with the remote method call
      */
-    public boolean initGame(int gameID) throws RemoteException{
+    public void initGame(int gameID) throws RemoteException{
 
 
-        System.out.println("getMaxPlayers(): " + masterController.getGameController(gameID).getMaxPlayers());
-        System.out.println("getNumOfPlayers()" + masterController.getGameController(gameID).getNumOfPlayers());
-        if(masterController.getGameController(gameID).getMaxPlayers() == masterController.getGameController(gameID).getNumOfPlayers()){
-            try{
+
+        if(masterController.getGameController(gameID).getMaxPlayers() == masterController.getGameController(gameID).getNumOfPlayers()) {
+            try {
                 this.masterController.getGameController(gameID).initGame();
-                connectedClients.get(1).printMessage("prova prova prova");
             } catch (GameNotReadyException | GameAlreadyStarted e) {
                 throw new RuntimeException(e);
             }
 
-            return true;
+            for (RemoteClient connectedClient : connectedClients) {
+                connectedClient.sendMessage("initializing Game...\n");
+            }
         }
 
-        return false;
+
 
     }
 
@@ -125,50 +125,59 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
      * @throws RemoteException if there is an issue with the remote method call
      */
     @Override
-    public boolean remove(int gameID, ArrayList<Coordinates> positions) throws RemoteException {
+    public void remove(int gameID,int client) throws RemoteException {
 
+        ArrayList<Coordinates> positions = new ArrayList<>();
+        connectedClients.get(client).sendMessage("Give me the positions of the tile, in order with respect to column insertion \n");
+        positions.add(connectedClients.get(client).getTilePosition());
+        connectedClients.get(client).sendMessage("if you want to select other tiles write \"yes\", otherwise write \"no\" \n");
+
+        if(connectedClients.get(client).getString().equals("yes")){
+            positions.add(connectedClients.get(client).getTilePosition());
+            connectedClients.get(client).sendMessage("if you want to select other tiles write \"yes\", otherwise write \"no\" \n");
+            if(connectedClients.get(client).getString().equals("yes")){
+                positions.add(connectedClients.get(client).getTilePosition());
+                connectedClients.get(client).sendMessage("if you want to select other tiles write \"yes\", otherwise write \"no\" \n");
+            }
+        }
         Coordinates[] positionsArray = new Coordinates[positions.size()];
-        for(int i = 0 ; i < positions.size(); i++){
+        for(int i = 0; i < positions.size(); i++){
             positionsArray[i] = positions.get(i);
         }
 
         try{
             tiles = masterController.getGameController(gameID).remove(positionsArray);
         } catch (EmptySlotException e) {
-            System.out.println("empty slot selected, select valid slots");
-            return false;
+            connectedClients.get(client).sendMessage("empty slot selected, select valid slots");
+            remove(gameID, client);
         } catch (InvalidPositionsException | InvalidSlotException e) {
-            System.out.println("invalid slot selected, select valid slots");
-            return false;
+            connectedClients.get(client).sendMessage("invalid slot selected, select valid slots");
+            remove(gameID, client);
         }
-        return true;
+
     }
 
 
-    public boolean turn(int gameID, int column){
+    public void turn(int gameID, int client) throws RemoteException {
+
+            connectedClients.get(client).sendMessage("insert the column please : ");
 
             try {
-                masterController.getGameController(gameID).turn(tiles, column);
+                masterController.getGameController(gameID).turn(tiles, connectedClients.get(client).getNum());
             } catch (NoSpaceInColumnException e) {
-                return false;
+                connectedClients.get(client).sendMessage("Wrong Column");
+                turn(gameID, client);
             }catch (EndGameException e) {
                 gameOver = true;
-                System.out.println("game is over !");
-                System.out.println("the winner is " + masterController.getGameController(gameID).endGame().getNickname());
-                return false;
-            } catch (EmptySlotException e) {
-                throw new RuntimeException(e);
-            } catch (GameAlreadyStarted e) {
-                throw new RuntimeException(e);
-            } catch (InvalidPositionsException e) {
-                throw new RuntimeException(e);
-            } catch (SoldOutTilesException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidSlotException e) {
+                connectedClients.get(client).sendMessage("game is over !");
+                connectedClients.get(client).sendMessage("the winner is " + masterController.getGameController(gameID).endGame().getNickname());
+
+            } catch (EmptySlotException | InvalidPositionsException | GameAlreadyStarted | SoldOutTilesException |
+                     InvalidSlotException e) {
                 throw new RuntimeException(e);
             }
-            return true;
-        }
+
+    }
 
 
 

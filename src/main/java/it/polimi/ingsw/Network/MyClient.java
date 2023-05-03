@@ -55,6 +55,7 @@ public class MyClient {
         }
 
 
+        assert server != null;
         ClientImpl client = new ClientImpl(server);
 
         while(true){
