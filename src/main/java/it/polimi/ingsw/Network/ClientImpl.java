@@ -62,6 +62,10 @@ public class ClientImpl extends UnicastRemoteObject implements Serializable, Rem
         return false;
     }
 
+    public String getNickname() throws RemoteException{
+        return player.getNickname();
+    }
+
     /**
      * Returns the game ID associated with the client.
      * @return the game ID associated with the client

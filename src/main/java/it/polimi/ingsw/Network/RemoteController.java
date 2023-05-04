@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface RemoteController extends Remote {
     public void ping(RemoteClient client) throws RemoteException;
-    public void playClient(RemoteClient client) throws RemoteException;
+    public void playClient(int client, int gameID) throws RemoteException;
 
     /**
      * Initializes the game with the given game ID.

@@ -10,7 +10,9 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Collections;
 
 /**
  * This class represents the implementation of the RemoteController interface. It provides the methods
@@ -113,7 +115,13 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
             for (RemoteClient connectedClient : connectedClients.get(gameID)) {
                 connectedClient.sendMessage("initializing Game...\n");
             }
-            masterController.getGameController(gameID).getPlayers()
+            for(int i = 0 ; i < masterController.getGameController(gameID).getPlayers().size(); i++){
+                if(!(masterController.getGameController(gameID).getPlayers().get(i).getNickname().equals(connectedClients.get(gameID).get(i).getNickname()) )){
+                    Collections.swap(connectedClients.get(gameID), i , i+1);
+                }
+            }
+
+            playClient(0,gameID);
         }
 
 
@@ -225,9 +233,15 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
     }
 
     @Override
-    public void playClient(RemoteClient client) throws RemoteException {
-        client.sendMessage("it's your turn!\n");
-        client.remove();
-        client.turn();
+    public void playClient(int client, int gameID) throws RemoteException {
+        connectedClients.get(gameID).get(client).sendMessage("it's your turn!\n");
+        connectedClients.get(gameID).get(client).remove();
+        connectedClients.get(gameID).get(client).turn();
+        if(client == masterController.getGameController(gameID).getMaxPlayers()-1){
+            playClient(0,gameID);
+        }
+         else{
+             playClient(client + 1, gameID);
+        }
     }
 }
