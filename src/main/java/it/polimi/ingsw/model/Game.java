@@ -44,9 +44,8 @@ public class Game implements Serializable {
         commonDeck = new CommonDeck(players.size()).getCommonDeck();
         ArrayList<CardPersonalTarget> personalDeck = new PersonalDeck(players.size()).getPersonalDeck();
         board = new Board(players.size());
-
-        pickFirstPlayer(players);
         setGameState(GameState.GAME_INIT);
+
 
         for (int i=0;i< players.size();i++){
             players.get(i).setPersonalCard(personalDeck.get(i));
@@ -54,25 +53,6 @@ public class Game implements Serializable {
 
     }
 
-    /**
-     * method to randomly select a player to start the placeInShelf and redefine the turns order
-     */
-    private void pickFirstPlayer(List<Player> players) {
-        int first = (new Random()).nextInt(players.size());
-        players.get(first).setFirstPlayer();
-
-        ArrayList<Player> playerList = new ArrayList<>();
-
-        for (int i = first; i < players.size(); ++i) {
-            playerList.add(players.get(i));
-        }
-
-        for (int i = 0; i < first; ++i) {
-            playerList.add(players.get(i));
-        }
-
-        players = playerList;
-    }
 
     /**
      * method to refill the Board if it's necessary
