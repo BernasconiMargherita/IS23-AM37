@@ -438,21 +438,84 @@ public class Utils implements Serializable {
         TileSlot[][] shelfMatrix = shelf.getShelf();
         TileSlot[][] copy = copy(shelfMatrix);
         int match=0;
-        for (int i=0;i<MAX_SHELF_ROWS;i++){
-            for (int j=0;j<MAX_SHELF_COLUMNS;j++){
-                ColourTile colour;
-                colour=copy[i][j].getAssignedTile().getColour();
 
-                for (int k=i;k<MAX_SHELF_ROWS;k++){
-                    for (int h=j;h<MAX_SHELF_COLUMNS;h++){
-                        match++;
-                    }
+        int addedScore=0;
+
+        for(int j=0; j<MAX_SHELF_ROWS-1; j++){
+            for(int k=0; k<MAX_SHELF_COLUMNS-1; k++){
+                ColourTile colour;
+                colour=copy[j][k].getAssignedTile().getColour();
+
+                boolean[][] visited =
+                        {       {false,false,false, false, false, false, false, false, false, false, false},
+                                {false,false, false, false, false, false, false, false, false, false,false},
+                                {false,false, false, false, false, false, false, false, false, false,false},
+                                {false,false, false, false, false, false, false, false, false, false,false},
+                                {false,false, false, false, false, false, false, false, false, false,false},
+                                {false,false, false, false, false, false, false, false, false, false,false}};
+
+                if(!copy[j][k].isFree() && !visited[j][k]){
+                    match = 1 + ricorsiva(copy, colour, j, k, visited);
                 }
+
             }
         }
+        if(match==3) {
+            addedScore = 2;
+        }else if(match==4) {
+            addedScore=3;
+        } else if (match==5){
+            addedScore=5;
+        } else if (match>=6){
+            addedScore=8;
+        }
 
-        return match;
+        return addedScore;
     }
+
+    public int ricorsiva (TileSlot[][] copy, ColourTile colour, int j, int k, boolean[][] visited) {
+        if(j<5 && k<4) {
+
+            if (visited[j][k] || copy[j][k].isFree() || (copy[j + 1][k].getAssignedTile().getColour() != colour && copy[j][k + 1].getAssignedTile().getColour() != colour)) {
+                return 0;
+            }
+
+            visited[j][k] = true;
+
+            if (copy[j + 1][k].getAssignedTile().getColour() == colour && copy[j][k + 1].getAssignedTile().getColour() == colour) {
+                return 2 + ricorsiva(copy, colour, j + 1, k, visited) + ricorsiva(copy, colour, j, k + 1, visited);
+            }
+            if (copy[j + 1][k].getAssignedTile().getColour() == colour && copy[j][k + 1].getAssignedTile().getColour() != colour) {
+                return 1 + ricorsiva(copy, colour, j + 1, k, visited);
+
+            }
+            if (copy[j + 1][k].getAssignedTile().getColour() != colour && copy[j][k + 1].getAssignedTile().getColour() == colour) {
+                return 1 + ricorsiva(copy, colour, j, k + 1, visited);
+            }
+        } else if (j==5 && k<4) {
+            if (copy[j][k + 1].getAssignedTile().getColour() == colour) {
+                return 1 + ricorsiva(copy, colour, j, k + 1, visited);
+            }
+            else return 0;
+
+        } else if (j<5 && k == 4) {
+            if (copy[j + 1][k].getAssignedTile().getColour() == colour) {
+                return 1 + ricorsiva(copy, colour, j + 1, k, visited);
+            }
+            else return 0;
+
+        } else if(j==5 && k==4){
+            if (copy[j][k].getAssignedTile().getColour() == colour) {
+                return 1;
+            }
+            else return 0;
+        }
+
+        return 0;
+    }
+
+
+
 
     public void shelfDebug(Shelf shelf, PersonalCardTile[] personalCardTiles) {
         for (PersonalCardTile personalCardTile: personalCardTiles){

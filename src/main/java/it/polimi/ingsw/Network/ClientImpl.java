@@ -1,21 +1,24 @@
 package it.polimi.ingsw.Network;
 
+import it.polimi.ingsw.Utils.Coordinates;
 import it.polimi.ingsw.model.GameState;
 import it.polimi.ingsw.model.Player.Player;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
  *The ClientImpl class represents a client object that connects to the server via RMI and interacts with the game.
  */
-public class ClientImpl implements Serializable {
+public class ClientImpl extends UnicastRemoteObject implements Serializable, RemoteClient {
 
     private final int gameID;
     public int positionInArrayServer;
     private final RemoteController server;
-    private final Player player;
+    private Player player;
     private boolean myTurn;
     static Scanner scanner = new Scanner(System.in);
 
@@ -23,13 +26,18 @@ public class ClientImpl implements Serializable {
     /**
      * Constructs a new client object and registers the player with the server.
      * @param server the remote server object
-     * @param player the player object representing the client
+
      * @throws Exception if there is an error while registering the player with the server
      */
-    protected ClientImpl(RemoteController server, Player player) throws Exception{
+    protected ClientImpl(RemoteController server) throws Exception{
+        super();
+        server.ping(this);
         Scanner scanner = new Scanner(System.in);
         this.server = server;
-        this.player = player;
+        System.out.println("Enter your Nickname : ");
+        this.player = new Player(scanner.next());
+        server.addClient(this);
+        positionInArrayServer = server.getConnectedClients().size()-1;
 
 
 
@@ -38,17 +46,8 @@ public class ClientImpl implements Serializable {
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
-        server.addClient(this);
-        positionInArrayServer = server.getConnectedClients().size()-1;
-        if(server.imTheFirst(gameID)){
-            System.out.println("New Game Creation...");
-            System.out.println("How many players ?");
-            server.setMaxPlayers(gameID, scanner.nextInt());
-            System.out.println("Maxplayers ->> " + server.getMasterController().getGameController(gameID).getMaxPlayers());
-        };
-        server.getMasterController().getGameController(gameID);
-        boolean flagInitGame = server.initGame(gameID);
         System.out.println("Connected as " + player.getNickname());
+        server.initGame(gameID);
     }
 
     /**
@@ -77,5 +76,39 @@ public class ClientImpl implements Serializable {
 
     public int getPositionInArrayServer() throws RemoteException{
         return positionInArrayServer;
+    }
+
+    public void remove() throws RemoteException {
+        server.remove(gameID, positionInArrayServer);
+    }
+
+
+    public void turn() throws RemoteException {
+        server.turn(gameID, positionInArrayServer);
+    }
+
+    public void printMessage(String message) {
+        System.out.println(message);
+    }
+    public int setMaxPlayers(){
+        return scanner.nextInt();
+    }
+    public void pong() throws RemoteException{
+        System.out.println("connected to the server");
+    }
+
+    public void setNickname(){
+        this.player = new Player(scanner.next());
+    }
+    public Coordinates getTilePosition() throws RemoteException{
+        return new Coordinates(scanner.nextInt(), scanner.nextInt());
+    }
+
+    public String getString() throws RemoteException{
+        return scanner.next();
+    }
+
+    public int getNum() throws RemoteException{
+        return scanner.nextInt();
     }
 }
