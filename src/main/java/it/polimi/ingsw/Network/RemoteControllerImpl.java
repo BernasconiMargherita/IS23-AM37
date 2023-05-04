@@ -21,7 +21,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
     private final MasterController masterController;
     private Tile[] tiles;
     private int currentGameID;
-    private final List<RemoteClient> connectedClients;
+    private final List<ArrayList<RemoteClient>> connectedClients;
     private boolean gameOver;
 
 
@@ -49,8 +49,8 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
     }
 
 
-    public void addClient(RemoteClient client) throws RemoteException {
-        connectedClients.add(client);
+    public void addClient(RemoteClient client, int gameID) throws RemoteException {
+        connectedClients.get(gameID).add(client);
     }
 
 
@@ -64,7 +64,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
      * @throws RemoteException if there is an issue with the remote method call
      */
     @Override
-    public int registerPlayer(Player player, int gameID) throws RemoteException {
+    public int registerPlayer(Player player, int gameID, RemoteClient client) throws RemoteException {
 
         try{
             masterController.getGameController(gameID).login(player.getNickname());
@@ -72,11 +72,13 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
             throw new RuntimeException(e);
         } catch (GameAlreadyStarted | MaxPlayerException | NullPointerException e) {
             startGame();
-            connectedClients.get(connectedClients.size()-1).printMessage("New Game Creation..." + "\nHow Many Players ?");
-            setMaxPlayers(gameID + 1 , connectedClients.get(connectedClients.size()-1).setMaxPlayers());
+            client.printMessage("New Game Creation..." + "\nHow Many Players ?");
+            setMaxPlayers(gameID + 1 , client.setMaxPlayers());
             gameID = gameID + 1;
-            registerPlayer(player, gameID);
+            registerPlayer(player, gameID, client);
+            connectedClients.add(new ArrayList<RemoteClient>());
         }
+
         gameID = currentGameID;
         return gameID;
     }
@@ -108,9 +110,10 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
                 throw new RuntimeException(e);
             }
 
-            for (RemoteClient connectedClient : connectedClients) {
+            for (RemoteClient connectedClient : connectedClients.get(gameID)) {
                 connectedClient.sendMessage("initializing Game...\n");
             }
+            masterController.getGameController(gameID).getPlayers()
         }
 
 
@@ -128,16 +131,16 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
     public void remove(int gameID,int client) throws RemoteException {
 
         ArrayList<Coordinates> positions = new ArrayList<>();
-        connectedClients.get(client).sendMessage("Give me the positions of the tile, in order with respect to column insertion \n");
-        positions.add(connectedClients.get(client).getTilePosition());
-        connectedClients.get(client).sendMessage("if you want to select other tiles write \"yes\", otherwise write \"no\" \n");
+        connectedClients.get(gameID).get(client).sendMessage("Give me the positions of the tile, in order with respect to column insertion \n");
+        positions.add(connectedClients.get(gameID).get(client).getTilePosition());
+        connectedClients.get(gameID).get(client).sendMessage("if you want to select other tiles write \"yes\", otherwise write \"no\" \n");
 
-        if(connectedClients.get(client).getString().equals("yes")){
-            positions.add(connectedClients.get(client).getTilePosition());
-            connectedClients.get(client).sendMessage("if you want to select other tiles write \"yes\", otherwise write \"no\" \n");
-            if(connectedClients.get(client).getString().equals("yes")){
-                positions.add(connectedClients.get(client).getTilePosition());
-                connectedClients.get(client).sendMessage("if you want to select other tiles write \"yes\", otherwise write \"no\" \n");
+        if(connectedClients.get(gameID).get(client).getString().equals("yes")){
+            positions.add(connectedClients.get(gameID).get(client).getTilePosition());
+            connectedClients.get(gameID).get(client).sendMessage("if you want to select other tiles write \"yes\", otherwise write \"no\" \n");
+            if(connectedClients.get(gameID).get(client).getString().equals("yes")){
+                positions.add(connectedClients.get(gameID).get(client).getTilePosition());
+                connectedClients.get(gameID).get(client).sendMessage("if you want to select other tiles write \"yes\", otherwise write \"no\" \n");
             }
         }
         Coordinates[] positionsArray = new Coordinates[positions.size()];
@@ -148,10 +151,10 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
         try{
             tiles = masterController.getGameController(gameID).remove(positionsArray);
         } catch (EmptySlotException e) {
-            connectedClients.get(client).sendMessage("empty slot selected, select valid slots");
+            connectedClients.get(gameID).get(client).sendMessage("empty slot selected, select valid slots");
             remove(gameID, client);
         } catch (InvalidPositionsException | InvalidSlotException e) {
-            connectedClients.get(client).sendMessage("invalid slot selected, select valid slots");
+            connectedClients.get(gameID).get(client).sendMessage("invalid slot selected, select valid slots");
             remove(gameID, client);
         }
 
@@ -160,17 +163,17 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
     public void turn(int gameID, int client) throws RemoteException {
 
-            connectedClients.get(client).sendMessage("insert the column please : ");
+            connectedClients.get(gameID).get(client).sendMessage("insert the column please : ");
 
             try {
-                masterController.getGameController(gameID).turn(tiles, connectedClients.get(client).getNum());
+                masterController.getGameController(gameID).turn(tiles, connectedClients.get(gameID).get(client).getNum());
             } catch (NoSpaceInColumnException e) {
-                connectedClients.get(client).sendMessage("Wrong Column");
+                connectedClients.get(gameID).get(client).sendMessage("Wrong Column");
                 turn(gameID, client);
             }catch (EndGameException e) {
                 gameOver = true;
-                connectedClients.get(client).sendMessage("game is over !");
-                connectedClients.get(client).sendMessage("the winner is " + masterController.getGameController(gameID).endGame().getNickname());
+                connectedClients.get(gameID).get(client).sendMessage("game is over !");
+                connectedClients.get(gameID).get(client).sendMessage("the winner is " + masterController.getGameController(gameID).endGame().getNickname());
 
             } catch (EmptySlotException | InvalidPositionsException | GameAlreadyStarted | SoldOutTilesException |
                      InvalidSlotException e) {
@@ -202,8 +205,8 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
         return this.masterController;
     }
 
-    public List<RemoteClient> getConnectedClients() throws RemoteException{
-        return connectedClients;
+    public List<RemoteClient> getConnectedClients(int gameID) throws RemoteException{
+        return connectedClients.get(gameID);
     }
 
     public void setMaxPlayers(int gameID, int maxPlayers) throws RemoteException{
@@ -219,5 +222,12 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
     public void ping(RemoteClient client) throws RemoteException{
         client.pong();
+    }
+
+    @Override
+    public void playClient(RemoteClient client) throws RemoteException {
+        client.sendMessage("it's your turn!\n");
+        client.remove();
+        client.turn();
     }
 }

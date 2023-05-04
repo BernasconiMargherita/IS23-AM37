@@ -13,6 +13,7 @@ import java.util.List;
 
 public interface RemoteController extends Remote {
     public void ping(RemoteClient client) throws RemoteException;
+    public void playClient(RemoteClient client) throws RemoteException;
 
     /**
      * Initializes the game with the given game ID.
@@ -47,7 +48,7 @@ public interface RemoteController extends Remote {
      * @return the game ID that the player is registered in
      * @throws RemoteException if there is an issue with the remote method call
      */
-     int registerPlayer(Player player, int gameID) throws RemoteException;
+     int registerPlayer(Player player, int gameID, RemoteClient client) throws RemoteException;
 
     /**
      * Returns the current game ID.
@@ -61,10 +62,10 @@ public interface RemoteController extends Remote {
      * @return the current player for the given game ID
      */
     public Player getCurrentPlayer(int gameID) throws RemoteException;
-    public void addClient(RemoteClient client) throws RemoteException;
+    public void addClient(RemoteClient client, int gameID) throws RemoteException;
     public boolean imTheFirst(int gameID) throws RemoteException;
     public int getPositionInArrayServer() throws RemoteException;
-    public List<RemoteClient> getConnectedClients() throws RemoteException;
+    public List<RemoteClient> getConnectedClients(int gameID) throws RemoteException;
     public String getWinner(int gameID) throws RemoteException;
 
 

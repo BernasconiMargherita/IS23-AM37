@@ -36,17 +36,18 @@ public class ClientImpl extends UnicastRemoteObject implements Serializable, Rem
         this.server = server;
         System.out.println("Enter your Nickname : ");
         this.player = new Player(scanner.next());
-        server.addClient(this);
-        positionInArrayServer = server.getConnectedClients().size()-1;
+
 
 
 
         try{
-            gameID = server.registerPlayer(player, server.getCurrentGameID());
+            gameID = server.registerPlayer(player, server.getCurrentGameID(), this);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
         System.out.println("Connected as " + player.getNickname());
+        server.addClient(this, gameID);
+        positionInArrayServer = server.getConnectedClients(gameID).size()-1;
         server.initGame(gameID);
     }
 
