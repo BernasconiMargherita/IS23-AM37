@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.Tile.Tile;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Class that Manages a Game
@@ -66,7 +67,7 @@ public class GameController implements Serializable {
             if (nickname.equals(getPlayerByNickname(nickname))) throw new UsernameException("Username already taken");
         }
         players.add(newplayer);
-        if(players.size()==1) newplayer.setFirstPlayer();
+
         this.numOfPlayers=players.size();
     }
 
@@ -79,9 +80,31 @@ public class GameController implements Serializable {
     public void initGame() throws GameNotReadyException, GameAlreadyStarted {
         if (!game.getGameState().equals(GameState.WAITING_PLAYERS)) throw new GameAlreadyStarted("Game already started");
 
+        pickFirstPlayer(players);
         game.GameInit(players);
+
         game.setGameState(GameState.IN_GAME);
         currentPlayer=players.get(turnChanger);
+    }
+
+    /**
+     * method to randomly select a player to start the placeInShelf and redefine the turns order
+     */
+    private void pickFirstPlayer(List<Player> players) {
+        int first = (new Random()).nextInt(players.size());
+        players.get(first).setFirstPlayer();
+
+        ArrayList<Player> playerList = new ArrayList<>();
+
+        for (int i = first; i < players.size(); ++i) {
+            playerList.add(players.get(i));
+        }
+
+        for (int i = 0; i < first; ++i) {
+            playerList.add(players.get(i));
+        }
+
+        players = playerList;
     }
 
     /**
