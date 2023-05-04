@@ -15,11 +15,11 @@ public class BoardMask implements Serializable {
 
     public boolean[][] getTiles(int numOfPlayers) {
 
-        if(numOfPlayers == 2){
+        if (numOfPlayers == 2) {
             return twoPlayersTiles;
         }
-        if(numOfPlayers == 3){
-            return  threePlayersTiles;
+        if (numOfPlayers == 3) {
+            return threePlayersTiles;
         }
 
         return fourPlayersTiles;

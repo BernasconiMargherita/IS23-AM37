@@ -14,7 +14,7 @@ public class BoardMaskParser implements Serializable {
     public BoardMaskParser() throws FileNotFoundException {
         FileReader reader = new FileReader("src/main/resources/boardMasks.json");
         Gson gson = new Gson();
-         boardMask = gson.fromJson(reader, BoardMask.class);
+        boardMask = gson.fromJson(reader, BoardMask.class);
     }
 
     public BoardMask getBoardMask() {

@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class ScoringToken implements Serializable {
     /**
-     *  boolean assignedCommonCard: identifies the first or second common card of the board
+     * boolean assignedCommonCard: identifies the first or second common card of the board
      */
     int assignedCommonCard;
     /**
@@ -14,16 +14,18 @@ public class ScoringToken implements Serializable {
 
     /**
      * constructor of ScoringToken that assign the prameters to assignedCommonCard and valueToken
+     *
      * @param assignedCommonCard identifies the first or second common card of the board
-     * @param valueToken value of the ScoringToken
+     * @param valueToken         value of the ScoringToken
      */
-    public ScoringToken(int assignedCommonCard, int valueToken){
+    public ScoringToken(int assignedCommonCard, int valueToken) {
         this.assignedCommonCard = assignedCommonCard;
         this.valueToken = valueToken;
     }
 
     /**
      * getter of ValueToken
+     *
      * @return valueToken
      */
 

@@ -27,15 +27,15 @@ public class Coordinates implements Serializable {
         return Row;
     }
 
+    public void setRow(int row) {
+        this.Row = row;
+    }
+
     public Integer getColumn() {
         return Column;
     }
 
-    public void setColumn(int column){
+    public void setColumn(int column) {
         this.Column = column;
-    }
-
-    public void setRow(int row) {
-        this.Row = row;
     }
 }
