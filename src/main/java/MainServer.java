@@ -19,14 +19,14 @@ public class MainServer {
          else{
              Gson gson = new Gson();
              try{
-                 FileReader fileName = new FileReader("ServerHostName.json");
+                 FileReader fileName = new FileReader("src/main/resources/ServerHostName.json");
                  hostName = gson.fromJson(fileName, String.class);
              } catch (FileNotFoundException e) {
                  throw new RuntimeException(e);
              }
 
              try{
-                 FileReader filePort = new FileReader("ServerPort.json");
+                 FileReader filePort = new FileReader("src/main/resources/ServerPort.json");
                  portNumber = gson.fromJson(filePort, Integer.class);
              } catch (FileNotFoundException e) {
                  throw new RuntimeException(e);

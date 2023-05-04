@@ -19,7 +19,7 @@ public class PersonalParser implements Serializable {
      */
 
     public PersonalParser() throws FileNotFoundException {
-        FileReader reader = new FileReader("listOfPersonalCards.json");
+        FileReader reader = new FileReader("src/main/resources/listOfPersonalCards.json");
         Gson gson = new Gson();
         cardPersonalTargets = gson.fromJson(reader, CardPersonalTarget[].class);
     }
