@@ -26,7 +26,7 @@ public class MyServer {
 
 
         try{
-            FileReader filePort = new FileReader("ServerPort.json");
+            FileReader filePort = new FileReader("src/main/resources/ServerPort.json");
             portNumber = gson.fromJson(filePort, Integer.class);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
