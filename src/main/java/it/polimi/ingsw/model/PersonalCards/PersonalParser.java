@@ -11,10 +11,11 @@ public class PersonalParser implements Serializable {
     /**
      * vector of all Personal Cards in game
      */
-    CardPersonalTarget[] cardPersonalTargets ;
+    CardPersonalTarget[] cardPersonalTargets;
 
     /**
      * constructor that deserializes the JSON file: listOfPersonalCards.json
+     *
      * @throws FileNotFoundException
      */
 
@@ -26,6 +27,7 @@ public class PersonalParser implements Serializable {
 
     /**
      * getter of cardPersonalTargets
+     *
      * @return
      */
     public CardPersonalTarget[] getCardPersonalTargets() {

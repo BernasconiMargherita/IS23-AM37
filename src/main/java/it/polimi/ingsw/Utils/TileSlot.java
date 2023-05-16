@@ -27,13 +27,13 @@ public class TileSlot implements Serializable {
      */
     public void assignTile(Tile assignedTile) {
         this.assignedTile = assignedTile;
-        this.free=false;
+        this.free = false;
     }
 
     /**
      * method for knowing if the space is empty or not
      */
-    public boolean isFree(){
+    public boolean isFree() {
         return this.free;
     }
 
@@ -47,8 +47,8 @@ public class TileSlot implements Serializable {
     /**
      * method that reverts the TileSlot to empty if requested
      */
-    public void removeAssignedTile(){
-        this.assignedTile=null;
-        this.free=true;
+    public void removeAssignedTile() {
+        this.assignedTile = null;
+        this.free = true;
     }
 }

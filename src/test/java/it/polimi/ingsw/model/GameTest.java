@@ -1,20 +1,16 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.Exception.GameAlreadyStarted;
-import it.polimi.ingsw.Exception.MaxPlayerException;
 import it.polimi.ingsw.model.Player.Player;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class GameTest {
-   
-    static Game FullGame(){
-        Game game=new Game();
-        Player player= new Player("Nicola");
-        Player player1=new Player("Ramiro");
-        Player player2=new Player("Margherita");
-        Player player3=new Player("Alessandra");
+
+    static Game FullGame() {
+        Game game = new Game();
+        Player player = new Player("Nicola");
+        Player player1 = new Player("Ramiro");
+        Player player2 = new Player("Margherita");
+        Player player3 = new Player("Alessandra");
         return game;
     }
 

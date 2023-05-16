@@ -9,12 +9,12 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 
-
 public class MyServer {
     /**
      * The main method creates a RemoteControllerImpl object, creates a registry on port 1099,
      * and binds the RemoteControllerImpl object to the registry with the name "RemoteController".
      * This starts the server and prints a message to indicate that the server is running.
+     *
      * @param args The command line arguments passed to the main method.
      * @throws Exception If an error occurs while creating the registry or binding the object to it.
      */
@@ -25,8 +25,8 @@ public class MyServer {
         Gson gson = new Gson();
 
 
-        try{
-            FileReader filePort = new FileReader("src/main/resources/ServerPort.json");
+        try {
+            FileReader filePort = new FileReader("ServerPort.json");
             portNumber = gson.fromJson(filePort, Integer.class);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
@@ -36,19 +36,6 @@ public class MyServer {
         Registry registry = LocateRegistry.createRegistry(portNumber);
         registry.rebind("RemoteController", server);
         System.out.println("RMI server is running...");
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         // Creare un socket server TCP
