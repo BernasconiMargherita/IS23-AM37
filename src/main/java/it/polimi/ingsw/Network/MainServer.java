@@ -1,3 +1,5 @@
+package it.polimi.ingsw.Network;
+
 import com.google.gson.Gson;
 
 import java.io.*;
