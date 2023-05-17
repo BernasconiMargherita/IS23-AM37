@@ -24,11 +24,10 @@ public class MyServer {
         String hostName;
         Gson gson = new Gson();
 
-
-        try {
-            FileReader filePort = new FileReader("ServerPort.json");
-            portNumber = gson.fromJson(filePort, Integer.class);
-        } catch (FileNotFoundException e) {
+        try (InputStream portStream = MyClient.class.getResourceAsStream("/json/ServerPort.json");
+             Reader portReader = new InputStreamReader(portStream)) {
+            portNumber = gson.fromJson(portReader, Integer.class);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 

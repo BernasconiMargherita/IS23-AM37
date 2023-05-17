@@ -5,24 +5,17 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 public class GuiMaster {
     private LoginSceneController loginSceneController;
     private GameSceneController gameSceneController;
 
 
-    public static <T> T setLayout(Scene scene, String path) {
-        FXMLLoader loader = new FXMLLoader(GuiMaster.class.getClassLoader().getResource(path));
-
-        Pane pane;
-        try {
-            pane = loader.load();
-            scene.setRoot(pane);
-        } catch (IOException e) {
-
-            return null;
-        }
-
+    public static <T> T setLayout(Scene scene, String path) throws IOException {
+        FXMLLoader loader = new FXMLLoader(GuiMaster.class.getResource(path));
+        Pane pane = loader.load();
+        scene.setRoot(pane);
         return loader.getController();
     }
 

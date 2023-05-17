@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.Tile.Tile;
 import it.polimi.ingsw.model.Tile.TileDeck;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -47,7 +48,7 @@ public class Board implements Serializable {
         BoardMaskParser boardMaskParser;
         try {
             boardMaskParser = new BoardMaskParser();
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 

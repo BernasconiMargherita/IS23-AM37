@@ -2,8 +2,7 @@ package it.polimi.ingsw.Network;
 
 import com.google.gson.Gson;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -29,19 +28,20 @@ public class MyClient {
         Scanner scanner = new Scanner(System.in);
 
         Gson gson = new Gson();
-        try {
-            FileReader filePort = new FileReader("ServerPort.json");
-            portNumber = gson.fromJson(filePort, Integer.class);
-        } catch (FileNotFoundException e) {
+        try (InputStream portStream = MyClient.class.getResourceAsStream("/json/ServerPort.json");
+             Reader portReader = new InputStreamReader(portStream)) {
+            portNumber = gson.fromJson(portReader, Integer.class);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        try {
-            FileReader fileName = new FileReader("ServerHostName.json");
-            hostName = gson.fromJson(fileName, String.class);
-        } catch (FileNotFoundException e) {
+        try (InputStream hostStream = MyClient.class.getResourceAsStream("/json/ServerHostName.json");
+             Reader hostReader = new InputStreamReader(hostStream)) {
+            hostName = gson.fromJson(hostReader, String.class);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
         Registry registry = LocateRegistry.getRegistry(hostName, portNumber);
         RemoteController server = null;
         try {

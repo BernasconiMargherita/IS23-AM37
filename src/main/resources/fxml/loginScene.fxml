@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane xmlns:fx="http://javafx.com/fxml" fx:controller="it.polimi.ingsw.view.gui.LoginSceneController"
+          alignment="center" hgap="10" vgap="10">
+   <ImageView GridPane.columnIndex="0" GridPane.rowIndex="0"
+              preserveRatio="true" fitWidth="500.0" fitHeight="500.0">
+      <image>
+         <Image url="@../17_MyShelfie_BGA/misc/sfondo parquet.jpg/" />
+      </image>
+   </ImageView>
+
+   <Label GridPane.columnIndex="0" GridPane.rowIndex="1" text="Username: " />
+   <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+   <Label GridPane.columnIndex="0" GridPane.rowIndex="2" text="Password: " />
+   <PasswordField GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+   <Button GridPane.columnIndex="0" GridPane.rowIndex="3" text="Login" />
+</GridPane>
+

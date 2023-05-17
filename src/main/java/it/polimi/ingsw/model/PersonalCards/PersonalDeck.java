@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.PersonalCards;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
@@ -25,7 +26,7 @@ public class PersonalDeck implements Serializable {
     public PersonalDeck(int numOfPlayers) {
         try {
             personalParser = new PersonalParser();
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 

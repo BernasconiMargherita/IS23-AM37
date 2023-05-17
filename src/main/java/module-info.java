@@ -1,4 +1,5 @@
 module it.polimi.ingsw {
+
     requires javafx.controls;
     requires javafx.fxml;
 
@@ -10,8 +11,7 @@ module it.polimi.ingsw {
     opens it.polimi.ingsw.model.Board to com.google.gson;
     opens it.polimi.ingsw.Utils to com.google.gson;
 
-
-
+    exports it.polimi.ingsw.Network to java.rmi;
     exports it.polimi.ingsw.view.gui;
     exports it.polimi.ingsw.model.PersonalCards to com.google.gson;
     exports it.polimi.ingsw.model.Tile to com.google.gson;

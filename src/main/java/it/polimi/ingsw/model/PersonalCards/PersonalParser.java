@@ -2,9 +2,7 @@ package it.polimi.ingsw.model.PersonalCards;
 
 import com.google.gson.Gson;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.Serializable;
+import java.io.*;
 
 public class PersonalParser implements Serializable {
 
@@ -19,10 +17,13 @@ public class PersonalParser implements Serializable {
      * @throws FileNotFoundException
      */
 
-    public PersonalParser() throws FileNotFoundException {
-        FileReader reader = new FileReader("src/main/resources/listOfPersonalCards.json");
+    public PersonalParser() throws IOException {
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("json/listOfPersonalCards.json");
+        Reader reader = new InputStreamReader(inputStream);
         Gson gson = new Gson();
         cardPersonalTargets = gson.fromJson(reader, CardPersonalTarget[].class);
+        reader.close();
+
     }
 
     /**
