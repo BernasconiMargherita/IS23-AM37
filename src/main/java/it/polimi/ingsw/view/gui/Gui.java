@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
@@ -11,10 +10,12 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class Gui extends Application {
+
     @Override
     public void start(Stage stage) throws IOException {
 
-        InputStream is = Gui.class.getClassLoader().getResourceAsStream("17_MyShelfie_BGA/Publisher material/Icon 50x50px.png");
+
+        InputStream is = Gui.class.getClassLoader().getResourceAsStream("assets/Publisher material/Icon 50x50px.png");
         if (is != null) {
             stage.getIcons().add(new Image(is));
         }
