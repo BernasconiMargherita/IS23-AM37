@@ -30,7 +30,6 @@ public class Gui extends Application {
 
     @Override
     public void stop() {
-        GuiMaster.getInstance().closeConnection();
         System.exit(0);
     }
 }

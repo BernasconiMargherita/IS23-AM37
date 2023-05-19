@@ -28,7 +28,7 @@ public class ClientImpl extends UnicastRemoteObject implements Serializable, Rem
      * @param server the remote server object
      * @throws Exception if there is an error while registering the player with the server
      */
-    protected ClientImpl(RemoteController server) throws Exception {
+    public ClientImpl(RemoteController server) throws Exception {
         super();
         server.ping(this);
         Scanner scanner = new Scanner(System.in);
