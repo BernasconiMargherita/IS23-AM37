@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="rootPane" prefHeight="475.0" prefWidth="869.0" stylesheets="@styles/login.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.LoginSceneController">
+
+    <GridPane fx:id="gridPane" layoutX="173.0" layoutY="271.0" prefHeight="163.0" prefWidth="524.0">
+
+      <columnConstraints>
+          <ColumnConstraints hgrow="ALWAYS" maxWidth="377.0" minWidth="118.0" prefWidth="189.0" />
+          <ColumnConstraints hgrow="ALWAYS" maxWidth="377.0" minWidth="118.0" prefWidth="204.00000000000003" />
+          <ColumnConstraints maxWidth="413.0" minWidth="148.0" prefWidth="148.0" />
+      </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="93.0" minHeight="30.0" prefHeight="47.0" />
+          <RowConstraints maxHeight="59.0" minHeight="22.0" prefHeight="31.333333333333343" />
+          <RowConstraints maxHeight="62.0" minHeight="18.0" prefHeight="38.0" />
+         <RowConstraints maxHeight="66.0" minHeight="22.0" prefHeight="46.0" />
+        </rowConstraints>
+
+        <Label layoutX="134.0" layoutY="200.0" prefHeight="17.0" prefWidth="174.0" text="                                  Username: " textAlignment="RIGHT" />
+        <TextField fx:id="usernameField" layoutX="218.0" layoutY="154.0" GridPane.columnIndex="1" />
+
+
+        <RadioButton fx:id="TCP" prefHeight="17.0" prefWidth="63.0" text="TCP" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <RadioButton fx:id="RMI" text="RMI" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+
+
+        <Button layoutX="367.0" layoutY="239.0" onMouseClicked="#login" text="Login" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+    </GridPane>
+
+     <ImageView fx:id="imageView" fitHeight="452.0" fitWidth="577.0" layoutX="146.0" layoutY="-99.0" />
+</AnchorPane>

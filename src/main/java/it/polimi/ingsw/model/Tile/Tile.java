@@ -11,14 +11,14 @@ public class Tile implements Serializable {
     /**
      * constructor of Tile : assigning the value of colour
      */
-    public Tile(ColourTile colour)
-    {
+    public Tile(ColourTile colour) {
         this.colour = colour;
     }
 
 
     /**
      * getter of colour
+     *
      * @return colour
      */
     public ColourTile getColour() {

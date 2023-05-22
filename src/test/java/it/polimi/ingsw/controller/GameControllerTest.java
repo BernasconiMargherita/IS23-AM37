@@ -3,17 +3,16 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.Exception.*;
 import it.polimi.ingsw.Utils.Coordinates;
 import it.polimi.ingsw.model.Player.Player;
-import it.polimi.ingsw.model.Tile.ColourTile;
 import it.polimi.ingsw.model.Tile.Tile;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class GameControllerTest {
 
     @Test
     void login() {
-        GameController gameController= new GameController();
+        GameController gameController = new GameController();
         try {
             gameController.login("Nicola");
             gameController.login("Alessandra");
@@ -27,9 +26,10 @@ class GameControllerTest {
             System.out.println("Max player reached");
         }
     }
+
     @Test
     void login5Players() {
-        GameController gameController= new GameController();
+        GameController gameController = new GameController();
         try {
             gameController.login("Nicola");
             gameController.login("Alessandra");
@@ -44,9 +44,10 @@ class GameControllerTest {
             System.out.println("Max player reached");
         }
     }
+
     @Test
     void loginUsername() {
-        GameController gameController= new GameController();
+        GameController gameController = new GameController();
         try {
             gameController.login("Nicola");
             gameController.login("Alessandra");
@@ -60,9 +61,10 @@ class GameControllerTest {
             System.out.println("Max player reached");
         }
     }
+
     @Test
     void GameAlreadyStarted() {
-        GameController gameController= new GameController();
+        GameController gameController = new GameController();
         try {
             gameController.login("Nicola");
             gameController.login("Alessandra");
@@ -98,8 +100,8 @@ class GameControllerTest {
 
     @Test
     void turn() {
-        GameController gameController= new GameController();
-        Player firstPlayer=null;
+        GameController gameController = new GameController();
+        Player firstPlayer = null;
         try {
             gameController.login("Nicola");
             gameController.login("Alessandra");
@@ -115,22 +117,22 @@ class GameControllerTest {
 
         try {
             gameController.initGame();
-            firstPlayer=gameController.getCurrentPlayer();
+            firstPlayer = gameController.getCurrentPlayer();
         } catch (GameNotReadyException e) {
             throw new RuntimeException("Game Not Ready");
         } catch (GameAlreadyStarted e) {
             throw new RuntimeException("Game already started");
         }
-            Tile[] tiles;
+        Tile[] tiles;
         try {
-            tiles= gameController.remove(new Coordinates[]{new Coordinates(1,5),new Coordinates(1,4)});
+            tiles = gameController.remove(new Coordinates[]{new Coordinates(1, 5), new Coordinates(1, 4)});
         } catch (EmptySlotException | InvalidPositionsException | InvalidSlotException e) {
             throw new RuntimeException(e);
         }
 
         try {
 
-            gameController.turn(tiles ,0);
+            gameController.turn(tiles, 0);
         } catch (EmptySlotException | SoldOutTilesException | EndGameException | NoSpaceInColumnException |
                  InvalidSlotException | InvalidPositionsException | GameAlreadyStarted e) {
             throw new RuntimeException(e);

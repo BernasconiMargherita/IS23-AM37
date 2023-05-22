@@ -4,7 +4,6 @@ import it.polimi.ingsw.Utils.Coordinates;
 import it.polimi.ingsw.model.Tile.ColourTile;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * @param coordinates identify the position in the library
