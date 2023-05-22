@@ -6,6 +6,9 @@ import it.polimi.ingsw.controller.MasterController;
 import it.polimi.ingsw.model.Player.Player;
 import it.polimi.ingsw.model.Tile.Tile;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -20,10 +23,14 @@ import java.util.List;
 public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteController, Serializable {
 
     private final MasterController masterController;
-    private final List<ArrayList<RemoteClient>> connectedClients;
+    private final List<ArrayList<Client>> connectedClients;
     private Tile[] tiles;
     private int currentGameID;
     private boolean gameOver;
+
+    private BufferedReader in = null;
+    private PrintWriter out = null;
+    private  ArrayList<Paair<PairSocket, String>> tcpManager;
 
 
     /**
@@ -32,6 +39,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
      */
     public RemoteControllerImpl() throws RemoteException {
         super();
+        tcpManager = new ArrayList<>();
         connectedClients = new ArrayList<>();
         masterController = new MasterController();
         currentGameID = -1;
@@ -50,7 +58,9 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
     }
 
 
-    public void addClient(RemoteClient client, int gameID) throws RemoteException {
+
+
+    public void addClient(Client client, int gameID) throws RemoteException {
         connectedClients.get(gameID).add(client);
     }
 
@@ -65,8 +75,13 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
      * @throws RemoteException if there is an issue with the remote method call
      */
     @Override
-    public int registerPlayer(Player player, int gameID, RemoteClient client) throws RemoteException {
+    public int registerPlayer(Player player, int gameID, Client client) throws RemoteException {
 
+        if(gameID == -2) {
+            gameID = getCurrentGameID();
+        }else{
+            gameID = gameID;
+        }
         try {
             masterController.getGameController(gameID).login(player.getNickname());
         } catch (UsernameException e) {
@@ -74,13 +89,21 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
         } catch (GameAlreadyStarted | MaxPlayerException | NullPointerException e) {
             startGame();
             client.printMessage("New Game Creation..." + "\nHow Many Players ?");
-            setMaxPlayers(gameID + 1, client.setMaxPlayers());
+
+            setMaxPlayers(gameID + 1, client);
             gameID = gameID + 1;
             registerPlayer(player, gameID, client);
-            connectedClients.add(new ArrayList<RemoteClient>());
+            connectedClients.add(new ArrayList<Client>());
+            if(client.imTCP()){
+                addClient(client, gameID);
+            }
+
         }
 
         gameID = currentGameID;
+
+
+        System.out.println("finiscelaregistratiofsofgsdgdfg");
         return gameID;
     }
 
@@ -88,6 +111,22 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
     public boolean imTheFirst(int gameID) throws RemoteException {
         return masterController.getGameController(gameID).getNumOfPlayers() == 1;
     }
+
+    public boolean nicknameOccupato(String nickname) throws RemoteException{
+        for (ArrayList<Client> connectedClient : connectedClients) {
+            for (Client client : connectedClient) {
+                System.out.println("questo è il nickname : " + client.getNickname());
+                if (client.getNickname().equals(nickname)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
+
+
 
     @Override
     public int getPositionInArrayServer() throws RemoteException {
@@ -105,14 +144,28 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
 
         if (masterController.getGameController(gameID).getMaxPlayers() == masterController.getGameController(gameID).getNumOfPlayers()) {
+            System.out.println("fa la init");
             try {
                 this.masterController.getGameController(gameID).initGame();
             } catch (GameNotReadyException | GameAlreadyStarted e) {
                 throw new RuntimeException(e);
             }
 
-            for (RemoteClient connectedClient : connectedClients.get(gameID)) {
-                connectedClient.sendMessage("initializing Game...\n");
+            for (Client connectedClient : connectedClients.get(gameID)) {
+                if(!connectedClient.imTCP()){
+                    connectedClient.sendMessage("initializing Game...\n");
+                }
+                else{
+                    int j = 0;
+                    for(int i=0; i < tcpManager.size(); i++){
+                        if(connectedClient.getNickname().equals(tcpManager.get(i).getSecond())){
+                            j=i;
+                            break;
+                        }
+                    }
+                    tcpManager.get(j).getFirst().getOut().println("initializing Game...\n");
+                    tcpManager.get(j).getFirst().getOut().flush();
+                }
             }
             for (int i = 0; i < masterController.getGameController(gameID).getPlayers().size(); i++) {
                 if (!(masterController.getGameController(gameID).getPlayers().get(i).getNickname().equals(connectedClients.get(gameID).get(i).getNickname()))) {
@@ -121,7 +174,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
             }
 
             playClient(0, gameID);
-        }
+        }else System.out.println("NON fa la init"+ "\nMAXPLAYERS -> " + masterController.getGameController(gameID).getMaxPlayers() +"\nnumPLAYERS -> "+ masterController.getGameController(gameID).getNumOfPlayers());
 
 
     }
@@ -189,6 +242,10 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
     }
 
+    public void setSocket(BufferedReader in, PrintWriter out, String nickname) throws RemoteException{
+        tcpManager.add(new Paair(new PairSocket(in, out), nickname));
+    }
+
 
     /**
      * Returns the current game ID.
@@ -213,12 +270,38 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
         return this.masterController;
     }
 
-    public List<RemoteClient> getConnectedClients(int gameID) throws RemoteException {
+    public List<Client> getConnectedClients(int gameID) throws RemoteException {
         return connectedClients.get(gameID);
     }
 
-    public void setMaxPlayers(int gameID, int maxPlayers) throws RemoteException {
-        masterController.getGameController(gameID).setMaxPlayers(maxPlayers);
+    public void setMaxPlayers(int gameID, Client client) throws RemoteException {
+        if(!client.imTCP()) {
+            masterController.getGameController(gameID).setMaxPlayers(client.setMaxPlayers());
+        }
+
+        else{
+            System.out.println("sei nel posto giusto");
+            int j = 0;
+            for(int i = 0; i < tcpManager.size(); i++){
+                if(tcpManager.get(i).getSecond().equals(client.getNickname())){
+                    j = i;
+                    break;
+                }
+            }
+            tcpManager.get(j).getFirst().getOut().println("setMaxPlayer");
+            tcpManager.get(j).getFirst().getOut().flush();
+            System.out.println("cia rrivoqua");
+            try{
+                int maxPlayers = Integer.parseInt(tcpManager.get(j).getFirst().getIn().readLine());
+                System.out.println(maxPlayers);
+                masterController.getGameController(gameID).setMaxPlayers(maxPlayers);
+
+
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public boolean isGameOver() {
@@ -244,4 +327,6 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
             playClient(client + 1, gameID);
         }
     }
+
+
 }

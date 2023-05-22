@@ -12,10 +12,10 @@ import java.util.Scanner;
 /**
  * The ClientImpl class represents a client object that connects to the server via RMI and interacts with the game.
  */
-public class ClientImpl extends UnicastRemoteObject implements Serializable, RemoteClient {
+public class RemoteClientImpl extends UnicastRemoteObject implements Serializable, RemoteClient {
 
     static Scanner scanner = new Scanner(System.in);
-    private final int gameID;
+    private int gameID;
     private final RemoteController server;
     public int positionInArrayServer;
     private Player player;
@@ -28,25 +28,41 @@ public class ClientImpl extends UnicastRemoteObject implements Serializable, Rem
      * @param server the remote server object
      * @throws Exception if there is an error while registering the player with the server
      */
-    public ClientImpl(RemoteController server) throws Exception {
+    public RemoteClientImpl(RemoteController server, Client client) throws Exception {
         super();
+
         server.ping(this);
         Scanner scanner = new Scanner(System.in);
         this.server = server;
-        System.out.println("Enter your Nickname : ");
-        this.player = new Player(scanner.next());
 
-
-        try {
-            gameID = server.registerPlayer(player, server.getCurrentGameID(), this);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
+        while(true){
+            System.out.println("Enter your Nickname : ");
+            this.player = new Player(scanner.next());
+            if(server.nicknameOccupato(this.player.getNickname())){
+                System.out.println("Nickname già utilizzato ! ");
+            }
+            else{
+                break;
+            }
         }
-        System.out.println("Connected as " + player.getNickname());
-        server.addClient(this, gameID);
-        positionInArrayServer = server.getConnectedClients(gameID).size() - 1;
-        server.initGame(gameID);
+
+
     }
+
+
+        public void registration(Client client) throws RemoteException {
+            try {
+                gameID = server.registerPlayer(player, server.getCurrentGameID(), client);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+
+            System.out.println("Connected as " + player.getNickname());
+
+            positionInArrayServer = server.getConnectedClients(gameID).size();
+        }
+
+
 
     /**
      * Returns whether it is currently the client's turn to play.

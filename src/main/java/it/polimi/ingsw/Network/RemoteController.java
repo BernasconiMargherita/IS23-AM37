@@ -3,6 +3,8 @@ package it.polimi.ingsw.Network;
 import it.polimi.ingsw.controller.MasterController;
 import it.polimi.ingsw.model.Player.Player;
 
+import java.io.BufferedReader;
+import java.io.PrintWriter;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
@@ -28,7 +30,7 @@ public interface RemoteController extends Remote {
      */
     int startGame() throws RemoteException;
 
-    public void setMaxPlayers(int gameID, int maxPlayers) throws RemoteException;
+
 
     /**
      * Allows the player to place tiles in their shelf and then insert them into a column.
@@ -39,6 +41,7 @@ public interface RemoteController extends Remote {
      * @throws RemoteException if there is an issue with the remote method call
      */
     void remove(int gameID, int client) throws RemoteException;
+
 
     boolean isGameOver() throws RemoteException;
 
@@ -53,8 +56,8 @@ public interface RemoteController extends Remote {
      * @return the game ID that the player is registered in
      * @throws RemoteException if there is an issue with the remote method call
      */
-    int registerPlayer(Player player, int gameID, RemoteClient client) throws RemoteException;
-
+    int registerPlayer(Player player, int gameID, Client client) throws RemoteException;
+    public void setSocket(BufferedReader in, PrintWriter out, String nickname) throws RemoteException;
     /**
      * Returns the current game ID.
      *
@@ -70,16 +73,18 @@ public interface RemoteController extends Remote {
      */
     public Player getCurrentPlayer(int gameID) throws RemoteException;
 
-    public void addClient(RemoteClient client, int gameID) throws RemoteException;
+    public void addClient(Client client, int gameID) throws RemoteException;
 
     public boolean imTheFirst(int gameID) throws RemoteException;
+    public boolean nicknameOccupato(String nickname) throws RemoteException;
 
     public int getPositionInArrayServer() throws RemoteException;
 
-    public List<RemoteClient> getConnectedClients(int gameID) throws RemoteException;
+    public List<Client> getConnectedClients(int gameID) throws RemoteException;
 
     public String getWinner(int gameID) throws RemoteException;
 
 
     public MasterController getMasterController() throws RemoteException;
+    public void setMaxPlayers(int gameID, Client client) throws RemoteException;
 }

@@ -15,7 +15,7 @@ public interface RemoteClient extends Remote {
     public Coordinates getTilePosition() throws RemoteException;
 
     public boolean isMyTurn() throws RemoteException;
-
+    public void registration(Client client) throws RemoteException;
     public int getGameID() throws RemoteException;
 
     public void sendMessage(String message) throws RemoteException;
