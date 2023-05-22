@@ -1,38 +1,41 @@
 package it.polimi.ingsw.Network;
 
 import com.google.gson.Gson;
+import it.polimi.ingsw.model.Player.Player;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-
-
 public class MyServer {
-    /**
-     * The main method creates a RemoteControllerImpl object, creates a registry on port 1099,
-     * and binds the RemoteControllerImpl object to the registry with the name "RemoteController".
-     * This starts the server and prints a message to indicate that the server is running.
-     * @param args The command line arguments passed to the main method.
-     * @throws Exception If an error occurs while creating the registry or binding the object to it.
-     */
+    private static final RemoteController server;
+
+    static {
+        try {
+            server = new RemoteControllerImpl();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public static void main(String[] args) throws Exception {
 
         int portNumber;
         String hostName;
+
         Gson gson = new Gson();
 
 
         try{
-            FileReader filePort = new FileReader("ServerPort.json");
+            FileReader filePort = new FileReader("src/main/resources/ServerPort.json");
             portNumber = gson.fromJson(filePort, Integer.class);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
 
-        RemoteController server = new RemoteControllerImpl();
+
         Registry registry = LocateRegistry.createRegistry(portNumber);
         registry.rebind("RemoteController", server);
         System.out.println("RMI server is running...");
@@ -65,40 +68,62 @@ public class MyServer {
         }
     }
 
+
+
+
     private static class TcpHandler implements Runnable {
-        private Socket clientSocket;
+        private final Socket clientSocket;
+        private int gameID;
 
         public TcpHandler(Socket clientSocket) {
             this.clientSocket = clientSocket;
         }
-
         public void run() {
             try {
+                PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
                 BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 
-                // Leggere la richiesta del client TCP
-                String request = in.readLine();
+                gameID = tcpRegistration(in, out);
 
-                // Gestire la richiesta del client TCP
-                String response = handleTcpRequest(request);
+                System.out.println("almeno il gameid è stato impostato");
 
-                // Inviare la risposta del client TCP
-                out.println(response);
 
-                // Pulire le risorse
-                out.close();
-                in.close();
-                clientSocket.close();
+
+
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
 
-        private String handleTcpRequest(String request) {
-            // TODO: Implementare la logica per gestire le richieste del client TCP
-            return "TODO: Implementare la logica per gestire le richieste del client TCP";
+
+        public int tcpRegistration(BufferedReader in, PrintWriter out) throws IOException {
+
+
+            Gson gson = new Gson();
+            String jsonPlayer = in.readLine();
+            Player player = gson.fromJson(jsonPlayer, Player.class);
+            while(true){
+                if(server.nicknameOccupato(player.getNickname())){
+                    System.out.println("ilnicknameemoltooccupato");
+                    out.println("NicknameOccupato");
+                    out.flush();
+                }
+                else{
+                    System.out.println("ilnicknameePOCOOCOCOCOoccupato");
+                    break;
+                }
+                jsonPlayer = in.readLine();
+                player = gson.fromJson(jsonPlayer, Player.class);
+            }
+            out.println("NicknameOk");
+            out.flush();
+            Client client = new TCPClient(player.getNickname());
+            server.setSocket(in , out, client.getNickname());
+            int gameID = server.registerPlayer(gson.fromJson(jsonPlayer, Player.class), -2, client );
+            server.addClient(client, server.getCurrentGameID());
+            System.out.println("finsicelatcpregistration");
+            return gameID;
         }
     }
-}
 
+}

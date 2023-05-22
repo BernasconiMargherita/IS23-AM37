@@ -7,67 +7,82 @@ import it.polimi.ingsw.model.Player.Player;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- *The ClientImpl class represents a client object that connects to the server via RMI and interacts with the game.
+ * The ClientImpl class represents a client object that connects to the server via RMI and interacts with the game.
  */
-public class ClientImpl extends UnicastRemoteObject implements Serializable, RemoteClient {
+public class RemoteClientImpl extends UnicastRemoteObject implements Serializable, RemoteClient {
 
-    private final int gameID;
-    public int positionInArrayServer;
+    static Scanner scanner = new Scanner(System.in);
+    private int gameID;
     private final RemoteController server;
+    public int positionInArrayServer;
     private Player player;
     private boolean myTurn;
-    static Scanner scanner = new Scanner(System.in);
 
 
     /**
      * Constructs a new client object and registers the player with the server.
+     *
      * @param server the remote server object
-
      * @throws Exception if there is an error while registering the player with the server
      */
-    protected ClientImpl(RemoteController server) throws Exception{
+    public RemoteClientImpl(RemoteController server, Client client) throws Exception {
         super();
+
         server.ping(this);
         Scanner scanner = new Scanner(System.in);
         this.server = server;
-        System.out.println("Enter your Nickname : ");
-        this.player = new Player(scanner.next());
 
-
-
-
-        try{
-            gameID = server.registerPlayer(player, server.getCurrentGameID(), this);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
+        while(true){
+            System.out.println("Enter your Nickname : ");
+            this.player = new Player(scanner.next());
+            if(server.nicknameOccupato(this.player.getNickname())){
+                System.out.println("Nickname già utilizzato ! ");
+            }
+            else{
+                break;
+            }
         }
-        System.out.println("Connected as " + player.getNickname());
-        server.addClient(this, gameID);
-        positionInArrayServer = server.getConnectedClients(gameID).size()-1;
-        server.initGame(gameID);
+
+
     }
+
+
+        public void registration(Client client) throws RemoteException {
+            try {
+                gameID = server.registerPlayer(player, server.getCurrentGameID(), client);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+
+            System.out.println("Connected as " + player.getNickname());
+
+            positionInArrayServer = server.getConnectedClients(gameID).size();
+        }
+
+
 
     /**
      * Returns whether it is currently the client's turn to play.
+     *
      * @return true if it is the client's turn to play, false otherwise
      */
     public boolean isMyTurn() throws RemoteException {
-        if(server.getMasterController().getGameState(gameID) != GameState.WAITING_PLAYERS  && server.getMasterController().getGameState(gameID) !=GameState.GAME_INIT){
-           return server.getCurrentPlayer(gameID).equals(player);
+        if (server.getMasterController().getGameState(gameID) != GameState.WAITING_PLAYERS && server.getMasterController().getGameState(gameID) != GameState.GAME_INIT) {
+            return server.getCurrentPlayer(gameID).equals(player);
         }
         return false;
     }
 
-    public String getNickname() throws RemoteException{
+    public String getNickname() throws RemoteException {
         return player.getNickname();
     }
 
     /**
      * Returns the game ID associated with the client.
+     *
      * @return the game ID associated with the client
      */
     public int getGameID() {
@@ -79,7 +94,7 @@ public class ClientImpl extends UnicastRemoteObject implements Serializable, Rem
         System.out.println(message);
     }
 
-    public int getPositionInArrayServer() throws RemoteException{
+    public int getPositionInArrayServer() throws RemoteException {
         return positionInArrayServer;
     }
 
@@ -95,25 +110,28 @@ public class ClientImpl extends UnicastRemoteObject implements Serializable, Rem
     public void printMessage(String message) {
         System.out.println(message);
     }
-    public int setMaxPlayers(){
+
+    public int setMaxPlayers() {
         return scanner.nextInt();
     }
-    public void pong() throws RemoteException{
+
+    public void pong() throws RemoteException {
         System.out.println("connected to the server");
     }
 
-    public void setNickname(){
+    public void setNickname() {
         this.player = new Player(scanner.next());
     }
-    public Coordinates getTilePosition() throws RemoteException{
+
+    public Coordinates getTilePosition() throws RemoteException {
         return new Coordinates(scanner.nextInt(), scanner.nextInt());
     }
 
-    public String getString() throws RemoteException{
+    public String getString() throws RemoteException {
         return scanner.next();
     }
 
-    public int getNum() throws RemoteException{
+    public int getNum() throws RemoteException {
         return scanner.nextInt();
     }
 }
