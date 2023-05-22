@@ -1,15 +1,14 @@
 package it.polimi.ingsw.view.gui;
 
-import javafx.fxml.Initializable;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
-import java.net.URL;
 import java.util.Objects;
-import java.util.ResourceBundle;
 
-public class ConnectionSceneController implements Initializable {
+public class ConnectionSceneController {
 
 
     public RadioButton TwoPlayers;
@@ -17,10 +16,19 @@ public class ConnectionSceneController implements Initializable {
     public RadioButton FourPlayers;
     public AnchorPane rootPane;
     public GridPane gridPane;
+    public Label numError;
+    public Label loadingMessage;
+    public ProgressIndicator progressIndicator;
     private ToggleGroup toggleGroup;
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    @FXML
+    public void initialize() {
+        GuiMaster guiMaster = GuiMaster.getInstance();
+        guiMaster.setConnectionSceneController(this);
+        createScene();
+
+    }
+    public void createScene() {
 
         ColumnConstraints columnConstraints = new ColumnConstraints();
         columnConstraints.setHgrow(Priority.ALWAYS);
@@ -41,8 +49,28 @@ public class ConnectionSceneController implements Initializable {
     }
     public void selectNumOfPlayers() {
         RadioButton selected= (RadioButton) toggleGroup.getSelectedToggle();
-        int numOfPlayers= Integer.parseInt(selected.getText());
-        System.out.println(numOfPlayers);
+
+        if (!TwoPlayers.isSelected() && !ThreePlayers.isSelected()&& !FourPlayers.isSelected()) {
+
+            numError.setText("Scegli un numero!");
+        }
+        else {
+
+            int numOfPlayers= Integer.parseInt(selected.getText());
+
+            for (Node node:rootPane.getChildren()){
+                if (node.isVisible()) {
+                    node.setVisible(false);
+                }
+            }
+            loadingMessage.setText("Attendi gli altri giocatori");
+            loadingMessage.setVisible(true);
+
+            progressIndicator.setProgress(-1);
+            progressIndicator.setVisible(true);
+
+        }
+
 
     }
 }

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.Network.ClientImpl;
 import it.polimi.ingsw.Network.MyClient;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -39,5 +38,8 @@ public class GuiMaster {
     }
     public void createConnection(String connection, String username, GuiMaster instance) {
         client = new MyClient();
+    }
+
+    public void setConnectionSceneController(ConnectionSceneController connectionSceneController) {
     }
 }

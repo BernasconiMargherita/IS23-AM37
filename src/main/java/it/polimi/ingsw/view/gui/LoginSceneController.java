@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -15,14 +16,13 @@ import java.util.Objects;
 
 
 public class LoginSceneController {
+    public GridPane gridPane;
     @FXML
     private TextField usernameField;
     @FXML
     private ImageView imageView;
     @FXML
     private AnchorPane rootPane;
-    @FXML
-    private GridPane gridPane;
 
     @FXML
     private RadioButton TCP;
@@ -30,6 +30,10 @@ public class LoginSceneController {
     private RadioButton RMI;
     @FXML
     private ToggleGroup toggleGroup;
+    @FXML
+    private Label protocolError;
+    @FXML
+    private Label usernameError;
 
     @FXML
     public void initialize() {
@@ -41,13 +45,6 @@ public class LoginSceneController {
 
     public void createScene() {
 
-        ColumnConstraints columnConstraints = new ColumnConstraints();
-        columnConstraints.setHgrow(Priority.ALWAYS);
-        gridPane.getColumnConstraints().add(columnConstraints);
-
-        RowConstraints rowConstraints = new RowConstraints();
-        rowConstraints.setVgrow(Priority.ALWAYS);
-        gridPane.getRowConstraints().add(rowConstraints);
 
         Image image = new Image("/assets/Publisher material/Title 2000x2000px.png");
         imageView.setImage(image);
@@ -63,23 +60,34 @@ public class LoginSceneController {
     public void login() {
         String username = usernameField.getText();
 
-        RadioButton selected= (RadioButton) toggleGroup.getSelectedToggle();
-        String connection=selected.getText();
+        RadioButton selected = (RadioButton) toggleGroup.getSelectedToggle();
 
-        try {
-            GuiMaster.getInstance().createConnection(connection, username, GuiMaster.getInstance());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+
+        if (username == null || username.trim().isEmpty()) {
+
+            usernameError.setText("Inserisci un username!");
+
+        } else if (!RMI.isSelected() && !TCP.isSelected()) {
+
+            protocolError.setText("Seleziona un protocollo!");
+
+        } else {
+
+            String connection = selected.getText();
+
+            try {
+                GuiMaster.getInstance().createConnection(connection, username, GuiMaster.getInstance());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+            try {
+                GuiMaster.setLayout(gridPane.getScene(), "/fxml/connectionScene.fxml");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
         }
-
-        try {
-            GuiMaster.setLayout(gridPane.getScene(), "/fxml/connectionScene.fxml");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-
     }
-
 }
 

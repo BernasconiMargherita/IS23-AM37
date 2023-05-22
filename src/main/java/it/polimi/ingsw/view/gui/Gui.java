@@ -14,6 +14,8 @@ public class Gui extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
+        stage.setWidth(800);
+        stage.setHeight(600);
 
         InputStream is = Gui.class.getClassLoader().getResourceAsStream("assets/Publisher material/Icon 50x50px.png");
         if (is != null) {
@@ -21,6 +23,7 @@ public class Gui extends Application {
         }
 
         Scene scene = new Scene(new Pane());
+        stage.setResizable(false);
         GuiMaster.setLayout(scene, "/fxml/loginScene.fxml");
         stage.setScene(scene);
         stage.show();

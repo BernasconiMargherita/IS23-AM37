@@ -3,9 +3,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="rootPane" prefHeight="475.0" prefWidth="869.0" stylesheets="@styles/login.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.ConnectionSceneController">
-
-    <GridPane fx:id="gridPane" layoutX="173.0" layoutY="156.0" prefHeight="163.0" prefWidth="524.0">
+<AnchorPane fx:id="rootPane" prefHeight="600.0" prefWidth="800.0" stylesheets="@styles/login.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.ConnectionSceneController">
+    
+    <GridPane fx:id="gridPane" layoutX="160.0" layoutY="219.0" prefHeight="163.0" prefWidth="524.0">
 
         <columnConstraints>
             <ColumnConstraints hgrow="ALWAYS" maxWidth="377.0" minWidth="118.0" prefWidth="189.0" />
@@ -26,5 +26,9 @@
         <Label layoutX="134.0" layoutY="200.0" prefHeight="17.0" prefWidth="174.0" text="  Inserisci numero di giocatori: " textAlignment="RIGHT" />
 
         <Button layoutX="367.0" layoutY="239.0" onMouseClicked="#selectNumOfPlayers" text="Conferma" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+   
+       <Label fx:id="numError" prefHeight="17.0" prefWidth="174.0" textFill="#a81010" GridPane.columnIndex="1" />
     </GridPane>
+   <ProgressIndicator fx:id="progressIndicator" layoutX="370.0" layoutY="230.0" prefHeight="117.0" prefWidth="114.0" progress="0.0" visible="false" />
+   <Label fx:id="loadingMessage" alignment="CENTER" contentDisplay="CENTER" layoutX="310.0" layoutY="200.0" prefHeight="17.0" prefWidth="180.0" textFill="#a81010" />
 </AnchorPane>
