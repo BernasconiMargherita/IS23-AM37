@@ -1,22 +1,20 @@
 package it.polimi.ingsw.view.gui;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
-import java.net.URL;
+import java.io.IOException;
 import java.util.Objects;
-import java.util.ResourceBundle;
 
 
 
-public class LoginSceneController implements Initializable {
+
+public class LoginSceneController {
     @FXML
     private TextField usernameField;
     @FXML
@@ -25,7 +23,6 @@ public class LoginSceneController implements Initializable {
     private AnchorPane rootPane;
     @FXML
     private GridPane gridPane;
-    private GuiMaster guiMaster;
 
     @FXML
     private RadioButton TCP;
@@ -33,14 +30,16 @@ public class LoginSceneController implements Initializable {
     private RadioButton RMI;
     @FXML
     private ToggleGroup toggleGroup;
+
     @FXML
     public void initialize() {
-        guiMaster = GuiMaster.getInstance();
+        GuiMaster guiMaster = GuiMaster.getInstance();
         guiMaster.setLoginSceneController(this);
+        createScene();
 
     }
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
+
+    public void createScene() {
 
         ColumnConstraints columnConstraints = new ColumnConstraints();
         columnConstraints.setHgrow(Priority.ALWAYS);
@@ -63,10 +62,22 @@ public class LoginSceneController implements Initializable {
 
     public void login() {
         String username = usernameField.getText();
+
         RadioButton selected= (RadioButton) toggleGroup.getSelectedToggle();
         String connection=selected.getText();
 
-        GuiMaster.getInstance().createConnection(connection, username, GuiMaster.getInstance());
+        try {
+            GuiMaster.getInstance().createConnection(connection, username, GuiMaster.getInstance());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            GuiMaster.setLayout(gridPane.getScene(), "/fxml/connectionScene.fxml");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
 
     }
 

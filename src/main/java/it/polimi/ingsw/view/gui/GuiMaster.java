@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.Network.ClientImpl;
+import it.polimi.ingsw.Network.MyClient;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -13,7 +14,7 @@ public class GuiMaster {
     private GameSceneController gameSceneController;
 
     private static GuiMaster instance = null;
-    private ClientImpl client;
+    private MyClient client;
 
     public static <T> T setLayout(Scene scene, String path) throws IOException {
         FXMLLoader loader = new FXMLLoader(GuiMaster.class.getResource(path));
@@ -36,7 +37,7 @@ public class GuiMaster {
     public void setGameSceneController(GameSceneController gameSceneController) {
         this.gameSceneController = gameSceneController;
     }
-    public void createConnection(String connection, String username, GuiMaster instance) throws Exception {
-        client = new ClientImpl(username,connection);
+    public void createConnection(String connection, String username, GuiMaster instance) {
+        client = new MyClient();
     }
 }
