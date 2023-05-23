@@ -86,5 +86,5 @@ public interface RemoteController extends Remote {
 
 
     public MasterController getMasterController() throws RemoteException;
-    public void setMaxPlayers(int gameID, Client client) throws RemoteException;
+    public void setMaxPlayers(int gameID, int maxPlayers,Client client) throws RemoteException;
 }

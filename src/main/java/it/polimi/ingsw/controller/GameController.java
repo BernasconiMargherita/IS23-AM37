@@ -223,5 +223,8 @@ public class GameController implements Serializable {
     public int getNumOfPlayers() {
         return numOfPlayers;
     }
+    public void removePlayer(String nickname){
+
+    }
 
 }

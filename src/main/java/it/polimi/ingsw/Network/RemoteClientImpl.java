@@ -14,13 +14,13 @@ import java.util.Scanner;
  */
 public class RemoteClientImpl extends UnicastRemoteObject implements Serializable, RemoteClient {
 
-    static Scanner scanner = new Scanner(System.in);
     private int gameID;
     private final RemoteController server;
     public int positionInArrayServer;
+    private boolean first = false;
+    private boolean init = false;
     private Player player;
     private boolean myTurn;
-
 
     /**
      * Constructs a new client object and registers the player with the server.
@@ -30,37 +30,26 @@ public class RemoteClientImpl extends UnicastRemoteObject implements Serializabl
      */
     public RemoteClientImpl(RemoteController server, Client client) throws Exception {
         super();
-
-        server.ping(this);
-        Scanner scanner = new Scanner(System.in);
         this.server = server;
+    }
 
-        while(true){
-            System.out.println("Enter your Nickname : ");
-            this.player = new Player(scanner.next());
-            if(server.nicknameOccupato(this.player.getNickname())){
-                System.out.println("Nickname già utilizzato ! ");
-            }
-            else{
-                break;
-            }
-        }
-
-
+    public boolean setNickname(String nickname) throws RemoteException {
+        this.player = new Player(nickname);
+        return !server.nicknameOccupato(this.player.getNickname());
     }
 
 
-        public void registration(Client client) throws RemoteException {
-            try {
-                gameID = server.registerPlayer(player, server.getCurrentGameID(), client);
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
-
-            System.out.println("Connected as " + player.getNickname());
-
+    public boolean registration(Client client) throws RemoteException {
+        try {
+            gameID = server.registerPlayer(player, server.getCurrentGameID(), client);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+        if(!first){
             positionInArrayServer = server.getConnectedClients(gameID).size();
         }
+        return first;
+    }
 
 
 
@@ -74,6 +63,18 @@ public class RemoteClientImpl extends UnicastRemoteObject implements Serializabl
             return server.getCurrentPlayer(gameID).equals(player);
         }
         return false;
+    }
+
+    public boolean getInit(){
+        return init;
+    }
+
+    public void setInit(){
+        init = true;
+    }
+
+    public void setFirst(){
+        first=true;
     }
 
     public String getNickname() throws RemoteException {
@@ -111,17 +112,19 @@ public class RemoteClientImpl extends UnicastRemoteObject implements Serializabl
         System.out.println(message);
     }
 
-    public int setMaxPlayers() {
-        return scanner.nextInt();
+    public void setMaxPlayers(int maxPlayers, Client client){
+       try{
+           server.setMaxPlayers(gameID ,maxPlayers, client);
+       } catch (RemoteException e) {
+           throw new RuntimeException(e);
+       }
     }
 
     public void pong() throws RemoteException {
         System.out.println("connected to the server");
     }
 
-    public void setNickname() {
-        this.player = new Player(scanner.next());
-    }
+
 
     public Coordinates getTilePosition() throws RemoteException {
         return new Coordinates(scanner.nextInt(), scanner.nextInt());

@@ -3,6 +3,7 @@ package it.polimi.ingsw.Network;
 import it.polimi.ingsw.Utils.Coordinates;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.rmi.RemoteException;
@@ -12,6 +13,13 @@ public abstract class Client  implements Serializable {
     public int getNum() {
         return 0;
     };
+    public void playTCP() throws IOException {
+
+    }
+
+    public void setMaxPlayers(int maxPlayers) throws RemoteException{
+
+    }
 
     public String getNickname() throws RemoteException {
         return "null";
@@ -77,8 +85,41 @@ public abstract class Client  implements Serializable {
         return 0;
     };
 
-    public void setNickname() throws RemoteException{
-
+    public boolean setNickname(String nickname) throws IOException{
+        return false;
     };
+
+    public boolean imFirstPlayer() throws IOException {
+        return false;
+    }
+
+    public boolean initMess() throws IOException {
+        return false;
+    }
+
+    public void setNumOfPlayers(int numOfPlayers) throws IOException {
+
+    }
+
+    public boolean yourTurn() throws IOException {
+        return false;
+    }
+
+    public String removeTCP(Coordinates[] coordinates) throws IOException {
+        return "null";
+    }
+
+    public String columnInsertion(int column) throws IOException {
+        return "null";
+    }
+
+    public void setFirst(){
+
+    }
+
+    public void setInit(){
+
+    }
+
 }
 

@@ -8,127 +8,108 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
-import java.net.Socket;
+
 import java.rmi.RemoteException;
-import java.util.Scanner;
 
 
-// Classe concreta per il client TCP
+
 public class TCPClient extends Client  implements Serializable {
 
 
-    private String nickname = null;
-    private Socket socket = null;
+    private String nickname;
     private Player player;
-    PrintWriter out = null;
-    BufferedReader in = null;
-    PrintWriter serverOut = null;
-    BufferedReader serverIn = null;
-    public TCPClient(Socket socket, BufferedReader in, PrintWriter out) throws IOException {
+    PrintWriter out;
+    BufferedReader in;
+    Gson gson;
 
-        Gson gson = new Gson();
 
-        Scanner scanner = new Scanner(System.in);
+    public TCPClient(BufferedReader in, PrintWriter out){
+        gson = new Gson();
         this.out = out;
         this.in = in;
-        this.socket = socket;
-        while(true){
-            System.out.println("Enter your Nickname : ");
-            nickname = scanner.next();
-            this.player = new Player(nickname);
-            String jsonPlayer = gson.toJson(player);
-            sendMessage(jsonPlayer);
-            if(in.readLine().equals("NicknameOk")){
-                break;
-            } else{
-                System.out.println("Nickname gia occupato!!!");
-            }
-        }
+    }
 
-        System.out.println(in.readLine());
-        System.out.println("How many players ?");
-        int numOfPlayers = scanner.nextInt();
-        System.out.println("numero di giocatori : " + numOfPlayers);
-        out.println(numOfPlayers);
-        out.flush();
-
-
-
-
+    public boolean setNickname(String nickname) throws IOException {
+        this.player = new Player(nickname);
+        this.nickname = nickname;
+        String jsonPlayer = gson.toJson(player);
+        sendMessage(jsonPlayer);
+        return in.readLine().equals("NicknameOk");
     }
 
     public TCPClient(String nickname){
         this.player = new Player(nickname);
+        this.nickname = nickname;
     }
 
+    public boolean imFirstPlayer() throws IOException {
+        String msgTmp;
+        msgTmp = (in.readLine());
+        return msgTmp.equals("setMaxPlayer");
+    }
+
+    // se è il client che sceglie il numero di giocatori
+    public boolean initMess() throws IOException {
+        return (in.readLine()).equals("initGame");
+    }
+    //
+    public void setNumOfPlayers(int numOfPlayers){
+        out.println(numOfPlayers);
+        out.flush();
+    }
 
 
     public boolean imTCP(){
         return true;
     }
-    public int getNum() {
-        return 0;
-    };
 
     public String getNickname() throws RemoteException{
-        return player.getNickname();
-    };
+        return nickname;
+    }
 
-    public String getString() {
+    public boolean yourTurn() throws IOException {
+        String msgTmp = in.readLine();
+        return msgTmp.equals("yourTurn");
+    }
+
+    public String removeTCP(Coordinates[] coordinates) throws IOException {
+        String removeMess = in.readLine();
+        if(removeMess.equals("remove")){
+            out.println(coordinates.length);
+            for(int i = 0; i < coordinates.length; i++){
+                out.println();
+                out.flush();
+                out.println();
+                out.flush();
+            }
+        }
+        String removeException = in.readLine();
+        return switch (removeException) {
+            case "emptySlot" -> "emptySlot";
+            case "invalidSlot" -> "invalidSlot";
+            case "removeOk" -> "validSlot";
+            default -> "null";
+        };
+    }
+
+
+    public String columnInsertion(int column) throws IOException {
+
+        if(in.readLine().equals("columnInsertion")){
+            out.println(column);
+            out.flush();
+            String columnMsg = in.readLine();
+            if(columnMsg.equals("wrongColumn")){
+                return "wrongColumn";
+            }
+            if(columnMsg.equals("endgame")){
+                return "endgame";
+            }
+            if(columnMsg.equals("columnFinished")){
+                return "columnOk";
+            }
+        }
         return "null";
-    };
 
-    public Coordinates getTilePosition() throws RemoteException{
-        return new Coordinates(0,0);
-    };
-
-    public boolean isMyTurn() throws RemoteException{
-        return false;
-    };
-
-    public int getGameID() throws RemoteException{
-        return 0;
-    };
-
-    public void sendMessage(String message) {
-        out.println(message);
-        out.flush();
-    };
-
-    public int getPositionInArrayServer() throws RemoteException{
-        return 0;
-    };
-
-    public void remove() {
-
-    };
-
-    public void turn() {
-
-    };
-
-    public void printMessage(String message) throws RemoteException{
-
-    };
-
-    public void pong() throws RemoteException{
-
-    };
-
-    public int setMaxPlayers() throws RemoteException{
-        return 0;
-    };
-
-    public void setNickname() throws RemoteException{
-
-    };
-
-    public BufferedReader getIn(){
-        return in;
     }
-
-    public PrintWriter getOut(){
-        return out;
-    }
-
 }

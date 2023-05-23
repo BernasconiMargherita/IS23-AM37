@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Network;
 
 import com.google.gson.Gson;
+import it.polimi.ingsw.Utils.Coordinates;
 
 import java.io.*;
 import java.net.Socket;
@@ -13,66 +14,56 @@ import java.util.Scanner;
 public class MyClient {
 
 
-
-
-
-    public static void main(String[] args) throws Exception {
-
-
-        System.out.println("RMI o TCP ? ");
-        Scanner scanner = new Scanner(System.in);
-
-        if(scanner.next().equals("RMI")){
-            int portNumber;
-            String hostName;
-            Gson gson = new Gson();
-
-
-            try {
-                FileReader filePort = new FileReader("src/main/resources/ServerPort.json");
-                portNumber = gson.fromJson(filePort, Integer.class);
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-
-            try {
-                FileReader fileName = new FileReader("src/main/resources/ServerHostName.json");
-                hostName = gson.fromJson(fileName, String.class);
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-            Registry registry = LocateRegistry.getRegistry(hostName, portNumber);
+    private  Client client;
+    public void createConnection(String protocol, String username, String address, int port) throws IOException {
+        if(protocol.equals("rmi") || protocol.equals("RMI")){
+            Registry registry = LocateRegistry.getRegistry(address, port);
             RemoteController server = null;
             try {
                 server = (RemoteController) registry.lookup("RemoteController");
             } catch (RemoteException | NotBoundException e) {
                 e.printStackTrace();
             }
-
             Client client = new RMIClient(server);
-            client.rmiRegistration();
 
-        }
-
-
-
-
-        else{
-            Socket serverSocket = new Socket("localhost", 8080);
+        } else{
+            Socket serverSocket = new Socket(address, port);
             PrintWriter out = new PrintWriter(serverSocket.getOutputStream());
             BufferedReader in = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
-            Client client = new TCPClient(serverSocket, in , out );
-            while(true){
-
-            }
-
-
-
+            client = new TCPClient(in , out);
+            client.setNickname(username);
         }
 
+    }
+
+    public boolean imFirstPlayer() throws IOException {
+        return client.imFirstPlayer();
+    }
+
+    public boolean initMess() throws IOException {
+        return client.initMess();
+    }
+
+    public void setNumOfPlayers(int numOfPlayers) throws IOException {
+        client.setNumOfPlayers(numOfPlayers);
+    }
+
+    public boolean yourTurn() throws IOException {
+        return client.yourTurn();
+    }
+
+    public String removeTCP(Coordinates[] coordinates) throws IOException {
+        return client.removeTCP(coordinates);
+    }
+
+
+    public String columnInsertion(int column) throws IOException {
+        return client.columnInsertion(column);
+    }
 
 
 
+    public static void main(String[] args) throws Exception {
 
     }
 

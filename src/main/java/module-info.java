@@ -7,12 +7,17 @@ module it.polimi.ingsw {
     requires com.google.gson;
     requires java.rmi;
 
-    opens it.polimi.ingsw.view.gui to javafx.fxml;
+
     opens it.polimi.ingsw.model.Board to com.google.gson;
     opens it.polimi.ingsw.Utils to com.google.gson;
+    opens it.polimi.ingsw.model.Player to com.google.gson;
+    opens it.polimi.ingsw.model.Tile to com.google.gson;
 
     exports it.polimi.ingsw.Network to java.rmi;
-    exports it.polimi.ingsw.view.gui;
+
     exports it.polimi.ingsw.model.PersonalCards to com.google.gson;
     exports it.polimi.ingsw.model.Tile to com.google.gson;
+    exports it.polimi.ingsw.model.Player to com.google.gson;
+    exports it.polimi.ingsw.Utils ;
+
 }

@@ -29,7 +29,7 @@ public class MyServer {
 
 
         try{
-            FileReader filePort = new FileReader("src/main/resources/ServerPort.json");
+            FileReader filePort = new FileReader("src/main/resources/json/ServerPort.json");
             portNumber = gson.fromJson(filePort, Integer.class);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
@@ -86,6 +86,7 @@ public class MyServer {
                 gameID = tcpRegistration(in, out);
 
                 System.out.println("almeno il gameid è stato impostato");
+                server.initGame(gameID);
 
 
 

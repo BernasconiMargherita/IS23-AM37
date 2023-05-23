@@ -8,7 +8,7 @@ import java.rmi.RemoteException;
 // Classe concreta per il client RMI
 public class RMIClient extends Client  implements Serializable {
     private RemoteClient client;
-    private RemoteController server;
+    private final RemoteController server;
 
     public RMIClient(RemoteController server){
         try{
@@ -103,13 +103,29 @@ public class RMIClient extends Client  implements Serializable {
         client.pong();
     };
 
-    public int setMaxPlayers() throws RemoteException{
-        return client.setMaxPlayers();
+    public void setMaxPlayers(int maxPlayers) throws RemoteException{
+        client.setMaxPlayers(maxPlayers, this);
     };
 
-    public void setNickname() throws RemoteException{
-        client.setNickname();
+    public boolean setNickname(String username) throws RemoteException{
+        return client.setNickname(username);
     };
+
+    public void setInit(){
+        try{
+            client.setInit();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void setFirst(){
+        client.setFirst();
+    }
+
+    public boolean getInit(){
+        return client.getInit();
+    }
 
 
 }

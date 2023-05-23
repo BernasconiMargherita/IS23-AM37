@@ -1,10 +1,10 @@
 package it.polimi.ingsw.Network;
 
-public class Paair<T, U> {
+public class Pair<T, U> {
     private T first;
     private U second;
 
-    public Paair(T first, U second) {
+    public Pair(T first, U second) {
         this.first = first;
         this.second = second;
     }
