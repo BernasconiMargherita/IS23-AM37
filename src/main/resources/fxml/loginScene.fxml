@@ -4,20 +4,20 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="rootPane" prefHeight="475.0" prefWidth="869.0" stylesheets="@styles/login.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.LoginSceneController">
+<AnchorPane fx:id="rootPane" prefHeight="600.0" prefWidth="800.0" stylesheets="@styles/login.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.LoginSceneController">
 
-    <GridPane fx:id="gridPane" layoutX="173.0" layoutY="271.0" prefHeight="163.0" prefWidth="524.0">
+    <GridPane fx:id="gridPane" layoutX="106.0" layoutY="247.0" prefHeight="262.0" prefWidth="658.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="106.0" AnchorPane.rightAnchor="105.0" AnchorPane.topAnchor="247.0">
 
       <columnConstraints>
           <ColumnConstraints hgrow="ALWAYS" maxWidth="377.0" minWidth="118.0" prefWidth="189.0" />
-          <ColumnConstraints hgrow="ALWAYS" maxWidth="377.0" minWidth="118.0" prefWidth="204.00000000000003" />
-          <ColumnConstraints maxWidth="413.0" minWidth="148.0" prefWidth="148.0" />
+          <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="377.0" minWidth="118.0" prefWidth="204.00000000000003" />
+          <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="413.0" minWidth="148.0" prefWidth="148.0" />
       </columnConstraints>
         <rowConstraints>
-          <RowConstraints maxHeight="93.0" minHeight="30.0" prefHeight="47.0" />
-          <RowConstraints maxHeight="59.0" minHeight="22.0" prefHeight="31.333333333333343" />
-          <RowConstraints maxHeight="62.0" minHeight="18.0" prefHeight="38.0" />
-         <RowConstraints maxHeight="66.0" minHeight="22.0" prefHeight="46.0" />
+          <RowConstraints maxHeight="93.0" minHeight="30.0" prefHeight="47.0" vgrow="ALWAYS" />
+          <RowConstraints maxHeight="59.0" minHeight="22.0" prefHeight="31.333333333333343" vgrow="ALWAYS" />
+          <RowConstraints maxHeight="62.0" minHeight="18.0" prefHeight="38.0" vgrow="ALWAYS" />
+         <RowConstraints maxHeight="66.0" minHeight="22.0" prefHeight="46.0" vgrow="ALWAYS" />
         </rowConstraints>
 
         <Label layoutX="134.0" layoutY="200.0" prefHeight="17.0" prefWidth="174.0" text="                                  Username: " textAlignment="RIGHT" />
@@ -27,10 +27,11 @@
         <RadioButton fx:id="TCP" prefHeight="17.0" prefWidth="63.0" text="TCP" GridPane.columnIndex="1" GridPane.rowIndex="2" />
         <RadioButton fx:id="RMI" text="RMI" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-
+        <Label fx:id="usernameError" layoutX="348.0" layoutY="95.0" prefHeight="18.0" prefWidth="173.0" textFill="#a81010" GridPane.columnIndex="2" />
+        <Label fx:id="protocolError" layoutX="348.0" layoutY="95.0" prefHeight="17.0" prefWidth="174.0" textFill="#a81010" GridPane.columnIndex="2" GridPane.rowIndex="1" />
 
         <Button layoutX="367.0" layoutY="239.0" onMouseClicked="#login" text="Login" GridPane.columnIndex="2" GridPane.rowIndex="3" />
     </GridPane>
 
-     <ImageView fx:id="imageView" fitHeight="452.0" fitWidth="577.0" layoutX="146.0" layoutY="-99.0" />
+     <ImageView fx:id="imageView" fitHeight="452.0" fitWidth="577.0" layoutX="106.0" layoutY="-61.0" AnchorPane.bottomAnchor="209.0" AnchorPane.leftAnchor="106.0" AnchorPane.rightAnchor="186.0" AnchorPane.topAnchor="-61.0" />
 </AnchorPane>
