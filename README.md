@@ -22,6 +22,8 @@ I seguenti diagrammi delle classi rappresentano il primo, il modello secondo il 
 | gson           |    libreria per il supporto al parsing di file in formato json | 
 | JavaFx         |     libreria grafica di Java |
 
+**Jars**<br>
+
 ## Funzionalità
 
 **Funzionalità sviluppate**<br>
@@ -41,3 +43,11 @@ I seguenti diagrammi delle classi rappresentano il primo, il modello secondo il 
 | Persistenza                    |   ❌     | 
 | Resilienza alle disconnessioni |   ❌     | 
 | Chat                           |   ✅     |
+
+
+# Componenti del gruppo
+
+- Bartocci Alessandra
+- Bernasconi Margherita 
+- Cicero Ramiro
+- Cozzolino Nicola
