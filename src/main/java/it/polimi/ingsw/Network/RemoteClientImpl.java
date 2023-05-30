@@ -21,6 +21,7 @@ public class RemoteClientImpl extends UnicastRemoteObject implements Serializabl
     private boolean init = false;
     private Player player;
     private boolean myTurn;
+    private Scanner scanner ;
 
     /**
      * Constructs a new client object and registers the player with the server.
@@ -30,6 +31,7 @@ public class RemoteClientImpl extends UnicastRemoteObject implements Serializabl
      */
     public RemoteClientImpl(RemoteController server, Client client) throws Exception {
         super();
+        scanner = new Scanner(System.in);
         this.server = server;
     }
 

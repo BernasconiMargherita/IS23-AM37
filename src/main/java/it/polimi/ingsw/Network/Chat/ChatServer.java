@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Network;
+package it.polimi.ingsw.Network.Chat;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;

@@ -9,7 +9,7 @@ public interface RemoteClient extends Remote {
     public int getNum() throws RemoteException;
 
     public String getNickname() throws RemoteException;
-    public void setFirst()
+    public void setFirst();
 
     public String getString() throws RemoteException;
 
