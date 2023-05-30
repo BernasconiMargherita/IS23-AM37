@@ -15,11 +15,23 @@ I seguenti diagrammi delle classi rappresentano il primo, il modello secondo il 
 
 **Librerie e plugins**<br>
 
+| Libreria/Plugin| Descrizione |
+| :--------------| :------    |
+| Maven          |    strumento di gestione per software basati su Java e build automation      | 
+| junit          |      framework dedicato a Java per unit testing    | 
+| gson           |    libreria per il supporto al parsing di file in formato json | 
+| JavaFx         |     libreria grafica di Java |
+
 ## Funzionalità
 
 **Funzionalità sviluppate**<br>
 
-Regole Complete + TUI + GUI + RMI + Socket + 3 FA
+- Regole Complete <br>
+- TUI <br>
+- GUI <br>
+- RMI <br>
+- Socket <br>
+- 3 FA<br>
 
 **Funzionalità avanzate**<br>
 
