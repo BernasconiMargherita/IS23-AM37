@@ -19,4 +19,13 @@ I seguenti diagrammi delle classi rappresentano il primo, il modello secondo il 
 
 **Funzionalità sviluppate**<br>
 
+Regole Complete + TUI + GUI + RMI + Socket + 3 FA
+
 **Funzionalità avanzate**<br>
+
+| Funzionalità                   |          |
+| :----------------------------- | :------: |
+| Patite multiple                |   ✅     | 
+| Persistenza                    |   ❌     | 
+| Resilienza alle disconnessioni |   ❌     | 
+| Chat                           |   ✅     |
