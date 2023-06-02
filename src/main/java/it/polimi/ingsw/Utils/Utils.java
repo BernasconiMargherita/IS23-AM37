@@ -160,7 +160,7 @@ public class Utils {
 
             case FIVE_IN_DIGONAL -> {
                 Coordinates firstDiagonal=new Coordinates(0,0);
-                Coordinates secondDiagonal=new Coordinates(0,1);
+                Coordinates secondDiagonal=new Coordinates(1,0);
                 Coordinates thirdDiagonal=new Coordinates(0,4);
                 Coordinates fourthDiagonal=new Coordinates(0,5);
                 return ((checkDiagonal(shelfMatrix,firstDiagonal,1,1))||(checkDiagonal(shelfMatrix,secondDiagonal,1,1))||(checkDiagonal(shelfMatrix,thirdDiagonal,-1,-1))||(checkDiagonal(shelfMatrix,fourthDiagonal,-1,-1)));

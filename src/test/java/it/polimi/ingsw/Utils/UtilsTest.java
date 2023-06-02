@@ -82,6 +82,17 @@ class UtilsTest {
 
             }
         assertTrue(utils.checkDiagonal(libraryMatrix, new Coordinates(0, 0), 1, 1));
+
+        for (int i = 0; i < 6; i++) {
+            for (int j =0; j < 5; j++) {
+                libraryMatrix[i][j].assignTile(bag.randomDraw());
+            }
+        }
+        for(int i=1; i<6; i++){
+            libraryMatrix[i][i-1].assignTile(new Tile(ColourTile.BOOKS));
+        }
+        assertTrue(utils.checkDiagonal(libraryMatrix, new Coordinates(1, 0), 1, 1));
+
         }
 
     @Test
