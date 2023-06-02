@@ -11,90 +11,46 @@ import it.polimi.ingsw.model.PersonalCards.PersonalDeck;
 import it.polimi.ingsw.model.Player.Player;
 import it.polimi.ingsw.model.Tile.Tile;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * class that manage the logic of the game, receiving messages from the controller to evolve the game
  */
-public class Game {
-    public static int MAX_PLAYERS=4;
-    public static int MIN_PLAYERS=2;
-    private Board board;
-    private ArrayList<Player> players;
-    private GameState gameState;
-    private boolean isLastTurn;
+public class Game implements Serializable {
     private final Utils utils;
+    private Board board;
+    private GameState gameState = GameState.WAITING_PLAYERS;
+    private boolean isLastTurn;
     private ArrayList<CardCommonTarget> commonDeck;
 
-    private int maxPlayers;
 
     /**
      * Constructor of The Game class
      */
     public Game() {
-        this.players= new ArrayList<>();
-        this.gameState = GameState.WAITING_PLAYERS;
         this.isLastTurn = false;
-        this.utils= new Utils();
-        this.maxPlayers=MAX_PLAYERS;
+        this.utils = new Utils();
     }
 
-    /**
-     * Method for adding a new player in the players array
-     * @param player the new player to add
-     */
-    public void addPlayer(Player player) throws GameAlreadyStarted, MaxPlayerException {
-        if(gameState==GameState.IN_GAME) throw new GameAlreadyStarted("It is not possible to add a player when the game has already started");
-        if (players.size()==maxPlayers) throw new MaxPlayerException("There are already"+ maxPlayers + "players so "+ player.getNickname() +" cannot be added");
-        players.add(player);
-    }
-
-    /**
-     * method to check if there are sufficient players to start the game
-     */
-    public boolean isGameReadyToStart(){
-        return ( (players.size() > MIN_PLAYERS - 1)  &&  (players.size() < maxPlayers + 1) );
-
-    }
 
     /**
      * method to initialize effectively the Game, knowing the number of players, also chose a first player to start the game
      */
-    public void GameInit(){
-        commonDeck=new CommonDeck(players.size()).getCommonDeck();
+    public void GameInit(List<Player> players) {
+        commonDeck = new CommonDeck(players.size()).getCommonDeck();
         ArrayList<CardPersonalTarget> personalDeck = new PersonalDeck(players.size()).getPersonalDeck();
-        board=new Board(players.size());
-
-        pickFirstPlayer();
+        board = new Board(players.size());
         setGameState(GameState.GAME_INIT);
 
-        for (int i=0;i< players.size();i++){
+
+        for (int i = 0; i < players.size(); i++) {
             players.get(i).setPersonalCard(personalDeck.get(i));
         }
 
     }
 
-    /**
-     * method to randomly select a player to start the placeInShelf and redefine the turns order
-     */
-    private void pickFirstPlayer() {
-        int first = (new Random()).nextInt(players.size());
-        players.get(first).setFirstPlayer();
-
-        ArrayList<Player> playerList = new ArrayList<>();
-
-        for (int i = first; i < players.size(); ++i) {
-            playerList.add(players.get(i));
-        }
-
-        for (int i = 0; i < first; ++i) {
-            playerList.add(players.get(i));
-        }
-
-        players = playerList;
-    }
 
     /**
      * method to refill the Board if it's necessary
@@ -104,15 +60,14 @@ public class Game {
             board.refillBoard();
         }
     }
+
     /**
      * Method that manages the removing of the selected Tiles of currentPlayer from the board
      *
-     * @param currentPlayer  the player that is currently playing his turn
-     * @param positions      array of the selected tiles coordinates
-     * @param selectedColumn the selected column in which the player wants to place the tiles
-     * @return
+     * @param currentPlayer the player that is currently playing his turn
+     * @param positions     array of the selected tiles coordinates
      */
-    public Tile[] remove(Player currentPlayer, Coordinates[] positions, int selectedColumn) throws InvalidPositionsException, EmptySlotException, InvalidSlotException {
+    public Tile[] remove(Player currentPlayer, Coordinates[] positions) throws InvalidPositionsException, EmptySlotException, InvalidSlotException {
         Tile[] removedTile;
 
         removedTile = board.removeCardFromBoard(positions);
@@ -122,23 +77,25 @@ public class Game {
 
     /**
      * method that manages places them in the shelf in the selected column.
-     * @param tilesToAdd tiles to add to the shelf
-     * @param currentPlayer player currently playing
+     *
+     * @param tilesToAdd     tiles to add to the shelf
+     * @param currentPlayer  player currently playing
      * @param selectedColumn the selected column
      * @throws NoSpaceInColumnException throw when the colum has not enough space
      */
-    public void addInShelf(Tile[] tilesToAdd,Player currentPlayer,int selectedColumn) throws NoSpaceInColumnException {
+    public void addInShelf(Tile[] tilesToAdd, Player currentPlayer, int selectedColumn) throws NoSpaceInColumnException {
         currentPlayer.addTilesInLibrary(selectedColumn, tilesToAdd);
     }
 
     /**
      * Method that check if the player has completed the two Common objective and if it has already completed them before,
      * and proceeds to add the value of the ScoringToken to the player score, removing it from the card.
+     *
      * @param currentPlayer the player that is currently playing his turn
      */
     public void checkCommonTarget(Player currentPlayer) {
         for (CardCommonTarget cardCommonTarget : commonDeck) {
-            if (!(currentPlayer.isCompleted(cardCommonTarget.getAssignedCommonCard()))&&(utils.checkCommonTarget(currentPlayer.getPersonalShelf(), cardCommonTarget))) {
+            if (!(currentPlayer.isCompleted(cardCommonTarget.getAssignedCommonCard())) && (utils.checkCommonTarget(currentPlayer.getPersonalShelf(), cardCommonTarget))) {
 
                 currentPlayer.setCompleted(cardCommonTarget.getAssignedCommonCard());
                 currentPlayer.addScore(cardCommonTarget.getScoringToken());
@@ -151,7 +108,7 @@ public class Game {
      *
      * @param currentPlayer the player that is currently playing his turn
      */
-    public void checkPersonalTarget(Player currentPlayer){
+    public void checkPersonalTarget(Player currentPlayer) {
         currentPlayer.checkPersonalTarget();
     }
 
@@ -160,8 +117,8 @@ public class Game {
      *
      * @param currentPlayer The player currently playing
      */
-    public void isShelfFull(Player currentPlayer){
-        if(currentPlayer.isShelfFull()){
+    public void isShelfFull(Player currentPlayer) {
+        if (currentPlayer.isShelfFull()) {
             setLastTurn(true);
             currentPlayer.addScore(1);
         }
@@ -169,31 +126,10 @@ public class Game {
 
     /**
      * Method to choose the Winner of the Game based on the score
+     *
      * @return the winner Player
      */
-    public Player chooseWinner() {
-        Player winner=null;
-        int max=0;
 
-        for (Player player:players){
-            if (player.getScore()>max)
-                winner=player;
-        }
-        return winner;
-    }
-
-    /**
-     * Method to set the max players of the game
-     */
-    public void setMaxPlayers(int maxPlayers) {
-        this.maxPlayers = maxPlayers;
-    }
-
-
-
-    public List<Player> getPlayers() {
-        return players;
-    }
 
     public GameState getGameState() {
         return gameState;
@@ -210,11 +146,6 @@ public class Game {
     public void setLastTurn(boolean lastTurn) {
         isLastTurn = lastTurn;
     }
-
-    public int getMaxPlayers() {
-        return maxPlayers;
-    }
-
 
 
 }

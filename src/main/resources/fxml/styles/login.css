@@ -1,0 +1,4 @@
+#rootPane {
+    -fx-background-image: url("/assets/misc/sfondo parquet.jpg");
+    -fx-background-size: cover;
+}

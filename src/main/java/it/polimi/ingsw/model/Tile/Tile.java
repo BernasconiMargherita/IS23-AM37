@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.Tile;
 
-public class Tile {
+import java.io.Serializable;
+
+public class Tile implements Serializable {
     /**
      * ColourTile colour : type of the tile (CATS OR BOOKS OR GAMES OR FRAMES OR TROPHIES OR PLANTS)
      */
@@ -9,14 +11,14 @@ public class Tile {
     /**
      * constructor of Tile : assigning the value of colour
      */
-    public Tile(ColourTile colour)
-    {
+    public Tile(ColourTile colour) {
         this.colour = colour;
     }
 
 
     /**
      * getter of colour
+     *
      * @return colour
      */
     public ColourTile getColour() {

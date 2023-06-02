@@ -5,10 +5,12 @@ import it.polimi.ingsw.Exception.NoSpaceInColumnException;
 import it.polimi.ingsw.Utils.TileSlot;
 import it.polimi.ingsw.model.Tile.Tile;
 
+import java.io.Serializable;
+
 /**
  * class that represents player's shelf
  */
-public class Shelf {
+public class Shelf implements Serializable {
     public static final int MAX_SHELF_ROWS = 6;
     public static final int MAX_SHELF_COLUMNS = 5;
 
@@ -21,9 +23,9 @@ public class Shelf {
     /**
      * initialize shelf with empty slots
      */
-    public Shelf(){
-        for(int i=0; i<MAX_SHELF_ROWS;i++){
-            for(int j=0;j<MAX_SHELF_COLUMNS;j++){
+    public Shelf() {
+        for (int i = 0; i < MAX_SHELF_ROWS; i++) {
+            for (int j = 0; j < MAX_SHELF_COLUMNS; j++) {
                 shelf[i][j] = new TileSlot();
             }
         }
@@ -33,9 +35,10 @@ public class Shelf {
     /**
      * method that adds up to three selected tiles in Shelf. It counts, in the given column, how many rows are full using the method isFree (form TileSlot)
      * Tiles are stored in array created by Board and put in the shelf with assignTile method
+     *
      * @throws NoSpaceInColumnException if there is not enough space for the selected numbers of tiles
      */
-    public void addCardInColumn (int col, Tile[] selectedTile) throws NoSpaceInColumnException {
+    public void addCardInColumn(int col, Tile[] selectedTile) throws NoSpaceInColumnException {
 
 
         int row = 0;
@@ -54,29 +57,28 @@ public class Shelf {
         for (Tile tile : selectedTile) {
             shelf[row][col].assignTile(tile);
             row++;
-            }
+        }
 
 
     }
 
 
-
     /**
      * method that verifies if shelf is completely full. It controls if every slot of the last row is full
      */
-    public boolean isFull(){
+    public boolean isFull() {
 
-        int count =0;
-        for (int i= 0; i<4; i++){
-                if (!shelf[MAX_SHELF_COLUMNS][i].isFree()) {
-                    count++;
-                }
-
-                if (count == MAX_SHELF_COLUMNS){
-                    return true;
-
-                }
+        int count = 0;
+        for (int i = 0; i < 4; i++) {
+            if (!shelf[MAX_SHELF_COLUMNS][i].isFree()) {
+                count++;
             }
+
+            if (count == MAX_SHELF_COLUMNS) {
+                return true;
+
+            }
+        }
         return false;
     }
 

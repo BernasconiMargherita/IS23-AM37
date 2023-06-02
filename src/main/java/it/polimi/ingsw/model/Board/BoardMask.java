@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.Board;
 
-public class BoardMask {
+import java.io.Serializable;
+
+public class BoardMask implements Serializable {
     private final boolean[][] twoPlayersTiles;
     private final boolean[][] threePlayersTiles;
     private final boolean[][] fourPlayersTiles;
@@ -13,11 +15,11 @@ public class BoardMask {
 
     public boolean[][] getTiles(int numOfPlayers) {
 
-        if(numOfPlayers == 2){
+        if (numOfPlayers == 2) {
             return twoPlayersTiles;
         }
-        if(numOfPlayers == 3){
-            return  threePlayersTiles;
+        if (numOfPlayers == 3) {
+            return threePlayersTiles;
         }
 
         return fourPlayersTiles;

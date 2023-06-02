@@ -1,12 +1,13 @@
 package it.polimi.ingsw.model.CommonCards;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
 
-public class CommonDeck {
+public class CommonDeck implements Serializable {
     /**
-     *  ArrayList<CrdCommonTarget> commonDeck : ArrayList of commonCard (lenght -> 2)
+     * ArrayList<CrdCommonTarget> commonDeck : ArrayList of commonCard (lenght -> 2)
      */
     private final ArrayList<CardCommonTarget> commonDeck;
 
@@ -17,18 +18,19 @@ public class CommonDeck {
 
     /**
      * Method for create two CommonTargetCards randomly picked from the ones that are available
+     *
      * @param numOfPlayers used only for passing it in the common target constructor to decide the number of scoring token on each card
      */
-    public CommonDeck(int numOfPlayers){
+    public CommonDeck(int numOfPlayers) {
 
         commonDeck = new ArrayList<>();
         Random random = new Random();
         int num1 = random.nextInt(12);
         int num2;
-        do{
+        do {
             num2 = random.nextInt(12);
         }
-        while(num2 == num1);
+        while (num2 == num1);
 
         String[] commonList = {"SIX_GROUPS_OF_TWO",
                 "FOUR_EQUALS_ANGLES",
@@ -43,12 +45,13 @@ public class CommonDeck {
                 "FIVE_IN_A_X",
                 "IN_DESCENDING_ORDER"};
 
-        commonDeck.add(new CardCommonTarget(CommonList.valueOf(commonList[num1]),0,this.numOfPlayers));
-        commonDeck.add(new CardCommonTarget(CommonList.valueOf(commonList[num2]),1,this.numOfPlayers));
+        commonDeck.add(new CardCommonTarget(CommonList.valueOf(commonList[num1]), 0, numOfPlayers));
+        commonDeck.add(new CardCommonTarget(CommonList.valueOf(commonList[num2]), 1, numOfPlayers));
     }
 
     /**
      * getter of the CommonCards Arraylist
+     *
      * @return commonDeck
      */
     public ArrayList<CardCommonTarget> getCommonDeck() {

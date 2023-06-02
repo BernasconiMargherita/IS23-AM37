@@ -4,8 +4,9 @@ import com.google.gson.Gson;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.Serializable;
 
-public class PersonalParser {
+public class PersonalParser implements Serializable {
 
     /**
      * vector of all Personal Cards in game
@@ -18,7 +19,7 @@ public class PersonalParser {
      */
 
     public PersonalParser() throws FileNotFoundException {
-        FileReader reader = new FileReader("listOfPersonalCards.json");
+        FileReader reader = new FileReader("src/main/resources/json/listOfPersonalCards.json");
         Gson gson = new Gson();
         cardPersonalTargets = gson.fromJson(reader, CardPersonalTarget[].class);
     }

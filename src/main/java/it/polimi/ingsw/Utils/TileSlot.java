@@ -2,10 +2,12 @@ package it.polimi.ingsw.Utils;
 
 import it.polimi.ingsw.model.Tile.Tile;
 
+import java.io.Serializable;
+
 /**
  * Class that abstracts the concept of a Slot on the board
  */
-public class TileSlot {
+public class TileSlot implements Serializable {
     /**
      * Tile that is in this slot at the moment
      */
@@ -25,13 +27,13 @@ public class TileSlot {
      */
     public void assignTile(Tile assignedTile) {
         this.assignedTile = assignedTile;
-        this.free=false;
+        this.free = false;
     }
 
     /**
      * method for knowing if the space is empty or not
      */
-    public boolean isFree(){
+    public boolean isFree() {
         return this.free;
     }
 
@@ -45,8 +47,8 @@ public class TileSlot {
     /**
      * method that reverts the TileSlot to empty if requested
      */
-    public void removeAssignedTile(){
-        this.assignedTile=null;
-        this.free=true;
+    public void removeAssignedTile() {
+        this.assignedTile = null;
+        this.free = true;
     }
 }
