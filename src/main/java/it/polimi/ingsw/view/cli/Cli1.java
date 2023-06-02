@@ -2,7 +2,7 @@ package it.polimi.ingsw.view.cli;
 import java.util.*;
 
 
-public class Cli {
+public class Cli1 {
     private String username;
     private boolean tcpSelected;
     private int numPlayers;
@@ -37,12 +37,7 @@ public class Cli {
      * Prints MyShelfie Logo
      */
     private void printLogo() {
-        String MyShelfieLogo = "             _____   _____   _______ _   _            _       _  _   _  _______\n" +
-                "      /\\    |  __ \\ |  __ \\ |  ____/| \\ | |    /\\    | |     | || \\ | ||  ____/\n" +
-                "     /  \\   | |  | || |__) || |__   |  \\| |   /  \\   | |     | ||  \\| || |__   \n" +
-                "    / /\\ \\  | |  | ||  _  / |  __|  | . ` |  / /\\ \\  | |     | || . ` ||  __|  \n" +
-                "   / /__\\ \\ | |__| || | \\ \\ | |_____| |\\  | / /__\\ \\ | |____ | || |\\  || |_____\n" +
-                "  /_/|_____\\|_____/ |_|  \\_\\|______/|_| \\_|/_/|_____\\|______\\|_||_| \\_||______/\n\n" +
+        String MyShelfieLogo = "
                 "Welcome to MyShelfie Board Game\n" +
                 "Before starting playing you need to setup some things:\n";
 
