@@ -12,7 +12,7 @@ import java.io.InputStream;
 public class Gui extends Application {
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) {
 
         stage.setWidth(800);
         stage.setHeight(600);
@@ -24,7 +24,11 @@ public class Gui extends Application {
 
         Scene scene = new Scene(new Pane());
         stage.setResizable(false);
-        GuiMaster.setLayout(scene, "/fxml/loginScene.fxml");
+        try {
+            GuiMaster.setLayout(scene, "/fxml/loginScene.fxml");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         stage.setScene(scene);
         stage.show();
     }

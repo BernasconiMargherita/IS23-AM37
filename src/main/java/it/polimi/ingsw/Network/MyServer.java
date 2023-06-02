@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Network;
 
 import com.google.gson.Gson;
-import it.polimi.ingsw.model.Player.Player;
+import it.polimi.ingsw.Network.Network2.ServerInterface;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -9,8 +9,9 @@ import java.net.Socket;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 
-public class MyServer {
+public class MyServer extends UnicastRemoteObject implements ServerInterface {
     private static final RemoteController server;
 
     static {
@@ -20,6 +21,11 @@ public class MyServer {
             throw new RuntimeException(e);
         }
     }
+
+    protected MyServer() throws RemoteException {
+        super();
+    }
+
     public static void main(String[] args) throws Exception {
 
         int portNumber;
@@ -35,96 +41,69 @@ public class MyServer {
             throw new RuntimeException(e);
         }
 
-
+        ServerInterface myServer = new MyServer();
         Registry registry = LocateRegistry.createRegistry(portNumber);
-        registry.rebind("RemoteController", server);
+        registry.rebind("RemoteController", myServer);
         System.out.println("RMI server is running...");
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
         // Creare un socket server TCP
-        ServerSocket serverSocket = new ServerSocket(8080);
+        ServerSocket serverSocket = new ServerSocket(8082);
         System.out.println("Il server TCP è in esecuzione...");
 
-        while (true) {
-            // Accettare le connessioni dei client TCP in ingresso
-            Socket clientSocket = serverSocket.accept();
-            System.out.println("Connessione del client TCP accettata da " + clientSocket.getInetAddress());
+        try {
 
-            // Gestire le richieste del client TCP
-            new Thread(new TcpHandler(clientSocket)).start();
+            while (true) {
+                Socket clientSocket = serverSocket.accept();
+                ClientHandler clientHandler = new ClientHandler(clientSocket, myServer);
+                clientHandler.start();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+    public String onMessage(String request) throws RemoteException {
+        return "Response from server";
+    }
+}
+
+ class ClientHandler extends Thread {
+    private Socket clientSocket;
+    private BufferedReader in;
+    private PrintWriter out;
+
+    private ServerInterface myServer;
+
+    public ClientHandler(Socket socket,ServerInterface myServer) {
+        this.clientSocket = socket;
+        this.myServer=myServer;
+    }
+
+    public void run() {
+        try {
+            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            out = new PrintWriter(clientSocket.getOutputStream(), true);
+
+            String request = in.readLine();
+            String response = onMessage(request);
+            out.println(response);
+
+            in.close();
+            out.close();
+            clientSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-
-
-
-    private static class TcpHandler implements Runnable {
-        private final Socket clientSocket;
-        private int gameID;
-
-        public TcpHandler(Socket clientSocket) {
-            this.clientSocket = clientSocket;
-        }
-        public void run() {
-            try {
-                PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
-                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-
-                gameID = tcpRegistration(in, out);
-
-                System.out.println("almeno il gameid è stato impostato");
-                server.initGame(gameID);
-
-
-
-
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-
-        public int tcpRegistration(BufferedReader in, PrintWriter out) throws IOException {
-
-
-            Gson gson = new Gson();
-            String jsonPlayer = in.readLine();
-            Player player = gson.fromJson(jsonPlayer, Player.class);
-            while(true){
-                if(server.nicknameOccupato(player.getNickname())){
-                    System.out.println("ilnicknameemoltooccupato");
-                    out.println("NicknameOccupato");
-                    out.flush();
-                }
-                else{
-                    System.out.println("ilnicknameePOCOOCOCOCOoccupato");
-                    break;
-                }
-                jsonPlayer = in.readLine();
-                player = gson.fromJson(jsonPlayer, Player.class);
-            }
-            out.println("NicknameOk");
-            out.flush();
-            Client client = new TCPClient(player.getNickname());
-            server.setSocket(in , out, client.getNickname());
-            int gameID = server.registerPlayer(gson.fromJson(jsonPlayer, Player.class), -2, client );
-            server.addClient(client, server.getCurrentGameID());
-            System.out.println("finsicelatcpregistration");
-            return gameID;
+    private String onMessage(String request) {
+        try {
+            return myServer.onMessage(request);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+            return "Error occurred during server processing";
         }
     }
-
 }
