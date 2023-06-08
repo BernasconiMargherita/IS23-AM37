@@ -1,5 +1,10 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.Network.Messages.LoginMessage;
+import it.polimi.ingsw.Network.Messages.Message;
+import it.polimi.ingsw.Network.Network2.CommunicationProtocol;
+import it.polimi.ingsw.Network.Network2.RMICommunicationProtocol;
+import it.polimi.ingsw.Network.Network2.TCPCommunicationProtocol;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -72,21 +77,25 @@ public class LoginSceneController {
             protocolError.setText("Seleziona un protocollo!");
 
         } else {
-
             String connection = selected.getText();
-
-            try {
-                GuiMaster.getInstance().createConnection(connection, username, GuiMaster.getInstance());
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+            CommunicationProtocol communicationProtocol;
+            if (connection.equalsIgnoreCase("TCP")) {
+                communicationProtocol = new TCPCommunicationProtocol("localhost", 8082);
+            } else {
+                communicationProtocol = new RMICommunicationProtocol("RemoteController");
             }
 
-            try {
-                GuiMaster.setLayout(gridPane.getScene(), "/fxml/connectionScene.fxml");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            Message message = new LoginMessage(username);
 
+            String response = communicationProtocol.sendMessage(message);
+
+            if (response.equals("Response from server")) {
+                try {
+                    GuiMaster.setLayout(gridPane.getScene(), "/fxml/connectionScene.fxml");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
     }
 }

@@ -1,6 +1,10 @@
 package it.polimi.ingsw.Network;
 
 import com.google.gson.Gson;
+import it.polimi.ingsw.Network.Messages.ErrorMessage;
+import it.polimi.ingsw.Network.Messages.Message;
+import it.polimi.ingsw.Network.Messages.OkMessage;
+import it.polimi.ingsw.Network.Messages.RequestMessage;
 import it.polimi.ingsw.Network.Network2.ServerInterface;
 
 import java.io.*;
@@ -64,8 +68,8 @@ public class MyServer extends UnicastRemoteObject implements ServerInterface {
 
 
     }
-    public String onMessage(String request) throws RemoteException {
-        return "Response from server";
+    public Message onMessage(Message message) throws RemoteException {
+        return new OkMessage("Response from server");
     }
 }
 
@@ -87,8 +91,8 @@ public class MyServer extends UnicastRemoteObject implements ServerInterface {
             out = new PrintWriter(clientSocket.getOutputStream(), true);
 
             String request = in.readLine();
-            String response = onMessage(request);
-            out.println(response);
+            Message response = onMessage(new RequestMessage(request));
+            out.println(response.getMessage());
 
             in.close();
             out.close();
@@ -98,12 +102,12 @@ public class MyServer extends UnicastRemoteObject implements ServerInterface {
         }
     }
 
-    private String onMessage(String request) {
+    private Message onMessage(Message request) {
         try {
             return myServer.onMessage(request);
         } catch (RemoteException e) {
             e.printStackTrace();
-            return "Error occurred during server processing";
+            return new ErrorMessage("errore");
         }
     }
 }
