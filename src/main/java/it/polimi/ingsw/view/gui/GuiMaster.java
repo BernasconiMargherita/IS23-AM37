@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.Network.MyClient;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 
@@ -17,10 +18,11 @@ public class GuiMaster {
 
     public static <T> T setLayout(Scene scene, String path) throws IOException {
         FXMLLoader loader = new FXMLLoader(GuiMaster.class.getResource(path));
-        Pane pane = loader.load();
-        scene.setRoot(pane);
+        Parent root = loader.load();
+        scene.setRoot(root);
         return loader.getController();
     }
+
 
     public static GuiMaster getInstance() {
         if (instance==null){

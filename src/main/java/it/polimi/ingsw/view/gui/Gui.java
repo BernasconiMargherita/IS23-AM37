@@ -14,8 +14,8 @@ public class Gui extends Application {
     @Override
     public void start(Stage stage) {
 
-        stage.setWidth(800);
-        stage.setHeight(600);
+        stage.setWidth(1500);
+        stage.setHeight(1000);
 
         InputStream is = Gui.class.getClassLoader().getResourceAsStream("assets/Publisher material/Icon 50x50px.png");
         if (is != null) {

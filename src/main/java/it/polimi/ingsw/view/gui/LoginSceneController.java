@@ -6,6 +6,7 @@ import it.polimi.ingsw.Network.Network2.CommunicationProtocol;
 import it.polimi.ingsw.Network.Network2.RMICommunicationProtocol;
 import it.polimi.ingsw.Network.Network2.TCPCommunicationProtocol;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -50,7 +51,6 @@ public class LoginSceneController {
 
     public void createScene() {
 
-
         Image image = new Image("/assets/Publisher material/Title 2000x2000px.png");
         imageView.setImage(image);
 
@@ -79,6 +79,7 @@ public class LoginSceneController {
         } else {
             String connection = selected.getText();
             CommunicationProtocol communicationProtocol;
+
             if (connection.equalsIgnoreCase("TCP")) {
                 communicationProtocol = new TCPCommunicationProtocol("localhost", 8082);
             } else {
@@ -91,10 +92,14 @@ public class LoginSceneController {
 
             if (response.equals("Response from server")) {
                 try {
-                    GuiMaster.setLayout(gridPane.getScene(), "/fxml/connectionScene.fxml");
+                    Scene scene=gridPane.getScene();
+
+                    GuiMaster.setLayout(scene, "/fxml/connectionScene.fxml");
+
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+
             }
         }
     }
