@@ -51,19 +51,19 @@ public class MyServer extends UnicastRemoteObject implements ServerInterface {
         System.out.println("RMI server is running...");
 
 
-        // Creare un socket server TCP
-        ServerSocket serverSocket = new ServerSocket(8082);
-        System.out.println("Il server TCP è in esecuzione...");
+        try (ServerSocket serverSocket = new ServerSocket(8082)) {
+            System.out.println("Il server TCP è in esecuzione...");
 
-        try {
+            try {
 
-            while (true) {
-                Socket clientSocket = serverSocket.accept();
-                ClientHandler clientHandler = new ClientHandler(clientSocket, myServer);
-                clientHandler.start();
+                while (true) {
+                    Socket clientSocket = serverSocket.accept();
+                    ClientHandler clientHandler = new ClientHandler(clientSocket, myServer);
+                    clientHandler.start();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
 
@@ -91,12 +91,19 @@ public class MyServer extends UnicastRemoteObject implements ServerInterface {
             out = new PrintWriter(clientSocket.getOutputStream(), true);
 
             String request = in.readLine();
-            Message response = onMessage(new RequestMessage(request));
-            out.println(response.getMessage());
+            Gson gson = new Gson();
+            Message requestMessage = gson.fromJson(request, Message.class);
+
+            Message response = onMessage(requestMessage);
+
+            String jsonResponse = gson.toJson(response);
+
+            out.println(jsonResponse);
 
             in.close();
             out.close();
             clientSocket.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }

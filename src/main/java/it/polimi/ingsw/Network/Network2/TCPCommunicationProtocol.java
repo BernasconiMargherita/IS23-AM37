@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Network.Network2;
 
 
+import com.google.gson.Gson;
+import it.polimi.ingsw.Network.Messages.ErrorMessage;
 import it.polimi.ingsw.Network.Messages.Message;
 
 import java.io.*;
@@ -15,14 +17,21 @@ public class TCPCommunicationProtocol implements CommunicationProtocol {
         this.serverPort = serverPort;
     }
 
-    public String sendMessage(Message message) {
+    public Message sendMessage(Message message) {
         try {
+
             Socket socket = new Socket(serverIp, serverPort);
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-            out.println(message.getMessage());
-            String response = in.readLine();
+            Gson gson = new Gson();
+            String jsonMessage = gson.toJson(message);
+
+            out.println(jsonMessage);
+            String jsonResponse = in.readLine();
+
+
+            Message response = gson.fromJson(jsonResponse, Message.class);
 
             in.close();
             out.close();
@@ -31,8 +40,7 @@ public class TCPCommunicationProtocol implements CommunicationProtocol {
             return response;
         } catch (IOException e) {
             e.printStackTrace();
-            return "Error occurred during TCP communication";
+            return new ErrorMessage("Error occurred during TCP communication");
         }
     }
 }
-

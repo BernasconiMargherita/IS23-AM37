@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Network.Network2;
 
 
+import it.polimi.ingsw.Network.Messages.ErrorMessage;
 import it.polimi.ingsw.Network.Messages.Message;
 
 import java.rmi.registry.LocateRegistry;
@@ -13,15 +14,15 @@ public class RMICommunicationProtocol implements CommunicationProtocol {
         this.serverUrl = "RemoteController";
     }
 
-    public String sendMessage(Message message) {
+    public Message sendMessage(Message message) {
         try {
             Registry registry = LocateRegistry.getRegistry("localhost", 5001);
             ServerInterface server = (ServerInterface) registry.lookup(serverUrl);
-            return server.onMessage(message).getMessage();
+            return server.onMessage(message);
 
         } catch (Exception e) {
             e.printStackTrace();
-            return "Error occurred during RMI communication";
+            return new ErrorMessage("Error occurred during RMI communication");
         }
     }
 }
