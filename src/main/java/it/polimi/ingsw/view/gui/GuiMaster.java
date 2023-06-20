@@ -1,6 +1,10 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.Network.MyClient;
+import it.polimi.ingsw.Network.Network2.Client;
+import it.polimi.ingsw.Network.Network2.CommunicationProtocol;
+import it.polimi.ingsw.Network.Network2.RMICommunicationProtocol;
+import it.polimi.ingsw.Network.Network2.TCPCommunicationProtocol;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,7 +18,7 @@ public class GuiMaster {
     private GameSceneController gameSceneController;
 
     private static GuiMaster instance = null;
-    private MyClient client;
+    private static Client client;
 
     public static <T> T setLayout(Scene scene, String path) throws IOException {
         FXMLLoader loader = new FXMLLoader(GuiMaster.class.getResource(path));
@@ -38,8 +42,30 @@ public class GuiMaster {
     public void setGameSceneController(GameSceneController gameSceneController) {
         this.gameSceneController = gameSceneController;
     }
-    public void createConnection(String connection, String username, GuiMaster instance) {
-        client = new MyClient();
+
+    public static void setClient(Client client) {
+        GuiMaster.client = client;
+    }
+
+    public static Client getClient() {
+        return client;
+    }
+
+    public static void createConnection(String connection) {
+
+        CommunicationProtocol communicationProtocol;
+
+        if (connection.equalsIgnoreCase("TCP")) {
+            communicationProtocol = new TCPCommunicationProtocol("localhost", 8082);
+
+        } else {
+            communicationProtocol = new RMICommunicationProtocol("RemoteController");
+        }
+
+        Client client=new Client(communicationProtocol);
+
+        setClient(client);
+
     }
 
     public void setConnectionSceneController(ConnectionSceneController connectionSceneController) {

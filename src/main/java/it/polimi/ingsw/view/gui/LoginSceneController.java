@@ -1,10 +1,9 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.Network2.Messages.LoginMessage;
-import it.polimi.ingsw.Network2.Messages.Message;
-import it.polimi.ingsw.Network2.CommunicationProtocol;
-import it.polimi.ingsw.Network2.RMICommunicationProtocol;
-import it.polimi.ingsw.Network2.TCPCommunicationProtocol;
+import it.polimi.ingsw.Network.Messages.LoginMessage;
+import it.polimi.ingsw.Network.Messages.Message;
+import it.polimi.ingsw.Network.Messages.OkMessage;
+import it.polimi.ingsw.Network.Network2.Client;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -78,28 +77,33 @@ public class LoginSceneController {
 
         } else {
             String connection = selected.getText();
-            CommunicationProtocol communicationProtocol;
 
-            if (connection.equalsIgnoreCase("TCP")) {
-                communicationProtocol = new TCPCommunicationProtocol("localhost", 8082);
-            } else {
-                communicationProtocol = new RMICommunicationProtocol("RemoteController");
-            }
+            GuiMaster.createConnection(connection);
+
+            Client client = GuiMaster.getClient();
 
             Message message = new LoginMessage(username);
 
-            String response = communicationProtocol.sendMessage(message);
+            Message response = client.sendMessage(message);
 
-            if (response.equals("Response from server")) {
+            if (response instanceof OkMessage) {
                 try {
+                    client.setUsername(username);
                     Scene scene=gridPane.getScene();
 
+                    /*if (response.getFirst()==true)
+                    * client.setFirst()*/
                     GuiMaster.setLayout(scene, "/fxml/connectionScene.fxml");
+
+                    /*else GuiMaster.setLayout(scene, "/fxml/connectionScene.fxml");*/
 
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
 
+            }
+            else {
+                usernameError.setText("username già preso!");
             }
         }
     }
