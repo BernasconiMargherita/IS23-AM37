@@ -1,10 +1,10 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.Network.Messages.LoginMessage;
-import it.polimi.ingsw.Network.Messages.Message;
-import it.polimi.ingsw.Network.Network2.CommunicationProtocol;
-import it.polimi.ingsw.Network.Network2.RMICommunicationProtocol;
-import it.polimi.ingsw.Network.Network2.TCPCommunicationProtocol;
+import it.polimi.ingsw.Network2.Messages.LoginMessage;
+import it.polimi.ingsw.Network2.Messages.Message;
+import it.polimi.ingsw.Network2.CommunicationProtocol;
+import it.polimi.ingsw.Network2.RMICommunicationProtocol;
+import it.polimi.ingsw.Network2.TCPCommunicationProtocol;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;

@@ -1,11 +1,17 @@
-package it.polimi.ingsw.Network.Messages;
+package it.polimi.ingsw.Network2.Messages;
 
 import java.io.Serializable;
 
 public class ErrorMessage extends Message implements Serializable {
 
     public ErrorMessage(String message) {
-        super(message);
+        super();
     }
+    public String typeMessage(){
+        return "ErrorMessage";
+    }
+
+
+
 
 }

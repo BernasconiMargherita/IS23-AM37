@@ -1,11 +1,12 @@
-package it.polimi.ingsw.Network;
+package it.polimi.ingsw.Network2;
 
 import com.google.gson.Gson;
-import it.polimi.ingsw.Network.Messages.ErrorMessage;
-import it.polimi.ingsw.Network.Messages.Message;
+import it.polimi.ingsw.Network2.Messages.ErrorMessage;
+import it.polimi.ingsw.Network2.Messages.Message;
 import it.polimi.ingsw.Network.Messages.OkMessage;
 import it.polimi.ingsw.Network.Messages.RequestMessage;
-import it.polimi.ingsw.Network.Network2.ServerInterface;
+import it.polimi.ingsw.Network.RemoteController;
+import it.polimi.ingsw.Network.RemoteControllerImpl;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -59,7 +60,10 @@ public class MyServer extends UnicastRemoteObject implements ServerInterface {
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();
-                ClientHandler clientHandler = new ClientHandler(clientSocket, myServer);
+                long socketId = System.currentTimeMillis();
+                server.addTcpCl(socketId, clientSocket);
+                new PrintWriter(clientSocket.getOutputStream(), true).println(socketId);
+                ClientHandler clientHandler = new ClientHandler(clientSocket, socketId, myServer);
                 clientHandler.start();
             }
         } catch (Exception e) {
@@ -69,20 +73,33 @@ public class MyServer extends UnicastRemoteObject implements ServerInterface {
 
     }
     public Message onMessage(Message message) throws RemoteException {
+
         return new OkMessage("Response from server");
+    }
+
+    public long addRmiClient(CommunicationProtocol protocol){
+        long rmiId = System.currentTimeMillis();
+        try {
+            server.addRmiCl(rmiId, protocol);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+        return rmiId;
     }
 }
 
  class ClientHandler extends Thread {
+    private long socketId;
     private Socket clientSocket;
     private BufferedReader in;
     private PrintWriter out;
 
     private ServerInterface myServer;
 
-    public ClientHandler(Socket socket,ServerInterface myServer) {
+    public ClientHandler(Socket socket,long socketId,ServerInterface myServer) {
         this.clientSocket = socket;
         this.myServer=myServer;
+        this.socketId = socketId;
     }
 
     public void run() {
@@ -93,7 +110,6 @@ public class MyServer extends UnicastRemoteObject implements ServerInterface {
             String request = in.readLine();
             Message response = onMessage(new RequestMessage(request));
             out.println(response.getMessage());
-
             in.close();
             out.close();
             clientSocket.close();

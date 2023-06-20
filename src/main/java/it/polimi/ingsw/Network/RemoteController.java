@@ -1,17 +1,24 @@
 package it.polimi.ingsw.Network;
 
+import it.polimi.ingsw.Network2.Messages.LoginMessage;
+import it.polimi.ingsw.Network2.Messages.Message;
+import it.polimi.ingsw.Network2.CommunicationProtocol;
+import it.polimi.ingsw.Utils.Coordinates;
 import it.polimi.ingsw.controller.MasterController;
 import it.polimi.ingsw.model.Player.Player;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
+import java.net.Socket;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
 
 public interface RemoteController extends Remote {
+    public void addTcpCl(long UID, Socket socket) throws RemoteException;
     public void ping(RemoteClient client) throws RemoteException;
+    public Message onMessage(Message message) throws RemoteException;
 
     public void playClient(int client, int gameID) throws RemoteException;
 
@@ -19,9 +26,11 @@ public interface RemoteController extends Remote {
      * Initializes the game with the given game ID.
      *
      * @param gameID the game ID to initialize
+     * @return
      * @throws RemoteException if there is an issue with the remote method call
      */
-    void initGame(int gameID) throws RemoteException;
+    boolean initGame(int gameID) throws RemoteException;
+    public void addRmiCl(long UID, CommunicationProtocol protocol) throws RemoteException;
 
     /**
      * Creates a new game controller instance and increments the currentGameID.
@@ -40,7 +49,7 @@ public interface RemoteController extends Remote {
      * @param gameID ID of the game
      * @throws RemoteException if there is an issue with the remote method call
      */
-    void remove(int gameID, int client) throws RemoteException;
+    Message remove(int gameID, Coordinates[] positions) throws RemoteException;
 
 
     boolean isGameOver() throws RemoteException;
@@ -56,7 +65,7 @@ public interface RemoteController extends Remote {
      * @return the game ID that the player is registered in
      * @throws RemoteException if there is an issue with the remote method call
      */
-    int registerPlayer(Player player, int gameID, Client client) throws RemoteException;
+    Message registerPlayer(LoginMessage message) throws RemoteException;
     public void setSocket(BufferedReader in, PrintWriter out, String nickname) throws RemoteException;
     /**
      * Returns the current game ID.
@@ -86,5 +95,5 @@ public interface RemoteController extends Remote {
 
 
     public MasterController getMasterController() throws RemoteException;
-    public void setMaxPlayers(int gameID, int maxPlayers,Client client) throws RemoteException;
+    public Message setMaxPlayers(Message message) throws RemoteException;
 }

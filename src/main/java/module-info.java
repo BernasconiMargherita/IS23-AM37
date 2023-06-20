@@ -22,7 +22,7 @@ module it.polimi.ingsw {
     exports it.polimi.ingsw.Utils ;
     exports it.polimi.ingsw.Network.Chat to java.rmi;
     exports it.polimi.ingsw.view.gui;
-    exports it.polimi.ingsw.Network.Network2 to java.rmi, javafx.graphics;
-    exports it.polimi.ingsw.Network.Messages to java.rmi;
+    exports it.polimi.ingsw.Network2 to java.rmi, javafx.graphics;
+    exports it.polimi.ingsw.Network2.Messages to java.rmi;
 
 }
