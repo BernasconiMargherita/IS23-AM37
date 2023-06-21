@@ -52,15 +52,15 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
         if(message.typeMessage().equals( "LoginMessage")){
             return registerPlayer(message);
         }
-
+        if(message.typeMessage().equals( "SetMessage")){
+            return setMaxPlayers(message);
+        }
         if(message.typeMessage().equals( "InitMessage")){
             return initGame(message.getGameID());
         }
-
         if(message.typeMessage().equals( "RemoveMessage")){
             return remove(message.getGameID(), message.getPositions());
         }
-
         if(message.typeMessage().equals( "TurnMessage")){
             return turn(message.getGameID(), message.getColours(),message.getColumn(), message.getNickname());
         }
@@ -93,7 +93,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
 
     @Override
-    public Message registerPlayer(Message message) throws RemoteException {
+    public void registerPlayer(Message message) throws RemoteException {
         String nickname = message.getNickname();
         long UID = message.getUID();
         try {
@@ -234,6 +234,9 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
     }
 
 
+    public void sendBoard(Message message) throws RemoteException{
+
+    }
 
     @Override
     public void playClient(int client, int gameID) throws RemoteException{
