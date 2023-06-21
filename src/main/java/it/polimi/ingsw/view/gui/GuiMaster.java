@@ -1,18 +1,13 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.Network.MyClient;
-import it.polimi.ingsw.Network.Network2.Client;
-import it.polimi.ingsw.Network.Network2.CommunicationProtocol;
-import it.polimi.ingsw.Network.Network2.RMICommunicationProtocol;
-import it.polimi.ingsw.Network.Network2.TCPCommunicationProtocol;
+import it.polimi.ingsw.Network.Network2.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 
-public class GuiMaster {
+public class GuiMaster extends ClientManager {
 
     private LoginSceneController loginSceneController;
     private GameSceneController gameSceneController;
@@ -51,22 +46,6 @@ public class GuiMaster {
         return client;
     }
 
-    public static void createConnection(String connection) {
-
-        CommunicationProtocol communicationProtocol;
-
-        if (connection.equalsIgnoreCase("TCP")) {
-            communicationProtocol = new TCPCommunicationProtocol("localhost", 8082);
-
-        } else {
-            communicationProtocol = new RMICommunicationProtocol("RemoteController");
-        }
-
-        Client client=new Client(communicationProtocol);
-
-        setClient(client);
-
-    }
 
     public void setConnectionSceneController(ConnectionSceneController connectionSceneController) {
     }

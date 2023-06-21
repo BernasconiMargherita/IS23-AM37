@@ -6,8 +6,10 @@ import it.polimi.ingsw.Network.Messages.RequestMessage;
 import it.polimi.ingsw.Network.Network2.Client;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.*;
 
 import java.util.Objects;

@@ -71,6 +71,11 @@ public class MyServer extends UnicastRemoteObject implements ServerInterface {
     public Message onMessage(Message message) throws RemoteException {
         return new OkMessage("Response from server");
     }
+
+    @Override
+    public void disconnect() {
+
+    }
 }
 
  class ClientHandler extends Thread {

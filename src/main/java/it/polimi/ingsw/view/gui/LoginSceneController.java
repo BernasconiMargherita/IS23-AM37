@@ -45,7 +45,6 @@ public class LoginSceneController {
         GuiMaster guiMaster = GuiMaster.getInstance();
         guiMaster.setLoginSceneController(this);
         createScene();
-
     }
 
     public void createScene() {
@@ -78,7 +77,7 @@ public class LoginSceneController {
         } else {
             String connection = selected.getText();
 
-            GuiMaster.createConnection(connection);
+            GuiMaster.getInstance().createConnection(connection);
 
             Client client = GuiMaster.getClient();
 
