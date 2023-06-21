@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="rootPane" prefHeight="1000.0" prefWidth="1500.0" stylesheets="@styles/login.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.GameSceneController">
+
+    <VBox layoutX="1014.0" layoutY="113.0" AnchorPane.bottomAnchor="214.0" AnchorPane.rightAnchor="84.0" AnchorPane.topAnchor="113.0">
+
+        <HBox alignment="CENTER_LEFT" spacing="10" />
+
+    </VBox>
+     <ListView fx:id="chatListView" layoutX="1141.0" layoutY="657.0" prefHeight="256.0" prefWidth="200.0" />
+      <TextField fx:id="messageTextField" layoutX="1140.0" layoutY="920.0" onAction="#sendChatMessage" prefWidth="150.0" />
+      <Button layoutX="1298.0" layoutY="920.0" onAction="#sendChatMessage" text="Send" />
+    <ImageView fx:id="shelf" fitHeight="500.0" fitWidth="502.0" layoutX="768.0" layoutY="113.0" AnchorPane.bottomAnchor="512.0" AnchorPane.rightAnchor="34.0" AnchorPane.topAnchor="113.0" />
+    <GridPane fx:id="shelfMask" layoutX="1015.0" layoutY="163.0" prefHeight="400.0" prefWidth="400.0" AnchorPane.bottomAnchor="564.0" AnchorPane.rightAnchor="85.0" AnchorPane.topAnchor="163.0">
+      <columnConstraints>
+         <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+         <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+         <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+         <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+         <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+      </columnConstraints>
+      <rowConstraints>
+         <RowConstraints minHeight="10.0" prefHeight="400.0" />
+      </rowConstraints></GridPane>
+
+
+
+    <ImageView fx:id="board" fitHeight="800.0" fitWidth="800.0" layoutX="39.0" layoutY="113.0" AnchorPane.bottomAnchor="214.0" AnchorPane.leftAnchor="39.0" AnchorPane.rightAnchor="529.0" AnchorPane.topAnchor="113.0" />
+   <GridPane fx:id="boardMask" layoutX="39.0" layoutY="113.0" prefHeight="835.0" prefWidth="846.0" AnchorPane.bottomAnchor="179.0" AnchorPane.leftAnchor="39.0" AnchorPane.rightAnchor="661.0" AnchorPane.topAnchor="113.0">
+      <rowConstraints>
+         <RowConstraints minHeight="76.0" prefHeight="30.0" />
+         <RowConstraints minHeight="10.0" prefHeight="76.0" />
+         <RowConstraints minHeight="10.0" prefHeight="76.0" />
+         <RowConstraints minHeight="10.0" prefHeight="76.0" />
+         <RowConstraints minHeight="10.0" prefHeight="76.0" />
+         <RowConstraints minHeight="10.0" prefHeight="76.0" />
+         <RowConstraints minHeight="76.0" prefHeight="76.0" />
+         <RowConstraints minHeight="76.0" prefHeight="76.0" />
+         <RowConstraints minHeight="76.0" prefHeight="76.0" />
+         <RowConstraints minHeight="76.0" prefHeight="76.0" />
+         <RowConstraints maxHeight="60.0" minHeight="76.0" prefHeight="76.0" />
+      </rowConstraints>
+      <columnConstraints>
+         <ColumnConstraints minWidth="10.0" prefWidth="76.0" />
+         <ColumnConstraints minWidth="10.0" prefWidth="76.0" />
+         <ColumnConstraints minWidth="10.0" prefWidth="76.0" />
+         <ColumnConstraints minWidth="10.0" prefWidth="76.0" />
+         <ColumnConstraints minWidth="10.0" prefWidth="76.0" />
+         <ColumnConstraints minWidth="10.0" prefWidth="76.0" />
+         <ColumnConstraints minWidth="10.0" prefWidth="76.0" />
+         <ColumnConstraints minWidth="10.0" prefWidth="76.0" />
+         <ColumnConstraints minWidth="10.0" prefWidth="76.0" />
+         <ColumnConstraints maxWidth="83.0" minWidth="10.0" prefWidth="76.0" />
+         <ColumnConstraints minWidth="10.0" prefWidth="76.0" />
+      </columnConstraints></GridPane>
+
+</AnchorPane>

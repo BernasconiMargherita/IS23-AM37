@@ -1,26 +1,28 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.Network.MyClient;
+import it.polimi.ingsw.Network2.Client;
+import it.polimi.ingsw.Network2.ClientManager;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 
-public class GuiMaster {
+public class GuiMaster extends ClientManager {
 
     private LoginSceneController loginSceneController;
     private GameSceneController gameSceneController;
 
     private static GuiMaster instance = null;
-    private MyClient client;
+    private static Client client;
 
     public static <T> T setLayout(Scene scene, String path) throws IOException {
         FXMLLoader loader = new FXMLLoader(GuiMaster.class.getResource(path));
-        Pane pane = loader.load();
-        scene.setRoot(pane);
+        Parent root = loader.load();
+        scene.setRoot(root);
         return loader.getController();
     }
+
 
     public static GuiMaster getInstance() {
         if (instance==null){
@@ -36,9 +38,15 @@ public class GuiMaster {
     public void setGameSceneController(GameSceneController gameSceneController) {
         this.gameSceneController = gameSceneController;
     }
-    public void createConnection(String connection, String username, GuiMaster instance) {
-        client = new MyClient();
+
+    public static void setClient(Client client) {
+        GuiMaster.client = client;
     }
+
+    public static Client getClient() {
+        return client;
+    }
+
 
     public void setConnectionSceneController(ConnectionSceneController connectionSceneController) {
     }

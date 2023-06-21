@@ -1,9 +1,13 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.Network2.Client;
+import it.polimi.ingsw.Network2.Messages.Message;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.*;
 
 import java.util.Objects;
@@ -25,11 +29,13 @@ public class ConnectionSceneController {
     public void initialize() {
         GuiMaster guiMaster = GuiMaster.getInstance();
         guiMaster.setConnectionSceneController(this);
+
         createScene();
 
     }
     public void createScene() {
-
+        //Client client=GuiMaster.getInstance.getClient();
+        //if (client.getFirst==true){
         ColumnConstraints columnConstraints = new ColumnConstraints();
         columnConstraints.setHgrow(Priority.ALWAYS);
         gridPane.getColumnConstraints().add(columnConstraints);
@@ -46,9 +52,11 @@ public class ConnectionSceneController {
         TwoPlayers.setToggleGroup(toggleGroup);
         ThreePlayers.setToggleGroup(toggleGroup);
         FourPlayers.setToggleGroup(toggleGroup);
+
+        //}else...
     }
     public void selectNumOfPlayers() {
-        RadioButton selected= (RadioButton) toggleGroup.getSelectedToggle();
+        RadioButton selected = (RadioButton) toggleGroup.getSelectedToggle();
 
         if (!TwoPlayers.isSelected() && !ThreePlayers.isSelected()&& !FourPlayers.isSelected()) {
 
@@ -56,19 +64,24 @@ public class ConnectionSceneController {
         }
         else {
 
-            int numOfPlayers= Integer.parseInt(selected.getText());
+            int numOfPlayers = Integer.parseInt(selected.getText());
+            Client client = GuiMaster.getClient();
 
-            for (Node node:rootPane.getChildren()){
-                if (node.isVisible()) {
-                    node.setVisible(false);
+            Message response= client.sendMessage(new RequestMessage("numOfPlayers: " + numOfPlayers));
+
+            if (response instanceof OkMessage) {
+                for (Node node : rootPane.getChildren()) {
+                    if (node.isVisible()) {
+                        node.setVisible(false);
+                    }
                 }
+                loadingMessage.setText("Attendi gli altri giocatori");
+                loadingMessage.setVisible(true);
+
+                progressIndicator.setProgress(-1);
+                progressIndicator.setVisible(true);
+
             }
-            loadingMessage.setText("Attendi gli altri giocatori");
-            loadingMessage.setVisible(true);
-
-            progressIndicator.setProgress(-1);
-            progressIndicator.setVisible(true);
-
         }
 
 

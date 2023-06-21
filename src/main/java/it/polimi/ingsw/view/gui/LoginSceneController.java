@@ -1,6 +1,11 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.Network2.Client;
+import it.polimi.ingsw.Network2.Messages.LoginMessage;
+import it.polimi.ingsw.Network2.Messages.LoginResponse;
+import it.polimi.ingsw.Network2.Messages.Message;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -40,11 +45,9 @@ public class LoginSceneController {
         GuiMaster guiMaster = GuiMaster.getInstance();
         guiMaster.setLoginSceneController(this);
         createScene();
-
     }
 
     public void createScene() {
-
 
         Image image = new Image("/assets/Publisher material/Title 2000x2000px.png");
         imageView.setImage(image);
@@ -72,21 +75,35 @@ public class LoginSceneController {
             protocolError.setText("Seleziona un protocollo!");
 
         } else {
-
             String connection = selected.getText();
 
-            try {
-                GuiMaster.getInstance().createConnection(connection, username, GuiMaster.getInstance());
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            GuiMaster.getInstance().createConnection(connection);
 
-            try {
-                GuiMaster.setLayout(gridPane.getScene(), "/fxml/connectionScene.fxml");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            Client client = GuiMaster.getClient();
 
+            Message message = new LoginMessage(username);
+
+            Message response = client.sendMessage(message);
+
+            if (response instanceof LoginResponse) {
+                try {
+                    client.setUsername(username);
+                    Scene scene=gridPane.getScene();
+
+                    /*if (response.getFirst()==true)
+                    * client.setFirst()*/
+                    GuiMaster.setLayout(scene, "/fxml/connectionScene.fxml");
+
+                    /*else GuiMaster.setLayout(scene, "/fxml/connectionScene.fxml");*/
+
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+            else {
+                usernameError.setText("username già preso!");
+            }
         }
     }
 }

@@ -3,8 +3,7 @@ package it.polimi.ingsw.Network.Chat;
 import java.rmi.Naming;
 import java.util.Scanner;
 
-public class ChatClient {
-
+public class ChatClient extends Thread{
     public static void main(String[] args) {
         try {
             Chat chat = (Chat) Naming.lookup("//localhost/Chat");
