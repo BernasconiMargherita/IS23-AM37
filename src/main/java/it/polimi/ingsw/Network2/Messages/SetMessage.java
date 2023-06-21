@@ -1,11 +1,11 @@
 package it.polimi.ingsw.Network2.Messages;
 
-public class setMessage extends Message{
+public class SetMessage extends Message{
 
     private int maxPlayers;
     private int gameID;
 
-    public setMessage(int maxPlayers, int gameID) {
+    public SetMessage(int maxPlayers, int gameID) {
         this.maxPlayers = maxPlayers;
         this.gameID = gameID;
     }

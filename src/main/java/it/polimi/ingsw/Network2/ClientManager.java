@@ -33,7 +33,10 @@ public class ClientManager  implements ClientListener, ClientUpdateListener, Run
 
         } else {
             communicationProtocol = new RMICommunicationProtocol("RemoteController");
+
         }
+
+        communicationProtocol.setup();
 
         Client client= null;
         try {

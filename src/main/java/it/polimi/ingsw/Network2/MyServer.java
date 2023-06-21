@@ -69,8 +69,7 @@ public class MyServer extends UnicastRemoteObject implements ServerInterface {
 
     }
     public Message onMessage(Message message) throws RemoteException {
-
-        return new Message();
+        return server.onMessage(message);
     }
 
     @Override

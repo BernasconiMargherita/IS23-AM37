@@ -20,7 +20,7 @@ public class GameController implements Serializable {
     /**
      * List of the player in this game
      */
-    private final List<Player> players;
+    private List<Player> players;
     /**
      * the associated Game
      */
@@ -109,7 +109,7 @@ public class GameController implements Serializable {
             playerList.add(players.get(i));
         }
 
-        players = playerList;
+        this.players = playerList;
     }
 
     /**
@@ -166,6 +166,7 @@ public class GameController implements Serializable {
             game.setGameState(GameState.END_GAME);
             throw new EndGameException();
         }
+
     }
 
     /**
@@ -225,8 +226,6 @@ public class GameController implements Serializable {
     public int getNumOfPlayers() {
         return numOfPlayers;
     }
-    public void removePlayer(String nickname){
 
-    }
 
 }
