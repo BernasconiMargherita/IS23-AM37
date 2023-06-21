@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Network2;
 
 
+import it.polimi.ingsw.Network2.Messages.ErrorMessage;
 import it.polimi.ingsw.Network2.Messages.Message;
 
 import java.rmi.registry.LocateRegistry;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RMICommunicationProtocol implements CommunicationProtocol {
-    private String serverUrl;
+    private final String serverUrl;
     private ArrayList<Message> messageList;
     private ServerInterface server;
 

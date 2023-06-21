@@ -1,9 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.Network.Messages.Message;
-import it.polimi.ingsw.Network.Messages.OkMessage;
-import it.polimi.ingsw.Network.Messages.RequestMessage;
-import it.polimi.ingsw.Network.Network2.Client;
+import it.polimi.ingsw.Network2.Client;
+import it.polimi.ingsw.Network2.Messages.Message;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -36,7 +34,7 @@ public class ConnectionSceneController {
 
     }
     public void createScene() {
-        //Client client=GuiMaster.getClient();
+        //Client client=GuiMaster.getInstance.getClient();
         //if (client.getFirst==true){
         ColumnConstraints columnConstraints = new ColumnConstraints();
         columnConstraints.setHgrow(Priority.ALWAYS);

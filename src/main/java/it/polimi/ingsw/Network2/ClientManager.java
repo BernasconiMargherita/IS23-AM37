@@ -1,6 +1,8 @@
-package it.polimi.ingsw.Network.Network2;
+package it.polimi.ingsw.Network2;
 
-import it.polimi.ingsw.Network.Messages.Message;
+import it.polimi.ingsw.Network2.Messages.Message;
+
+import java.rmi.RemoteException;
 
 public class ClientManager  implements ClientListener, ClientUpdateListener, Runnable {
 
@@ -33,9 +35,14 @@ public class ClientManager  implements ClientListener, ClientUpdateListener, Run
             communicationProtocol = new RMICommunicationProtocol("RemoteController");
         }
 
-        Client client=new Client(communicationProtocol);
+        Client client= null;
+        try {
+            client = new Client(communicationProtocol);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
 
-       this.client=client;
+        this.client=client;
 
     }
 
@@ -50,7 +57,7 @@ public class ClientManager  implements ClientListener, ClientUpdateListener, Run
         }
 
         try {
-            client.close();
+            client.closeConnection();
         } catch (Exception e) {
         }
         client = null;

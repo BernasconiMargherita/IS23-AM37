@@ -1,9 +1,9 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.Network.Messages.LoginMessage;
-import it.polimi.ingsw.Network.Messages.Message;
-import it.polimi.ingsw.Network.Messages.OkMessage;
-import it.polimi.ingsw.Network.Network2.Client;
+import it.polimi.ingsw.Network2.Client;
+import it.polimi.ingsw.Network2.Messages.LoginMessage;
+import it.polimi.ingsw.Network2.Messages.LoginResponse;
+import it.polimi.ingsw.Network2.Messages.Message;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -85,7 +85,7 @@ public class LoginSceneController {
 
             Message response = client.sendMessage(message);
 
-            if (response instanceof OkMessage) {
+            if (response instanceof LoginResponse) {
                 try {
                     client.setUsername(username);
                     Scene scene=gridPane.getScene();

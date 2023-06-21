@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Network.Network2;
+package it.polimi.ingsw.Network2;
 
 public interface ClientListener {
     void updateBoard();

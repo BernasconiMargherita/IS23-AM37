@@ -2,9 +2,9 @@ package it.polimi.ingsw.Network2;
 
 
 import com.google.gson.Gson;
-import it.polimi.ingsw.Network.Messages.CloseMessage;
-import it.polimi.ingsw.Network.Messages.ErrorMessage;
-import it.polimi.ingsw.Network.Messages.Message;
+
+import it.polimi.ingsw.Network2.Messages.CloseMessage;
+import it.polimi.ingsw.Network2.Messages.ErrorMessage;
 import it.polimi.ingsw.Network2.Messages.Message;
 
 import java.io.BufferedReader;
@@ -62,7 +62,7 @@ public class TCPCommunicationProtocol implements CommunicationProtocol {
             return new ErrorMessage("Error occurred during TCP communication");
         }
     }
-
+    @Override
     public void closeConnection(){
         try {
             in.close();
