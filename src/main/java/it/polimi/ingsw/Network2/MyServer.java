@@ -3,10 +3,6 @@ package it.polimi.ingsw.Network2;
 import com.google.gson.Gson;
 import it.polimi.ingsw.Network2.Messages.ErrorMessage;
 import it.polimi.ingsw.Network2.Messages.Message;
-import it.polimi.ingsw.Network.Messages.OkMessage;
-import it.polimi.ingsw.Network.Messages.RequestMessage;
-import it.polimi.ingsw.Network.RemoteController;
-import it.polimi.ingsw.Network.RemoteControllerImpl;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -74,7 +70,7 @@ public class MyServer extends UnicastRemoteObject implements ServerInterface {
     }
     public Message onMessage(Message message) throws RemoteException {
 
-        return new OkMessage("Response from server");
+        return new Message();
     }
 
     public long addRmiClient(CommunicationProtocol protocol){
@@ -108,7 +104,7 @@ public class MyServer extends UnicastRemoteObject implements ServerInterface {
             out = new PrintWriter(clientSocket.getOutputStream(), true);
 
             String request = in.readLine();
-            Message response = onMessage(new RequestMessage(request));
+            Message response = onMessage(new Message());
             out.println(response.getMessage());
             in.close();
             out.close();
