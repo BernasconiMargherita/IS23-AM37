@@ -1,5 +1,15 @@
 package it.polimi.ingsw.view.cli;
 import java.util.*;
+import it.polimi.ingsw.model.Board.Board;
+import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.GameState;
+import it.polimi.ingsw.Exception.*;
+import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.Utils.*;
+import java.io.*;
+import java.io.PrintStream;
+import java.util.Scanner;
+
 
 
 public class Cli1 {
@@ -17,7 +27,7 @@ public class Cli1 {
     private Scanner in;
     private MyShelfiePrintStream out;
 
-    public Cli() {
+    public Cli1() {
         super();
 
         this.in = new Scanner(System.in);
@@ -37,11 +47,22 @@ public class Cli1 {
      * Prints MyShelfie Logo
      */
     private void printLogo() {
-        String MyShelfieLogo = "
-                "Welcome to MyShelfie Board Game\n" +
-                "Before starting playing you need to setup some things:\n";
+        String MyShelfieLogo =  "Welcome to MyShelfie Board Game\n" +
+        "Before starting playing you need to setup your connection:\n";
+
+
+
 
         out.println(MyShelfieLogo);
+    }
+    private boolean inputError(boolean firstError, String errorMessage) {
+        //*out.print(AnsiCode.CLEAR_LINE);
+        //if (!firstError) {
+         //   out.print(AnsiCode.CLEAR_LINE);
+       // }
+
+        out.println(errorMessage);
+        return false;
     }
 
     /**
@@ -54,19 +75,19 @@ public class Cli1 {
 
         out.println("Enter your username:");
 
-        do {
+        try{
             out.print(">>> ");
 
-            if (in.hasNextLine()) {
-                final String currentUsername = in.nextLine();
-            }
-            else {
-                in.nextLine();
-                firstError = promptInputError(firstError, INVALID_STRING);
-            }
-        } while (username == null);
+            username = in.nextLine();
 
-        CliPrinter.clearConsole(out);
+            if( username==null){
+                throw new UsernameException("Il nome utente inserito non è valido");
+
+            }
+        }  catch (UsernameException e) {
+            System.out.println("Errore:" + e.getMessage());
+        }
+
         return username;
     }
 
@@ -90,15 +111,15 @@ public class Cli1 {
                 if (connection >= 0 && connection <= 1) {
                     validConnection = true;
                 } else {
-                    firstError = promptInputError(firstError, "Invalid selection!");
+                    firstError = inputError(firstError, "Invalid selection!");
                 }
             } else {
                 in.nextLine();
-                firstError = promptInputError(firstError, "Invalid integer!");
+                firstError = inputError(firstError, "Invalid integer!");
             }
         } while (!validConnection);
 
-        CliPrinter.clearConsole(out);
+        //CliPrinter.clearConsole(out);
 
         if (connection == 0) {
             out.println("You chose Socket connection\n");
@@ -107,10 +128,10 @@ public class Cli1 {
         }
     }
 
-
+    Scanner scanner = new Scanner(System.in);
     // Seleziona il numero di giocatori
     out.println("Seleziona il numero di giocatori (da 1 a 4):");
-    numPlayers = in.nextInt();
+    int numberPlayers = in.nextInt();
     scanner.nextLine(); // Consuma il newline rimanente
 
     // Inizializza lo stato del gioco
@@ -136,7 +157,7 @@ public class Cli1 {
         System.out.println("6. Scrivi un messaggio nella chat");
         System.out.println("7. Torna indietro");
 
-        int command = scanner.nextInt();
+        int command = Scanner.nextInt();
         scanner.nextLine(); // Consuma il newline rimanente
 
         switch (command) {
