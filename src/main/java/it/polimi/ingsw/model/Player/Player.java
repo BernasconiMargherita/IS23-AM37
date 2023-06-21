@@ -35,6 +35,10 @@ public class Player implements Serializable {
         return nickname;
     }
 
+    public CardPersonalTarget getCardPersonalTarget() {
+        return cardPersonalTarget;
+    }
+
     /**
      * Method that stores and modifies score value
      */

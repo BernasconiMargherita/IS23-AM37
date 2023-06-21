@@ -2,8 +2,11 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.Exception.*;
 import it.polimi.ingsw.Utils.Coordinates;
+import it.polimi.ingsw.Utils.TileSlot;
+import it.polimi.ingsw.model.CommonCards.CardCommonTarget;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.GameState;
+import it.polimi.ingsw.model.PersonalCards.CardPersonalTarget;
 import it.polimi.ingsw.model.Player.Player;
 import it.polimi.ingsw.model.Tile.Tile;
 
@@ -202,6 +205,22 @@ public class GameController implements Serializable {
 
     public int getMaxPlayers() {
         return this.maxPlayers;
+    }
+    public TileSlot[][] getBoard(){
+        return game.getBoard();
+    }
+
+    public CardPersonalTarget getCardPersonalTarget(String nickname){
+        for (Player player : players) {
+            if (player.getNickname().equals(nickname)) {
+                return player.getCardPersonalTarget();
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<CardCommonTarget> getCommonTargets(){
+        return game.getCommonTargets();
     }
 
     /**
