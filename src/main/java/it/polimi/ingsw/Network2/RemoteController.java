@@ -1,9 +1,7 @@
 package it.polimi.ingsw.Network2;
 
-import it.polimi.ingsw.Network2.CommunicationProtocol;
 import it.polimi.ingsw.Network2.Messages.Message;
 import it.polimi.ingsw.Utils.Coordinates;
-import it.polimi.ingsw.model.Tile.Tile;
 
 import java.net.Socket;
 import java.rmi.Remote;
@@ -18,7 +16,7 @@ public interface RemoteController extends Remote {
     void playClient(int client, int gameID) throws RemoteException;
 
 
-    boolean initGame(int gameID) throws RemoteException;
+    Message initGame(int gameID) throws RemoteException;
 
     void addRmiCl(long UID, CommunicationProtocol protocol) throws RemoteException;
 
@@ -26,9 +24,9 @@ public interface RemoteController extends Remote {
 
     Message remove(int gameID, Coordinates[] positions) throws RemoteException;
 
-    Message turn(int gameID, Tile[] tiles, int column, String nickname) throws RemoteException;
+    Message turn(int gameID ,String[] colors, int column,String nickname) throws RemoteException;
 
-    Message registerPlayer(Message message) throws RemoteException;
+    void registerPlayer(Message message) throws RemoteException;
 
     String getWinner(int gameID) throws RemoteException;
 
