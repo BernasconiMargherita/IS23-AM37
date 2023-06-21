@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.Network.Messages.ChatMessage;
+import it.polimi.ingsw.Network2.Messages.ChatMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;

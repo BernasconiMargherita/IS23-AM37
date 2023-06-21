@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Network.Network2;
+package it.polimi.ingsw.Network2;
 
 import it.polimi.ingsw.view.gui.Gui;
 import javafx.application.Application;
@@ -11,15 +11,18 @@ public class ClientSetup extends Application {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Choose mode (gui/cli): ");
-        String mode = scanner.nextLine();
-
-        if (mode.equalsIgnoreCase("gui")) {
-            launch(args);
-        } else if (mode.equalsIgnoreCase("cli")) {
-            startCLI();
-        } else {
-            System.out.println("Invalid mode selected. Exiting.");
+        while(true){
+            System.out.print("Choose mode (gui/cli): ");
+            String mode = scanner.nextLine();
+            if (mode.equalsIgnoreCase("gui")) {
+                launch(args);
+                break;
+            } else if (mode.equalsIgnoreCase("cli")) {
+                startCLI();
+                break;
+            } else {
+                System.out.println("Invalid mode selected. Exiting.");
+            }
         }
 
         scanner.close();

@@ -1,10 +1,11 @@
-package it.polimi.ingsw.Network.Network2;
+package it.polimi.ingsw.Network2;
 
 
 import com.google.gson.Gson;
 import it.polimi.ingsw.Network.Messages.CloseMessage;
 import it.polimi.ingsw.Network.Messages.ErrorMessage;
 import it.polimi.ingsw.Network.Messages.Message;
+import it.polimi.ingsw.Network2.Messages.Message;
 
 import java.io.BufferedReader;
 import java.io.IOException;
