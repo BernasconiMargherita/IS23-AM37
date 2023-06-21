@@ -5,16 +5,17 @@ import it.polimi.ingsw.Utils.Coordinates;
 import java.io.Serializable;
 
 public class Message implements Serializable {
-    private String message;
-
-    public Message() {
-
-    }
     public int getMaxPlayers() {
         return -1;
     }
     public String getWinner() {
         return "";
+    }
+    public boolean isInit() {
+        return false;
+    }
+    public int getColumn() {
+        return -1;
     }
     public boolean isUsernameError() {
         return false;
@@ -24,16 +25,17 @@ public class Message implements Serializable {
         return -1;
     }
 
+
     public boolean isFirst() {
         return false;
     }
 
     public String getNickname() {
-        return "";
+        return null;
     }
 
     public String getProtocol() {
-        return "";
+        return null;
     }
 
     public long getUID() {
@@ -41,17 +43,20 @@ public class Message implements Serializable {
     }
 
     public String getMessage() {
-        return message;
+        return null;
     }
     public boolean init(){
         return false;
     }
 
     public String typeMessage(){
-        return "";
+        return null;
     }
 
     public Coordinates[] getPositions() {
+        return null;
+    }
+    public String[] getColours() {
         return null;
     }
 

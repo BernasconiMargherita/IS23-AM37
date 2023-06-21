@@ -11,5 +11,10 @@ public interface CommunicationProtocol {
     ArrayList<Message> getMessages();
 
     void closeConnection();
+
+
+    void setup();
+
+    long getUID();
 }
 

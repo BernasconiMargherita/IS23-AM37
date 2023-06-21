@@ -1,10 +1,10 @@
 package it.polimi.ingsw.Network2.Messages;
 
-public class endMessage extends Message{
+public class EndMessage extends Message{
 
     private String winner;
 
-    public endMessage(String winner) {
+    public EndMessage(String winner) {
         this.winner = winner;
     }
 

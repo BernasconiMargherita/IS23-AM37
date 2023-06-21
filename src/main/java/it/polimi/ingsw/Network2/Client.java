@@ -19,6 +19,7 @@ public class Client extends UnicastRemoteObject implements ClientCallback  {
     public void notify(String message) throws RemoteException {
 
     }
+    //da client a server
     public Message sendMessage(Message message) {
         return communicationProtocol.sendMessage(message);
     }
@@ -31,6 +32,7 @@ public class Client extends UnicastRemoteObject implements ClientCallback  {
         this.username = username;
     }
 
+   //da server a client
     public void onMessage(Message message){
         communicationProtocol.onMessage(message);
     }
