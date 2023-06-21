@@ -1,8 +1,6 @@
 package it.polimi.ingsw.Network2;
 
 import it.polimi.ingsw.Exception.*;
-import it.polimi.ingsw.Network.Messages.*;
-import it.polimi.ingsw.Network2.*;
 import it.polimi.ingsw.Network2.Messages.*;
 import it.polimi.ingsw.Utils.Coordinates;
 import it.polimi.ingsw.controller.MasterController;
@@ -181,15 +179,15 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
                     String winner = getWinner(gameID);
                     for(int j = 0; j < clients.get(gameID).size(); j++){
-                        clients.get(gameID).get(i).sendMessage(new endMessage(winner));
+                        clients.get(gameID).get(i).sendMessage(new EndMessage(winner));
                     }
-                    return new endMessage(winner);
+                    return new EndMessage(winner);
                 }
                 Message message = new TurnResponse();
                 if(i+1 != masterController.getGameController(gameID).getMaxPlayers() - 1 ){
-                    clients.get(gameID).get(i+1).sendMessage(new wakeMessage());
+                    clients.get(gameID).get(i+1).sendMessage(new WakeMessage());
                 } else{
-                    clients.get(gameID).get(0).sendMessage(new wakeMessage());
+                    clients.get(gameID).get(0).sendMessage(new WakeMessage());
                 }
                 return message;
             }
@@ -202,26 +200,11 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
 
 
-
-
-
-
-    /**
-     * Returns the current player for the given game ID.
-     *
-     * @param gameID the ID of the game
-     * @return the current player for the given game ID
-     */
-
-
-
-
-
     public Message setMaxPlayers(Message message) throws RemoteException {
         int gameID = message.getGameID();
         int maxPlayers = message.getMaxPlayers();
         masterController.getGameController(gameID).setMaxPlayers(maxPlayers);
-        return new setResponse();
+        return new SetResponse();
     }
 
 
@@ -236,7 +219,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
     @Override
     public void playClient(int client, int gameID) throws RemoteException{
-        Message message = new wakeMessage();
+        Message message = new WakeMessage();
         clients.get(gameID).get(client).sendMessage(message);
     }
 

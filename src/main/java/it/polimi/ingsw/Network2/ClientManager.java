@@ -1,31 +1,57 @@
 package it.polimi.ingsw.Network2;
 
+import it.polimi.ingsw.Network2.Messages.EndMessage;
 import it.polimi.ingsw.Network2.Messages.Message;
+import it.polimi.ingsw.Network2.Messages.TurnResponse;
+import it.polimi.ingsw.Network2.Messages.WakeMessage;
 
 import java.rmi.RemoteException;
+import java.util.NoSuchElementException;
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
 
-public class ClientManager  implements ClientListener, ClientUpdateListener, Runnable {
+public abstract class ClientManager implements ClientListener, ClientUpdateListener, Runnable {
 
     private ClientUpdate clientUpdater;
     private Client client;
+    private final Queue<Runnable> queue= new LinkedBlockingQueue<>();
 
     @Override
     public void onUpdate(Message message) {
+        switch (message.typeMessage()) {
+            case "WakeMessage" -> handleWakeMessage((WakeMessage) message);
+            case "TurnResponse" -> handleTurnResponse((TurnResponse) message);
+            case "EndMessage" -> handleEndMessage((EndMessage) message);
+        }
 
+    }
+
+    private void handleEndMessage(EndMessage message) {
+        queue.add(()->endGame(message));
+    }
+
+    private void handleTurnResponse(TurnResponse message) {
+        queue.add(()->turnResponse(message));
+    }
+
+    private void handleWakeMessage(WakeMessage message) {
+        queue.add(()->wakeUp(message));
     }
 
     @Override
     public void run() {
+        while (!Thread.currentThread().isInterrupted()) {
+            try {
+                queue.remove().run();
+            }catch (NoSuchElementException e){
 
-    }
+                Thread.currentThread().interrupt();
 
-    @Override
-    public void updateBoard() {
-
+            }
+        }
     }
 
     public void createConnection(String connection) {
-
         CommunicationProtocol communicationProtocol;
 
         if (connection.equalsIgnoreCase("TCP")) {
@@ -35,15 +61,13 @@ public class ClientManager  implements ClientListener, ClientUpdateListener, Run
             communicationProtocol = new RMICommunicationProtocol("RemoteController");
         }
 
-        Client client= null;
         try {
             client = new Client(communicationProtocol);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
 
-        this.client=client;
-
+        startUpdater();
     }
 
     private void startUpdater() {
@@ -62,4 +86,5 @@ public class ClientManager  implements ClientListener, ClientUpdateListener, Run
         }
         client = null;
     }
+
 }

@@ -2,6 +2,11 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.Network2.Client;
 import it.polimi.ingsw.Network2.ClientManager;
+import it.polimi.ingsw.Network2.Messages.EndMessage;
+import it.polimi.ingsw.Network2.Messages.Message;
+import it.polimi.ingsw.Network2.Messages.TurnResponse;
+import it.polimi.ingsw.Network2.Messages.WakeMessage;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,9 +17,11 @@ public class GuiMaster extends ClientManager {
 
     private LoginSceneController loginSceneController;
     private GameSceneController gameSceneController;
+    private ConnectionSceneController connectionSceneController;
 
     private static GuiMaster instance = null;
     private static Client client;
+
 
     public static <T> T setLayout(Scene scene, String path) throws IOException {
         FXMLLoader loader = new FXMLLoader(GuiMaster.class.getResource(path));
@@ -49,5 +56,28 @@ public class GuiMaster extends ClientManager {
 
 
     public void setConnectionSceneController(ConnectionSceneController connectionSceneController) {
+        this.connectionSceneController=connectionSceneController
+    }
+
+
+    @Override
+    public void updateBoard(BoardMessage boardMessage) {
+        Platform.runLater(() ->
+                gameSceneController.updateBoard(boardMessage);
+    }
+
+    @Override
+    public void turnResponse(TurnResponse turnResponse) {
+
+    }
+
+    @Override
+    public void endGame(EndMessage endGameMessage) {
+
+    }
+
+    @Override
+    public void wakeUp(WakeMessage wakeMessage) {
+
     }
 }
