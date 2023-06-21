@@ -1,8 +1,13 @@
 package it.polimi.ingsw.view.cli;
+import it.polimi.ingsw.Network2.ClientManager;
+import it.polimi.ingsw.Network2.Messages.EndMessage;
+import it.polimi.ingsw.Network2.Messages.TurnResponse;
+import it.polimi.ingsw.Network2.Messages.WakeMessage;
+
 import java.util.*;
 
 
-public class Cli1 {
+public class Cli1 extends ClientManager {
     private String username;
     private boolean tcpSelected;
     private int numPlayers;
@@ -102,6 +107,8 @@ public class Cli1 {
 
         if (connection == 0) {
             out.println("You chose Socket connection\n");
+            createConnection("TCP");
+
         } else {
             out.println("You chose RMI connection\n");
         }
@@ -211,5 +218,25 @@ public class Cli1 {
     private void writeMessage(Scanner scanner) {
         // Logica per scrivere un messaggio nella chat
         // Puoi chiedere all'utente di inserire il messaggio e aggiungerlo alla lista "chatMessages"
+    }
+
+    @Override
+    public void updateBoard(BoardResponse boardMessage) {
+
+    }
+
+    @Override
+    public void turnResponse(TurnResponse turnResponse) {
+
+    }
+
+    @Override
+    public void endGame(EndMessage endGameMessage) {
+
+    }
+
+    @Override
+    public void wakeUp(WakeMessage wakeMessage) {
+
     }
 }

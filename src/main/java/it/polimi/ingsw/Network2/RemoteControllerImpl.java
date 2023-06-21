@@ -235,8 +235,6 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
 
 
-
-
     @Override
     public void playClient(int client, int gameID) throws RemoteException{
         Message message = new WakeMessage();

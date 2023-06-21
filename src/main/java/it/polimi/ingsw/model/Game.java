@@ -36,7 +36,7 @@ public class Game implements Serializable {
 
 
     /**
-     * method to initialize effectively the Game, knowing the number of players, also chose a first player to start the game
+     * method to initialize effectively the Game, knowing the number of players
      */
     public void GameInit(List<Player> players) {
         commonDeck = new CommonDeck(players.size()).getCommonDeck();

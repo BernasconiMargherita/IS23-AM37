@@ -2,8 +2,6 @@ package it.polimi.ingsw.Network2;
 
 
 import com.google.gson.Gson;
-
-import it.polimi.ingsw.Network2.Messages.CloseMessage;
 import it.polimi.ingsw.Network2.Messages.ErrorMessage;
 import it.polimi.ingsw.Network2.Messages.Message;
 
@@ -15,9 +13,10 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TCPCommunicationProtocol implements CommunicationProtocol {
+public class TCPCommunicationProtocol implements CommunicationProtocol,Runnable {
     private final String serverIp;
     private final int serverPort;
+    private final Thread messageReceiver;
     private PrintWriter out;
     private BufferedReader in;
     private long UID;
@@ -28,6 +27,9 @@ public class TCPCommunicationProtocol implements CommunicationProtocol {
         this.serverIp = serverIp;
         this.serverPort = serverPort;
         this.messageList = new ArrayList<>();
+
+        messageReceiver = new Thread(this);
+        messageReceiver.start();
         startCommunication();
     }
 
@@ -44,27 +46,14 @@ public class TCPCommunicationProtocol implements CommunicationProtocol {
 
     }
 
-    public Message sendMessage(Message message) {
-        try {
-            Gson gson = new Gson();
-            String jsonMessage = gson.toJson(message);
-
-            out.println(jsonMessage);
-            String jsonResponse = in.readLine();
-
-            Message response = gson.fromJson(jsonResponse, Message.class);
-
-            if (response instanceof CloseMessage) closeConnection();
-
-            return response;
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            return new ErrorMessage("Error occurred during TCP communication");
-        }
+    public void sendMessage(Message message) {
+        Gson gson = new Gson();
+        String jsonMessage = gson.toJson(message);
+        out.println(jsonMessage);
     }
+
     @Override
-    public void closeConnection(){
+    public void closeConnection() {
         try {
             in.close();
             out.close();
@@ -106,5 +95,22 @@ public class TCPCommunicationProtocol implements CommunicationProtocol {
     }
 
 
+    @Override
+    public void run() {
+        while (!Thread.currentThread().isInterrupted()) {
+            try {
+                String response = in.readLine();
+                if (response != null) {
+                    synchronized (messageList) {
+                        Gson gson=new Gson();
+                        Message message=gson.fromJson(response, Message.class);
 
+                        onMessage(message);
+                    }
+                }
+            }catch (IOException e){
+                closeConnection();
+            }
+        }
+    }
 }

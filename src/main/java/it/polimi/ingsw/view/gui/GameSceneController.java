@@ -47,6 +47,6 @@ public class GameSceneController {
 
     }
 
-    public void updateBoard(BoardMessage boardMessage) {
+    public void updateBoard(BoardResponse boardMessage) {
     }
 }

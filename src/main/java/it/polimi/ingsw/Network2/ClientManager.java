@@ -1,9 +1,6 @@
 package it.polimi.ingsw.Network2;
 
-import it.polimi.ingsw.Network2.Messages.EndMessage;
-import it.polimi.ingsw.Network2.Messages.Message;
-import it.polimi.ingsw.Network2.Messages.TurnResponse;
-import it.polimi.ingsw.Network2.Messages.WakeMessage;
+import it.polimi.ingsw.Network2.Messages.*;
 
 import java.rmi.RemoteException;
 import java.util.NoSuchElementException;
@@ -19,11 +16,31 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
     @Override
     public void onUpdate(Message message) {
         switch (message.typeMessage()) {
+            case "LoginResponse" -> handleLoginResponse((LoginResponse) message);
+            case "InitResponse" -> handleInitResponse((InitResponse) message);
+            case "BoardResponse" -> handleBoardResponse((BoardResponse) message);
+            case "RemoveResponse" -> handleRemoveResponse((RemoveResponse) message);
             case "WakeMessage" -> handleWakeMessage((WakeMessage) message);
             case "TurnResponse" -> handleTurnResponse((TurnResponse) message);
             case "EndMessage" -> handleEndMessage((EndMessage) message);
         }
 
+    }
+
+    private void handleRemoveResponse(RemoveResponse message) {
+        queue.add(()->removeResponse(message));
+    }
+
+    private void handleInitResponse(InitResponse message) {
+        queue.add(()->initResponse(message));
+    }
+
+    private void handleLoginResponse(LoginResponse message) {
+        queue.add(()->loginResponse(message));
+    }
+
+    private void handleBoardResponse(BoardResponse message) {
+        queue.add(()->updateBoard(message));
     }
 
     private void handleEndMessage(EndMessage message) {

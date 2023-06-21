@@ -19,7 +19,7 @@ public class RMICommunicationProtocol implements CommunicationProtocol {
         this.serverUrl = "RemoteController";
     }
 
-    public Message sendMessage(Message message) {
+    public void sendMessage(Message message) {
         try {
             Registry registry = LocateRegistry.getRegistry("localhost", 5001);
             server = (ServerInterface) registry.lookup(serverUrl);
