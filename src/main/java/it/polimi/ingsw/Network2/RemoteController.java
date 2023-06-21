@@ -20,7 +20,7 @@ public interface RemoteController extends Remote {
 
     void addRmiCl(long UID, CommunicationProtocol protocol) throws RemoteException;
 
-    int startGame() throws RemoteException;
+    void startGame() throws RemoteException;
 
     void remove(int gameID, Coordinates[] positions) throws RemoteException;
 
@@ -29,7 +29,7 @@ public interface RemoteController extends Remote {
     void registerPlayer(Message message) throws RemoteException;
 
     String getWinner(int gameID) throws RemoteException;
-    public void sendBoard(int gameID, String nickname) throws RemoteException
+    void sendBoard(int gameID, String nickname) throws RemoteException;
 
     void setMaxPlayers(Message message) throws RemoteException;
 }

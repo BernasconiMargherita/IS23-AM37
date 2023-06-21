@@ -86,9 +86,9 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
 
     @Override
-    public int startGame() throws RemoteException {
+    public synchronized void startGame() throws RemoteException {
         currentGameID++;
-        return masterController.newGameController();
+        masterController.newGameController();
     }
 
 
@@ -99,7 +99,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
 
     @Override
-    public void registerPlayer(Message message) throws RemoteException {
+    public synchronized void registerPlayer(Message message) throws RemoteException {
         String nickname = message.getNickname();
         long UID = message.getUID();
         try {
@@ -115,32 +115,14 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
             }
 
             if (masterController.getGameController(currentGameID).getMaxPlayers() == masterController.getGameController(currentGameID).getNumOfPlayers()){
-                for(int i = 0; i < clients.get(currentGameID).size();i++){
-                    if(clients.get(currentGameID).get(i).getNickname().equals(nickname)){
-                        clients.get(currentGameID).get(i).sendMessage(new LoginResponse(false, currentGameID, false, true));
-                        break;
-                    }
-                }
+                clients.get(currentGameID).get(getPosition(nickname, currentGameID)).sendMessage(new LoginResponse(false, currentGameID, false, true));
             }else{
-                for(int i = 0; i < clients.get(currentGameID).size();i++){
-                    if(clients.get(currentGameID).get(i).getNickname().equals(nickname)){
-                        clients.get(currentGameID).get(i).sendMessage(new LoginResponse(false, currentGameID, false, false));
-                        break;
-                    }
-                }
-
+                clients.get(currentGameID).get(getPosition(nickname, currentGameID)).sendMessage(new LoginResponse(false, currentGameID, false, false));
             }
-            //return new LoginResponse("/*gli dico che gameID avrà ovvero ''currentGameID'' e che NON è il primo giocatore");
+
         } catch (UsernameException e) {
-            for(int i = 0; i < clients.get(currentGameID).size();i++){
-                if(clients.get(currentGameID).get(i).getNickname().equals(nickname)){
-                    clients.get(currentGameID).get(i).sendMessage(new LoginResponse(true, -1, false, false));
-                    break;
-                }
-            }
+            clients.get(currentGameID).get(getPosition(nickname, currentGameID)).sendMessage(new LoginResponse(true, -1, false, false));
 
-
-            //return new LoginResponse("/*gli dico l'username è già usato");
         } catch (GameAlreadyStarted | MaxPlayerException | NullPointerException e) {
             startGame();
             try {
@@ -157,15 +139,8 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
                 throw new RuntimeException(ex);
             }
 
-            for(int i = 0; i < clients.get(currentGameID).size();i++){
-                if(clients.get(currentGameID).get(i).getNickname().equals(nickname)){
-                    clients.get(currentGameID).get(i).sendMessage(new LoginResponse(false, currentGameID, true, false));
-                    break;
-                }
-            }
+            clients.get(currentGameID).get(getPosition(nickname, currentGameID)).sendMessage(new LoginResponse(false, currentGameID, true, false));
 
-
-            //return new LoginMessage("/*gli dico che gameID avrà ovvero ''currentGameID'' e che è il primo giocatore ");
         }
 
     }
@@ -188,12 +163,8 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
                 clients.get(gameID).get(i).sendMessage(initResponse);
             }
             String player = masterController.getGameController(gameID).getCurrentPlayer().getNickname();
-            for(int i=0; i<clients.get(gameID).size(); i++){
-                if(clients.get(gameID).get(i).getNickname().equals(player)){
-                    playClient(i, gameID);
-                    break;
-                }
-            }
+            playClient(getPosition(player, gameID), gameID);
+
 
         }
         catch (GameNotReadyException | GameAlreadyStarted e) {
@@ -207,12 +178,8 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
         try {
             masterController.getGameController(gameID).remove(positions);
             String nickname = masterController.getGameController(gameID).getCurrentPlayer().getNickname();
-            for(int i = 0; i < clients.get(gameID).size();i++){
-                if(clients.get(gameID).get(i).getNickname().equals(nickname)){
-                    clients.get(gameID).get(i).sendMessage(new RemoveResponse());
-                    break;
-                }
-            }
+            clients.get(gameID).get(getPosition(nickname, gameID)).sendMessage(new RemoveResponse());
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -233,12 +200,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
                     masterController.getGameController(gameID).turn(tiles, column);
                 } catch (EmptySlotException | InvalidPositionsException | InvalidSlotException | NoSpaceInColumnException | SoldOutTilesException | GameAlreadyStarted e) {
-                    for(int j = 0; j < clients.get(gameID).size();j++){
-                        if(clients.get(gameID).get(j).getNickname().equals(nickname)){
-                            clients.get(gameID).get(j).sendMessage(new TurnResponse(-1));
-                            break;
-                        }
-                    }
+                    clients.get(gameID).get(getPosition(nickname, gameID)).sendMessage(new TurnResponse(-1));
 
                 } catch (EndGameException e) {
 
@@ -248,19 +210,11 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
                     }
                 }
                 Message message = new TurnResponse(0);
-                for(int j = 0; j < clients.get(gameID).size();j++){
-                    if(clients.get(gameID).get(j).getNickname().equals(nickname)){
-                        clients.get(gameID).get(j).sendMessage(message);
-                        break;
-                    }
-                }
+                clients.get(gameID).get(getPosition(nickname, gameID)).sendMessage(message);
+
                 String player = masterController.getGameController(gameID).getCurrentPlayer().getNickname();
-                for(int j=0; j<clients.get(gameID).size(); j++){
-                    if(clients.get(gameID).get(j).getNickname().equals(player)){
-                        playClient(j, gameID);
-                        break;
-                    }
-                }
+                playClient(getPosition(player, gameID), gameID);
+
             }
         }
     }
@@ -294,14 +248,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
                 }
             }
         }
-
-        for(int j = 0; j < clients.get(gameID).size();j++){
-            if(clients.get(gameID).get(j).getNickname().equals(nickname)){
-                clients.get(gameID).get(j).sendMessage(new BoardResponse(colours));
-                break;
-            }
-        }
-
+        clients.get(gameID).get(getPosition(nickname, gameID)).sendMessage(new BoardResponse(colours));
 
     }
 
@@ -311,6 +258,17 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
     public void playClient(int client, int gameID) throws RemoteException{
         Message message = new WakeMessage();
         clients.get(gameID).get(client).sendMessage(message);
+    }
+
+    public int getPosition(String nickname ,int gameID){
+        if (masterController.getGameController(gameID).getMaxPlayers() == masterController.getGameController(gameID).getNumOfPlayers()){
+            for(int i = 0; i < clients.get(gameID).size();i++){
+                if(clients.get(gameID).get(i).getNickname().equals(nickname)){
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 
 
