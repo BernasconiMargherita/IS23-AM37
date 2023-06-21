@@ -9,5 +9,9 @@ public interface ServerInterface extends Remote {
     Message onMessage(Message message) throws RemoteException;
 
     void disconnect();
+
+    public long addRmiClient(CommunicationProtocol protocol);
+
+
 }
 

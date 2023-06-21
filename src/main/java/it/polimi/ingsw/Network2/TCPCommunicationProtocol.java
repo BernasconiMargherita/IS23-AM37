@@ -20,6 +20,7 @@ public class TCPCommunicationProtocol implements CommunicationProtocol {
     private final int serverPort;
     private PrintWriter out;
     private BufferedReader in;
+    private long UID;
     private Socket socket = null;
     private final ArrayList<Message> messageList;
 
@@ -76,6 +77,20 @@ public class TCPCommunicationProtocol implements CommunicationProtocol {
     }
 
     @Override
+    public void setup() {
+        try {
+            UID = in.read();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public long getUID() {
+        return UID;
+    }
+
+    @Override
     public void onMessage(Message message) {
         messageList.add(message);
     }
@@ -89,4 +104,7 @@ public class TCPCommunicationProtocol implements CommunicationProtocol {
 
         return copy;
     }
+
+
+
 }

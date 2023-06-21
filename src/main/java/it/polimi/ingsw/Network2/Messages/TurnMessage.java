@@ -4,11 +4,13 @@ public class TurnMessage extends Message {
     private int gameID;
     private int column;
     private String nickname;
+    private String[] colours;
 
-    public TurnMessage(int gameID, int column, String nickname) {
+    public TurnMessage(int gameID, int column, String nickname, String[] colours) {
         this.gameID = gameID;
         this.column = column;
         this.nickname = nickname;
+        this.colours = colours;
     }
 
     public int getGameID() {
@@ -17,5 +19,14 @@ public class TurnMessage extends Message {
 
     public int getColumn() {
         return column;
+    }
+
+    @Override
+    public String getNickname() {
+        return nickname;
+    }
+
+    public String[] getColours() {
+        return colours;
     }
 }

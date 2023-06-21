@@ -12,9 +12,10 @@ public class TCPConnect implements Connection{
     private Socket socket;
     private PrintWriter out;
     private BufferedReader in;
-
-    public TCPConnect(Socket socket) {
+    private String nickname;
+    public TCPConnect(Socket socket, String nickname) {
         this.socket = socket;
+        this.nickname = nickname;
         try {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch (IOException e) {
@@ -27,6 +28,13 @@ public class TCPConnect implements Connection{
         }
     }
 
+
+
+
+    @Override
+    public String getNickname() {
+        return nickname;
+    }
 
     public void sendMessage(Message message){
         out.println(message);

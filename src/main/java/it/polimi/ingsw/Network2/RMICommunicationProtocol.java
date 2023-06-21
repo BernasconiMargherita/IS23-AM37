@@ -13,6 +13,7 @@ public class RMICommunicationProtocol implements CommunicationProtocol {
     private final String serverUrl;
     private ArrayList<Message> messageList;
     private ServerInterface server;
+    long UID;
 
     public RMICommunicationProtocol(String serverUrl) {
         this.serverUrl = "RemoteController";
@@ -52,5 +53,14 @@ public class RMICommunicationProtocol implements CommunicationProtocol {
         server = null;
     }
 
+    @Override
+    public void setup() {
+        UID = server.addRmiClient(this);
+    }
+
+    @Override
+    public long getUID() {
+        return UID;
+    }
 }
 
