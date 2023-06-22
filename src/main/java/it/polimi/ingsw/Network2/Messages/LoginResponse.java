@@ -15,6 +15,11 @@ public class LoginResponse extends Message implements Serializable {
         this.init = init;
     }
 
+    @Override
+    public int getGameID() {
+        return gameID;
+    }
+
     public boolean isUsernameError() {
         return usernameError;
     }

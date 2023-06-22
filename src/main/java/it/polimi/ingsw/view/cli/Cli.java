@@ -2,8 +2,12 @@ package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.Network2.ClientManager;
 import it.polimi.ingsw.Network2.Messages.*;
+import it.polimi.ingsw.model.CommonCards.CardCommonTarget;
+import it.polimi.ingsw.model.PersonalCards.CardPersonalTarget;
 
+import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.*;
 
 public class Cli extends ClientManager {
 
@@ -11,7 +15,15 @@ public class Cli extends ClientManager {
     private Scanner in;
     private MyShelfiePrintStream out;
     private String username;
-    private int UID;
+    private long UID;
+    private int numPlayers;
+    private int gameID;
+    private CardPersonalTarget cardPersonalTarget;
+    private ArrayList<CardCommonTarget> cardCommonTargets;
+    private static final int ROWS = 6;
+    private static final int COLS = 5;
+    private static final String[] COLORS = { "Vuota", "Rosa", "Giallo", "Azzurro", "Blu", "Verde", "Bianco" };
+    private String[][] matrix;
 
 
     public Cli(){
@@ -30,30 +42,50 @@ public class Cli extends ClientManager {
             createConnection("RMI");
 
         }
+        UID = getClient().getUID();
 
     }
 
 
-    protected void Login (){
+    protected void login (){
         out.println("Choose your username\n");
         username=in.nextLine();
-
-
+        getClient().sendMessage(new LoginMessage(username, protocol, UID));
 
     }
 
     @Override
     public void loginResponse(LoginResponse loginResponse) {
+        if(loginResponse.isUsernameError()){
+            out.println("Not valid username");
+            login();
+            return;
+        }
+        if(loginResponse.isFirst()){
+            out.println("Choose number of players\n");
+            numPlayers=in.nextInt();
+            gameID=loginResponse.getGameID();
+            getClient().sendMessage(new SetMessage(numPlayers,gameID));
+            return;
+        }
+        if(loginResponse.isInit()){
+            getClient().sendMessage(new InitMessage(gameID));
+            return;
+        }
 
     }
 
     @Override
     public void initResponse(InitResponse initResponse) {
+        out.println("The game is loading...");
+        cardPersonalTarget =initResponse.getCardPersonalTarget();
+        cardCommonTargets = initResponse.getCommonTargets();
 
     }
 
     @Override
     public void updateBoard(BoardResponse boardMessage) {
+        matrix = new String[ROWS][COLS];
 
     }
 
@@ -74,6 +106,7 @@ public class Cli extends ClientManager {
 
     @Override
     public void wakeUp(WakeMessage wakeMessage) {
+
 
     }
 
