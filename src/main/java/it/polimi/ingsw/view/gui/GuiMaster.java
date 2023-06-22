@@ -98,4 +98,11 @@ public class GuiMaster extends ClientManager {
         Platform.runLater(() ->
                 gameSceneController.wakeUp(wakeMessage));
     }
+
+    @Override
+    public void setResponse(SetResponse setResponse) {
+        Platform.runLater(() ->
+                connectionSceneController.setResponse(setResponse));
+
+    }
 }

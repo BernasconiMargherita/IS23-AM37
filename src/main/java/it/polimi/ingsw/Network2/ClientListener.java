@@ -10,7 +10,7 @@ public interface ClientListener {
     void turnResponse(TurnResponse turnResponse);
     void endGame(EndMessage endGameMessage);
     void wakeUp(WakeMessage wakeMessage);
-
+    void setResponse(SetResponse setResponse);
 
 
 }

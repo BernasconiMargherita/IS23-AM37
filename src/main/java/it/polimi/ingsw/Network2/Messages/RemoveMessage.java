@@ -9,8 +9,8 @@ public class RemoveMessage extends Message{
     private String nickname;
 
     public RemoveMessage(Coordinates[] positions, int gameID, String nickname) {
+        super(gameID);
         this.positions = positions;
-        this.gameID = gameID;
         this.nickname = nickname;
     }
 

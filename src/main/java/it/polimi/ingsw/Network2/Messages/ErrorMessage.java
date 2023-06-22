@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class ErrorMessage extends Message implements Serializable {
 
     public ErrorMessage(String message) {
-        super();
+        super(-1);
     }
     public String typeMessage(){
         return "ErrorMessage";

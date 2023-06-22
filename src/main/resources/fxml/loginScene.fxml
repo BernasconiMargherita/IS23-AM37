@@ -30,7 +30,8 @@
         <Label fx:id="usernameError" layoutX="348.0" layoutY="95.0" prefHeight="18.0" prefWidth="173.0" textFill="#a81010" GridPane.columnIndex="2" />
         <Label fx:id="protocolError" layoutX="348.0" layoutY="95.0" prefHeight="17.0" prefWidth="174.0" textFill="#a81010" GridPane.columnIndex="2" GridPane.rowIndex="1" />
 
-        <Button layoutX="367.0" layoutY="239.0" onMouseClicked="#login" text="Login" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+        <Button fx:id="loginButton" layoutX="367.0" layoutY="239.0" onMouseClicked="#login" text="Login" GridPane.columnIndex="2" GridPane.rowIndex="3" visible="false" />
+        <Button fx:id="communication" layoutX="367.0" layoutY="239.0" onMouseClicked="#communicationChoice" text="Login" GridPane.columnIndex="2" GridPane.rowIndex="3" />
     </GridPane>
 
      <ImageView fx:id="imageView" fitHeight="1000.0" fitWidth="1000.0" layoutX="250.0" layoutY="-177.0" AnchorPane.bottomAnchor="606.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="-177.0" />

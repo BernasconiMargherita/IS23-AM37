@@ -6,8 +6,8 @@ public class SetMessage extends Message{
     private int gameID;
 
     public SetMessage(int maxPlayers, int gameID) {
+        super(gameID);
         this.maxPlayers = maxPlayers;
-        this.gameID = gameID;
     }
 
     @Override

@@ -5,8 +5,8 @@ public class BoardMessage extends Message{
     int gameID;
 
     public BoardMessage(String nickname, int gameID) {
+        super(gameID);
         this.nickname = nickname;
-        this.gameID = gameID;
     }
 
     @Override
@@ -19,8 +19,4 @@ public class BoardMessage extends Message{
         return nickname;
     }
 
-    @Override
-    public int getGameID() {
-        return gameID;
-    }
 }

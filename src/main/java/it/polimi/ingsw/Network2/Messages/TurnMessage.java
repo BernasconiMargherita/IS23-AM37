@@ -7,7 +7,7 @@ public class TurnMessage extends Message {
     private String[] colours;
 
     public TurnMessage(int gameID, int column, String nickname, String[] colours) {
-        this.gameID = gameID;
+        super(gameID);
         this.column = column;
         this.nickname = nickname;
         this.colours = colours;

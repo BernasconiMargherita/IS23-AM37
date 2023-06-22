@@ -8,6 +8,7 @@ public class BoardResponse extends Message{
 
     private ColourTile[][] board;
     public BoardResponse(ColourTile[][] board){
+        super(-1);
         this.board = board;
     }
 

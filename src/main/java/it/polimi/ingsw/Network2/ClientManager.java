@@ -23,7 +23,12 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
             case "WakeMessage" -> handleWakeMessage((WakeMessage) message);
             case "TurnResponse" -> handleTurnResponse((TurnResponse) message);
             case "EndMessage" -> handleEndMessage((EndMessage) message);
+            case "SetResponse"->handleSetResponse((SetResponse)message);
         }
+    }
+
+    private void handleSetResponse(SetResponse message) {
+        queue.add(()->setResponse(message));
     }
 
     private void handleRemoveResponse(RemoveResponse message) {
@@ -82,6 +87,7 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
+        client.setup();
         startUpdater();
     }
 

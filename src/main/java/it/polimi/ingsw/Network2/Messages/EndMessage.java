@@ -5,6 +5,7 @@ public class EndMessage extends Message{
     private String winner;
 
     public EndMessage(String winner) {
+        super(-1);
         this.winner = winner;
     }
 
