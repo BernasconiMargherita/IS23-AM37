@@ -40,6 +40,7 @@ public class ConnectionSceneController {
         rootPane.setStyle("-fx-background-image: url('" + backgroundImage + "'); -fx-background-size: cover;");
         
         Client client=guiMaster.getClient();
+
         if (client.isFirstPlayer()){
         ColumnConstraints columnConstraints = new ColumnConstraints();
         columnConstraints.setHgrow(Priority.ALWAYS);
