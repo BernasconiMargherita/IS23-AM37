@@ -5,15 +5,12 @@ import com.google.gson.Gson;
 import it.polimi.ingsw.Network2.Messages.ErrorMessage;
 import it.polimi.ingsw.Network2.Messages.Message;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TCPCommunicationProtocol implements CommunicationProtocol,Runnable {
+public class TCPCommunicationProtocol implements CommunicationProtocol,Runnable, Serializable {
     private final String serverIp;
     private final int serverPort;
     private final Thread messageReceiver;

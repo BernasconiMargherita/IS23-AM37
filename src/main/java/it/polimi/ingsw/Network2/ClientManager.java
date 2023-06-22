@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Network2;
 
 import it.polimi.ingsw.Network2.Messages.*;
+import it.polimi.ingsw.view.gui.GuiMaster;
 
 import java.rmi.RemoteException;
 import java.util.NoSuchElementException;
@@ -11,6 +12,11 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
 
     private ClientUpdate clientUpdater;
     private Client client;
+
+    public Client getClient() {
+        return client;
+    }
+
     private final Queue<Runnable> queue= new LinkedBlockingQueue<>();
 
     @Override

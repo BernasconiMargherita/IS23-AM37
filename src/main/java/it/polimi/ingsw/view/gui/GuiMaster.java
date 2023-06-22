@@ -20,9 +20,17 @@ public class GuiMaster extends ClientManager {
     private static Client client;
 
 
-    public static <T> T setLayout(Scene scene, String path) throws IOException {
+    public static <T> T setLayout(Scene scene, String path) {
         FXMLLoader loader = new FXMLLoader(GuiMaster.class.getResource(path));
-        Parent root = loader.load();
+
+        Parent root;
+
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            return null;
+        }
+
         scene.setRoot(root);
         return loader.getController();
     }
@@ -43,14 +51,6 @@ public class GuiMaster extends ClientManager {
         this.gameSceneController = gameSceneController;
     }
 
-    public static void setClient(Client client) {
-        GuiMaster.client = client;
-    }
-
-    public static Client getClient() {
-        return client;
-    }
-
 
     public void setConnectionSceneController(ConnectionSceneController connectionSceneController) {
         this.connectionSceneController=connectionSceneController;
@@ -66,7 +66,7 @@ public class GuiMaster extends ClientManager {
     @Override
     public void initResponse(InitResponse initResponse) {
         Platform.runLater(() ->
-                connectionSceneController.initResponse(initResponse));
+                gameSceneController.initResponse(initResponse));
     }
 
     @Override

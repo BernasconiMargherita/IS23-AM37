@@ -60,4 +60,7 @@ public class GameSceneController {
 
     public void wakeUp(WakeMessage wakeMessage) {
     }
+
+    public void initResponse(InitResponse initResponse) {
+    }
 }

@@ -3,17 +3,16 @@ package it.polimi.ingsw.view.gui;
 import it.polimi.ingsw.Network2.Client;
 import it.polimi.ingsw.Network2.Messages.LoginMessage;
 import it.polimi.ingsw.Network2.Messages.LoginResponse;
-import it.polimi.ingsw.Network2.Messages.Message;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
-import java.io.IOException;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import java.util.Objects;
-import static it.polimi.ingsw.view.gui.GuiMaster.getClient;
+
 
 
 public class LoginSceneController {
@@ -38,10 +37,11 @@ public class LoginSceneController {
     private Label usernameError;
     private String connection;
     private String username;
+    private GuiMaster guiMaster;
 
     @FXML
     public void initialize() {
-        GuiMaster guiMaster = GuiMaster.getInstance();
+        guiMaster = GuiMaster.getInstance();
         guiMaster.setLoginSceneController(this);
         createScene();
     }
@@ -66,7 +66,7 @@ public class LoginSceneController {
         if (username == null || username.trim().isEmpty()) {
             usernameError.setText("Inserisci un username!");
         } else {
-            Client client = getClient();
+            Client client = guiMaster.getClient();
             client.sendMessage(new LoginMessage(username, connection, client.getUID()));
         }
     }
@@ -75,20 +75,16 @@ public class LoginSceneController {
     public void loginResponse(LoginResponse loginResponse) {
 
         if (!loginResponse.isUsernameError()) {
-            try {
-                Client client = GuiMaster.getClient();
-                client.setUsername(username);
-                Scene scene=gridPane.getScene();
+            Client client = GuiMaster.getInstance().getClient();
+            client.setUsername(username);
+            Scene scene=gridPane.getScene();
 
-                if (loginResponse.isFirst()) client.setFirst();
-                if (loginResponse.isInit()) client.setInit();
+            if (loginResponse.isFirst()) client.setFirst();
+            if (loginResponse.isInit()) client.setInit();
 
-                client.setGameID(loginResponse.getGameID());
-                GuiMaster.setLayout(scene, "/fxml/connectionScene.fxml");
+            client.setGameID(loginResponse.getGameID());
+            GuiMaster.setLayout(scene, "/fxml/connectionScene.fxml");
 
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
         }
         else {
             usernameError.setText("username già preso!");

@@ -8,9 +8,9 @@ import java.rmi.RemoteException;
 public interface ServerInterface extends Remote {
     void onMessage(Message message) throws RemoteException;
 
-    void disconnect();
+    void disconnect() throws RemoteException;
 
-    public long addRmiClient(CommunicationProtocol protocol);
+    public long addRmiClient(CommunicationProtocol protocol) throws RemoteException;
 
 
 }
