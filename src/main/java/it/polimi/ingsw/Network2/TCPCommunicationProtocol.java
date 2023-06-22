@@ -7,10 +7,12 @@ import it.polimi.ingsw.Network2.Messages.Message;
 
 import java.io.*;
 import java.net.Socket;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TCPCommunicationProtocol implements CommunicationProtocol,Runnable, Serializable {
+public class TCPCommunicationProtocol extends UnicastRemoteObject implements CommunicationProtocol,Runnable {
     private final String serverIp;
     private final int serverPort;
     private final Thread messageReceiver;
@@ -20,7 +22,8 @@ public class TCPCommunicationProtocol implements CommunicationProtocol,Runnable,
     private Socket socket = null;
     private final ArrayList<Message> messageList;
 
-    public TCPCommunicationProtocol(String serverIp, int serverPort) {
+    public TCPCommunicationProtocol(String serverIp, int serverPort) throws RemoteException {
+        super();
         this.serverIp = serverIp;
         this.serverPort = serverPort;
         this.messageList = new ArrayList<>();

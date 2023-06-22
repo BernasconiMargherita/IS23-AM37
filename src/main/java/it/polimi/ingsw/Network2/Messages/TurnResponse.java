@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Network2.Messages;
 
-public class TurnResponse extends Message{
+import java.io.Serializable;
+
+public class TurnResponse extends Message implements Serializable {
 
     private int status;
 

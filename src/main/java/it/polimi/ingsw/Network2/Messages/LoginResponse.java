@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Network2.Messages;
 
-public class LoginResponse extends Message{
+import java.io.Serializable;
+
+public class LoginResponse extends Message implements Serializable {
     private boolean usernameError;
     private int gameID;
     private boolean first;

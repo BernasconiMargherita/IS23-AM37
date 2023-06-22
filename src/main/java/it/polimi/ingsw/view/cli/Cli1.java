@@ -1,10 +1,8 @@
 package it.polimi.ingsw.view.cli;
-import it.polimi.ingsw.Network2.ClientManager;
-import it.polimi.ingsw.Network2.Messages.EndMessage;
-import it.polimi.ingsw.Network2.Messages.TurnResponse;
-import it.polimi.ingsw.Network2.Messages.WakeMessage;
-
 import java.util.*;
+
+import it.polimi.ingsw.Network2.ClientManager;
+import it.polimi.ingsw.Network2.Messages.*;
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.GameState;
@@ -20,7 +18,7 @@ import java.util.Scanner;
 public class Cli1 extends ClientManager {
     private String username;
     private boolean tcpSelected;
-    private int numPlayers;
+    public int numPlayers;
     private String[][] board;
     private List<String> personalGoals;
     private List<String> commonGoals;
@@ -28,9 +26,9 @@ public class Cli1 extends ClientManager {
     private List<String> chatMessages;
 
 
-
     private Scanner in;
     private MyShelfiePrintStream out;
+
 
     public Cli1() {
         super();
@@ -52,14 +50,13 @@ public class Cli1 extends ClientManager {
      * Prints MyShelfie Logo
      */
     private void printLogo() {
-        String MyShelfieLogo =  "Welcome to MyShelfie Board Game\n" +
+        String MyShelfieLogo = "Welcome to MyShelfie Board Game\n" +
                 "Before starting playing you need to setup your connection:\n";
-
-
 
 
         out.println(MyShelfieLogo);
     }
+
     private boolean inputError(boolean firstError, String errorMessage) {
         //*out.print(AnsiCode.CLEAR_LINE);
         //if (!firstError) {
@@ -72,6 +69,7 @@ public class Cli1 extends ClientManager {
 
     /**
      * asks username
+     *
      * @return
      */
     private String askUsername() {
@@ -80,16 +78,16 @@ public class Cli1 extends ClientManager {
 
         out.println("Enter your username:");
 
-        try{
+        try {
             out.print(">>> ");
 
             username = in.nextLine();
 
-            if( username==null){
+            if (username == null) {
                 throw new UsernameException("Il nome utente inserito non è valido");
 
             }
-        }  catch (UsernameException e) {
+        } catch (UsernameException e) {
             System.out.println("Errore:" + e.getMessage());
         }
 
@@ -102,7 +100,7 @@ public class Cli1 extends ClientManager {
         int connection = -1;
 
         String username = askUsername();
-        out.printf("Welcome %s!%n", username);
+        out.printf("Welcome %s!\n", username);
 
         out.println("\n Choose connection type ( 0 = TCP or 1 = RMI):");
 
@@ -128,8 +126,6 @@ public class Cli1 extends ClientManager {
 
         if (connection == 0) {
             out.println("You chose Socket connection\n");
-            createConnection("TCP");
-
         } else {
             out.println("You chose RMI connection\n");
         }
@@ -137,66 +133,15 @@ public class Cli1 extends ClientManager {
 
     Scanner scanner = new Scanner(System.in);
     // Seleziona il numero di giocatori
-    out.println("Seleziona il numero di giocatori (da 1 a 4):");
-    int numberPlayers = in.nextInt();
-    scanner.nextLine(); // Consuma il newline rimanente
-
-    // Inizializza lo stato del gioco
-    board = new String[6][5];
-    personalGoals = new ArrayList<>();
-    commonGoals = new ArrayList<>();
-    opponentBoards = new ArrayList<>();
-    chatMessages = new ArrayList<>();
-
-    // Loop principale del gioco
-    boolean running = true;
-    while (running) {
-        System.out.println("\n********** SCHERMATA PRINCIPALE **********");
-        // Visualizza la board
-        displayBoard();
-
-        System.out.println("\nSeleziona un comando:");
-        System.out.println("1. Seleziona le tue carte nella board");
-        System.out.println("2. Guarda i tuoi personal goal");
-        System.out.println("3. Guarda i common goal");
-        System.out.println("4. Guarda la board degli avversari");
-        System.out.println("5. Guarda la chat");
-        System.out.println("6. Scrivi un messaggio nella chat");
-        System.out.println("7. Torna indietro");
-
-        int command = Scanner.nextInt();
+    public int getNumPlayers() {
+        out.println("Seleziona il numero di giocatori (da 1 a 4):");
+        numPlayers = in.nextInt();
         scanner.nextLine(); // Consuma il newline rimanente
-
-        switch (command) {
-            case 1:
-                selectCards(scanner);
-                break;
-            case 2:
-                displayPersonalGoals();
-                break;
-            case 3:
-                displayCommonGoals();
-                break;
-            case 4:
-                displayOpponentBoards(scanner);
-                break;
-            case 5:
-                displayChat();
-                break;
-            case 6:
-                writeMessage(scanner);
-                break;
-            case 7:
-                running = false;
-                break;
-            default:
-                System.out.println("Comando non valido. Riprova.");
-                break;
-        }
+        return numPlayers;
     }
 
-    scanner.close();
-}
+
+
 
     private boolean isUsernameTaken(String username) {
         // Logica per verificare se l'username è già in uso
@@ -205,6 +150,12 @@ public class Cli1 extends ClientManager {
     }
 
     private void displayBoard() {
+        for (int i=0; i< 6 ; i++){
+            for(int j=0; j<5; j++){
+                System.out.print(board[i][j]+ "-");
+            }
+            System.out.println();
+        }
         // Logica per visualizzare la board
         // Utilizza il contenuto dell'array bidimensionale "board"
     }
@@ -241,8 +192,28 @@ public class Cli1 extends ClientManager {
         // Puoi chiedere all'utente di inserire il messaggio e aggiungerlo alla lista "chatMessages"
     }
 
+
+    public void updateBoard(BoardMessage boardMessage) {
+
+    }
+
+    @Override
+    public void loginResponse(LoginResponse loginResponse) {
+
+    }
+
+    @Override
+    public void initResponse(InitResponse initResponse) {
+
+    }
+
     @Override
     public void updateBoard(BoardResponse boardMessage) {
+
+    }
+
+    @Override
+    public void removeResponse(RemoveResponse removeResponse) {
 
     }
 
@@ -258,6 +229,11 @@ public class Cli1 extends ClientManager {
 
     @Override
     public void wakeUp(WakeMessage wakeMessage) {
+
+    }
+
+    @Override
+    public void setResponse(SetResponse setResponse) {
 
     }
 }

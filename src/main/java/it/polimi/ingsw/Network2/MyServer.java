@@ -71,12 +71,9 @@ public class MyServer extends UnicastRemoteObject implements ServerInterface {
         server.onMessage(message);
     }
 
-    @Override
-    public void disconnect() {
 
-    }
 
-    public long addRmiClient(CommunicationProtocol protocol){
+    public long addRmiClient(CommunicationProtocol protocol) throws RemoteException{
         long rmiId = System.currentTimeMillis();
         try {
             server.addRmiCl(rmiId, protocol);
