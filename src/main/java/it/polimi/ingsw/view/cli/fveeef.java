@@ -1,23 +1,14 @@
 package it.polimi.ingsw.view.cli;
 import java.util.*;
 
+import it.polimi.ingsw.Network2.Client;
 import it.polimi.ingsw.Network2.ClientManager;
-import it.polimi.ingsw.Network2.Messages.EndMessage;
-import it.polimi.ingsw.Network2.Messages.TurnResponse;
-import it.polimi.ingsw.Network2.Messages.WakeMessage;
-import it.polimi.ingsw.model.Board.Board;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.GameState;
-import it.polimi.ingsw.Exception.*;
-import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.Utils.*;
-import java.io.*;
-import java.io.PrintStream;
+
 import java.util.Scanner;
 
 
 
-public class Cli1 extends ClientManager {
+public class fveeef extends ClientManager {
     private String username;
     private boolean tcpSelected;
     public int numPlayers;
@@ -26,13 +17,15 @@ public class Cli1 extends ClientManager {
     private List<String> commonGoals;
     private List<String[][]> opponentBoards;
     private List<String> chatMessages;
+    private Client client;
+
 
 
     private Scanner in;
     private MyShelfiePrintStream out;
 
 
-    public Cli1() {
+    public fveeef() {
         super();
 
         this.in = new Scanner(System.in);
@@ -85,35 +78,22 @@ public class Cli1 extends ClientManager {
 
             username = in.nextLine();
 
-            if (username == null) {
-                throw new UsernameException("Il nome utente inserito non è valido");
-
-            }
-        } catch (UsernameException e) {
-            System.out.println("Errore:" + e.getMessage());
-        }
-
         return username;
     }
 
     private void doConnection() {
-        boolean validConnection = false;
-        boolean firstError = true;
-        int connection = -1;
 
-        String username = askUsername();
         out.printf("Welcome %s!\n", username);
 
-        out.println("\n Choose connection type ( 0 = TCP or 1 = RMI):");
+        out.println("\n Write connection type (TCP or RMI):");
 
         do {
-            out.print(">>> ");
+
 
             if (in.hasNextInt()) {
-                connection = in.nextInt();
-                in.nextLine();
 
-                if (connection >= 0 && connection <= 1) {
+
+                {
                     validConnection = true;
                 } else {
                     firstError = inputError(firstError, "Invalid selection!");
@@ -128,8 +108,10 @@ public class Cli1 extends ClientManager {
 
         if (connection == 0) {
             out.println("You chose Socket connection\n");
+            createConnection("TCP");
         } else {
             out.println("You chose RMI connection\n");
+            createConnection("RMI");
         }
     }
 
@@ -142,7 +124,7 @@ public class Cli1 extends ClientManager {
         return numPlayers;
     }
 
-
+/*
     // Inizializza lo stato del gioco
     board = new String[6][5];
     personalGoals = new ArrayList<>();
@@ -198,7 +180,7 @@ public class Cli1 extends ClientManager {
     }
 
     scanner.close();
-
+*/
 
     private boolean isUsernameTaken(String username) {
         // Logica per verificare se l'username è già in uso
@@ -217,40 +199,30 @@ public class Cli1 extends ClientManager {
         // Utilizza il contenuto dell'array bidimensionale "board"
     }
 
-    private void selectCards(Scanner scanner) {
-        // Logica per selezionare le carte nella board
-        // Puoi chiedere all'utente di inserire le coordinate delle carte da selezionare
-        // e aggiornare l'array bidimensionale "board" di conseguenza
-    }
 
-    private void displayPersonalGoals() {
-        // Logica per visualizzare i personal goal
-        // Utilizza la lista "personalGoals"
-    }
-
-    private void displayCommonGoals() {
-        // Logica per visualizzare i common goal
-        // Utilizza la lista "commonGoals"
-    }
-
-    private void displayOpponentBoards(Scanner scanner) {
-        // Logica per visualizzare le board degli avversari
-        // Puoi chiedere all'utente di selezionare l'avversario di cui visualizzare la board
-        // Utilizza la lista "opponentBoards"
-    }
-
-    private void displayChat() {
-        // Logica per visualizzare la chat
-        // Utilizza la lista "chatMessages"
-    }
-
-    private void writeMessage(Scanner scanner) {
-        // Logica per scrivere un messaggio nella chat
-        // Puoi chiedere all'utente di inserire il messaggio e aggiungerlo alla lista "chatMessages"
-    }
 
     @Override
     public void updateBoard(BoardMessage boardMessage) {
+
+    }
+
+    @Override
+    public void loginResponse(LoginResponse loginResponse) {
+
+    }
+
+    @Override
+    public void initResponse(InitResponse initResponse) {
+
+    }
+
+    @Override
+    public void updateBoard(BoardResponse boardMessage) {
+
+    }
+
+    @Override
+    public void removeResponse(RemoveResponse removeResponse) {
 
     }
 
@@ -266,6 +238,11 @@ public class Cli1 extends ClientManager {
 
     @Override
     public void wakeUp(WakeMessage wakeMessage) {
+
+    }
+
+    @Override
+    public void setResponse(SetResponse setResponse) {
 
     }
 }
