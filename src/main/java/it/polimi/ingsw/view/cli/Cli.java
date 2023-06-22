@@ -43,6 +43,7 @@ public class Cli extends ClientManager {
 
         }
         UID = getClient().getUID();
+        login();
 
     }
 
@@ -86,8 +87,12 @@ public class Cli extends ClientManager {
     @Override
     public void updateBoard(BoardResponse boardMessage) {
         matrix = new String[ROWS][COLS];
+        for (String[] row : matrix) {
+            Arrays.fill(row, "Vuota");
+        }
+        out.println("ciao c'è la board")
 
-    }
+
 
     @Override
     public void removeResponse(RemoveResponse removeResponse) {
