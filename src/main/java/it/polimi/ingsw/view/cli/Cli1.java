@@ -2,9 +2,7 @@ package it.polimi.ingsw.view.cli;
 import java.util.*;
 
 import it.polimi.ingsw.Network2.ClientManager;
-import it.polimi.ingsw.Network2.Messages.EndMessage;
-import it.polimi.ingsw.Network2.Messages.TurnResponse;
-import it.polimi.ingsw.Network2.Messages.WakeMessage;
+import it.polimi.ingsw.Network2.Messages.*;
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.GameState;
@@ -143,61 +141,6 @@ public class Cli1 extends ClientManager {
     }
 
 
-    // Inizializza lo stato del gioco
-    board = new String[6][5];
-    personalGoals = new ArrayList<>();
-    commonGoals = new ArrayList<>();
-    opponentBoards = new ArrayList<>();
-    chatMessages = new ArrayList<>();
-
-    // Loop principale del gioco
-    boolean running = true;
-    while (running) {
-        System.out.println("\n********** SCHERMATA PRINCIPALE **********");
-        // Visualizza la board
-        displayBoard();
-
-        System.out.println("\nSeleziona un comando:");
-        System.out.println("1. Seleziona le tue carte nella board");
-        System.out.println("2. Guarda i tuoi personal goal");
-        System.out.println("3. Guarda i common goal");
-        System.out.println("4. Guarda la board degli avversari");
-        System.out.println("5. Guarda la chat");
-        System.out.println("6. Scrivi un messaggio nella chat");
-        System.out.println("7. Torna indietro");
-
-        int command = Scanner.nextInt();
-        scanner.nextLine(); // Consuma il newline rimanente
-
-        switch (command) {
-            case 1:
-                selectCards(scanner);
-                break;
-            case 2:
-                displayPersonalGoals();
-                break;
-            case 3:
-                displayCommonGoals();
-                break;
-            case 4:
-                displayOpponentBoards(scanner);
-                break;
-            case 5:
-                displayChat();
-                break;
-            case 6:
-                writeMessage(scanner);
-                break;
-            case 7:
-                running = false;
-                break;
-            default:
-                System.out.println("Comando non valido. Riprova.");
-                break;
-        }
-    }
-
-    scanner.close();
 
 
     private boolean isUsernameTaken(String username) {
@@ -249,8 +192,28 @@ public class Cli1 extends ClientManager {
         // Puoi chiedere all'utente di inserire il messaggio e aggiungerlo alla lista "chatMessages"
     }
 
-    @Override
+
     public void updateBoard(BoardMessage boardMessage) {
+
+    }
+
+    @Override
+    public void loginResponse(LoginResponse loginResponse) {
+
+    }
+
+    @Override
+    public void initResponse(InitResponse initResponse) {
+
+    }
+
+    @Override
+    public void updateBoard(BoardResponse boardMessage) {
+
+    }
+
+    @Override
+    public void removeResponse(RemoveResponse removeResponse) {
 
     }
 
@@ -266,6 +229,11 @@ public class Cli1 extends ClientManager {
 
     @Override
     public void wakeUp(WakeMessage wakeMessage) {
+
+    }
+
+    @Override
+    public void setResponse(SetResponse setResponse) {
 
     }
 }

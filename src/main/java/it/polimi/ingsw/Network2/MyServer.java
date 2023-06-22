@@ -73,7 +73,7 @@ public class MyServer extends UnicastRemoteObject implements ServerInterface {
 
 
 
-    public long addRmiClient(CommunicationProtocol protocol){
+    public long addRmiClient(CommunicationProtocol protocol) throws RemoteException{
         long rmiId = System.currentTimeMillis();
         try {
             server.addRmiCl(rmiId, protocol);

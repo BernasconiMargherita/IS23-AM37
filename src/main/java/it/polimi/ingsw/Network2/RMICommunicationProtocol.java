@@ -30,7 +30,7 @@ public class RMICommunicationProtocol extends UnicastRemoteObject implements Com
         this.serverUrl = "RemoteController";
     }
 
-    public void sendMessage(Message message) {
+    public void sendMessage(Message message) throws RemoteException {
         try {
 
             server.onMessage(message);
@@ -43,12 +43,12 @@ public class RMICommunicationProtocol extends UnicastRemoteObject implements Com
     }
 
     @Override
-    public void onMessage(Message message) {
+    public void onMessage(Message message) throws RemoteException {
         messageList.add(message);
     }
 
     @Override
-    public ArrayList<Message> getMessages() {
+    public ArrayList<Message> getMessages() throws RemoteException {
 
         ArrayList<Message> copy;
 
@@ -59,14 +59,14 @@ public class RMICommunicationProtocol extends UnicastRemoteObject implements Com
     }
 
     @Override
-    public void closeConnection() {
+    public void closeConnection() throws RemoteException{
 
         server = null;
 
     }
 
     @Override
-    public void setup() {
+    public void setup() throws RemoteException{
         try{
             UID = server.addRmiClient(this);
         } catch (RemoteException e) {
@@ -76,7 +76,7 @@ public class RMICommunicationProtocol extends UnicastRemoteObject implements Com
     }
 
     @Override
-    public long getUID() {
+    public long getUID() throws RemoteException{
         return UID;
     }
 }
