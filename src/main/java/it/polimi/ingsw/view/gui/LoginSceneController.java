@@ -73,7 +73,6 @@ public class LoginSceneController {
 
 
     public void loginResponse(LoginResponse loginResponse) {
-
         if (!loginResponse.isUsernameError()) {
             Client client = GuiMaster.getInstance().getClient();
             client.setUsername(username);

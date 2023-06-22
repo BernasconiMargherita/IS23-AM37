@@ -13,11 +13,11 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
     private ClientUpdate clientUpdater;
     private Client client;
 
-    public Client getClient() {
-        return client;
-    }
-
     private final Queue<Runnable> queue= new LinkedBlockingQueue<>();
+
+    public ClientManager() {
+        new Thread(this).start();
+    }
 
     @Override
     public void onUpdate(Message message) {
@@ -47,6 +47,7 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
 
     private void handleLoginResponse(LoginResponse message) {
         queue.add(()->loginResponse(message));
+        System.out.println("added task");
     }
 
     private void handleBoardResponse(BoardResponse message) {
@@ -71,9 +72,11 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
             try {
                 queue.remove().run();
             }catch (NoSuchElementException e){
-
-                Thread.currentThread().interrupt();
-
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         }
     }
@@ -117,5 +120,7 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
         client.closeConnection();
         client = null;
     }
-
+    public Client getClient() {
+        return client;
+    }
 }

@@ -15,9 +15,7 @@ public class GuiMaster extends ClientManager {
     private LoginSceneController loginSceneController;
     private GameSceneController gameSceneController;
     private ConnectionSceneController connectionSceneController;
-
     private static GuiMaster instance = null;
-    private static Client client;
 
 
     public static <T> T setLayout(Scene scene, String path) {
