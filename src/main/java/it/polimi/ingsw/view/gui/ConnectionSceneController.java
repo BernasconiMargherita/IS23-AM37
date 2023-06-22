@@ -26,19 +26,20 @@ public class ConnectionSceneController {
     public Label loadingMessage;
     public ProgressIndicator progressIndicator;
     private ToggleGroup toggleGroup;
+    private GuiMaster guiMaster;
 
     @FXML
     public void initialize() {
-        GuiMaster guiMaster = GuiMaster.getInstance();
+        guiMaster = GuiMaster.getInstance();
         guiMaster.setConnectionSceneController(this);
         createScene();
-
     }
+
     public void createScene() {
         String backgroundImage = Objects.requireNonNull(getClass().getResource("/assets/misc/sfondo parquet.jpg")).toExternalForm();
         rootPane.setStyle("-fx-background-image: url('" + backgroundImage + "'); -fx-background-size: cover;");
         
-        Client client=GuiMaster.getClient();
+        Client client=guiMaster.getClient();
         if (client.isFirstPlayer()){
         ColumnConstraints columnConstraints = new ColumnConstraints();
         columnConstraints.setHgrow(Priority.ALWAYS);
@@ -67,7 +68,7 @@ public class ConnectionSceneController {
         }
         else {
             int numOfPlayers = Integer.parseInt(selected.getText());
-            Client client = GuiMaster.getClient();
+            Client client = guiMaster.getClient();
             client.sendMessage(new SetMessage(numOfPlayers, client.getGameID()));
         }
 
@@ -75,7 +76,7 @@ public class ConnectionSceneController {
     }
 
     private void waitingPlayers() {
-        Client client=GuiMaster.getClient();
+        Client client = guiMaster.getClient();
 
         if (client.isInitPlayer()){
             client.sendMessage(new InitMessage(client.getGameID()));
