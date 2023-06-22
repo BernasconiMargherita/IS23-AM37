@@ -24,11 +24,7 @@ public class Gui extends Application {
 
         Scene scene = new Scene(new Pane());
         stage.setResizable(false);
-        try {
-            GuiMaster.setLayout(scene, "/fxml/loginScene.fxml");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        GuiMaster.setLayout(scene, "/fxml/loginScene.fxml");
         stage.setScene(scene);
         stage.show();
     }

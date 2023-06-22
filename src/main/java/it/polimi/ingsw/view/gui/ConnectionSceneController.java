@@ -7,6 +7,7 @@ import it.polimi.ingsw.Network2.Messages.SetMessage;
 import it.polimi.ingsw.Network2.Messages.SetResponse;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.RadioButton;
@@ -78,6 +79,8 @@ public class ConnectionSceneController {
 
         if (client.isInitPlayer()){
             client.sendMessage(new InitMessage(client.getGameID()));
+            Scene scene=gridPane.getScene();
+            GuiMaster.setLayout(scene,"/fxml/gameScene.fxml");
         }
         else {
             for (Node node : rootPane.getChildren()) {
@@ -98,7 +101,4 @@ public class ConnectionSceneController {
         waitingPlayers();
     }
 
-    public void initResponse(InitResponse initResponse) {
-
-    }
 }

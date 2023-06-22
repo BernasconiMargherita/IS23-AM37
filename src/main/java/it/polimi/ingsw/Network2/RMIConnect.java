@@ -2,6 +2,8 @@ package it.polimi.ingsw.Network2;
 
 import it.polimi.ingsw.Network2.Messages.Message;
 
+import java.rmi.RemoteException;
+
 public class RMIConnect implements Connection{
     private final CommunicationProtocol protocol;
     private final String nickname;
@@ -13,7 +15,11 @@ public class RMIConnect implements Connection{
 
 
     public void sendMessage(Message message){
-        protocol.onMessage(message);
+        try {
+            protocol.onMessage(message);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
     @Override
     public String getNickname() {

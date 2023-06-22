@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Network2.Messages;
 
-public class SetResponse extends Message{
+import java.io.Serializable;
+
+public class SetResponse extends Message implements Serializable {
     public SetResponse() {
         super(-1);
     }
