@@ -7,8 +7,8 @@ public class BoardResponse extends Message{
     public static final int MAX_BOARD_COLUMNS = 9;
 
     private ColourTile[][] board;
-    public BoardResponse(){
-        board
+    public BoardResponse(ColourTile[][] board){
+        this.board = board;
     }
 
     @Override
