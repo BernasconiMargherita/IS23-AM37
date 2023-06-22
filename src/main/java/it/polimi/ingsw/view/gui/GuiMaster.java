@@ -2,10 +2,7 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.Network2.Client;
 import it.polimi.ingsw.Network2.ClientManager;
-import it.polimi.ingsw.Network2.Messages.EndMessage;
-import it.polimi.ingsw.Network2.Messages.Message;
-import it.polimi.ingsw.Network2.Messages.TurnResponse;
-import it.polimi.ingsw.Network2.Messages.WakeMessage;
+import it.polimi.ingsw.Network2.Messages.*;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -56,28 +53,56 @@ public class GuiMaster extends ClientManager {
 
 
     public void setConnectionSceneController(ConnectionSceneController connectionSceneController) {
-        this.connectionSceneController=connectionSceneController
+        this.connectionSceneController=connectionSceneController;
     }
 
 
     @Override
-    public void updateBoard(BoardMessage boardMessage) {
+    public void loginResponse(LoginResponse loginResponse) {
         Platform.runLater(() ->
-                gameSceneController.updateBoard(boardMessage);
+                loginSceneController.loginResponse(loginResponse));
+    }
+
+    @Override
+    public void initResponse(InitResponse initResponse) {
+        Platform.runLater(() ->
+                connectionSceneController.initResponse(initResponse));
+    }
+
+    @Override
+    public void updateBoard(BoardResponse boardMessage) {
+        Platform.runLater(() ->
+                gameSceneController.updateBoard(boardMessage));
+    }
+
+    @Override
+    public void removeResponse(RemoveResponse removeResponse) {
+        Platform.runLater(() ->
+                gameSceneController.removeResponse(removeResponse));
     }
 
     @Override
     public void turnResponse(TurnResponse turnResponse) {
-
+        Platform.runLater(() ->
+                gameSceneController.turnResponse(turnResponse));
     }
 
     @Override
     public void endGame(EndMessage endGameMessage) {
-
+        Platform.runLater(() ->
+                gameSceneController.endGame(endGameMessage));
     }
 
     @Override
     public void wakeUp(WakeMessage wakeMessage) {
+        Platform.runLater(() ->
+                gameSceneController.wakeUp(wakeMessage));
+    }
+
+    @Override
+    public void setResponse(SetResponse setResponse) {
+        Platform.runLater(() ->
+                connectionSceneController.setResponse(setResponse));
 
     }
 }

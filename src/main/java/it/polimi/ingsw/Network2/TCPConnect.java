@@ -10,7 +10,7 @@ import java.net.Socket;
 
 public class TCPConnect implements Connection{
     private Socket socket;
-    private PrintWriter out;
+    private final PrintWriter out;
     private BufferedReader in;
     private String nickname;
     public TCPConnect(Socket socket, String nickname) {

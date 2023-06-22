@@ -7,18 +7,14 @@ public class LoginResponse extends Message{
     private boolean init;
 
     public LoginResponse(boolean usernameError, int gameID, boolean first, boolean init) {
+        super(gameID);
         this.usernameError = usernameError;
-        this.gameID = gameID;
         this.first = first;
         this.init = init;
     }
 
     public boolean isUsernameError() {
         return usernameError;
-    }
-
-    public int getGameID() {
-        return gameID;
     }
 
     public boolean isFirst() {

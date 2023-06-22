@@ -3,7 +3,10 @@ package it.polimi.ingsw.Network2;
 import it.polimi.ingsw.Exception.*;
 import it.polimi.ingsw.Network2.Messages.*;
 import it.polimi.ingsw.Utils.Coordinates;
+import it.polimi.ingsw.Utils.TileSlot;
 import it.polimi.ingsw.controller.MasterController;
+import it.polimi.ingsw.model.CommonCards.CardCommonTarget;
+import it.polimi.ingsw.model.PersonalCards.CardPersonalTarget;
 import it.polimi.ingsw.model.Tile.ColourTile;
 import it.polimi.ingsw.model.Tile.Tile;
 
@@ -47,25 +50,28 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
 
     @Override
-    public Message onMessage(Message message) throws RemoteException {
+    public void onMessage(Message message) throws RemoteException {
 
         if(message.typeMessage().equals( "LoginMessage")){
-            return registerPlayer(message);
+             registerPlayer(message);
         }
-
+        if(message.typeMessage().equals( "SetMessage")){
+             setMaxPlayers(message);
+        }
         if(message.typeMessage().equals( "InitMessage")){
-            return initGame(message.getGameID());
+             initGame(message.getGameID());
         }
-
         if(message.typeMessage().equals( "RemoveMessage")){
-            return remove(message.getGameID(), message.getPositions());
+             remove(message.getGameID(), message.getPositions());
         }
-
         if(message.typeMessage().equals( "TurnMessage")){
-            return turn(message.getGameID(), message.getColours(),message.getColumn(), message.getNickname());
+             turn(message.getGameID(), message.getColours(),message.getColumn(), message.getNickname());
+        }
+        if(message.typeMessage().equals("BoardMessage")){
+            sendBoard(message.getGameID(),message.getNickname());
         }
 
-        return null;
+
     }
 
 
@@ -80,9 +86,9 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
 
     @Override
-    public int startGame() throws RemoteException {
+    public synchronized void startGame() throws RemoteException {
         currentGameID++;
-        return masterController.newGameController();
+        masterController.newGameController();
     }
 
 
@@ -93,7 +99,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
 
     @Override
-    public Message registerPlayer(Message message) throws RemoteException {
+    public synchronized void registerPlayer(Message message) throws RemoteException {
         String nickname = message.getNickname();
         long UID = message.getUID();
         try {
@@ -109,14 +115,14 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
             }
 
             if (masterController.getGameController(currentGameID).getMaxPlayers() == masterController.getGameController(currentGameID).getNumOfPlayers()){
-                return new LoginResponse(false, currentGameID, false, true);
+                clients.get(currentGameID).get(getPosition(nickname, currentGameID)).sendMessage(new LoginResponse(false, currentGameID, false, true));
             }else{
-                return new LoginResponse(false, currentGameID, false, false);
+                clients.get(currentGameID).get(getPosition(nickname, currentGameID)).sendMessage(new LoginResponse(false, currentGameID, false, false));
             }
-            //return new LoginResponse("/*gli dico che gameID avrà ovvero ''currentGameID'' e che NON è il primo giocatore");
+
         } catch (UsernameException e) {
-            return new LoginResponse(true, -1, false, false);
-            //return new LoginResponse("/*gli dico l'username è già usato");
+            clients.get(currentGameID).get(getPosition(nickname, currentGameID)).sendMessage(new LoginResponse(true, -1, false, false));
+
         } catch (GameAlreadyStarted | MaxPlayerException | NullPointerException e) {
             startGame();
             try {
@@ -132,8 +138,9 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
-            return new LoginResponse(false, currentGameID, true, false);
-            //return new LoginMessage("/*gli dico che gameID avrà ovvero ''currentGameID'' e che è il primo giocatore ");
+
+            clients.get(currentGameID).get(getPosition(nickname, currentGameID)).sendMessage(new LoginResponse(false, currentGameID, true, false));
+
         }
 
     }
@@ -146,21 +153,19 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
 
 
-    public Message initGame(int gameID) throws RemoteException {
+    public void initGame(int gameID) throws RemoteException {
         try{
             this.masterController.getGameController(gameID).initGame();
-            Message initMessage = new InitMessage();
+            ArrayList<CardCommonTarget> commonTargets = masterController.getGameController(gameID).getCommonTargets();
             for(int i = 0; i < clients.get(gameID).size(); i++){
-                clients.get(gameID).get(i).sendMessage(initMessage);
+                CardPersonalTarget cardPersonalTarget = masterController.getGameController(gameID).getCardPersonalTarget(clients.get(gameID).get(i).getNickname());
+                Message initResponse = new InitResponse(commonTargets,cardPersonalTarget);
+                clients.get(gameID).get(i).sendMessage(initResponse);
             }
             String player = masterController.getGameController(gameID).getCurrentPlayer().getNickname();
-            for(int i=0; i<clients.get(gameID).size(); i++){
-                if(clients.get(gameID).get(i).getNickname().equals(player)){
-                    playClient(i, gameID);
-                    break;
-                }
-            }
-            return new InitResponse();
+            playClient(getPosition(player, gameID), gameID);
+
+
         }
         catch (GameNotReadyException | GameAlreadyStarted e) {
             throw new RuntimeException(e);
@@ -169,18 +174,20 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
 
     @Override
-    public Message remove(int gameID, Coordinates[] positions) throws RemoteException {
+    public void remove(int gameID, Coordinates[] positions) throws RemoteException {
         try {
             masterController.getGameController(gameID).remove(positions);
-            return new RemoveResponse();
-        } catch (Exception e) {
+            String nickname = masterController.getGameController(gameID).getCurrentPlayer().getNickname();
+            clients.get(gameID).get(getPosition(nickname, gameID)).sendMessage(new RemoveResponse());
 
-            return null;
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
 
-    public Message turn(int gameID ,String[] colors, int column,String nickname) throws RemoteException {
+    public void turn(int gameID ,String[] colors, int column,String nickname) throws RemoteException {
         for(int i = 0; i < clients.get(gameID).size(); i++){
             if(masterController.getGameController(gameID).getPlayers().get(i).getNickname().equals(nickname)){
 
@@ -193,7 +200,8 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
                     masterController.getGameController(gameID).turn(tiles, column);
                 } catch (EmptySlotException | InvalidPositionsException | InvalidSlotException | NoSpaceInColumnException | SoldOutTilesException | GameAlreadyStarted e) {
-                    return new TurnResponse(-1);
+                    clients.get(gameID).get(getPosition(nickname, gameID)).sendMessage(new TurnResponse(-1));
+
                 } catch (EndGameException e) {
 
                     String winner = getWinner(gameID);
@@ -202,29 +210,22 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
                     }
                 }
                 Message message = new TurnResponse(0);
+                clients.get(gameID).get(getPosition(nickname, gameID)).sendMessage(message);
+
                 String player = masterController.getGameController(gameID).getCurrentPlayer().getNickname();
-                for(int k=0; k<clients.get(gameID).size(); k++){
-                    if(clients.get(gameID).get(k).getNickname().equals(player)){
-                        playClient(k, gameID);
-                        break;
-                    }
-                }
-                return message;
+                playClient(getPosition(player, gameID), gameID);
+
             }
         }
-
-        return null;
-
-
     }
 
 
 
-    public Message setMaxPlayers(Message message) throws RemoteException {
+    public void setMaxPlayers(Message message) throws RemoteException {
         int gameID = message.getGameID();
         int maxPlayers = message.getMaxPlayers();
         masterController.getGameController(gameID).setMaxPlayers(maxPlayers);
-        return new SetResponse();
+        clients.get(gameID).get(0).sendMessage(new SetResponse());
     }
 
 
@@ -234,13 +235,38 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
     }
 
 
+    public void sendBoard(int gameID, String nickname) throws RemoteException{
+        TileSlot[][] board = masterController.getGameController(gameID).getBoard();
+        ColourTile[][] colours = new ColourTile[9][9];
+        for(int i = 0; i < 9; i++){
+            for(int j = 0; j<9 ; j++){
+                if(!board[i][j].isFree()){
+                    colours[i][j] = board[i][j].getAssignedTile().getColour();
+                }
+                else{
+                    colours[i][j] = ColourTile.FREE;
+                }
+            }
+        }
+        clients.get(gameID).get(getPosition(nickname, gameID)).sendMessage(new BoardResponse(colours));
 
-
+    }
 
     @Override
     public void playClient(int client, int gameID) throws RemoteException{
         Message message = new WakeMessage();
         clients.get(gameID).get(client).sendMessage(message);
+    }
+
+    public int getPosition(String nickname ,int gameID){
+        if (masterController.getGameController(gameID).getMaxPlayers() == masterController.getGameController(gameID).getNumOfPlayers()){
+            for(int i = 0; i < clients.get(gameID).size();i++){
+                if(clients.get(gameID).get(i).getNickname().equals(nickname)){
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 
 

@@ -5,6 +5,12 @@ import it.polimi.ingsw.Utils.Coordinates;
 import java.io.Serializable;
 
 public class Message implements Serializable {
+
+    private final int gameID;
+    public Message(int gameID) {
+        this.gameID=gameID;
+    }
+
     public int getMaxPlayers() {
         return -1;
     }
@@ -20,12 +26,9 @@ public class Message implements Serializable {
     public boolean isUsernameError() {
         return false;
     }
-
     public int getGameID() {
-        return -1;
+        return gameID;
     }
-
-
     public boolean isFirst() {
         return false;
     }
@@ -42,9 +45,6 @@ public class Message implements Serializable {
         return -1;
     }
 
-    public String getMessage() {
-        return null;
-    }
     public boolean init(){
         return false;
     }

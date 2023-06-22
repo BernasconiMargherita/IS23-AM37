@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.Network2.Messages.ChatMessage;
+import it.polimi.ingsw.Network2.Messages.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
@@ -42,11 +42,22 @@ public class GameSceneController {
 
 
     }
-
     public void sendChatMessage(ActionEvent actionEvent) {
 
     }
 
-    public void updateBoard(BoardMessage boardMessage) {
+    public void updateBoard(BoardResponse boardMessage) {
+    }
+
+    public void removeResponse(RemoveResponse removeResponse) {
+    }
+
+    public void turnResponse(TurnResponse turnResponse) {
+    }
+
+    public void endGame(EndMessage endGameMessage) {
+    }
+
+    public void wakeUp(WakeMessage wakeMessage) {
     }
 }

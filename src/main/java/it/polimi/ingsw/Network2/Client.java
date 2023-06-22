@@ -7,8 +7,13 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 public class Client extends UnicastRemoteObject implements ClientCallback  {
+    private int gameID;
+
     private String username;
-    private CommunicationProtocol communicationProtocol;
+    private final CommunicationProtocol communicationProtocol;
+
+    boolean firstPlayer=false;
+    private boolean initPlayer=false;
 
     public Client(CommunicationProtocol communicationProtocol) throws RemoteException {
         super();
@@ -20,8 +25,8 @@ public class Client extends UnicastRemoteObject implements ClientCallback  {
 
     }
     //da client a server
-    public Message sendMessage(Message message) {
-        return communicationProtocol.sendMessage(message);
+    public void sendMessage(Message message) {
+         communicationProtocol.sendMessage(message);
     }
 
     public String getUsername() {
@@ -43,6 +48,38 @@ public class Client extends UnicastRemoteObject implements ClientCallback  {
 
     public void closeConnection() {
         communicationProtocol.closeConnection();
+    }
+
+    public void setup(){
+        communicationProtocol.setup();
+    }
+
+    public long getUID(){
+        return communicationProtocol.getUID();
+    }
+
+    public void setFirst() {
+        firstPlayer=true;
+    }
+
+    public void setInit() {
+        initPlayer=true;
+    }
+
+    public boolean isInitPlayer() {
+        return initPlayer;
+    }
+
+    public boolean isFirstPlayer() {
+        return firstPlayer;
+    }
+
+    public int getGameID() {
+        return gameID;
+    }
+
+    public void setGameID(int gameID) {
+        this.gameID = gameID;
     }
 }
 

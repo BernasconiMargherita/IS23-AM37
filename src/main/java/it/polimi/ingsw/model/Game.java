@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.Exception.*;
 import it.polimi.ingsw.Utils.Coordinates;
+import it.polimi.ingsw.Utils.TileSlot;
 import it.polimi.ingsw.Utils.Utils;
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.CommonCards.CardCommonTarget;
@@ -36,7 +37,7 @@ public class Game implements Serializable {
 
 
     /**
-     * method to initialize effectively the Game, knowing the number of players, also chose a first player to start the game
+     * method to initialize effectively the Game, knowing the number of players
      */
     public void GameInit(List<Player> players) {
         commonDeck = new CommonDeck(players.size()).getCommonDeck();
@@ -123,6 +124,15 @@ public class Game implements Serializable {
             currentPlayer.addScore(1);
         }
     }
+
+    public TileSlot[][] getBoard(){
+        return board.getBoard();
+    }
+
+    public ArrayList<CardCommonTarget> getCommonTargets(){
+        return commonDeck;
+    }
+
 
     /**
      * Method to choose the Winner of the Game based on the score
