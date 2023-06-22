@@ -23,11 +23,11 @@ public class RMICommunicationProtocol implements CommunicationProtocol {
         try {
             Registry registry = LocateRegistry.getRegistry("localhost", 5001);
             server = (ServerInterface) registry.lookup(serverUrl);
-            return server.onMessage(message);
+            server.onMessage(message);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            return new ErrorMessage("Error occurred during RMI communication");
+            ErrorMessage errorMessage = new ErrorMessage("Error occurred during RMI communication");
+            onMessage(errorMessage);
         }
     }
 

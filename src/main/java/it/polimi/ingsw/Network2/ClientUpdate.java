@@ -18,7 +18,6 @@ public class ClientUpdate implements Runnable{
         this.thread.start();
     }
 
-
     @Override
     public void run() {
         while (!Thread.currentThread().isInterrupted()) {

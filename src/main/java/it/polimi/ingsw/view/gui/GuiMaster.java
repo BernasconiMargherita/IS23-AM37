@@ -59,12 +59,14 @@ public class GuiMaster extends ClientManager {
 
     @Override
     public void loginResponse(LoginResponse loginResponse) {
-
+        Platform.runLater(() ->
+                loginSceneController.loginResponse(loginResponse));
     }
 
     @Override
     public void initResponse(InitResponse initResponse) {
-
+        Platform.runLater(() ->
+                connectionSceneController.initResponse(initResponse));
     }
 
     @Override
@@ -75,21 +77,25 @@ public class GuiMaster extends ClientManager {
 
     @Override
     public void removeResponse(RemoveResponse removeResponse) {
-
+        Platform.runLater(() ->
+                gameSceneController.removeResponse(removeResponse));
     }
 
     @Override
     public void turnResponse(TurnResponse turnResponse) {
-
+        Platform.runLater(() ->
+                gameSceneController.turnResponse(turnResponse));
     }
 
     @Override
     public void endGame(EndMessage endGameMessage) {
-
+        Platform.runLater(() ->
+                gameSceneController.endGame(endGameMessage));
     }
 
     @Override
     public void wakeUp(WakeMessage wakeMessage) {
-
+        Platform.runLater(() ->
+                gameSceneController.wakeUp(wakeMessage));
     }
 }

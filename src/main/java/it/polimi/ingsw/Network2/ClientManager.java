@@ -24,7 +24,6 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
             case "TurnResponse" -> handleTurnResponse((TurnResponse) message);
             case "EndMessage" -> handleEndMessage((EndMessage) message);
         }
-
     }
 
     private void handleRemoveResponse(RemoveResponse message) {
@@ -83,7 +82,6 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
-
         startUpdater();
     }
 
@@ -96,11 +94,7 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
             clientUpdater.stop();
             clientUpdater = null;
         }
-
-        try {
-            client.closeConnection();
-        } catch (Exception e) {
-        }
+        client.closeConnection();
         client = null;
     }
 

@@ -83,7 +83,7 @@ public class LoginSceneController {
 
             Message message = new LoginMessage(username);
 
-            Message response = client.sendMessage(message);
+            client.sendMessage(message);
 
             if (response instanceof LoginResponse) {
                 try {

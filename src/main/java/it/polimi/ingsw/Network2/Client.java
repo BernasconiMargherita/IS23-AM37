@@ -20,8 +20,8 @@ public class Client extends UnicastRemoteObject implements ClientCallback  {
 
     }
     //da client a server
-    public Message sendMessage(Message message) {
-        return communicationProtocol.sendMessage(message);
+    public void sendMessage(Message message) {
+         communicationProtocol.sendMessage(message);
     }
 
     public String getUsername() {
