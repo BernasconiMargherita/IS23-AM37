@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Network2.Messages;
 
-public class SetMessage extends Message{
+import java.io.Serializable;
+
+public class SetMessage extends Message implements Serializable {
 
     private int maxPlayers;
     private int gameID;

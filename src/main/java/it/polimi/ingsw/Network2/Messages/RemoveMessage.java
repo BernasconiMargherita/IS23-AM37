@@ -2,7 +2,9 @@ package it.polimi.ingsw.Network2.Messages;
 
 import it.polimi.ingsw.Utils.Coordinates;
 
-public class RemoveMessage extends Message{
+import java.io.Serializable;
+
+public class RemoveMessage extends Message implements Serializable {
 
     private Coordinates[] positions;
     private int gameID;

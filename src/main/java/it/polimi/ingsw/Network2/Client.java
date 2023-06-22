@@ -26,7 +26,11 @@ public class Client extends UnicastRemoteObject implements ClientCallback  {
     }
     //da client a server
     public void sendMessage(Message message) {
-         communicationProtocol.sendMessage(message);
+        try {
+            communicationProtocol.sendMessage(message);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public String getUsername() {
@@ -39,23 +43,43 @@ public class Client extends UnicastRemoteObject implements ClientCallback  {
 
    //da server a client
     public void onMessage(Message message){
-        communicationProtocol.onMessage(message);
+        try {
+            communicationProtocol.onMessage(message);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public ArrayList<Message> getMessages() {
-        return communicationProtocol.getMessages();
+        try {
+            return communicationProtocol.getMessages();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void closeConnection() {
-        communicationProtocol.closeConnection();
+        try {
+            communicationProtocol.closeConnection();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void setup(){
-        communicationProtocol.setup();
+        try {
+            communicationProtocol.setup();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public long getUID(){
-        return communicationProtocol.getUID();
+        try {
+            return communicationProtocol.getUID();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void setFirst() {

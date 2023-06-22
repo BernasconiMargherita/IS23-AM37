@@ -76,10 +76,18 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
         CommunicationProtocol communicationProtocol;
 
         if (connection.equalsIgnoreCase("TCP")) {
-            communicationProtocol = new TCPCommunicationProtocol("localhost", 8082);
+            try {
+                communicationProtocol = new TCPCommunicationProtocol("localhost", 8082);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
 
         } else {
-            communicationProtocol = new RMICommunicationProtocol("RemoteController");
+            try {
+                communicationProtocol = new RMICommunicationProtocol("RemoteController");
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         try {

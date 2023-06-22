@@ -2,18 +2,20 @@ package it.polimi.ingsw.Network2;
 
 import it.polimi.ingsw.Network2.Messages.Message;
 
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public interface CommunicationProtocol {
-    void sendMessage(Message message);
-    void onMessage(Message message);
+public interface CommunicationProtocol extends Remote {
+    public void sendMessage(Message message) throws RemoteException;
+    public void onMessage(Message message)throws RemoteException;
 
-    ArrayList<Message> getMessages();
+    public ArrayList<Message> getMessages()throws RemoteException;
 
-    void closeConnection();
+    public void closeConnection()throws RemoteException;
 
-    void setup();
+    public  void setup()throws RemoteException;
 
-    long getUID();
+    public long getUID()throws RemoteException;
 }
 

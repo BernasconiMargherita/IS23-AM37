@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Network2.Messages;
 
-public class EndMessage extends Message{
+import java.io.Serializable;
+
+public class EndMessage extends Message implements Serializable {
 
     private String winner;
 

@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Network2.Messages;
 
-public class WakeMessage extends Message{
+import java.io.Serializable;
+
+public class WakeMessage extends Message implements Serializable {
     public WakeMessage() {
         super(-1);
     }

@@ -1,8 +1,6 @@
 package it.polimi.ingsw.view.cli;
 import it.polimi.ingsw.Network2.ClientManager;
-import it.polimi.ingsw.Network2.Messages.EndMessage;
-import it.polimi.ingsw.Network2.Messages.TurnResponse;
-import it.polimi.ingsw.Network2.Messages.WakeMessage;
+import it.polimi.ingsw.Network2.Messages.*;
 
 import java.util.*;
 import it.polimi.ingsw.model.Board.Board;
@@ -135,7 +133,47 @@ public class Cli1 extends ClientManager {
         }
     }
 
-    Scanner scanner = new Scanner(System.in);
+    @Override
+    public void loginResponse(LoginResponse loginResponse) {
+
+    }
+
+    @Override
+    public void initResponse(InitResponse initResponse) {
+
+    }
+
+    @Override
+    public void updateBoard(BoardResponse boardMessage) {
+
+    }
+
+    @Override
+    public void removeResponse(RemoveResponse removeResponse) {
+
+    }
+
+    @Override
+    public void turnResponse(TurnResponse turnResponse) {
+
+    }
+
+    @Override
+    public void endGame(EndMessage endGameMessage) {
+
+    }
+
+    @Override
+    public void wakeUp(WakeMessage wakeMessage) {
+
+    }
+
+    @Override
+    public void setResponse(SetResponse setResponse) {
+
+    }
+
+   /* Scanner scanner = new Scanner(System.in);
     // Seleziona il numero di giocatori
     out.println("Seleziona il numero di giocatori (da 1 a 4):");
     int numberPlayers = in.nextInt();
@@ -259,5 +297,5 @@ public class Cli1 extends ClientManager {
     @Override
     public void wakeUp(WakeMessage wakeMessage) {
 
-    }
+    }*/
 }

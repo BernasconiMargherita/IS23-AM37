@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Network2.Messages;
 
-public class TurnMessage extends Message {
+import java.io.Serializable;
+
+public class TurnMessage extends Message implements Serializable {
     private int gameID;
     private int column;
     private String nickname;

@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Network2.Messages;
 
-public class BoardMessage extends Message{
+import java.io.Serializable;
+
+public class BoardMessage extends Message implements Serializable {
     String nickname;
     int gameID;
 

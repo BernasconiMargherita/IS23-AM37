@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Network2.Messages;
 
-public class InitMessage extends Message {
+import java.io.Serializable;
+
+public class InitMessage extends Message implements Serializable {
 
     public InitMessage(int gameID) {
         super(gameID);
