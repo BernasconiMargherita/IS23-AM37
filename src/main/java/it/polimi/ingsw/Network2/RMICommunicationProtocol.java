@@ -15,7 +15,7 @@ import java.util.List;
 
 public class RMICommunicationProtocol extends UnicastRemoteObject implements CommunicationProtocol, Serializable {
     private final String serverUrl;
-    private ArrayList<Message> messageList;
+    private ArrayList<Message> messageList=new ArrayList<>();
     private ServerInterface server;
     long UID;
 
@@ -32,14 +32,11 @@ public class RMICommunicationProtocol extends UnicastRemoteObject implements Com
 
     public void sendMessage(Message message) throws RemoteException {
         try {
-
             server.onMessage(message);
-
         } catch (Exception e) {
             ErrorMessage errorMessage = new ErrorMessage("Error occurred during RMI communication");
             onMessage(errorMessage);
         }
-        message.typeMessage();
     }
 
     @Override
@@ -49,12 +46,9 @@ public class RMICommunicationProtocol extends UnicastRemoteObject implements Com
 
     @Override
     public ArrayList<Message> getMessages() throws RemoteException {
-
         ArrayList<Message> copy;
-
         copy = new ArrayList<>(List.copyOf(messageList));
         messageList.clear();
-
         return copy;
     }
 

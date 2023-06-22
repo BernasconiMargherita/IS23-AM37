@@ -139,8 +139,8 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
                 throw new RuntimeException(ex);
             }
 
-            clients.get(currentGameID).get(getPosition(nickname, currentGameID)).sendMessage(new LoginResponse(false, currentGameID, true, false));
-
+            Connection client = clients.get(currentGameID).get(getPosition(nickname, currentGameID));
+            client.sendMessage(new LoginResponse(false, currentGameID, true, false));
         }
 
     }
@@ -259,13 +259,11 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
     }
 
     public int getPosition(String nickname ,int gameID){
-        if (masterController.getGameController(gameID).getMaxPlayers() == masterController.getGameController(gameID).getNumOfPlayers()){
             for(int i = 0; i < clients.get(gameID).size();i++){
                 if(clients.get(gameID).get(i).getNickname().equals(nickname)){
                     return i;
                 }
             }
-        }
         return -1;
     }
 
