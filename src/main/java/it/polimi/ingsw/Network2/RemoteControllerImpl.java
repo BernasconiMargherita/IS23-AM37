@@ -164,8 +164,6 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
             }
             String player = masterController.getGameController(gameID).getCurrentPlayer().getNickname();
             playClient(getPosition(player, gameID), gameID);
-
-
         }
         catch (GameNotReadyException | GameAlreadyStarted e) {
             throw new RuntimeException(e);

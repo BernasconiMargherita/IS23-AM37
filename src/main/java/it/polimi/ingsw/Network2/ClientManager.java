@@ -21,6 +21,8 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
 
     @Override
     public void onUpdate(Message message) {
+        System.out.println(message.typeMessage());
+
         switch (message.typeMessage()) {
             case "LoginResponse" -> handleLoginResponse((LoginResponse) message);
             case "InitResponse" -> handleInitResponse((InitResponse) message);
@@ -73,7 +75,7 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
                 queue.remove().run();
             }catch (NoSuchElementException e){
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(1000);
                 } catch (InterruptedException ex) {
                     throw new RuntimeException(ex);
                 }
