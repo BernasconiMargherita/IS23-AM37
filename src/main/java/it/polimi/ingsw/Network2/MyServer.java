@@ -55,9 +55,10 @@ public class MyServer extends UnicastRemoteObject implements ServerInterface {
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();
-                long socketId = System.currentTimeMillis();
+                Long socketId = System.currentTimeMillis();
                 server.addTcpCl(socketId, clientSocket);
-                new PrintWriter(clientSocket.getOutputStream(), true).println(socketId);
+                String json = gson.toJson(socketId);
+                new PrintWriter(clientSocket.getOutputStream(), true).println(json);
                 ClientHandler clientHandler = new ClientHandler(clientSocket, socketId, myServer);
                 clientHandler.start();
             }
