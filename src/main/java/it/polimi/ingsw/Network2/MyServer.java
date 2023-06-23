@@ -2,6 +2,7 @@ package it.polimi.ingsw.Network2;
 
 import com.google.gson.Gson;
 import it.polimi.ingsw.Network2.Messages.Message;
+import it.polimi.ingsw.Network2.Messages.UIDResponse;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -55,10 +56,16 @@ public class MyServer extends UnicastRemoteObject implements ServerInterface {
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();
-                long socketId = System.currentTimeMillis();
-                server.addTcpCl(socketId, clientSocket);
-                new PrintWriter(clientSocket.getOutputStream(), true).println(socketId);
-                ClientHandler clientHandler = new ClientHandler(clientSocket, socketId, myServer);
+                long UID = System.currentTimeMillis();
+                server.addTcpCl(UID, clientSocket);
+                Message UIDResponse=new UIDResponse(UID);
+                Gson UIDJson=new Gson();
+
+
+                //Da finire
+
+                new PrintWriter(clientSocket.getOutputStream(), true).println(UIDResponse);
+                ClientHandler clientHandler = new ClientHandler(clientSocket, UID, myServer);
                 clientHandler.start();
             }
         } catch (Exception e) {
@@ -110,6 +117,10 @@ public class MyServer extends UnicastRemoteObject implements ServerInterface {
             String request = in.readLine();
             Gson gson = new Gson();
             Message requestMessage = gson.fromJson(request, Message.class);
+
+
+            //da sistemare
+
 
             in.close();
             out.close();

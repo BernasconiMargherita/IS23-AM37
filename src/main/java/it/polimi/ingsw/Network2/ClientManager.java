@@ -49,7 +49,6 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
 
     private void handleLoginResponse(LoginResponse message) {
         queue.add(()->loginResponse(message));
-        System.out.println("added task");
     }
 
     private void handleBoardResponse(BoardResponse message) {
@@ -75,7 +74,7 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
                 queue.remove().run();
             }catch (NoSuchElementException e){
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(100);
                 } catch (InterruptedException ex) {
                     throw new RuntimeException(ex);
                 }
