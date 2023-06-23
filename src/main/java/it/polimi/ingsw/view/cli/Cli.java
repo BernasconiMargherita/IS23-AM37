@@ -60,20 +60,17 @@ public class Cli extends ClientManager {
         if(loginResponse.isUsernameError()){
             out.println("Not valid username");
             login();
-            return;
         }
         if(loginResponse.isFirst()){
             out.println("Choose number of players\n");
             numPlayers=in.nextInt();
             gameID=loginResponse.getGameID();
             getClient().sendMessage(new SetMessage(numPlayers,gameID));
-            return;
+            out.println("Messaggio inviato");
         }
-        if(loginResponse.isInit()){
+       else if(loginResponse.isInit()){
             getClient().sendMessage(new InitMessage(gameID));
-            return;
         }
-
     }
 
     @Override
@@ -90,7 +87,8 @@ public class Cli extends ClientManager {
         for (String[] row : matrix) {
             Arrays.fill(row, "Vuota");
         }
-        out.println("ciao c'è la board")
+        out.println("ciao c'è la board");
+    }
 
 
 

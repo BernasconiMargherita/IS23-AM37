@@ -27,10 +27,11 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
         this.serverIp = serverIp;
         this.serverPort = serverPort;
         this.messageList = new ArrayList<>();
+        startCommunication();
 
         messageReceiver = new Thread(this);
         messageReceiver.start();
-        startCommunication();
+
     }
 
     private void startCommunication() {

@@ -21,6 +21,8 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
 
     @Override
     public void onUpdate(Message message) {
+        System.out.println(message.typeMessage());
+
         switch (message.typeMessage()) {
             case "LoginResponse" -> handleLoginResponse((LoginResponse) message);
             case "InitResponse" -> handleInitResponse((InitResponse) message);
@@ -47,7 +49,6 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
 
     private void handleLoginResponse(LoginResponse message) {
         queue.add(()->loginResponse(message));
-        System.out.println("added task");
     }
 
     private void handleBoardResponse(BoardResponse message) {
