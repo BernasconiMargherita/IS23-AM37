@@ -114,9 +114,13 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
                 clients.get(currentGameID).add(new RMIConnect(tempRmi.get(UID), nickname));
             }
 
-            if (masterController.getGameController(currentGameID).getMaxPlayers() == masterController.getGameController(currentGameID).getNumOfPlayers()){
+            while(masterController.getGameController(currentGameID).getNumOfPlayers() > 1 && masterController.getGameController(currentGameID).getMaxPlayers()!= -1){
+                //実行するアクションがありません
+            }
+            if(masterController.getGameController(currentGameID).getMaxPlayers() == masterController.getGameController(currentGameID).getNumOfPlayers()){
                 clients.get(currentGameID).get(getPosition(nickname, currentGameID)).sendMessage(new LoginResponse(false, currentGameID, false, true));
-            }else{
+            }
+            else{
                 clients.get(currentGameID).get(getPosition(nickname, currentGameID)).sendMessage(new LoginResponse(false, currentGameID, false, false));
             }
 

@@ -58,13 +58,9 @@ public class MyServer extends UnicastRemoteObject implements ServerInterface {
                 Socket clientSocket = serverSocket.accept();
                 long UID = System.currentTimeMillis();
                 server.addTcpCl(UID, clientSocket);
-                Message UIDResponse=new UIDResponse(UID);
-                Gson UIDJson=new Gson();
-
-
-                //Da finire
-
-                new PrintWriter(clientSocket.getOutputStream(), true).println(UIDResponse);
+                Message uidResponse=new UIDResponse(UID);
+                String json = gson.toJson(uidResponse);
+                new PrintWriter(clientSocket.getOutputStream(), true).println(json);
                 ClientHandler clientHandler = new ClientHandler(clientSocket, UID, myServer);
                 clientHandler.start();
             }
@@ -113,19 +109,12 @@ public class MyServer extends UnicastRemoteObject implements ServerInterface {
         try {
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             out = new PrintWriter(clientSocket.getOutputStream(), true);
-
-            String request = in.readLine();
             Gson gson = new Gson();
-            Message requestMessage = gson.fromJson(request, Message.class);
-
-
-            //da sistemare
-
-
-            in.close();
-            out.close();
-            clientSocket.close();
-
+            while(true){
+                String request = in.readLine();
+                Message requestMessage = gson.fromJson(request, Message.class);
+                onMessage(requestMessage);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
