@@ -32,4 +32,9 @@ public class RMIConnect implements Connection{
     public String getNickname() {
         return nickname;
     }
+
+    @Override
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 }

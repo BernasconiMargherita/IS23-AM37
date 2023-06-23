@@ -6,4 +6,5 @@ public interface Connection {
     public void sendMessage(Message message);
     public Long getUID();
     public String getNickname();
+    public void setNickname(String nickname);
 }

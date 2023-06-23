@@ -79,7 +79,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
     }
 
-    public void setMaxPlayers(Message message) throws RemoteException {
+    public void  setMaxPlayers(Message message) throws RemoteException {
         int gameID = message.getGameID();
         int maxPlayers = message.getMaxPlayers();
         masterController.getGameController(gameID).setMaxPlayers(maxPlayers);
@@ -202,6 +202,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
     @Override
     public synchronized void registerPlayer(int gameID , String nickname, Long UID) throws RemoteException {
         try {
+            clients.get(gameID).get(getPosition(UID,gameID)).setNickname(nickname);
             masterController.getGameController(gameID).login(nickname);
         } catch (UsernameException e) {
             clients.get(gameID).get(getPosition(UID, gameID)).sendMessage(new UsernameError(gameID));

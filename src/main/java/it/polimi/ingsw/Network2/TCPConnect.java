@@ -44,6 +44,11 @@ public class TCPConnect implements Connection{
         return nickname;
     }
 
+    @Override
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
     public void sendMessage(Message message){
         Gson gson = new Gson();
         String json = gson.toJson(message);
