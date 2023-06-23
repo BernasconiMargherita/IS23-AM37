@@ -49,7 +49,7 @@ public class MyServer extends UnicastRemoteObject implements ServerInterface {
 
 
         // Creare un socket server TCP
-        ServerSocket serverSocket = new ServerSocket(8082);
+        ServerSocket serverSocket = new ServerSocket(8083);
         System.out.println("Il server TCP è in esecuzione...");
 
         try {

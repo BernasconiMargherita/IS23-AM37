@@ -8,31 +8,21 @@ public class LoginResponse extends Message implements Serializable {
     private boolean first;
     private boolean init;
 
-    public LoginResponse(boolean usernameError, int gameID, boolean first, boolean init) {
+    public LoginResponse( int gameID) {
         super(gameID);
         this.usernameError = usernameError;
         this.first = first;
         this.init = init;
+        this.gameID = gameID;
     }
 
     @Override
     public int getGameID() {
         return gameID;
     }
-
-    public boolean isUsernameError() {
-        return usernameError;
-    }
-
-    public boolean isFirst() {
-        return first;
-    }
-
     public String typeMessage(){
         return "LoginResponse";
     }
 
-    public boolean isInit() {
-        return init;
-    }
+
 }
