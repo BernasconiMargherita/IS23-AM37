@@ -11,6 +11,9 @@ public interface ClientListener {
     void endGame(EndMessage endGameMessage);
     void wakeUp(WakeMessage wakeMessage);
     void setResponse(SetResponse setResponse);
+    void firstResponse(FirstResponse firstResponse);
+    void preLoginResponse(PreLoginResponse preLoginResponse);
+    void usernameError(UsernameError usernameError);
 
 
 }

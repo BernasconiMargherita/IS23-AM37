@@ -15,7 +15,9 @@ public class GuiMaster extends ClientManager {
     private LoginSceneController loginSceneController;
     private GameSceneController gameSceneController;
     private ConnectionSceneController connectionSceneController;
+    private FirstConnectionSceneController firstConnectionSceneController;
     private static GuiMaster instance = null;
+
 
 
     public static <T> T setLayout(Scene scene, String path) {
@@ -58,7 +60,7 @@ public class GuiMaster extends ClientManager {
     @Override
     public void loginResponse(LoginResponse loginResponse) {
         Platform.runLater(() ->
-                loginSceneController.loginResponse(loginResponse));
+                connectionSceneController.loginResponse(loginResponse));
     }
 
     @Override
@@ -100,7 +102,25 @@ public class GuiMaster extends ClientManager {
     @Override
     public void setResponse(SetResponse setResponse) {
         Platform.runLater(() ->
-                connectionSceneController.setResponse(setResponse));
+                firstConnectionSceneController.setResponse(setResponse));
 
+    }
+
+    public void firstResponse(FirstResponse firstResponse) {
+        Platform.runLater(() ->
+                loginSceneController.firstResponse(firstResponse));
+    }
+
+    public void preLoginResponse(PreLoginResponse preLoginResponse) {
+        Platform.runLater(() ->
+                loginSceneController.preLoginResponse(preLoginResponse));
+    }
+    public void usernameError(UsernameError usernameError) {
+        Platform.runLater(() ->
+                connectionSceneController.usernameError(usernameError));
+    }
+
+    public void setFirstConnectionSceneController(FirstConnectionSceneController firstConnectionSceneController) {
+        this.firstConnectionSceneController=firstConnectionSceneController;
     }
 }

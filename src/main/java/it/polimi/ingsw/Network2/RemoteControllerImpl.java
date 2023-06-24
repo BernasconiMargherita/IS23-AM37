@@ -235,9 +235,9 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
     public void sendBoard(int gameID, String nickname) throws RemoteException{
         TileSlot[][] board = masterController.getGameController(gameID).getBoard();
-        ColourTile[][] colours = new ColourTile[9][9];
-        for(int i = 0; i < 9; i++){
-            for(int j = 0; j<9 ; j++){
+        ColourTile[][] colours = new ColourTile[11][11];
+        for(int i = 0; i < 11; i++){
+            for(int j = 0; j<11 ; j++){
                 if(!board[i][j].isFree()){
                     colours[i][j] = board[i][j].getAssignedTile().getColour();
                 }
