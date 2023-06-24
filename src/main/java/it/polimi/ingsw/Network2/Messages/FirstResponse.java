@@ -7,6 +7,6 @@ public class FirstResponse extends Message{
 
     @Override
     public String typeMessage() {
-        return "FirstMessage";
+        return "FirstResponse";
     }
 }

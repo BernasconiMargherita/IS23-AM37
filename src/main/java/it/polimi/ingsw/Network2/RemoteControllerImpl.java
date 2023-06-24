@@ -65,6 +65,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
         if(message.typeMessage().equals("PreLoginMessage")){
             preRegistration(message);
         }
+
         if(message.typeMessage().equals("SetMessage")){
             setMaxPlayers(message);
         }
@@ -89,7 +90,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
                 lobby.get(i).add(new Pair<>(message.getUID(), message.getNickname()));
                 int gameID = startGame();
                 clients.put(gameID, new ArrayList<>());
-                addClient(message, gameID);
+                addClient(message.getUID(), message.getNickname(), gameID);
                 registerPlayer(gameID, message.getNickname(), message.getUID());
                 clients.get(gameID).get(getPosition(message.getUID(), gameID)).sendMessage(new FirstResponse(gameID));
                 break;
@@ -191,13 +192,13 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
         }
     }
 
-    protected void addClient(Message message, int gameID) {
-        if(message.getProtocol().equals("TCP")){
-            clients.get(gameID).add(new TCPConnect(tempTcp.get(message.getUID()), message.getUID(), message.getNickname()));
+    protected void addClient(Long UID, String nickname, int gameID) {
+        if(tempTcp.containsKey(UID)){
+            clients.get(gameID).add(new TCPConnect(tempTcp.get(UID), UID, nickname));
         }
 
-        if(message.getProtocol().equals("RMI")){
-            clients.get(gameID).add(new RMIConnect(tempRmi.get(message.getUID()), message.getUID(), message.getNickname()));
+        if(tempRmi.containsKey(UID)){
+            clients.get(gameID).add(new RMIConnect(tempRmi.get(UID), UID, nickname));
         }
         return;
     }
@@ -218,7 +219,8 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
     @Override
     public synchronized int startGame() throws RemoteException {
-        return currentGameID++;
+        masterController.newGameController();
+        return currentGameID + 1 ;
     }
 
 
@@ -233,12 +235,16 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
         try {
             clients.get(gameID).get(getPosition(UID,gameID)).setNickname(nickname);
             masterController.getGameController(gameID).login(nickname);
+
         } catch (UsernameException e) {
             clients.get(gameID).get(getPosition(UID, gameID)).sendMessage(new UsernameError(gameID));
         } catch (GameAlreadyStarted | MaxPlayerException e) {
             throw new RuntimeException(e);
         }
-        clients.get(gameID).get(getPosition(UID, gameID)).sendMessage(new LoginResponse(gameID));
+        if(masterController.getGameController(gameID).getNumOfPlayers() != 1){
+            clients.get(gameID).get(getPosition(UID, gameID)).sendMessage(new LoginResponse(gameID));
+        }
+
     }
 
 

@@ -6,7 +6,7 @@ public class SetMessage extends Message implements Serializable {
 
     private int maxPlayers;
     private int gameID;
-    private long UID
+    private long UID;
 
     public SetMessage(int maxPlayers, int gameID, Long UID) {
         super(gameID);

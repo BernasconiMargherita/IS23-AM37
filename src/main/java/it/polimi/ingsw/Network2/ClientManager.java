@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Network2;
 
 import it.polimi.ingsw.Network2.Messages.*;
-import it.polimi.ingsw.view.gui.GuiMaster;
 
 import java.rmi.RemoteException;
 import java.util.NoSuchElementException;
@@ -102,7 +101,7 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
 
         if (connection.equalsIgnoreCase("TCP")) {
             try {
-                communicationProtocol = new TCPCommunicationProtocol("localhost", 8082);
+                communicationProtocol = new TCPCommunicationProtocol("localhost", 8083);
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
