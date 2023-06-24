@@ -58,11 +58,11 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
     public void onMessage(Message message) throws RemoteException {
 
 
-        if(message.typeMessage().equals( "LoginMessage")){
+        if(message.typeMessage().equals("LoginMessage")){
             registerPlayer(message.getGameID(),message.getNickname(),message.getUID());
         }
 
-        if(message.typeMessage().equals( "PreLoginMessage")){
+        if(message.typeMessage().equals("PreLoginMessage")){
             preRegistration(message);
         }
         if(message.typeMessage().equals("SetMessage")){
