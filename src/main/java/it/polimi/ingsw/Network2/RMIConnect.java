@@ -6,9 +6,11 @@ import java.rmi.RemoteException;
 
 public class RMIConnect implements Connection{
     private final CommunicationProtocol protocol;
-    private final String nickname;
-    public RMIConnect(CommunicationProtocol protocol, String nickname){
+    private Long UID;
+    private String nickname;
+    public RMIConnect(CommunicationProtocol protocol, Long UID, String nickname){
         this.protocol = protocol;
+        this.UID = UID;
         this.nickname = nickname;
     }
 
@@ -22,7 +24,17 @@ public class RMIConnect implements Connection{
         }
     }
     @Override
+    public Long getUID() {
+        return UID;
+    }
+
+    @Override
     public String getNickname() {
         return nickname;
+    }
+
+    @Override
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 }

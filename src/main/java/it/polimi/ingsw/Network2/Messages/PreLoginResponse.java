@@ -4,4 +4,9 @@ public class PreLoginResponse extends Message{
     public PreLoginResponse(int gameID) {
         super(gameID);
     }
+
+    @Override
+    public String typeMessage() {
+        return "PreLoginResponse";
+    }
 }
