@@ -1,9 +1,11 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.Network2.Client;
 import it.polimi.ingsw.Network2.Messages.*;
 import it.polimi.ingsw.model.Tile.ColourTile;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -12,6 +14,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
 import java.util.Objects;
+import java.util.Random;
 
 public class GameSceneController {
 
@@ -24,50 +27,143 @@ public class GameSceneController {
     public TextField messageTextField;
     public GridPane boardMask;
     public GridPane shelfMask;
+    public Label tileError;
+
     private static final int BOARD_SIZE = 11;
+    public GridPane hand;
+    private ColourTile[][] turnBoard;
+
+
+
     @FXML
     public void initialize() {
 
         GuiMaster guiMaster = GuiMaster.getInstance();
         guiMaster.setGameSceneController(this);
 
+        board.fitWidthProperty().bind(boardMask.widthProperty());
+
+        String boardImage = Objects.requireNonNull(getClass().getResource("/assets/boards/livingroom.png")).toExternalForm();
+        board.setImage(new Image(boardImage));
+
         String backgroundImage = Objects.requireNonNull(getClass().getResource("/assets/misc/sfondo parquet.jpg")).toExternalForm();
         rootPane.setStyle("-fx-background-image: url('" + backgroundImage + "'); -fx-background-size: cover;");
 
-        double boardWidth = board.getImage().getWidth();
-        double boardHeight = board.getImage().getHeight();
-
-        boardMask.setPrefWidth(boardWidth);
-        boardMask.setPrefHeight(boardHeight);
-
-        updateBoard(new BoardResponse(new ColourTile[1][1]));
     }
     public void sendChatMessage(ActionEvent actionEvent) {
 
     }
 
     public void updateBoard(BoardResponse boardMessage) {
-        for (int row = 1; row < BOARD_SIZE-1; row++) {
-            for (int col = 1; col < BOARD_SIZE-1; col++) {
-                ImageView tile = createTile();
-                boardMask.add(tile, col, row);
+        turnBoard = boardMessage.getBoard();
+        for (int row = 0; row < BOARD_SIZE; row++) {
+            for (int col = 0; col < BOARD_SIZE; col++) {
+                if (!turnBoard[row][col].equals(ColourTile.FREE)) {
+                    ImageView tile = createBoardTile(turnBoard[row][col],row,col);
+                    boardMask.add(tile, col, row);
+                }
             }
         }
+
     }
 
-    private ImageView createTile() {
+    private ImageView createBoardTile(ColourTile colourTile, int row, int col) {
+        String path = "/assets/item tiles/";
+        Random random = new Random();
+        int randInt = 0;
+        while ((randInt < 1)){
+            randInt = random.nextInt(4);
+        }
+        switch (colourTile){
 
-        String TileImage = Objects.requireNonNull(getClass().getResource("/assets/item tiles/Gatti1.3.png")).toExternalForm();
+            case CATS -> {
+                path+="Gatti1."+randInt+".png";
+            }
+            case BOOKS -> {
+                path+="Libri1."+randInt+".png";
+            }
+            case GAMES -> {
+                path+="Giochi1."+randInt+".png";
+            }
+            case FRAMES -> {
+                path+="Cornici1."+randInt+".png";
+            }
+            case TROPHIES -> {
+                path+="Trofei1."+randInt+".png";
+            }
+            case PLANTS -> {
+                path+="Piante1."+randInt+".png";
+            }
+
+        }
+        String TileImage = Objects.requireNonNull(getClass().getResource(path)).toExternalForm();
         ImageView imageView = new ImageView();
         imageView.setImage(new Image(TileImage));
 
-        imageView.setFitWidth(70);
-        imageView.setFitHeight(70);
+        imageView.setFitWidth(55);
+        imageView.setFitHeight(55);
 
-
-        imageView.setOnMouseClicked(event -> System.out.println("Tile clicked"));
+        String finalPath = path;
+        imageView.setOnMouseClicked(event -> ChooseTile(row,col, finalPath));
         return imageView;
 
+    }
+
+    private void ChooseTile(int row, int col, String finalPath) {
+        ImageView tile=findTile(row,col);
+        if ((turnBoard[row + 1][col].equals(ColourTile.FREE)) || (turnBoard[row - 1][col].equals(ColourTile.FREE)) || (turnBoard[row][col + 1].equals(ColourTile.FREE)) || (turnBoard[row][col - 1].equals(ColourTile.FREE))){
+                tile.setImage(null);
+                ImageView handTile=createShelfTile(finalPath);
+                hand.add(handTile,findFirstEmptyColumn(hand),0);
+        }
+    }
+
+    private int findFirstEmptyColumn(GridPane hand) {
+        int numColumns = 3;
+
+        for (int column = 0; column < numColumns; column++) {
+            if (isColumnEmpty(column,hand)) {
+                return column;
+            }
+        }
+
+        return -1;
+    }
+
+    private boolean isColumnEmpty(int column, GridPane hand) {
+        for (javafx.scene.Node node : hand.getChildren()) {
+            Integer columnIndex = GridPane.getColumnIndex(node);
+            if (columnIndex != null && columnIndex == column) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private ImageView createShelfTile(String finalPath) {
+        String TileImage = Objects.requireNonNull(getClass().getResource(finalPath)).toExternalForm();
+        ImageView imageView = new ImageView();
+        imageView.setImage(new Image(TileImage));
+
+        imageView.setFitWidth(55);
+        imageView.setFitHeight(55);
+        
+        imageView.setOnMouseClicked(event ->System.out.println("Tile Clicked"));
+        return imageView;
+    }
+
+    private ImageView findTile(int row, int col) {
+
+        ImageView targetImageView = null;
+        for (javafx.scene.Node node : boardMask.getChildren()) {
+            if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == col) {
+                if (node instanceof ImageView) {
+                    targetImageView = (ImageView) node;
+                    break;
+                }
+            }
+        }
+        return targetImageView;
     }
 
     public void removeResponse(RemoveResponse removeResponse) {
@@ -80,7 +176,8 @@ public class GameSceneController {
     }
 
     public void wakeUp(WakeMessage wakeMessage) {
-
+        Client client=GuiMaster.getInstance().getClient();
+        client.sendMessage(new BoardMessage(client.getUsername(), client.getGameID()));
     }
 
 }

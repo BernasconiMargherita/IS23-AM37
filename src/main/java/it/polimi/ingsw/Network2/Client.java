@@ -8,12 +8,8 @@ import java.util.ArrayList;
 
 public class Client extends UnicastRemoteObject implements ClientCallback  {
     private int gameID;
-
     private String username;
     private final CommunicationProtocol communicationProtocol;
-
-    boolean firstPlayer=false;
-    private boolean initPlayer=false;
 
     public Client(CommunicationProtocol communicationProtocol) throws RemoteException {
         super();
@@ -80,22 +76,6 @@ public class Client extends UnicastRemoteObject implements ClientCallback  {
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public void setFirst() {
-        firstPlayer=true;
-    }
-
-    public void setInit() {
-        initPlayer=true;
-    }
-
-    public boolean isInitPlayer() {
-        return initPlayer;
-    }
-
-    public boolean isFirstPlayer() {
-        return firstPlayer;
     }
 
     public int getGameID() {

@@ -1,8 +1,10 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.Network2.Client;
-import it.polimi.ingsw.Network2.Messages.LoginMessage;
-import it.polimi.ingsw.Network2.Messages.LoginResponse;
+import it.polimi.ingsw.Network2.Messages.FirstResponse;
+import it.polimi.ingsw.Network2.Messages.PreLoginMessage;
+import it.polimi.ingsw.Network2.Messages.PreLoginResponse;
+import it.polimi.ingsw.Network2.Messages.UsernameError;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -19,6 +21,7 @@ public class LoginSceneController {
     public GridPane gridPane;
     public Button communication;
     public Button loginButton;
+    public Label usernameLabel;
     @FXML
     private TextField usernameField;
     @FXML
@@ -55,6 +58,7 @@ public class LoginSceneController {
         rootPane.setStyle("-fx-background-image: url('" + backgroundImage + "'); -fx-background-size: cover;");
 
         usernameField.setVisible(false);
+        usernameLabel.setVisible(false);
 
         toggleGroup=new ToggleGroup();
         RMI.setToggleGroup(toggleGroup);
@@ -67,28 +71,10 @@ public class LoginSceneController {
             usernameError.setText("Inserisci un username!");
         } else {
             Client client = guiMaster.getClient();
-            client.sendMessage(new LoginMessage(username, connection, client.getUID()));
+            client.sendMessage(new PreLoginMessage(-1,client.getUID(),username));
         }
     }
 
-
-    public void loginResponse(LoginResponse loginResponse) {
-        if (!loginResponse.isUsernameError()) {
-            Client client = GuiMaster.getInstance().getClient();
-            client.setUsername(username);
-            Scene scene=gridPane.getScene();
-
-            if (loginResponse.isFirst()) client.setFirst();
-            if (loginResponse.isInit()) client.setInit();
-
-            client.setGameID(loginResponse.getGameID());
-            GuiMaster.setLayout(scene, "/fxml/connectionScene.fxml");
-
-        }
-        else {
-            usernameError.setText("username già preso!");
-        }
-    }
 
 
     public void communicationChoice(MouseEvent mouseEvent) {
@@ -108,6 +94,19 @@ public class LoginSceneController {
 
         loginButton.setVisible(true);
         usernameField.setVisible(true);
+        usernameLabel.setVisible(true);
     }
+
+    public void firstResponse(FirstResponse firstResponse) {
+        Scene scene=gridPane.getScene();
+        GuiMaster.setLayout(scene, "/fxml/firstConnectionScene.fxml");
+    }
+
+
+    public void preLoginResponse(PreLoginResponse preLoginResponse) {
+        Scene scene=gridPane.getScene();
+        GuiMaster.setLayout(scene, "/fxml/connectionScene.fxml");
+    }
+
 }
 

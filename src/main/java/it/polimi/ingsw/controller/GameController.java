@@ -19,7 +19,6 @@ import java.util.Random;
  * Class that Manages a Game
  */
 public class GameController implements Serializable {
-    public static int MAX_PLAYERS = 4;
     /**
      * List of the player in this game
      */
@@ -47,7 +46,7 @@ public class GameController implements Serializable {
         this.players = new ArrayList<>();
         this.game = new Game();
         this.turnChanger = 0;
-        this.maxPlayers = MAX_PLAYERS;
+        this.maxPlayers = -1;
     }
 
 
@@ -64,9 +63,6 @@ public class GameController implements Serializable {
         Player newPlayer = new Player(nickname);
 
         if (game.getGameState() != GameState.WAITING_PLAYERS) throw new GameAlreadyStarted("Game already started");
-
-        if (players.size() == maxPlayers)
-            throw new MaxPlayerException("There are already" + maxPlayers + "players so " + newPlayer.getNickname() + " cannot be added");
 
         if (!players.isEmpty()) {
             if (nickname.equals(getPlayerByNickname(nickname))) throw new UsernameException("Username already taken");

@@ -65,7 +65,7 @@ public class Cli extends ClientManager {
             out.println("Choose number of players\n");
             numPlayers=in.nextInt();
             gameID=loginResponse.getGameID();
-            getClient().sendMessage(new SetMessage(numPlayers,gameID));
+            getClient().sendMessage(new SetMessage(numPlayers,gameID, client.getUID()));
             out.println("Messaggio inviato");
         }
        else if(loginResponse.isInit()){
