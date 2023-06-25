@@ -1,8 +1,10 @@
 package it.polimi.ingsw.Network2;
 
 import com.google.gson.Gson;
-import it.polimi.ingsw.Network2.Messages.Message;
-import it.polimi.ingsw.Network2.Messages.UIDResponse;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import it.polimi.ingsw.Network2.Messages.*;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -114,17 +116,27 @@ public class MyServer extends UnicastRemoteObject implements ServerInterface {
             Gson gson = new Gson();
             while(true){
                 String request = in.readLine();
-                Message requestMessage = gson.fromJson(request, Message.class);
-                onMessage(requestMessage);
+                onMessage(request);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void onMessage(Message request) {
+    private void onMessage(String request) {
         try {
-            myServer.onMessage(request);
+            Gson gson = new Gson();
+            JsonElement rootElement = JsonParser.parseString(request);
+            JsonObject jsonObject = rootElement.getAsJsonObject();
+            String type = jsonObject.get("typeMessage").getAsString();
+            switch (type) {
+                case "PreLoginMessage" -> myServer.onMessage(gson.fromJson(request, PreLoginMessage.class));
+                case "LoginMessage" -> myServer.onMessage(gson.fromJson(request, LoginMessage.class));
+                case "SetMessage" -> myServer.onMessage(gson.fromJson(request, SetMessage.class));
+                case "RemoveMessage" -> myServer.onMessage(gson.fromJson(request, RemoveMessage.class));
+                case "TurnMessage" -> myServer.onMessage(gson.fromJson(request, TurnMessage.class));
+                case "BoardMessage" -> myServer.onMessage(gson.fromJson(request, BoardMessage.class));
+            }
         } catch (RemoteException e) {
             e.printStackTrace();
         }

@@ -6,10 +6,12 @@ import java.io.Serializable;
 
 public class BoardResponse extends Message implements Serializable {
     private ColourTile[][] board;
+    private String typeMessage ;
 
     public BoardResponse(ColourTile[][] board,int gameID,long UID){
         super(gameID,UID);
         this.board = board;
+        this.typeMessage = "BoardResponse";
     }
 
     @Override

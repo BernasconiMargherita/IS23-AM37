@@ -8,10 +8,12 @@ import java.util.ArrayList;
 public class CardsResponse extends Message{
     private final ArrayList<CardCommonTarget> commonTargets;
     private final CardPersonalTarget cardPersonalTarget;
+    private String typeMessage ;
     public CardsResponse(int gameID, Long UID, ArrayList<CardCommonTarget> commonTargets, CardPersonalTarget cardPersonalTarget ) {
         super(gameID, UID);
         this.commonTargets = commonTargets;
         this.cardPersonalTarget = cardPersonalTarget;
+        this.typeMessage = "CardsResponse";
     }
     public CardPersonalTarget getCardPersonalTarget() {
         return cardPersonalTarget;
