@@ -6,9 +6,11 @@ import java.io.Serializable;
 
 public class Message implements Serializable {
 
+    private final Long UID;
     private final int gameID;
-    public Message(int gameID) {
+    public Message(int gameID,Long UID) {
         this.gameID=gameID;
+        this.UID=UID;
     }
 
     public int getMaxPlayers() {
@@ -42,7 +44,7 @@ public class Message implements Serializable {
     }
 
     public long getUID() {
-        return -1;
+        return UID;
     }
 
     public boolean init(){

@@ -6,8 +6,8 @@ public class BoardMessage extends Message implements Serializable {
     String nickname;
     int gameID;
 
-    public BoardMessage(String nickname, int gameID) {
-        super(gameID);
+    public BoardMessage(String nickname, int gameID,Long UID) {
+        super(gameID,UID);
         this.nickname = nickname;
     }
 

@@ -11,8 +11,8 @@ public class InitResponse extends Message implements Serializable {
     private final ArrayList<CardCommonTarget> commonTargets;
     private final CardPersonalTarget cardPersonalTarget;
 
-    public InitResponse(ArrayList<CardCommonTarget> commonTargets, CardPersonalTarget cardPersonalTarget) {
-        super(-1);
+    public InitResponse(ArrayList<CardCommonTarget> commonTargets, CardPersonalTarget cardPersonalTarget,int gameID,long UID) {
+        super(gameID,UID);
         this.commonTargets = commonTargets;
         this.cardPersonalTarget = cardPersonalTarget;
     }

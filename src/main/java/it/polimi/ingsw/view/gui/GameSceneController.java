@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.Network2.Client;
 import it.polimi.ingsw.Network2.Messages.*;
+import it.polimi.ingsw.Utils.Coordinates;
 import it.polimi.ingsw.model.Tile.ColourTile;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,6 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 
@@ -32,7 +34,8 @@ public class GameSceneController {
     private static final int BOARD_SIZE = 11;
     public GridPane hand;
     private ColourTile[][] turnBoard;
-
+    private Coordinates[] tileHand=new Coordinates[3];
+    private ArrayList<>
 
 
     @FXML
@@ -112,6 +115,7 @@ public class GameSceneController {
     private void ChooseTile(int row, int col, String finalPath) {
         ImageView tile=findTile(row,col);
         if ((turnBoard[row + 1][col].equals(ColourTile.FREE)) || (turnBoard[row - 1][col].equals(ColourTile.FREE)) || (turnBoard[row][col + 1].equals(ColourTile.FREE)) || (turnBoard[row][col - 1].equals(ColourTile.FREE))){
+            if (tileHand)
                 tile.setImage(null);
                 ImageView handTile=createShelfTile(finalPath);
                 hand.add(handTile,findFirstEmptyColumn(hand),0);
@@ -126,7 +130,6 @@ public class GameSceneController {
                 return column;
             }
         }
-
         return -1;
     }
 
@@ -177,7 +180,7 @@ public class GameSceneController {
 
     public void wakeUp(WakeMessage wakeMessage) {
         Client client=GuiMaster.getInstance().getClient();
-        client.sendMessage(new BoardMessage(client.getUsername(), client.getGameID()));
+        client.sendMessage(new BoardMessage(client.getUsername(), client.getGameID(), client.getUID()));
     }
 
 }

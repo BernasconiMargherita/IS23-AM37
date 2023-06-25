@@ -7,20 +7,13 @@ import java.io.Serializable;
 public class RemoveMessage extends Message implements Serializable {
 
     private Coordinates[] positions;
-    private int gameID;
     private String nickname;
 
-    public RemoveMessage(Coordinates[] positions, int gameID, String nickname) {
-        super(gameID);
+    public RemoveMessage(Coordinates[] positions,int gameID,long UID, String nickname) {
+        super(gameID,UID);
         this.positions = positions;
         this.nickname = nickname;
     }
-
-    @Override
-    public int getGameID() {
-        return gameID;
-    }
-
     @Override
     public String getNickname() {
         return nickname;

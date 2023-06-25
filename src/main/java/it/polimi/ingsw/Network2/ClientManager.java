@@ -33,11 +33,11 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
             case "SetResponse"->handleSetResponse((SetResponse)message);
             case "FirstResponse"->handleFirstResponse((FirstResponse)message);
             case "PreLoginResponse"->handlePreLoginResponse((PreLoginResponse) message);
-            case "UsernameError"->handlePreUsernameError((UsernameError) message);
+            case "UsernameError"-> handleUsernameError((UsernameError) message);
         }
     }
 
-    private void handlePreUsernameError(UsernameError message) {
+    private void handleUsernameError(UsernameError message) {
         queue.add(()->usernameError(message));
     }
 

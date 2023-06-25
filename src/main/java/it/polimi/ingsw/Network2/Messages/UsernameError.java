@@ -1,9 +1,9 @@
 package it.polimi.ingsw.Network2.Messages;
 
 public class UsernameError extends Message{
-    private int gameID;
-    public UsernameError(int gameID) {
-        super(gameID);
+
+    public UsernameError(int gameID,long UID) {
+        super(gameID,UID);
     }
 
     @Override
@@ -11,8 +11,4 @@ public class UsernameError extends Message{
         return "UsernameError";
     }
 
-    @Override
-    public int getGameID() {
-        return gameID;
-    }
 }

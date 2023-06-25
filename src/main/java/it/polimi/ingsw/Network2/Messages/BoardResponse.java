@@ -7,8 +7,8 @@ import java.io.Serializable;
 public class BoardResponse extends Message implements Serializable {
     private ColourTile[][] board;
 
-    public BoardResponse(ColourTile[][] board){
-        super(-1);
+    public BoardResponse(ColourTile[][] board,int gameID,long UID){
+        super(gameID,UID);
         this.board = board;
     }
 

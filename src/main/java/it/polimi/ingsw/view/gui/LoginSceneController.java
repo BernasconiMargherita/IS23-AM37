@@ -98,6 +98,7 @@ public class LoginSceneController {
     }
 
     public void firstResponse(FirstResponse firstResponse) {
+        GuiMaster.getInstance().getClient().setGameID(firstResponse.getGameID());
         Scene scene=gridPane.getScene();
         GuiMaster.setLayout(scene, "/fxml/firstConnectionScene.fxml");
     }
