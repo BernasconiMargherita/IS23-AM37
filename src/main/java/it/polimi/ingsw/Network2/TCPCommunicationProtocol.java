@@ -105,8 +105,8 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
     public void run() {
         while (!Thread.currentThread().isInterrupted()) {
             try {
-                String response = in.readLine();
-                if (response != null) {
+
+
                     synchronized (messageList) {
                         Gson gson=new Gson();
                         String request = in.readLine();
@@ -129,7 +129,7 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
                             case "ReFirstResponse"-> onMessage(gson.fromJson(request, ReFirstResponse.class));
                         }
                     }
-                }
+
             }catch (IOException e){
                 closeConnection();
             }
