@@ -1,10 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.Network2.Client;
-import it.polimi.ingsw.Network2.Messages.InitResponse;
-import it.polimi.ingsw.Network2.Messages.LoginMessage;
-import it.polimi.ingsw.Network2.Messages.LoginResponse;
-import it.polimi.ingsw.Network2.Messages.UsernameError;
+import it.polimi.ingsw.Network2.Messages.*;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -77,5 +74,10 @@ public class ConnectionSceneController {
             Client client = guiMaster.getClient();
             client.sendMessage(new LoginMessage(username,client.getGameID(),client.getUID()));
         }
+    }
+
+    public void reFirstResponse(ReFirstResponse reFirstResponse) {
+        Scene scene=rootPane.getScene();
+        GuiMaster.setLayout(scene,"/fxml/firstConnectionScene.fxml");
     }
 }

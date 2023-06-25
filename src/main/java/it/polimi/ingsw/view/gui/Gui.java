@@ -6,7 +6,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 public class Gui extends Application {
