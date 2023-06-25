@@ -37,7 +37,7 @@ public class CardCommonTarget implements Serializable {
     public CardCommonTarget(CommonList commonType, int assignedCommonCard, int numOfPlayers) {
 
 
-        stackToken = new Stack<ScoringToken>();
+        stackToken = new Stack<>();
 
         this.commonType = commonType;
 
