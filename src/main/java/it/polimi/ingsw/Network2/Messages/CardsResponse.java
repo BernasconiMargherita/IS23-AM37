@@ -5,10 +5,10 @@ import it.polimi.ingsw.model.PersonalCards.CardPersonalTarget;
 
 import java.util.ArrayList;
 
-public class cardsResponse extends Message{
+public class CardsResponse extends Message{
     private final ArrayList<CardCommonTarget> commonTargets;
     private final CardPersonalTarget cardPersonalTarget;
-    public cardsResponse(int gameID, Long UID,ArrayList<CardCommonTarget> commonTargets, CardPersonalTarget cardPersonalTarget ) {
+    public CardsResponse(int gameID, Long UID, ArrayList<CardCommonTarget> commonTargets, CardPersonalTarget cardPersonalTarget ) {
         super(gameID, UID);
         this.commonTargets = commonTargets;
         this.cardPersonalTarget = cardPersonalTarget;
@@ -19,5 +19,10 @@ public class cardsResponse extends Message{
 
     public ArrayList<CardCommonTarget> getCommonTargets() {
         return commonTargets;
+    }
+
+    @Override
+    public String typeMessage() {
+        return "CardsResponse";
     }
 }

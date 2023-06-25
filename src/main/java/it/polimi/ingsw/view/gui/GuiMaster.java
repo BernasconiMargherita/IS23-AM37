@@ -120,6 +120,17 @@ public class GuiMaster extends ClientManager {
                 connectionSceneController.usernameError(usernameError));
     }
 
+    public void cardsResponse(CardsResponse cardsResponse) {
+        Platform.runLater(() ->
+                gameSceneController.cardsResponse(cardsResponse));
+    }
+
+    public void reFirstResponse(ReFirstResponse reFirstResponse) {
+        Platform.runLater(() ->
+                connectionSceneController.reFirstResponse(reFirstResponse));
+    }
+
+
     public void setFirstConnectionSceneController(FirstConnectionSceneController firstConnectionSceneController) {
         this.firstConnectionSceneController=firstConnectionSceneController;
     }

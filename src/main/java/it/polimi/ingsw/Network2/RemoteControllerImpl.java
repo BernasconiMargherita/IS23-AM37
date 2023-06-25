@@ -93,10 +93,8 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
             Gson gson = new Gson();
             Message preLogMess = new PreLoginResponse(-1,message.getUID());
             if (lobby.get(i).size() == 1 || lobby.get(i).size() == 2) {
-                System.out.println("Sono prima");
                 lobby.get(i).add(new Pair<>(message.getUID(), message.getNickname()));
                 containsTcpTemp(message, gson, preLogMess);
-                System.out.println("Sono dopo");
                 break;
             }
             else if (lobby.get(i).size() == 3) {
@@ -126,7 +124,6 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
             CommunicationProtocol communication = tempRmi.get(message.getUID());
             communication.onMessage(preLogMess);
 
-            System.out.println("ho mandato");
         }
         return;
     }
@@ -136,14 +133,14 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
         int maxPlayers = message.getMaxPlayers();
         masterController.getGameController(gameID).setMaxPlayers(maxPlayers);
         clients.get(gameID).get(0).sendMessage(new SetResponse(gameID,message.getUID()));
-        Thread timerThread = new Thread(() -> startTimer(message, maxPlayers));
+        Thread timerThread = new Thread(() -> startTimerSetMessage(message, maxPlayers));
         timerThread.start();
     }
 
-    private void startTimer(Message message, int maxPlayers) {
+    private void startTimerSetMessage(Message message, int maxPlayers) {
         while (!checkPlayerCount(message, maxPlayers)) {
             try {
-                Thread.sleep(2000);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -168,57 +165,102 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
     public void lobbyManagement(Message message, int maxPlayers) throws RemoteException {
 
         int gameID = message.getGameID();
-
-        for (ArrayList<Pair<Long, String>> pairs : lobby) {
-            if (pairs.get(0).getKey().equals(message.getUID())) {
-                for (int j = 1; j < maxPlayers; j++) {
-                    Long UID = pairs.get(j).getKey();
-                    if (tempTcp.containsKey(UID)) {
-                        clients.get(gameID).add(new TCPConnect(tempTcp.get(UID), UID, pairs.get(j).getValue()));
-                    }
-                    if (tempRmi.containsKey(UID)) {
-                        clients.get(gameID).add(new RMIConnect(tempRmi.get(UID), UID, pairs.get(j).getValue()));
-                    }
-                    registerPlayer(gameID, pairs.get(j).getValue(), UID);
-                }
-
-                initGame(gameID);
-                sendCards(gameID);
-
-                if (lobby.get(gameID).size() > maxPlayers) {
-                    if (lobby.get(lobby.size() - 1).size() == 4) {
-                        lobby.add(new ArrayList<>());
-                    }
-                    for (int j = lobby.get(gameID).size() - maxPlayers; j < lobby.get(gameID).size(); j++) {
-                        for (int k = gameID + 1; k < lobby.size(); k++) {
-                            if (lobby.get(k).size() == 0) {
-                                lobby.get(k).add(new Pair<>(lobby.get(gameID).get(j).getKey(), lobby.get(gameID).get(j).getValue()));
-                                int gameID2 = startGame();
-                                clients.put(gameID2, new ArrayList<>());
-                                if (tempTcp.containsKey(lobby.get(gameID).get(j).getKey())) {
-                                    clients.get(gameID2).add(new TCPConnect(tempTcp.get(lobby.get(gameID2).get(j).getKey()), lobby.get(gameID2).get(j).getKey(), lobby.get(gameID2).get(j).getValue()));
-                                }
-                                if (tempRmi.containsKey(lobby.get(gameID).get(j).getKey())) {
-                                    clients.get(gameID2).add(new RMIConnect(tempRmi.get(lobby.get(gameID2).get(j).getKey()), lobby.get(gameID2).get(j).getKey(), lobby.get(gameID2).get(j).getValue()));
-                                }
-                                registerPlayer(gameID2, lobby.get(gameID2).get(j).getValue(), lobby.get(gameID2).get(j).getKey());
-                                clients.get(gameID2).get(getPosition(lobby.get(gameID).get(j).getKey(), gameID2)).sendMessage(new FirstResponse(gameID2,lobby.get(gameID).get(j).getKey()));
-                            }
-
-                            if (lobby.get(k).size() == 1 || lobby.get(k).size() == 2) {
-                                lobby.get(k).add(new Pair<>(lobby.get(gameID).get(j).getKey(), lobby.get(gameID).get(j).getValue()));
-                            }
-
-                            if (lobby.get(k).size() == 3) {
-                                lobby.get(k).add(new Pair<>(lobby.get(gameID).get(j).getKey(), lobby.get(gameID).get(j).getValue()));
-                                lobby.add(new ArrayList<>());
-                            }
-                        }
-                    }
-                }
+        int pos = -1;
+        for (int i = 0; i < lobby.size(); i++) {
+            if (lobby.get(i).get(0).getKey().equals(message.getUID())) {
+                pos = i;
                 break;
             }
         }
+        ArrayList<Pair<Long, String>> pairs = lobby.get(pos);
+
+        for (int j = 1; j < maxPlayers; j++) {
+            Long UID = pairs.get(j).getKey();
+            if (tempTcp.containsKey(UID)) {
+                clients.get(gameID).add(new TCPConnect(tempTcp.get(UID), UID, pairs.get(j).getValue()));
+            }
+            if (tempRmi.containsKey(UID)) {
+                clients.get(gameID).add(new RMIConnect(tempRmi.get(UID), UID, pairs.get(j).getValue()));
+            }
+            registerPlayer(gameID, pairs.get(j).getValue(), UID);
+        }
+        Thread timerThread = new Thread(() -> startTimerUsername(message, maxPlayers));
+        timerThread.start();
+    }
+
+    private void startTimerUsername(Message message, int maxPlayers) {
+        while (!checkMaxPlayer(message, maxPlayers)) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            init(message, maxPlayers);
+            Thread.currentThread().interrupt();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private boolean checkMaxPlayer(Message message, int maxPlayers) {
+        return masterController.getGameController(message.getGameID()).getMaxPlayers() == masterController.getGameController(message.getGameID()).getNumOfPlayers();
+    }
+
+    public void init(Message message,int maxPlayers) throws RemoteException {
+        int gameID = message.getGameID();
+
+        initGame(gameID);
+        sendCards(gameID);
+
+        int pos = -1;
+        for (int i = 0; i < lobby.size(); i++) {
+            if (lobby.get(i).get(0).getKey().equals(message.getUID())) {
+                pos = i;
+                System.out.println("la pos è " + pos);
+                break;
+            }
+        }
+
+        if (lobby.get(pos).size() > maxPlayers) {
+            System.out.println("entra in lobby.get(pos).size() > maxPlayers");
+
+
+            if (pos == lobby.size() - 1) {
+                System.out.println("entra in pos==lobby.size()-1");
+                lobby.add(new ArrayList<>());
+            } else if (lobby.get(lobby.size() - 1).size() == 4) {
+                lobby.add(new ArrayList<>());
+            }
+            for (int j = maxPlayers; j < lobby.get(pos).size(); j++) {
+                for (int k = pos + 1; k < lobby.size(); k++) {
+                    if (lobby.get(k).size() == 0) {
+                        System.out.println("è qua che non entra");
+                        lobby.get(k).add(new Pair<>(lobby.get(pos).get(j).getKey(), lobby.get(pos).get(j).getValue()));
+                        int gameID2 = startGame();
+                        clients.put(gameID2, new ArrayList<>());
+                        if (tempTcp.containsKey(lobby.get(pos).get(j).getKey())) {
+                            clients.get(gameID2).add(new TCPConnect(tempTcp.get(lobby.get(pos).get(j).getKey()), lobby.get(pos).get(j).getKey(), lobby.get(pos).get(j).getValue()));
+                        }
+                        if (tempRmi.containsKey(lobby.get(pos).get(j).getKey())) {
+                            clients.get(gameID2).add(new RMIConnect(tempRmi.get(lobby.get(pos).get(j).getKey()), lobby.get(pos).get(j).getKey(), lobby.get(pos).get(j).getValue()));
+                        }
+                        registerPlayer(gameID2, lobby.get(pos).get(j).getValue(), lobby.get(pos).get(j).getKey());
+                        clients.get(gameID2).get(getPosition(lobby.get(pos).get(j).getKey(), gameID2)).sendMessage(new ReFirstResponse(gameID2, lobby.get(pos).get(j).getKey()));
+                        break;
+                    } else if (lobby.get(k).size() == 1 || lobby.get(k).size() == 2) {
+                        lobby.get(k).add(new Pair<>(lobby.get(pos).get(j).getKey(), lobby.get(pos).get(j).getValue()));
+                        break;
+                    } else if (lobby.get(k).size() == 3) {
+                        lobby.get(k).add(new Pair<>(lobby.get(pos).get(j).getKey(), lobby.get(pos).get(j).getValue()));
+                        lobby.add(new ArrayList<>());
+                        break;
+                    }
+                }
+            }
+        }
+
     }
 
     protected void addClient(Long UID, String nickname, int gameID) {
@@ -271,7 +313,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
         ArrayList<CardCommonTarget> commonTargets = masterController.getGameController(gameID).getCommonTargets();
         for (int i = 0; i < clients.get(gameID).size(); i++) {
             CardPersonalTarget cardPersonalTarget = masterController.getGameController(gameID).getCardPersonalTarget(clients.get(gameID).get(i).getNickname());
-            Message cardsResponse = new cardsResponse(gameID,clients.get(gameID).get(i).getUID(), commonTargets, cardPersonalTarget);
+            Message cardsResponse = new CardsResponse(gameID,clients.get(gameID).get(i).getUID(), commonTargets, cardPersonalTarget);
             clients.get(gameID).get(i).sendMessage(cardsResponse);
         }
     }
