@@ -49,8 +49,8 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
     public void sendMessage(Message message) {
         Gson gson = new Gson();
 
-        String jsonMessage = gson.toJson(message);
-        out.println(jsonMessage);
+
+        out.println(message.toJson());
         out.flush();
     }
 

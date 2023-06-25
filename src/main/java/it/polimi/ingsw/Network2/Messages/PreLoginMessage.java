@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Network2.Messages;
 
+import com.google.gson.Gson;
+
 public class PreLoginMessage extends Message{
 
     String nickname;
@@ -7,7 +9,10 @@ public class PreLoginMessage extends Message{
         super(gameID,UID);
         this.nickname = nickname;
     }
-
+    public String toJson() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
+    }
     @Override
     public String typeMessage() {
         return "PreLoginMessage";
