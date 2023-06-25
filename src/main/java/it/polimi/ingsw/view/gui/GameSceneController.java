@@ -186,4 +186,7 @@ public class GameSceneController {
         client.sendMessage(new BoardMessage(client.getUsername(), client.getGameID(), client.getUID()));
     }
 
+    public void cardsResponse(CardsResponse cardsResponse) {
+        System.out.println("carte arrivate!"); //metti id a personal e common in base ad assets
+    }
 }

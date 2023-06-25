@@ -1,10 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.Network2.Client;
-import it.polimi.ingsw.Network2.Messages.FirstResponse;
-import it.polimi.ingsw.Network2.Messages.PreLoginMessage;
-import it.polimi.ingsw.Network2.Messages.PreLoginResponse;
-import it.polimi.ingsw.Network2.Messages.UsernameError;
+import it.polimi.ingsw.Network2.Messages.*;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;

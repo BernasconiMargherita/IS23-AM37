@@ -93,10 +93,8 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
             Gson gson = new Gson();
             Message preLogMess = new PreLoginResponse(-1,message.getUID());
             if (lobby.get(i).size() == 1 || lobby.get(i).size() == 2) {
-                System.out.println("Sono prima");
                 lobby.get(i).add(new Pair<>(message.getUID(), message.getNickname()));
                 containsTcpTemp(message, gson, preLogMess);
-                System.out.println("Sono dopo");
                 break;
             }
             else if (lobby.get(i).size() == 3) {
@@ -126,7 +124,6 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
             CommunicationProtocol communication = tempRmi.get(message.getUID());
             communication.onMessage(preLogMess);
 
-            System.out.println("ho mandato");
         }
         return;
     }
@@ -271,7 +268,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
         ArrayList<CardCommonTarget> commonTargets = masterController.getGameController(gameID).getCommonTargets();
         for (int i = 0; i < clients.get(gameID).size(); i++) {
             CardPersonalTarget cardPersonalTarget = masterController.getGameController(gameID).getCardPersonalTarget(clients.get(gameID).get(i).getNickname());
-            Message cardsResponse = new cardsResponse(gameID,clients.get(gameID).get(i).getUID(), commonTargets, cardPersonalTarget);
+            Message cardsResponse = new CardsResponse(gameID,clients.get(gameID).get(i).getUID(), commonTargets, cardPersonalTarget);
             clients.get(gameID).get(i).sendMessage(cardsResponse);
         }
     }

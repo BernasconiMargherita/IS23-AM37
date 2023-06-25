@@ -14,6 +14,6 @@ public interface ClientListener {
     void firstResponse(FirstResponse firstResponse);
     void preLoginResponse(PreLoginResponse preLoginResponse);
     void usernameError(UsernameError usernameError);
-
+    void cardsResponse(CardsResponse cardsResponse);
 
 }
