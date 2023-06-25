@@ -169,7 +169,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
         int gameID = message.getGameID();
 
-        for (ArrayList<Pair<Long, String>> pairs : lobby) {
+        for (ArrayList<Pair<Long, String>> pairs : lobby) { //pairs = lobby.get(i)
             if (pairs.get(0).getKey().equals(message.getUID())) {
                 for (int j = 1; j < maxPlayers; j++) {
                     Long UID = pairs.get(j).getKey();
@@ -185,33 +185,48 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
                 initGame(gameID);
                 sendCards(gameID);
 
-                if (lobby.get(gameID).size() > maxPlayers) {
-                    if (lobby.get(lobby.size() - 1).size() == 4) {
+                int pos = -1;
+                for(int i = 0; i<lobby.size(); i++){
+                    if(lobby.get(i).get(0).getKey().equals(message.getUID())){
+                        pos = i;
+                        break;
+                    }
+                }
+
+                if (lobby.get(pos).size() > maxPlayers) {
+
+
+                    if(pos==lobby.size()-1){
                         lobby.add(new ArrayList<>());
                     }
-                    for (int j = lobby.get(gameID).size() - maxPlayers; j < lobby.get(gameID).size(); j++) {
-                        for (int k = gameID + 1; k < lobby.size(); k++) {
+                    else if(lobby.get(lobby.size()-1).size()==4){
+                        lobby.add(new ArrayList<>());
+                    }
+                    for (int j = maxPlayers; j < lobby.get(pos).size(); j++) {
+                        for (int k = pos + 1; k < lobby.size(); k++) {
                             if (lobby.get(k).size() == 0) {
-                                lobby.get(k).add(new Pair<>(lobby.get(gameID).get(j).getKey(), lobby.get(gameID).get(j).getValue()));
+                                lobby.get(k).add(new Pair<>(lobby.get(pos).get(j).getKey(), lobby.get(pos).get(j).getValue()));
                                 int gameID2 = startGame();
                                 clients.put(gameID2, new ArrayList<>());
-                                if (tempTcp.containsKey(lobby.get(gameID).get(j).getKey())) {
-                                    clients.get(gameID2).add(new TCPConnect(tempTcp.get(lobby.get(gameID2).get(j).getKey()), lobby.get(gameID2).get(j).getKey(), lobby.get(gameID2).get(j).getValue()));
+                                if (tempTcp.containsKey(lobby.get(pos).get(j).getKey())) {
+                                    clients.get(gameID2).add(new TCPConnect(tempTcp.get(lobby.get(k).get(j).getKey()), lobby.get(k).get(j).getKey(), lobby.get(k).get(j).getValue()));
                                 }
-                                if (tempRmi.containsKey(lobby.get(gameID).get(j).getKey())) {
-                                    clients.get(gameID2).add(new RMIConnect(tempRmi.get(lobby.get(gameID2).get(j).getKey()), lobby.get(gameID2).get(j).getKey(), lobby.get(gameID2).get(j).getValue()));
+                                if (tempRmi.containsKey(lobby.get(pos).get(j).getKey())) {
+                                    clients.get(gameID2).add(new RMIConnect(tempRmi.get(lobby.get(k).get(j).getKey()), lobby.get(k).get(j).getKey(), lobby.get(k).get(j).getValue()));
                                 }
-                                registerPlayer(gameID2, lobby.get(gameID2).get(j).getValue(), lobby.get(gameID2).get(j).getKey());
-                                clients.get(gameID2).get(getPosition(lobby.get(gameID).get(j).getKey(), gameID2)).sendMessage(new FirstResponse(gameID2,lobby.get(gameID).get(j).getKey()));
+                                registerPlayer(gameID2, lobby.get(k).get(j).getValue(), lobby.get(k).get(j).getKey());
+                                clients.get(gameID2).get(getPosition(lobby.get(k).get(j).getKey(), gameID2)).sendMessage(new FirstResponse(gameID2,lobby.get(pos).get(j).getKey()));
+                                break;
+                            }
+                            else if (lobby.get(k).size() == 1 || lobby.get(k).size() == 2) {
+                                lobby.get(k).add(new Pair<>(lobby.get(pos).get(j).getKey(), lobby.get(pos).get(j).getValue()));
+                                break;
                             }
 
-                            if (lobby.get(k).size() == 1 || lobby.get(k).size() == 2) {
-                                lobby.get(k).add(new Pair<>(lobby.get(gameID).get(j).getKey(), lobby.get(gameID).get(j).getValue()));
-                            }
-
-                            if (lobby.get(k).size() == 3) {
-                                lobby.get(k).add(new Pair<>(lobby.get(gameID).get(j).getKey(), lobby.get(gameID).get(j).getValue()));
+                            else if (lobby.get(k).size() == 3) {
+                                lobby.get(k).add(new Pair<>(lobby.get(pos).get(j).getKey(), lobby.get(pos).get(j).getValue()));
                                 lobby.add(new ArrayList<>());
+                                break;
                             }
                         }
                     }
