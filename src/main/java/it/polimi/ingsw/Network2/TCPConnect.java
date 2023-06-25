@@ -53,5 +53,6 @@ public class TCPConnect implements Connection{
         Gson gson = new Gson();
         String json = gson.toJson(message);
         out.println(json);
+        out.flush();
     }
 }
