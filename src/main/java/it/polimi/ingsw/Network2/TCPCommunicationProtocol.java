@@ -2,10 +2,13 @@ package it.polimi.ingsw.Network2;
 
 
 import com.google.gson.Gson;
-import it.polimi.ingsw.Network2.Messages.ErrorMessage;
 import it.polimi.ingsw.Network2.Messages.Message;
+import it.polimi.ingsw.Network2.Messages.UIDResponse;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -15,7 +18,6 @@ import java.util.List;
 public class TCPCommunicationProtocol extends UnicastRemoteObject implements CommunicationProtocol,Runnable {
     private final String serverIp;
     private final int serverPort;
-    private final Thread messageReceiver;
     private PrintWriter out;
     private BufferedReader in;
     private long UID;
@@ -29,8 +31,6 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
         this.messageList = new ArrayList<>();
         startCommunication();
 
-        messageReceiver = new Thread(this);
-        messageReceiver.start();
 
     }
 
@@ -40,7 +40,6 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
             socket = new Socket(serverIp, serverPort);
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -49,8 +48,10 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
 
     public void sendMessage(Message message) {
         Gson gson = new Gson();
+
         String jsonMessage = gson.toJson(message);
         out.println(jsonMessage);
+        out.flush();
     }
 
     @Override
@@ -69,7 +70,11 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
     @Override
     public void setup() {
         try {
-            UID = in.read();
+            Gson gson = new Gson();
+            UIDResponse uidMessage = gson.fromJson(in.readLine(), UIDResponse.class);
+            UID = uidMessage.getUID();
+            Thread messageReceiver = new Thread(this);
+            messageReceiver.start();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

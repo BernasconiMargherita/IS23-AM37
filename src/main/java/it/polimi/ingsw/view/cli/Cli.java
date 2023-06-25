@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.*;
 import it.polimi.ingsw.model.*
+import it.polimi.ingsw.model.Tile.ColourTile;
+import it.polimi.ingsw.view.cli.ColorCodes;
+
+import static it.polimi.ingsw.view.cli.ColorCodes.getColorCode;
+
 public class Cli extends ClientManager {
 
     private String protocol;
@@ -26,7 +31,8 @@ public class Cli extends ClientManager {
     private String[][] matrix;
     private String winner;
     private String[] colours;
-
+    private ColourTile[][] colourTiles;
+    private String ANSI_RESET = "\u001B[0m";
 
     public Cli() {
         super();
@@ -90,7 +96,7 @@ public class Cli extends ClientManager {
     public void updateBoard(BoardResponse boardMessage) {
         //board
         //if giocatori 2
-        System.out.printf("                       ______  ______" +
+        /*System.out.printf("                       ______  ______" +
                 "                                 |     ||     |    " +
                 "                                 |     ||     |" +
                 "                                 ______  ______  ______" +
@@ -107,174 +113,203 @@ public class Cli extends ClientManager {
                 "                         ______ ______  ______  ______  ______ "  +""
 
 
-        );}
+        );*/
+        colourTiles = boardMessage.getBoard();
+        //BOARD
+        for (int i = 0; i < 11; i++) {
+            for (int j = 0; j < 10; j++) {
+                System.out.println(getColorCode(colourTiles[i][j]) + "***" + ANSI_RESET);
+
+            }
+            System.out.print(getColorCode(colourTiles[i][10]) + "***\n" + ANSI_RESET);
+        }
 
 
+        //COMMON CARDS
+        CASE -> SIX_GROUPS_OF_TWO {
+            out.println("------------------------------" +
+                    "   |           six               |" +
+                    "   |         couples             |" +
+                    "   |            of               |" +
+                    "   |     the same colour         |" +
+                    "   |  (each couple can be of     |" +
+                    "   |     a different colour)     |" +
+                    "   -------------------------------");
+        }
+        CASE -> FOUR_EQUALS_ANGLES {
+            out.println("------------------------------" +
+                    "   |           on                |" +
+                    "   |          each               |" +
+                    "   |          angles             |" +
+                    "   |         must be             |" +
+                    "   |       the same colour       |" +
+                    "   |                             |" +
+                    "   -------------------------------");
+        }
+        CASE -> FOUR_GROUPS_OF_FOUR {
+            out.println("------------------------------" +
+                    "   |          four               |" +
+                    "   |         groups              |" +
+                    "   |            of               |" +
+                    "   |     the same colour         |" +
+                    "   |  (each group can be of      |" +
+                    "   |     a different colour)     |" +
+                    "   -------------------------------");
+        }
+        CASE -> TWO_GROUPS_IN_SQUARE {
+            out.println("------------------------------" +
+                    "   |           two               |" +
+                    "   |         groups of           |" +
+                    "   |     the same colour         |" +
+                    "   |  that create a square 2x2   |" +
+                    "   |  (each group have to be of  |" +
+                    "   |     the same colour)        |" +
+                    "   -------------------------------");
+        }
+        CASE -> THREE_COLUMNS_THREE_DIFFERENT_TYPES {
+            out.println("------------------------------" +
+                    "   |           three             |" +
+                    "   |        columns of           |" +
+                    "   |     one, two or three       |" +
+                    "   |     different  colours      |" +
+                    "   |  (each column can have      |" +
+                    "   |    different colours)       |" +
+                    "   -------------------------------");
+        }
+        CASE -> EIGHT_EQUALS {
+            out.println("------------------------------" +
+                    "   |           eight             |" +
+                    "   |         tails of            |" +
+                    "   |     the same colour         |" +
+                    "   |                             |" +
+                    "   |  (the position is not       |" +
+                    "   |          relevant)          |" +
+                    "   -------------------------------");
+        }
+        CASE -> FIVE_IN_DIGONAL {
+            out.println("------------------------------" +
+                    "   |           five              |" +
+                    "   |         tails of            |" +
+                    "   |     the same colour         |" +
+                    "   |      in diagonal            |" +
+                    "   |                             |" +
+                    "   |                             |" +
+                    "   -------------------------------");
+        }
+        CASE -> FOUR_ROWS_THREE_DIFFERENT_TYPES {
+            out.println("------------------------------" +
+                    "   |           four              |" +
+                    "   |        rows of              |" +
+                    "   |     one, two or three       |" +
+                    "   |     different  colours      |" +
+                    "   |  (each row can have         |" +
+                    "   |    different colours)       |" +
+                    "   -------------------------------");
+        }
+        CASE -> TWO_COLUMNS_ALL_DIFFERENT {
+            out.println("------------------------------" +
+                    "   |           two               |" +
+                    "   |        columns of           |" +
+                    "   |         all six             |" +
+                    "   |     different  colours      |" +
+                    "   |                             |" +
+                    "   |                             |" +
+                    "   -------------------------------");
+        }
+        CASE -> TWO_ROWS_ALL_DIFFERENT {
+            out.println("------------------------------" +
+                    "   |           two               |" +
+                    "   |          rows of            |" +
+                    "   |          five               |" +
+                    "   |     different  colours      |" +
+                    "   |                             |" +
+                    "   |                             |" +
+                    "   -------------------------------");
+        }
+        CASE -> FIVE_IN_A_X {
+            out.println("------------------------------" +
+                    "   |           five              |" +
+                    "   |         tails of the        |" +
+                    "   |        same colour          |" +
+                    "   |         that create         |" +
+                    "   |             a X             |" +
+                    "   |                             |" +
+                    "   -------------------------------");
+        }
+        CASE -> IN_DESCENDING_ORDER {
+            out.println("------------------------------" +
+                    "   |        five columns         |" +
+                    "   |      in descending or       |" +
+                    "   |      in growing  order      |" +
+                    "   |      (each column have      |" +
+                    "   |  one less tail or one more  |" +
+                    "   |  tail of the previous one)  |" +
+                    "   -------------------------------");
+        }
+
+        //PERSONAL
+        for (int i = 5; i > 0; i--) {
+            for (int j = 0; j < 4; j++) {
+                if (cardPersonalTarget.personalCardTiles()[i].coordinates().getRow() == i &&
+                        cardPersonalTarget.personalCardTiles()[i].coordinates().getColumn() == j) {
+                    System.out.println(getColorCode(cardPersonalTarget.personalCardTiles()[i].colourTile()) + "***" + ANSI_RESET);
+
+                }
+                System.out.print(getColorCode(colourTiles[i][4]) + "***\n" + ANSI_RESET);
+            }
 
 
-
-    CASE ->  SIX_GROUPS_OF_TWO{
-        out.println("------------------------------" +
-                "   |           six               |" +
-                "   |         couples             |" +
-                "   |            of               |" +
-                "   |     the same colour         |" +
-                "   |  (each couple can be of     |" +
-                "   |     a different colour)     |" +
-                "   -------------------------------" );
+        }
     }
-    CASE ->  FOUR_EQUALS_ANGLES{
-        out.println("------------------------------" +
-                "   |           on                |" +
-                "   |          each               |" +
-                "   |          angles             |" +
-                "   |         must be             |" +
-                "   |       the same colour       |" +
-                "   |                             |" +
-                "   -------------------------------" );
-    }
-    CASE -> FOUR_GROUPS_OF_FOUR {
-        out.println("------------------------------" +
-                "   |          four               |" +
-                "   |         groups              |" +
-                "   |            of               |" +
-                "   |     the same colour         |" +
-                "   |  (each group can be of      |" +
-                "   |     a different colour)     |" +
-                "   -------------------------------" );
-    }
-    CASE ->  TWO_GROUPS_IN_SQUARE{
-        out.println("------------------------------" +
-                "   |           two               |" +
-                "   |         groups of           |" +
-                "   |     the same colour         |" +
-                "   |  that create a square 2x2   |" +
-                "   |  (each group have to be of  |" +
-                "   |     the same colour)        |" +
-                "   -------------------------------" );
-    }
-    CASE -> THREE_COLUMNS_THREE_DIFFERENT_TYPES{
-        out.println("------------------------------" +
-                "   |           three             |" +
-                "   |        columns of           |" +
-                "   |     one, two or three       |" +
-                "   |     different  colours      |" +
-                "   |  (each column can have      |" +
-                "   |    different colours)       |" +
-                "   -------------------------------" );
-    }
-    CASE -> EIGHT_EQUALS{
-        out.println("------------------------------" +
-                "   |           eight             |" +
-                "   |         tails of            |" +
-                "   |     the same colour         |" +
-                "   |                             |" +
-                "   |  (the position is not       |" +
-                "   |          relevant)          |" +
-                "   -------------------------------" );
-    }
-    CASE -> FIVE_IN_DIGONAL{
-        out.println("------------------------------" +
-                "   |           five              |" +
-                "   |         tails of            |" +
-                "   |     the same colour         |" +
-                "   |      in diagonal            |" +
-                "   |                             |" +
-                "   |                             |" +
-                "   -------------------------------" );
-    }
-    CASE -> FOUR_ROWS_THREE_DIFFERENT_TYPES{
-        out.println("------------------------------" +
-                "   |           four              |" +
-                "   |        rows of              |" +
-                "   |     one, two or three       |" +
-                "   |     different  colours      |" +
-                "   |  (each row can have         |" +
-                "   |    different colours)       |" +
-                "   -------------------------------" );
-    }
-    CASE ->  TWO_COLUMNS_ALL_DIFFERENT{
-        out.println("------------------------------" +
-                "   |           two               |" +
-                "   |        columns of           |" +
-                "   |         all six             |" +
-                "   |     different  colours      |" +
-                "   |                             |" +
-                "   |                             |" +
-                "   -------------------------------" );
-    }
-    CASE -> TWO_ROWS_ALL_DIFFERENT{
-        out.println("------------------------------" +
-                "   |           two               |" +
-                "   |          rows of            |" +
-                "   |          five               |" +
-                "   |     different  colours      |" +
-                "   |                             |" +
-                "   |                             |" +
-                "   -------------------------------" );
-    }
-    CASE ->  FIVE_IN_A_X{
-        out.println("------------------------------" +
-                "   |           five              |" +
-                "   |         tails of the        |" +
-                "   |        same colour          |" +
-                "   |         that create         |" +
-                "   |             a X             |" +
-                "   |                             |" +
-                "   -------------------------------" );
-    }
-    CASE ->  IN_DESCENDING_ORDER{
-        out.println("------------------------------" +
-                "   |        five columns         |" +
-                "   |      in descending or       |" +
-                "   |      in growing  order      |" +
-                "   |      (each column have      |" +
-                "   |  one less tail or one more  |" +
-                "   |  tail of the previous one)  |" +
-                "   -------------------------------" );
-    }
 
 
+        @Override
+        public void removeResponse (RemoveResponse removeResponse){
 
+        }
 
-
-
-
-}
-
-
-    @Override
-    public void removeResponse (RemoveResponse removeResponse){
-
-    }
-
-    @Override
-    public void turnResponse (TurnResponse turnResponse){
+        @Override
+        public void turnResponse (TurnResponse turnResponse){
         out.println("It's you turn");
         username = turnResponse.getNickname();
         gameID = turnResponse.getGameID();
         colours = turnResponse.getColours();
         getClient().sendMessage(new TurnMessage(gameID, username, colours,));
 
-    }
+        }
 
-    @Override
-    public void endGame (EndMessage endGameMessage){
+        @Override
+        public void endGame (EndMessage endGameMessage){
         out.println("The game ended!");
         winner = endGameMessage.getWinner();
         System.out.printf("Congratulations %s!\n", winner);
         getClient().sendMessage(new EndMessage(winner));
 
+        }
+
+        @Override
+        public void wakeUp (WakeMessage wakeMessage){
+
+
+        }
+
+        @Override
+        public void setResponse (SetResponse setResponse){
+           out.println("ciao");
+        }
+
+    @Override
+    public void firstResponse(FirstResponse firstResponse) {
+
     }
 
     @Override
-    public void wakeUp (WakeMessage wakeMessage){
-
+    public void preLoginResponse(PreLoginResponse preLoginResponse) {
 
     }
 
     @Override
-    public void setResponse (SetResponse setResponse){
-        out.println("ciao");
+    public void usernameError(UsernameError usernameError) {
+
     }
 }
