@@ -183,6 +183,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
                 }
 
                 initGame(gameID);
+                sendCards(gameID);
 
                 if (lobby.get(gameID).size() > maxPlayers) {
                     if (lobby.get(lobby.size() - 1).size() == 4) {
@@ -266,14 +267,21 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
     }
 
+    public void sendCards(int gameID){
+        ArrayList<CardCommonTarget> commonTargets = masterController.getGameController(gameID).getCommonTargets();
+        for (int i = 0; i < clients.get(gameID).size(); i++) {
+            CardPersonalTarget cardPersonalTarget = masterController.getGameController(gameID).getCardPersonalTarget(clients.get(gameID).get(i).getNickname());
+            Message cardsResponse = new cardsResponse(gameID,clients.get(gameID).get(i).getUID(), commonTargets, cardPersonalTarget);
+            clients.get(gameID).get(i).sendMessage(cardsResponse);
+        }
+    }
+
 
     public void initGame(int gameID) throws RemoteException {
         try {
             this.masterController.getGameController(gameID).initGame();
-            ArrayList<CardCommonTarget> commonTargets = masterController.getGameController(gameID).getCommonTargets();
             for (int i = 0; i < clients.get(gameID).size(); i++) {
-                CardPersonalTarget cardPersonalTarget = masterController.getGameController(gameID).getCardPersonalTarget(clients.get(gameID).get(i).getNickname());
-                Message initResponse = new InitResponse(commonTargets, cardPersonalTarget,gameID,clients.get(gameID).get(i).getUID());
+                Message initResponse = new InitResponse(gameID,clients.get(gameID).get(i).getUID());
                 clients.get(gameID).get(i).sendMessage(initResponse);
             }
             currentPlayer(gameID);
@@ -363,7 +371,9 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
                 }
             }
         }
-        clients.get(gameID).get(getPosition(UID, gameID)).sendMessage(new BoardResponse(colours,gameID,UID));
+        for(int i=0; i<clients.get(gameID).size();i++){
+            clients.get(gameID).get(i).sendMessage(new BoardResponse(colours,gameID,clients.get(gameID).get(i).getUID()));
+        }
 
     }
 

@@ -1,8 +1,11 @@
 package it.polimi.ingsw.Network2.Messages;
 
 import it.polimi.ingsw.Utils.Coordinates;
+import it.polimi.ingsw.model.CommonCards.CardCommonTarget;
+import it.polimi.ingsw.model.PersonalCards.CardPersonalTarget;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Message implements Serializable {
 
@@ -59,6 +62,13 @@ public class Message implements Serializable {
         return null;
     }
     public String[] getColours() {
+        return null;
+    }
+    public CardPersonalTarget getCardPersonalTarget() {
+        return null;
+    }
+
+    public ArrayList<CardCommonTarget> getCommonTargets() {
         return null;
     }
 
