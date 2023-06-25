@@ -186,14 +186,17 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
                 for(int i = 0; i<lobby.size(); i++){
                     if(lobby.get(i).get(0).getKey().equals(message.getUID())){
                         pos = i;
+                        System.out.println("la pos è " + pos);
                         break;
                     }
                 }
 
                 if (lobby.get(pos).size() > maxPlayers) {
+                    System.out.println("entra in lobby.get(pos).size() > maxPlayers" );
 
 
                     if(pos==lobby.size()-1){
+                        System.out.println("entra in pos==lobby.size()-1" );
                         lobby.add(new ArrayList<>());
                     }
                     else if(lobby.get(lobby.size()-1).size()==4){
@@ -202,17 +205,18 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
                     for (int j = maxPlayers; j < lobby.get(pos).size(); j++) {
                         for (int k = pos + 1; k < lobby.size(); k++) {
                             if (lobby.get(k).size() == 0) {
+                                System.out.println("è qua che non entra");
                                 lobby.get(k).add(new Pair<>(lobby.get(pos).get(j).getKey(), lobby.get(pos).get(j).getValue()));
                                 int gameID2 = startGame();
                                 clients.put(gameID2, new ArrayList<>());
                                 if (tempTcp.containsKey(lobby.get(pos).get(j).getKey())) {
-                                    clients.get(gameID2).add(new TCPConnect(tempTcp.get(lobby.get(k).get(j).getKey()), lobby.get(k).get(j).getKey(), lobby.get(k).get(j).getValue()));
+                                    clients.get(gameID2).add(new TCPConnect(tempTcp.get(lobby.get(pos).get(j).getKey()), lobby.get(pos).get(j).getKey(), lobby.get(pos).get(j).getValue()));
                                 }
                                 if (tempRmi.containsKey(lobby.get(pos).get(j).getKey())) {
-                                    clients.get(gameID2).add(new RMIConnect(tempRmi.get(lobby.get(k).get(j).getKey()), lobby.get(k).get(j).getKey(), lobby.get(k).get(j).getValue()));
+                                    clients.get(gameID2).add(new RMIConnect(tempRmi.get(lobby.get(pos).get(j).getKey()), lobby.get(pos).get(j).getKey(), lobby.get(pos).get(j).getValue()));
                                 }
-                                registerPlayer(gameID2, lobby.get(k).get(j).getValue(), lobby.get(k).get(j).getKey());
-                                clients.get(gameID2).get(getPosition(lobby.get(k).get(j).getKey(), gameID2)).sendMessage(new FirstResponse(gameID2,lobby.get(pos).get(j).getKey()));
+                                registerPlayer(gameID2, lobby.get(pos).get(j).getValue(), lobby.get(pos).get(j).getKey());
+                                clients.get(gameID2).get(getPosition(lobby.get(pos).get(j).getKey(), gameID2)).sendMessage(new ReFirstResponse(gameID2,lobby.get(pos).get(j).getKey()));
                                 break;
                             }
                             else if (lobby.get(k).size() == 1 || lobby.get(k).size() == 2) {
