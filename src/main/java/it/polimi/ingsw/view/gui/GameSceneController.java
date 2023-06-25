@@ -92,24 +92,12 @@ public class GameSceneController {
         }
         switch (colourTile){
 
-            case CATS -> {
-                path+="Gatti1."+randInt+".png";
-            }
-            case BOOKS -> {
-                path+="Libri1."+randInt+".png";
-            }
-            case GAMES -> {
-                path+="Giochi1."+randInt+".png";
-            }
-            case FRAMES -> {
-                path+="Cornici1."+randInt+".png";
-            }
-            case TROPHIES -> {
-                path+="Trofei1."+randInt+".png";
-            }
-            case PLANTS -> {
-                path+="Piante1."+randInt+".png";
-            }
+            case CATS -> path+="Gatti1."+randInt+".png";
+            case BOOKS -> path+="Libri1."+randInt+".png";
+            case GAMES -> path+="Giochi1."+randInt+".png";
+            case FRAMES -> path+="Cornici1."+randInt+".png";
+            case TROPHIES -> path+="Trofei1."+randInt+".png";
+            case PLANTS -> path+="Piante1."+randInt+".png";
 
         }
         String TileImage = Objects.requireNonNull(getClass().getResource(path)).toExternalForm();
