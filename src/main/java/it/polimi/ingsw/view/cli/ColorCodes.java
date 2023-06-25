@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view.cli;
 
+import it.polimi.ingsw.model.Tile.ColourTile;
+
 public class ColorCodes {
     private ColorCodes() {
 
@@ -17,26 +19,26 @@ public class ColorCodes {
     private String color;
 
 
-    static String getColorCode(String color) {
-        color = color.toUpperCase();
+    static String getColorCode(ColourTile color) {
 
         switch (color) {
-            case "GAMES":
+            case GAMES:
                 return TEXT_YELLOW;
-            case "CATS":
+            case CATS:
                 return TEXT_GREEN;
-            case "PLANTS":
+            case PLANTS:
                 return TEXT_PURPLE;
-            case "FRAMES":
+            case FRAMES:
                 return TEXT_BLUE;
-            case "TROPHIES":
+            case TROPHIES:
                 return TEXT_LIGHTBLUE;
-            case "BOOKS":
+            case BOOKS:
                 return TEXT_WHITE;
-            default:
+            case FREE:
                 return TEXT_BLACK;
         }
 
+        return null;
     }
 }
 
