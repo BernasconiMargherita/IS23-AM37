@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public class InitMessage extends Message implements Serializable {
 
-    public InitMessage(int gameID) {
-        super(gameID);
+    public InitMessage(int gameID,long UID) {
+        super(gameID,UID);
     }
 
     public boolean init(){

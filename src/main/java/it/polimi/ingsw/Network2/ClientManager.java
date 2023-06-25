@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Network2;
 
 import it.polimi.ingsw.Network2.Messages.*;
-import it.polimi.ingsw.view.gui.GuiMaster;
 
 import java.rmi.RemoteException;
 import java.util.NoSuchElementException;
@@ -32,7 +31,22 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
             case "TurnResponse" -> handleTurnResponse((TurnResponse) message);
             case "EndMessage" -> handleEndMessage((EndMessage) message);
             case "SetResponse"->handleSetResponse((SetResponse)message);
+            case "FirstResponse"->handleFirstResponse((FirstResponse)message);
+            case "PreLoginResponse"->handlePreLoginResponse((PreLoginResponse) message);
+            case "UsernameError"-> handleUsernameError((UsernameError) message);
         }
+    }
+
+    private void handleUsernameError(UsernameError message) {
+        queue.add(()->usernameError(message));
+    }
+
+    private void handlePreLoginResponse(PreLoginResponse message) {
+        queue.add(()->preLoginResponse(message));
+    }
+
+    private void handleFirstResponse(FirstResponse message) {
+        queue.add(()->firstResponse(message));
     }
 
     private void handleSetResponse(SetResponse message) {
@@ -87,7 +101,7 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
 
         if (connection.equalsIgnoreCase("TCP")) {
             try {
-                communicationProtocol = new TCPCommunicationProtocol("localhost", 8082);
+                communicationProtocol = new TCPCommunicationProtocol("localhost", 8083);
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }

@@ -4,9 +4,8 @@ import java.io.Serializable;
 
 public class RemoveResponse extends Message implements Serializable {
 
-
-    public RemoveResponse() {
-        super(-1);
+    public RemoveResponse(int gameID,long UID) {
+        super(gameID,UID);
     }
     public String typeMessage(){
         return "RemoveResponse";

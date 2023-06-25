@@ -11,11 +11,13 @@ import java.net.Socket;
 
 public class TCPConnect implements Connection{
     private Socket socket;
+    private String nickname;
     private final PrintWriter out;
     private BufferedReader in;
-    private String nickname;
-    public TCPConnect(Socket socket, String nickname) {
+    long UID;
+    public TCPConnect(Socket socket, Long UID, String nickname) {
         this.socket = socket;
+        this.UID = UID;
         this.nickname = nickname;
         try {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -33,8 +35,18 @@ public class TCPConnect implements Connection{
 
 
     @Override
+    public Long getUID() {
+        return UID;
+    }
+
+    @Override
     public String getNickname() {
         return nickname;
+    }
+
+    @Override
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public void sendMessage(Message message){

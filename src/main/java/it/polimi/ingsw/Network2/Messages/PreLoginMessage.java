@@ -1,24 +1,20 @@
 package it.polimi.ingsw.Network2.Messages;
 
-import java.io.Serializable;
+public class PreLoginMessage extends Message{
 
-public class BoardMessage extends Message implements Serializable {
     String nickname;
-    int gameID;
-
-    public BoardMessage(String nickname, int gameID,Long UID) {
+    public PreLoginMessage(int gameID, long UID, String nickname) {
         super(gameID,UID);
         this.nickname = nickname;
     }
 
     @Override
     public String typeMessage() {
-        return "BoardMessage";
+        return "PreLoginMessage";
     }
 
     @Override
     public String getNickname() {
         return nickname;
     }
-
 }

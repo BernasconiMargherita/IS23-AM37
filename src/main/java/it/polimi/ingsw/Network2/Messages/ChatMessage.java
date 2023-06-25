@@ -5,8 +5,8 @@ import java.io.Serializable;
 public class ChatMessage extends Message implements Serializable {
     private final String message;
 
-    public ChatMessage(int gameID, String message) {
-        super(gameID);
+    public ChatMessage(int gameID,long UID, String message) {
+        super(gameID,UID);
         this.message=message;
     }
     public String typeMessage(){

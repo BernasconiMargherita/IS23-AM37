@@ -5,34 +5,22 @@
 <?import javafx.scene.text.*?>
 
 <AnchorPane fx:id="rootPane" prefHeight="1000.0" prefWidth="1500.0" stylesheets="@styles/login.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.ConnectionSceneController">
-    
-    <GridPane fx:id="gridPane" layoutX="488.0" layoutY="419.0" prefHeight="163.0" prefWidth="524.0">
 
-        <columnConstraints>
-            <ColumnConstraints hgrow="ALWAYS" maxWidth="377.0" minWidth="118.0" prefWidth="189.0" />
-            <ColumnConstraints hgrow="ALWAYS" maxWidth="377.0" minWidth="118.0" prefWidth="204.00000000000003" />
-            <ColumnConstraints maxWidth="413.0" minWidth="148.0" prefWidth="148.0" />
-        </columnConstraints>
-        <rowConstraints>
-            <RowConstraints maxHeight="93.0" minHeight="30.0" prefHeight="47.0" />
-            <RowConstraints maxHeight="59.0" minHeight="22.0" prefHeight="40.0" />
-            <RowConstraints maxHeight="62.0" minHeight="18.0" prefHeight="41.0" />
-            <RowConstraints maxHeight="66.0" minHeight="22.0" prefHeight="35.0" />
-        </rowConstraints>
-
-        <RadioButton fx:id="TwoPlayers" prefHeight="17.0" prefWidth="63.0" text="3" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-        <RadioButton fx:id="ThreePlayers" text="2" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-        <RadioButton fx:id="FourPlayers" text="4" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-
-        <Label layoutX="134.0" layoutY="200.0" prefHeight="17.0" prefWidth="174.0" text="  Inserisci numero di giocatori: " textAlignment="RIGHT" />
-
-        <Button layoutX="367.0" layoutY="239.0" onMouseClicked="#selectNumOfPlayers" text="Conferma" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-   
-       <Label fx:id="numError" prefHeight="17.0" prefWidth="174.0" textFill="#a81010" GridPane.columnIndex="1" />
-    </GridPane>
-   <ProgressIndicator fx:id="progressIndicator" layoutX="698.0" layoutY="509.0" prefHeight="124.0" prefWidth="206.0" progress="0.0" visible="false" />
-   <Label fx:id="loadingMessage" alignment="CENTER" contentDisplay="CENTER" layoutX="554.0" layoutY="363.0" prefHeight="56.0" prefWidth="341.0" textFill="#a81010">
+   <ProgressIndicator fx:id="progressIndicator" layoutX="698.0" layoutY="509.0" prefHeight="124.0" prefWidth="206.0" progress="0.0" />
+   <Label fx:id="loadingMessage" alignment="CENTER" contentDisplay="CENTER" layoutX="585.0" layoutY="578.0" prefHeight="56.0" prefWidth="341.0" textFill="#a81010">
       <font>
          <Font size="14.0" />
       </font></Label>
+   <Label fx:id="usernameLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="554.0" layoutY="363.0" prefHeight="56.0" prefWidth="341.0" textFill="#a81010" visible="false">
+      <font>
+         <Font size="14.0" />
+      </font>
+   </Label>
+   <TextField fx:id="usernameField" layoutX="698.0" layoutY="517.0" visible="false" />
+   <Button fx:id="reSendButton" layoutX="624.0" layoutY="517.0" mnemonicParsing="false" onMouseClicked="#reSendUsername" text="Button" visible="false" />
+   <Label fx:id="usernameError" alignment="CENTER" contentDisplay="CENTER" layoutX="564.0" layoutY="373.0" prefHeight="56.0" prefWidth="341.0" textFill="#a81010" visible="false">
+      <font>
+         <Font size="14.0" />
+      </font>
+   </Label>
 </AnchorPane>

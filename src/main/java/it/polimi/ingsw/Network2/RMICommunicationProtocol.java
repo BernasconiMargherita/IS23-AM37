@@ -34,8 +34,7 @@ public class RMICommunicationProtocol extends UnicastRemoteObject implements Com
         try {
             server.onMessage(message);
         } catch (Exception e) {
-            ErrorMessage errorMessage = new ErrorMessage("Error occurred during RMI communication");
-            onMessage(errorMessage);
+            e.printStackTrace();
         }
     }
 

@@ -1,14 +1,19 @@
 package it.polimi.ingsw.Network2.Messages;
 
 import it.polimi.ingsw.Utils.Coordinates;
+import it.polimi.ingsw.model.CommonCards.CardCommonTarget;
+import it.polimi.ingsw.model.PersonalCards.CardPersonalTarget;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Message implements Serializable {
 
+    private final Long UID;
     private final int gameID;
-    public Message(int gameID) {
+    public Message(int gameID,Long UID) {
         this.gameID=gameID;
+        this.UID=UID;
     }
 
     public int getMaxPlayers() {
@@ -42,7 +47,7 @@ public class Message implements Serializable {
     }
 
     public long getUID() {
-        return -1;
+        return UID;
     }
 
     public boolean init(){
@@ -57,6 +62,13 @@ public class Message implements Serializable {
         return null;
     }
     public String[] getColours() {
+        return null;
+    }
+    public CardPersonalTarget getCardPersonalTarget() {
+        return null;
+    }
+
+    public ArrayList<CardCommonTarget> getCommonTargets() {
         return null;
     }
 
