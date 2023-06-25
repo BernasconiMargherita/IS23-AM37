@@ -2,6 +2,7 @@ package it.polimi.ingsw.Network2;
 
 import com.google.gson.Gson;
 import it.polimi.ingsw.Network2.Messages.Message;
+import it.polimi.ingsw.Network2.Messages.UIDResponse;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -55,10 +56,12 @@ public class MyServer extends UnicastRemoteObject implements ServerInterface {
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();
-                long socketId = System.currentTimeMillis();
-                server.addTcpCl(socketId, clientSocket);
-                new PrintWriter(clientSocket.getOutputStream(), true).println(socketId);
-                ClientHandler clientHandler = new ClientHandler(clientSocket, socketId, myServer);
+                long UID = System.currentTimeMillis();
+                server.addTcpCl(UID, clientSocket);
+                Message uidResponse=new UIDResponse(UID);
+                String json = gson.toJson(uidResponse);
+                new PrintWriter(clientSocket.getOutputStream(), true).println(json);
+                ClientHandler clientHandler = new ClientHandler(clientSocket, UID, myServer);
                 clientHandler.start();
             }
         } catch (Exception e) {
@@ -106,15 +109,12 @@ public class MyServer extends UnicastRemoteObject implements ServerInterface {
         try {
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             out = new PrintWriter(clientSocket.getOutputStream(), true);
-
-            String request = in.readLine();
             Gson gson = new Gson();
-            Message requestMessage = gson.fromJson(request, Message.class);
-
-            in.close();
-            out.close();
-            clientSocket.close();
-
+            while(true){
+                String request = in.readLine();
+                Message requestMessage = gson.fromJson(request, Message.class);
+                onMessage(requestMessage);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

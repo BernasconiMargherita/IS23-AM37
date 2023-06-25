@@ -64,7 +64,7 @@ public class GuiMaster extends ClientManager {
     @Override
     public void initResponse(InitResponse initResponse) {
         Platform.runLater(() ->
-                gameSceneController.initResponse(initResponse));
+                connectionSceneController.initResponse(initResponse));
     }
 
     @Override

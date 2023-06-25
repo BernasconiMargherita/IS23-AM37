@@ -73,7 +73,6 @@ public class ConnectionSceneController {
             client.sendMessage(new SetMessage(numOfPlayers, client.getGameID()));
         }
 
-
     }
 
     private void waitingPlayers() {
@@ -81,8 +80,6 @@ public class ConnectionSceneController {
 
         if (client.isInitPlayer()){
             client.sendMessage(new InitMessage(client.getGameID()));
-            Scene scene=gridPane.getScene();
-            GuiMaster.setLayout(scene,"/fxml/gameScene.fxml");
         }
         else {
             for (Node node : rootPane.getChildren()) {
@@ -103,4 +100,8 @@ public class ConnectionSceneController {
         waitingPlayers();
     }
 
+    public void initResponse(InitResponse initResponse) {
+        Scene scene=gridPane.getScene();
+        GuiMaster.setLayout(scene,"/fxml/gameScene.fxml");
+    }
 }
