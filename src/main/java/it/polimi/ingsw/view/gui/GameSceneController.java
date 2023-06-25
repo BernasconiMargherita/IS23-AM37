@@ -35,7 +35,7 @@ public class GameSceneController {
     public GridPane hand;
     private ColourTile[][] turnBoard;
     private Coordinates[] tileHand=new Coordinates[3];
-    private ArrayList<>
+    private ArrayList<Coordinates> tileHandTmp=new ArrayList<>(3);
 
 
     @FXML
@@ -115,10 +115,13 @@ public class GameSceneController {
     private void ChooseTile(int row, int col, String finalPath) {
         ImageView tile=findTile(row,col);
         if ((turnBoard[row + 1][col].equals(ColourTile.FREE)) || (turnBoard[row - 1][col].equals(ColourTile.FREE)) || (turnBoard[row][col + 1].equals(ColourTile.FREE)) || (turnBoard[row][col - 1].equals(ColourTile.FREE))){
-            if (tileHand)
+            if (tileHandTmp.isEmpty()){
+                tileHandTmp.add(new Coordinates(row,col));
                 tile.setImage(null);
                 ImageView handTile=createShelfTile(finalPath);
                 hand.add(handTile,findFirstEmptyColumn(hand),0);
+            }
+
         }
     }
 
@@ -183,4 +186,7 @@ public class GameSceneController {
         client.sendMessage(new BoardMessage(client.getUsername(), client.getGameID(), client.getUID()));
     }
 
+    public void cardsResponse(CardsResponse cardsResponse) {
+        System.out.println("carte arrivate!"); //metti id a personal e common in base ad assets
+    }
 }
