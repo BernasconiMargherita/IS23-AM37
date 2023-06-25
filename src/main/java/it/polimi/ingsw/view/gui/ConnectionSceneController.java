@@ -29,7 +29,7 @@ public class ConnectionSceneController {
     @FXML
     private Button reSendButton;
     @FXML
-    private Label usernameError;
+    private Label rimettiUsername;
 
     @FXML
     public void initialize() {
@@ -64,14 +64,19 @@ public class ConnectionSceneController {
         usernameLabel.setVisible(true);
         usernameField.setVisible(true);
         reSendButton.setVisible(true);
+        rimettiUsername.setVisible(true);
+        rimettiUsername.setText("Il tuo username è già preso!");
     }
 
     public void reSendUsername(MouseEvent mouseEvent) {
+
         String username = usernameField.getText();
+
         if (username == null || username.trim().isEmpty()) {
-            usernameError.setText("Inserisci un username!");
+            rimettiUsername.setText("Inserisci un username!");
         } else {
             Client client = guiMaster.getClient();
+            client.setUsername(username);
             client.sendMessage(new LoginMessage(username,client.getGameID(),client.getUID()));
         }
     }
