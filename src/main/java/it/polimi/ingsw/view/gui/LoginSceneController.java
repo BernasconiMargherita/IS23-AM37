@@ -65,9 +65,10 @@ public class LoginSceneController {
     public void login() {
         username = usernameField.getText();
         if (username == null || username.trim().isEmpty()) {
-            usernameError.setText("Inserisci un username!");
+            usernameError.setText("Insert a Username!");
         } else {
             Client client = guiMaster.getClient();
+            client.setUsername(username);
             client.sendMessage(new PreLoginMessage(-1,client.getUID(),username));
         }
     }
@@ -79,7 +80,7 @@ public class LoginSceneController {
         RadioButton selected = (RadioButton) toggleGroup.getSelectedToggle();
 
         if (!RMI.isSelected() && !TCP.isSelected()) {
-            protocolError.setText("Seleziona un protocollo!");
+            protocolError.setText("Choose a protocol!");
         }
 
         connection = selected.getText();

@@ -12,6 +12,8 @@ import it.polimi.ingsw.model.Tile.ColourTile;
 import it.polimi.ingsw.model.Tile.Tile;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 /**
  * Unit test for simple App.
  */
@@ -93,8 +95,8 @@ public class BoardTest {
         Board board = new Board(2);
         Tile[] tiles = new Tile[1];
 
-        Coordinates[] positions = new Coordinates[1];
-        positions[0] = new Coordinates(0,0);
+        ArrayList<Coordinates> positions = new ArrayList<>();
+        positions.add(new Coordinates(0,0));
         try {
             tiles = board.removeCardFromBoard(positions);
 
@@ -112,8 +114,8 @@ public class BoardTest {
         Board board = new Board(2);
         Tile[] tiles = new Tile[1];
 
-        Coordinates[] positions = new Coordinates[1];
-        positions[0] = new Coordinates(5,5);
+        ArrayList<Coordinates> positions = new ArrayList<>();
+        positions.add(new Coordinates(5,5));
         try {
             tiles = board.removeCardFromBoard(positions);
 
@@ -131,9 +133,10 @@ public class BoardTest {
     void validPositionsInBoard() throws InvalidPositionsException, InvalidSlotException, EmptySlotException, SoldOutTilesException{
         Board board = new Board(4);
         Tile[] tiles;
-        Coordinates[] positions = new Coordinates[2];
-        positions[0] = new Coordinates(1,8);
-        positions[1] = new Coordinates(0,4);
+
+        ArrayList<Coordinates> positions = new ArrayList<>();
+        positions.add(new Coordinates(1,8));
+        positions.add(new Coordinates(0,4));
         try{
             tiles = board.removeCardFromBoard(positions);
         }

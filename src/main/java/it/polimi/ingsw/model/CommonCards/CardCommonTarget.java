@@ -21,6 +21,12 @@ public class CardCommonTarget implements Serializable {
      * Stack<ScoringToken> stackToken : stack of scoring tokens
      */
     private final Stack<ScoringToken> stackToken;
+    /**
+     * int for tracking the highest token
+     */
+    private int highestToken=8;
+
+
 
     /**
      * constructor that assign to the card:
@@ -31,7 +37,7 @@ public class CardCommonTarget implements Serializable {
     public CardCommonTarget(CommonList commonType, int assignedCommonCard, int numOfPlayers) {
 
 
-        stackToken = new Stack<ScoringToken>();
+        stackToken = new Stack<>();
 
         this.commonType = commonType;
 
@@ -69,6 +75,7 @@ public class CardCommonTarget implements Serializable {
      * @return stackToken.pop().getValueToken()  ->  scoringToken
      */
     public int getScoringToken() {
+        highestToken=highestToken-2;
         return stackToken.pop().getValueToken();
     }
 
@@ -89,5 +96,12 @@ public class CardCommonTarget implements Serializable {
 
     public CommonList getCommonType() {
         return commonType;
+    }
+
+    /**
+     * @return the highest token value
+     */
+    public int getHighestToken() {
+        return highestToken;
     }
 }

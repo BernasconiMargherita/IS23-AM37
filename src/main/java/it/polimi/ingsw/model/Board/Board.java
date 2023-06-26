@@ -9,10 +9,9 @@ import it.polimi.ingsw.Utils.TileSlot;
 import it.polimi.ingsw.model.Tile.Tile;
 import it.polimi.ingsw.model.Tile.TileDeck;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Objects;
+import java.util.ArrayList;
 
 /**
  * Class that represents the gaming board
@@ -41,6 +40,8 @@ public class Board implements Serializable {
      * @param numOfPlayers number of players at the start of the game,used for switch cases
      */
     public Board(int numOfPlayers) {
+
+        this.endGameToken=new EndGameToken();
 
         this.bag = new TileDeck();
         this.board = new TileSlot[MAX_BOARD_ROWS][MAX_BOARD_COLUMNS];
@@ -92,18 +93,11 @@ public class Board implements Serializable {
      * @throws InvalidSlotException exception for managing the selection of a Tile with no free spaces around
      */
 
-    public Tile[] removeCardFromBoard(Coordinates[] positions) throws EmptySlotException, InvalidSlotException, InvalidPositionsException {
+    public Tile[] removeCardFromBoard(ArrayList<Coordinates> positions) throws EmptySlotException, InvalidSlotException, InvalidPositionsException {
 
-        for (int i = 1; i < positions.length; i++) {
-            if (!Objects.equals(positions[i - 1].getRow(), positions[i].getRow()) && !Objects.equals(positions[i - 1].getColumn(), positions[i].getColumn())) {
-                throw new InvalidPositionsException("The selected positions are invalid");
-            }
-        }
-
-
-        Tile[] selectedTile = new Tile[positions.length];
-        for (int i = 0; i < positions.length; i++) {
-            Coordinates position = positions[i];
+        Tile[] selectedTile = new Tile[positions.size()];
+        for (int i = 0; i < positions.size(); i++) {
+            Coordinates position = positions.get(i);
 
             if (board[position.getRow()][position.getColumn()].isFree())
                 throw new EmptySlotException("This slot is Empty");
@@ -136,5 +130,13 @@ public class Board implements Serializable {
 
     public TileSlot[][] getBoard() {
         return this.board;
+    }
+
+    public void takeEndGameToken() {
+        endGameToken.setTaken();
+    }
+
+    public boolean isEndGameTokenTaken(){
+        return endGameToken.isTaken();
     }
 }

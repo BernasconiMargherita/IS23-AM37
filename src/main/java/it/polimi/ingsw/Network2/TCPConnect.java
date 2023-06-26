@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Network2;
 
-import com.google.gson.Gson;
 import it.polimi.ingsw.Network2.Messages.Message;
 
 import java.io.BufferedReader;
@@ -50,8 +49,7 @@ public class TCPConnect implements Connection{
     }
 
     public void sendMessage(Message message){
-        Gson gson = new Gson();
-        String json = gson.toJson(message);
-        out.println(json);
+        out.println(message.toJson());
+        out.flush();
     }
 }

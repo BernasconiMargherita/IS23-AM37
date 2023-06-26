@@ -65,7 +65,7 @@ public class GameController implements Serializable {
         if (game.getGameState() != GameState.WAITING_PLAYERS) throw new GameAlreadyStarted("Game already started");
 
         if (!players.isEmpty()) {
-            if (nickname.equals(getPlayerByNickname(nickname))) throw new UsernameException("Username already taken");
+            if (isPlayerPresent(nickname)) throw new UsernameException("Username already taken");
         }
 
         players.add(newPlayer);
@@ -89,6 +89,10 @@ public class GameController implements Serializable {
 
         game.setGameState(GameState.IN_GAME);
         currentPlayer = players.get(turnChanger);
+    }
+
+    public TileSlot[][] getShelf(String nickname){
+        return getPlayerByNickname(nickname).getPersonalShelf().getShelf();
     }
 
     /**
@@ -133,7 +137,7 @@ public class GameController implements Serializable {
         game.refillBoard();
     }
 
-    public Tile[] remove(Coordinates[] positions) throws EmptySlotException, InvalidPositionsException, InvalidSlotException {
+    public Tile[] remove(ArrayList<Coordinates> positions) throws EmptySlotException, InvalidPositionsException, InvalidSlotException {
         return game.remove(currentPlayer, positions);
     }
 
@@ -174,11 +178,15 @@ public class GameController implements Serializable {
      * @param nickname the nickname of the searched player
      * @return the nickname or null if not found
      */
-    public String getPlayerByNickname(String nickname) {
+    public Player getPlayerByNickname(String nickname) {
         for (Player player : players) {
-            if (player.getNickname().equals(nickname)) return player.getNickname();
+            if (player.getNickname().equals(nickname)) return player;
         }
-        return "?";
+        return null;
+    }
+
+    public boolean isPlayerPresent(String nickname){
+        return getPlayerByNickname(nickname) != null;
     }
 
     public Player chooseWinner() {
@@ -242,5 +250,8 @@ public class GameController implements Serializable {
         return numOfPlayers;
     }
 
+    public boolean isEndGameTokenTaken(){
+        return game.isEndGameTokenTaken();
+    }
 
 }

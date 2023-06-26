@@ -63,6 +63,9 @@ public class Shelf implements Serializable {
     }
 
 
+
+
+
     /**
      * method that verifies if shelf is completely full. It controls if every slot of the last row is full
      */

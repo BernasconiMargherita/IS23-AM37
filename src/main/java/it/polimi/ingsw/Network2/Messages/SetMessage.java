@@ -5,10 +5,12 @@ import java.io.Serializable;
 public class SetMessage extends Message implements Serializable {
 
     private int maxPlayers;
+    private String typeMessage ;
 
     public SetMessage(int maxPlayers, int gameID, Long UID) {
         super(gameID,UID);
         this.maxPlayers = maxPlayers;
+        this.typeMessage = "SetMessage";
     }
 
 

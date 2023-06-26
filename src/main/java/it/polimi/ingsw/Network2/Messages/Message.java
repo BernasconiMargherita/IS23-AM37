@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Network2.Messages;
 
+import com.google.gson.Gson;
 import it.polimi.ingsw.Utils.Coordinates;
 import it.polimi.ingsw.model.CommonCards.CardCommonTarget;
 import it.polimi.ingsw.model.PersonalCards.CardPersonalTarget;
@@ -14,6 +15,10 @@ public class Message implements Serializable {
     public Message(int gameID,Long UID) {
         this.gameID=gameID;
         this.UID=UID;
+    }
+    public String toJson() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 
     public int getMaxPlayers() {
@@ -58,7 +63,7 @@ public class Message implements Serializable {
         return null;
     }
 
-    public Coordinates[] getPositions() {
+    public ArrayList<Coordinates> getPositions() {
         return null;
     }
     public String[] getColours() {

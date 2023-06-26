@@ -23,9 +23,9 @@
         <RadioButton fx:id="ThreePlayers" text="2" GridPane.columnIndex="1" GridPane.rowIndex="1" />
         <RadioButton fx:id="FourPlayers" text="4" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-        <Label layoutX="134.0" layoutY="200.0" prefHeight="17.0" prefWidth="174.0" text="  Inserisci numero di giocatori: " textAlignment="RIGHT" />
+        <Label layoutX="134.0" layoutY="200.0" prefHeight="17.0" prefWidth="174.0" text="  Choose number of players: " textAlignment="RIGHT" />
 
-        <Button layoutX="367.0" layoutY="239.0" onMouseClicked="#selectNumOfPlayers" text="Conferma" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+        <Button layoutX="367.0" layoutY="239.0" onMouseClicked="#selectNumOfPlayers" text="Confirm" GridPane.columnIndex="2" GridPane.rowIndex="3" />
    
        <Label fx:id="numError" prefHeight="17.0" prefWidth="174.0" textFill="#a81010" GridPane.columnIndex="1" />
     </GridPane>

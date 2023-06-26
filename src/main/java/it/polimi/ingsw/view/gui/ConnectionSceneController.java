@@ -29,7 +29,7 @@ public class ConnectionSceneController {
     @FXML
     private Button reSendButton;
     @FXML
-    private Label usernameError;
+    private Label rimettiUsername;
 
     @FXML
     public void initialize() {
@@ -41,7 +41,7 @@ public class ConnectionSceneController {
     public void createScene() {
         String backgroundImage = Objects.requireNonNull(getClass().getResource("/assets/misc/sfondo parquet.jpg")).toExternalForm();
         rootPane.setStyle("-fx-background-image: url('" + backgroundImage + "'); -fx-background-size: cover;");
-        loadingMessage.setText("Attendi gli altri giocatori");
+        loadingMessage.setText("Wait for other Players");
     }
 
 
@@ -64,14 +64,19 @@ public class ConnectionSceneController {
         usernameLabel.setVisible(true);
         usernameField.setVisible(true);
         reSendButton.setVisible(true);
+        rimettiUsername.setVisible(true);
+        rimettiUsername.setText("Username already taken!");
     }
 
     public void reSendUsername(MouseEvent mouseEvent) {
+
         String username = usernameField.getText();
+
         if (username == null || username.trim().isEmpty()) {
-            usernameError.setText("Inserisci un username!");
+            rimettiUsername.setText("Insert a Username!");
         } else {
             Client client = guiMaster.getClient();
+            client.setUsername(username);
             client.sendMessage(new LoginMessage(username,client.getGameID(),client.getUID()));
         }
     }
