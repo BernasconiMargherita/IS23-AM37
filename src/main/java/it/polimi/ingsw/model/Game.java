@@ -68,7 +68,7 @@ public class Game implements Serializable {
      * @param currentPlayer the player that is currently playing his turn
      * @param positions     array of the selected tiles coordinates
      */
-    public Tile[] remove(Player currentPlayer, Coordinates[] positions) throws InvalidPositionsException, EmptySlotException, InvalidSlotException {
+    public Tile[] remove(Player currentPlayer, ArrayList<Coordinates> positions) throws InvalidPositionsException, EmptySlotException, InvalidSlotException {
         Tile[] removedTile;
 
         removedTile = board.removeCardFromBoard(positions);

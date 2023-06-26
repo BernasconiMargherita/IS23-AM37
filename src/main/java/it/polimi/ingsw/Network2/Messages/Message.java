@@ -63,7 +63,7 @@ public class Message implements Serializable {
         return null;
     }
 
-    public Coordinates[] getPositions() {
+    public ArrayList<Coordinates> getPositions() {
         return null;
     }
     public String[] getColours() {

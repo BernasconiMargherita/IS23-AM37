@@ -55,7 +55,7 @@ public class FirstConnectionSceneController {
     public void selectNumOfPlayers() {
         RadioButton selected = (RadioButton) toggleGroup.getSelectedToggle();
         if (!TwoPlayers.isSelected() && !ThreePlayers.isSelected()&& !FourPlayers.isSelected()) {
-            numError.setText("Scegli un numero!");
+            numError.setText("Choose a Number!");
         }
         else {
             int numOfPlayers = Integer.parseInt(selected.getText());

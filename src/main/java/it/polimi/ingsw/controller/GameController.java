@@ -133,7 +133,7 @@ public class GameController implements Serializable {
         game.refillBoard();
     }
 
-    public Tile[] remove(Coordinates[] positions) throws EmptySlotException, InvalidPositionsException, InvalidSlotException {
+    public Tile[] remove(ArrayList<Coordinates> positions) throws EmptySlotException, InvalidPositionsException, InvalidSlotException {
         return game.remove(currentPlayer, positions);
     }
 
