@@ -129,6 +129,7 @@ public class MyServer extends UnicastRemoteObject implements ServerInterface {
             JsonElement rootElement = JsonParser.parseString(request);
             JsonObject jsonObject = rootElement.getAsJsonObject();
             String type = jsonObject.get("typeMessage").getAsString();
+            System.out.println(type);
             switch (type) {
                 case "PreLoginMessage" -> myServer.onMessage(gson.fromJson(request, PreLoginMessage.class));
                 case "LoginMessage" -> myServer.onMessage(gson.fromJson(request, LoginMessage.class));

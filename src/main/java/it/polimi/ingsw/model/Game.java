@@ -129,6 +129,7 @@ public class Game implements Serializable {
         return board.getBoard();
     }
 
+
     public ArrayList<CardCommonTarget> getCommonTargets(){
         return commonDeck;
     }
