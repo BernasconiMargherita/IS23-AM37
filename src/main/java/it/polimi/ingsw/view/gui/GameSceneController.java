@@ -242,7 +242,7 @@ public class GameSceneController {
     }
 
     private void updateShelf(TurnResponse turnResponse) {
-            turnShelf = turnResponse.getShelf();
+        ColourTile[][] turnShelf = turnResponse.getShelf();
             for (int row = 0; row < SHELF_ROWS; row++) {
                 for (int col = 0; col < SHELF_COLUMNS; col++) {
                     if (!turnShelf[row][col].equals(ColourTile.FREE)) {
@@ -359,10 +359,13 @@ public class GameSceneController {
         column4.setVisible(false);
         column5.setVisible(false);
 
-        int column= Integer.parseInt(mouseEvent.getButton().name());
+        Button clickedButton = (Button) mouseEvent.getSource();
+        String buttonText = clickedButton.getText();
+        int column = Integer.parseInt(buttonText);
+
         Client client = GuiMaster.getInstance().getClient();
         String[] colours=createColoursArray();
-        client.sendMessage(new TurnMessage(client.getGameID(), client.getUID(), column, client.getUsername(), colours));
+        client.sendMessage(new TurnMessage(client.getGameID(), client.getUID(), 1, client.getUsername(), colours));
     }
 
     private String[] createColoursArray() {

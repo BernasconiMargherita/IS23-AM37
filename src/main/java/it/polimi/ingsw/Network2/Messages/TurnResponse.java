@@ -24,4 +24,8 @@ public class TurnResponse extends Message implements Serializable {
     public int getStatus() {
         return status;
     }
+
+    public ColourTile[][] getShelf() {
+        return shelfColours;
+    }
 }

@@ -28,4 +28,9 @@ public class TurnMessage extends Message implements Serializable {
     public String[] getColours() {
         return colours;
     }
+
+    @Override
+    public String typeMessage() {
+        return "TurnMessage";
+    }
 }

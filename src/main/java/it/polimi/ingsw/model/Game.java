@@ -121,7 +121,9 @@ public class Game implements Serializable {
     public void isShelfFull(Player currentPlayer) {
         if (currentPlayer.isShelfFull()) {
             setLastTurn(true);
+            board.takeEndGameToken();
             currentPlayer.addScore(1);
+
         }
     }
 
@@ -158,6 +160,8 @@ public class Game implements Serializable {
         isLastTurn = lastTurn;
     }
 
-
+    public boolean isEndGameTokenTaken(){
+        return board.isEndGameTokenTaken();
+    }
 }
 

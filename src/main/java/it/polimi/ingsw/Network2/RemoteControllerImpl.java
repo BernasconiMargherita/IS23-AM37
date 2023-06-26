@@ -405,7 +405,7 @@ System.out.println("la lobby è lunga : " + lobby.size());
                     shelfColours[j][k] = shelf[j][k].getAssignedTile().getColour();
                 }
                 else{
-                    shelfColours[i][j] = ColourTile.FREE;
+                    shelfColours[j][k] = ColourTile.FREE;
                 }
             }
         }

@@ -41,6 +41,8 @@ public class Board implements Serializable {
      */
     public Board(int numOfPlayers) {
 
+        this.endGameToken=new EndGameToken();
+
         this.bag = new TileDeck();
         this.board = new TileSlot[MAX_BOARD_ROWS][MAX_BOARD_COLUMNS];
 
@@ -128,5 +130,13 @@ public class Board implements Serializable {
 
     public TileSlot[][] getBoard() {
         return this.board;
+    }
+
+    public void takeEndGameToken() {
+        endGameToken.setTaken();
+    }
+
+    public boolean isEndGameTokenTaken(){
+        return endGameToken.isTaken();
     }
 }

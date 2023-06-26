@@ -124,10 +124,10 @@
    <Label fx:id="box1" layoutX="1139.0" layoutY="588.0" />
    <Label fx:id="box2" layoutX="1228.0" layoutY="588.0" />
    <Label fx:id="box3" layoutX="1317.0" layoutY="588.0" />
-   <Button fx:id="column1" layoutX="1071.0" layoutY="34.0" mnemonicParsing="false" onMouseClicked="#sendTurn" prefHeight="25.0" prefWidth="53.0" text="1" />
-   <Button fx:id="column2" layoutX="1135.0" layoutY="34.0" mnemonicParsing="false" onMouseClicked="#sendTurn" prefHeight="25.0" prefWidth="53.0" text="2" />
-   <Button fx:id="column3" layoutX="1202.0" layoutY="34.0" mnemonicParsing="false" onMouseClicked="#sendTurn" prefHeight="25.0" prefWidth="53.0" text="3" />
-   <Button fx:id="column4" layoutX="1264.0" layoutY="34.0" mnemonicParsing="false" onMouseClicked="#sendTurn" prefHeight="25.0" prefWidth="53.0" text="4" />
-   <Button fx:id="column5" layoutX="1334.0" layoutY="34.0" mnemonicParsing="false" onMouseClicked="#sendTurn" prefHeight="25.0" prefWidth="53.0" text="5" />
+   <Button fx:id="column1" layoutX="1071.0" layoutY="34.0" mnemonicParsing="false" onMouseClicked="#sendTurn" prefHeight="25.0" prefWidth="53.0" text="1" visible="false"/>
+   <Button fx:id="column2" layoutX="1135.0" layoutY="34.0" mnemonicParsing="false" onMouseClicked="#sendTurn" prefHeight="25.0" prefWidth="53.0" text="2" visible="false"/>
+   <Button fx:id="column3" layoutX="1202.0" layoutY="34.0" mnemonicParsing="false" onMouseClicked="#sendTurn" prefHeight="25.0" prefWidth="53.0" text="3" visible="false"/>
+   <Button fx:id="column4" layoutX="1264.0" layoutY="34.0" mnemonicParsing="false" onMouseClicked="#sendTurn" prefHeight="25.0" prefWidth="53.0" text="4" visible="false"/>
+   <Button fx:id="column5" layoutX="1334.0" layoutY="34.0" mnemonicParsing="false" onMouseClicked="#sendTurn" prefHeight="25.0" prefWidth="53.0" text="5" visible="false" />
 
 </AnchorPane>
