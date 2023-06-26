@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.PersonalCards.CardPersonalTarget;
 import it.polimi.ingsw.model.Tile.ColourTile;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -17,10 +18,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Random;
 
 public class GameSceneController {
     private static final int SHELF_ROWS = 6;
@@ -76,6 +79,7 @@ public class GameSceneController {
     public Button column4;
     @FXML
     public Button column5;
+    public GridPane endGameToken;
     private ColourTile[][] turnBoard;
     private final ArrayList<Coordinates> tileHand=new ArrayList<>();
     private final ArrayList<Coordinates> tileHandTmp=new ArrayList<>();
@@ -105,7 +109,13 @@ public class GameSceneController {
     }
 
     public void updateBoard(BoardResponse boardMessage) {
+        int[] tokens = boardMessage.getCommonTokens();
+        loadScoringToken(tokens[0],scoringToken1);
+        loadScoringToken(tokens[1],scoringToken2);
+        if (boardMessage.isEndGameTokenTaken()) emptyGridPane(endGameToken);
+        else loadEndGameToken();
         turnBoard = boardMessage.getBoard();
+        emptyGridPane(boardMask);
         for (int row = 0; row < BOARD_SIZE; row++) {
             for (int col = 0; col < BOARD_SIZE; col++) {
                 if (!turnBoard[row][col].equals(ColourTile.FREE)) {
@@ -115,6 +125,17 @@ public class GameSceneController {
             }
         }
 
+    }
+
+    private void loadEndGameToken() {
+        String path="/assets/scoring tokens/end game.jpg";
+        String EndGameTokenImage = Objects.requireNonNull(getClass().getResource(path)).toExternalForm();
+        ImageView imageView = new ImageView();
+        imageView.setImage(new Image(EndGameTokenImage));
+        imageView.setFitWidth(70);
+        imageView.setFitHeight(70);
+
+        endGameToken.add(imageView,0,0);
     }
 
     private ImageView createBoardTile(ColourTile colourTile, int row, int col) {
@@ -145,19 +166,20 @@ public class GameSceneController {
     private void ChooseTile(int row, int col, String finalPath) {
         ImageView tile = findTile(row, col);
         boolean allCoordinatesMatch = true;
-
-        for (Coordinates coordinate : tileHandTmp) {
-            if (coordinate.getRow() != row && coordinate.getColumn() != col) {
-                allCoordinatesMatch = false;
-                break;
+        if ((turnBoard[row + 1][col].equals(ColourTile.FREE)) || (turnBoard[row - 1][col].equals(ColourTile.FREE)) || (turnBoard[row][col + 1].equals(ColourTile.FREE)) || (turnBoard[row][col - 1].equals(ColourTile.FREE))) {
+            for (Coordinates coordinate : tileHandTmp) {
+                if (coordinate.getRow() != row && coordinate.getColumn() != col) {
+                    allCoordinatesMatch = false;
+                    break;
+                }
             }
-        }
 
-        if (allCoordinatesMatch) {
-            tileHandTmp.add(new Coordinates(row, col));
-            tile.setImage(null);
-            ImageView handTile = createHandTile(finalPath);
-            hand.add(handTile, findFirstEmptyColumn(hand), 0);
+            if (allCoordinatesMatch) {
+                tileHandTmp.add(new Coordinates(row, col));
+                tile.setImage(null);
+                ImageView handTile = createHandTile(finalPath);
+                hand.add(handTile, findFirstEmptyColumn(hand), 0);
+            }
         }
     }
 
@@ -230,7 +252,10 @@ public class GameSceneController {
     }
 
     public void turnResponse(TurnResponse turnResponse) {
-        if (turnResponse.getStatus()==0) updateShelf(turnResponse);
+        if (turnResponse.getStatus()==0) {
+            updateShelf(turnResponse);
+            disableGUI();
+        }
         else {
             column1.setVisible(true);
             column2.setVisible(true);
@@ -243,14 +268,22 @@ public class GameSceneController {
 
     private void updateShelf(TurnResponse turnResponse) {
         ColourTile[][] turnShelf = turnResponse.getShelf();
-            for (int row = 0; row < SHELF_ROWS; row++) {
-                for (int col = 0; col < SHELF_COLUMNS; col++) {
-                    if (!turnShelf[row][col].equals(ColourTile.FREE)) {
-                        ImageView tile = createShelfTile(turnShelf[row][col], row, col);
-                        shelfMask.add(tile, col, row);
-                    }
+        emptyGridPane(shelfMask);
+        for (int row = SHELF_ROWS - 1; row >= 0; row--) {
+            for (int col = 0; col < SHELF_COLUMNS; col++) {
+                int adjustedRow = SHELF_ROWS - 1 - row;
+
+                if (!turnShelf[adjustedRow][col].equals(ColourTile.FREE)) {
+                    ImageView tile = createShelfTile(turnShelf[adjustedRow][col], adjustedRow, col);
+                    shelfMask.add(tile, col, row);
                 }
             }
+        }
+    }
+
+
+    private void emptyGridPane(GridPane gridPane) {
+        gridPane.getChildren().clear();
     }
 
     private ImageView createShelfTile(ColourTile colourTile, int row, int col) {
@@ -269,13 +302,26 @@ public class GameSceneController {
         ImageView imageView = new ImageView();
         imageView.setImage(new Image(TileImage));
 
-        imageView.setFitWidth(55);
-        imageView.setFitHeight(55);
+        imageView.setFitWidth(40);
+        imageView.setFitHeight(40);
 
         return imageView;
     }
 
     public void endGame(EndMessage endGameMessage) {
+        Stage modalStage = new Stage();
+        modalStage.initModality(Modality.APPLICATION_MODAL);
+        modalStage.setTitle("Game Over");
+
+        Label winnerLabel = new Label("The winner is: " + endGameMessage.getWinner());
+
+        VBox modalVBox = new VBox(winnerLabel);
+        modalVBox.setStyle("-fx-padding: 20px");
+
+        Scene modalScene = new Scene(modalVBox);
+
+        modalStage.setScene(modalScene);
+        modalStage.showAndWait();
     }
 
     public void wakeUp(WakeMessage wakeMessage) {
@@ -296,7 +342,11 @@ public class GameSceneController {
         boardMask.setDisable(true);
         shelfMask.setDisable(true);
         hand.setDisable(true);
-
+        tileHand.clear();
+        emptyGridPane(hand);
+        for (Label box:boxArray) {
+            box.setText("");
+        }
     }
 
     public void cardsResponse(CardsResponse cardsResponse) {
@@ -309,11 +359,11 @@ public class GameSceneController {
     private void showCommonTargets(ArrayList<CardCommonTarget> commonTargets) {
         String path1= "/assets/commonGoalCards/" +commonTargets.get(0).getCommonType().getId()+".jpg";
         loadCommonTargetImage(path1, commonTarget1);
-        loadScoringToken(commonTargets.get(0).getHighestToken(),scoringToken1);
+
 
         String path2= "/assets/commonGoalCards/" +commonTargets.get(1).getCommonType().getId()+".jpg";
         loadCommonTargetImage(path2, commonTarget2);
-        loadScoringToken(commonTargets.get(1).getHighestToken(),scoringToken2);
+
     }
 
     private void loadScoringToken(int highestToken, GridPane scoringToken) {
@@ -362,10 +412,11 @@ public class GameSceneController {
         Button clickedButton = (Button) mouseEvent.getSource();
         String buttonText = clickedButton.getText();
         int column = Integer.parseInt(buttonText);
+        column=column-1;
 
         Client client = GuiMaster.getInstance().getClient();
         String[] colours=createColoursArray();
-        client.sendMessage(new TurnMessage(client.getGameID(), client.getUID(), 1, client.getUsername(), colours));
+        client.sendMessage(new TurnMessage(client.getGameID(), client.getUID(), column, client.getUsername(), colours));
     }
 
     private String[] createColoursArray() {
