@@ -113,6 +113,7 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
                         JsonElement rootElement = JsonParser.parseString(request);
                         JsonObject jsonObject = rootElement.getAsJsonObject();
                         String type = jsonObject.get("typeMessage").getAsString();
+                        System.out.println("è arrivato il mess al client ? ->" + type);
                         switch (type) {
                             case "LoginResponse" -> onMessage(gson.fromJson(request, LoginResponse.class));
                             case "InitResponse" -> onMessage(gson.fromJson(request, InitResponse.class));

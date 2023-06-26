@@ -81,6 +81,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
     public void preRegistration(Message message) throws RemoteException {
         for (int i = 0; i < lobby.size(); i++) {
 
+System.out.println("la lobby è lunga : " + lobby.size());
             if (lobby.get(i).size() == 0) {
                 lobby.get(i).add(new Pair<>(message.getUID(), message.getNickname()));
                 int gameID = startGame();
@@ -93,6 +94,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
             Gson gson = new Gson();
             Message preLogMess = new PreLoginResponse(-1,message.getUID());
             if (lobby.get(i).size() == 1 || lobby.get(i).size() == 2) {
+                System.out.println("qua ci entra frate flag");
                 lobby.get(i).add(new Pair<>(message.getUID(), message.getNickname()));
                 containsTcpTemp(message, gson, preLogMess);
                 break;
@@ -112,9 +114,9 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
         if (tempTcp.containsKey(message.getUID())) {
             try {
                 PrintWriter out = new PrintWriter(tempTcp.get(message.getUID()).getOutputStream());
-
-                String jsonMess = gson.toJson(preLogMess);
-                out.println(jsonMess);
+                System.out.println("pure qua deve entrare fratellone flag");
+                out.println(preLogMess.toJson());
+                out.flush();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -360,6 +362,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
         for (int i = 0; i < clients.get(gameID).size(); i++) {
             if (masterController.getGameController(gameID).getPlayers().get(i).getNickname().equals(nickname)) {
 
+                ColourTile[][] shelfColours = new ColourTile[6][5];
                 try {
                     Tile[] tiles = new Tile[colors.length];
 
@@ -368,18 +371,23 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
                     }
 
                     masterController.getGameController(gameID).turn(tiles, column);
+                    getShelfByNickname(gameID, nickname, i, shelfColours);
+
                 } catch (EmptySlotException | InvalidPositionsException | InvalidSlotException |
                          NoSpaceInColumnException | SoldOutTilesException | GameAlreadyStarted e) {
-                    clients.get(gameID).get(getPosition(UID, gameID)).sendMessage(new TurnResponse(-1,gameID,UID));
+                    clients.get(gameID).get(getPosition(UID, gameID)).sendMessage(new TurnResponse(-1,gameID,UID, null));
 
                 } catch (EndGameException e) {
+                    getShelfByNickname(gameID, nickname, i, shelfColours);
 
+                    Message message = new TurnResponse(0,gameID,UID, shelfColours);
+                    clients.get(gameID).get(getPosition(UID, gameID)).sendMessage(message);
                     String winner = getWinner(gameID);
                     for (int j = 0; j < clients.get(gameID).size(); j++) {
                         clients.get(gameID).get(i).sendMessage(new EndMessage(winner,gameID,UID));
                     }
                 }
-                Message message = new TurnResponse(0,gameID,UID);
+                Message message = new TurnResponse(0,gameID,UID, shelfColours);
                 clients.get(gameID).get(getPosition(UID, gameID)).sendMessage(message);
 
                 currentPlayer(gameID);
@@ -389,10 +397,19 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
         }
     }
 
-
-
-
-
+    public void getShelfByNickname(int gameID, String nickname, int i, ColourTile[][] shelfColours) {
+        TileSlot[][] shelf = masterController.getGameController(gameID).getShelf(nickname);
+        for(int j = 0; j < 6; j++){
+            for(int k = 0; k<5 ; k++){
+                if(!shelf[j][k].isFree()){
+                    shelfColours[j][k] = shelf[j][k].getAssignedTile().getColour();
+                }
+                else{
+                    shelfColours[i][j] = ColourTile.FREE;
+                }
+            }
+        }
+    }
 
 
     public String getWinner(int gameID) throws RemoteException {
