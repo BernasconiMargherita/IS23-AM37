@@ -253,8 +253,10 @@ public class GameSceneController {
 
     public void turnResponse(TurnResponse turnResponse) {
         if (turnResponse.getStatus()==0) {
+
             updateShelf(turnResponse);
             disableGUI();
+
         }
         else {
             column1.setVisible(true);
@@ -315,13 +317,23 @@ public class GameSceneController {
 
         Label winnerLabel = new Label("The winner is: " + endGameMessage.getWinner());
 
-        VBox modalVBox = new VBox(winnerLabel);
-        modalVBox.setStyle("-fx-padding: 20px");
+        Button closeButton = new Button("Close game");
+        closeButton.setOnAction(event -> {
+            closeConnection();
+            modalStage.close();
+        });
+
+        VBox modalVBox = new VBox(winnerLabel, closeButton);
+        modalVBox.setStyle("-fx-padding: 20px; -fx-spacing: 10px");
 
         Scene modalScene = new Scene(modalVBox);
 
         modalStage.setScene(modalScene);
         modalStage.showAndWait();
+    }
+
+    private void closeConnection() {
+        GuiMaster.getInstance().closeConnection();
     }
 
     public void wakeUp(WakeMessage wakeMessage) {
