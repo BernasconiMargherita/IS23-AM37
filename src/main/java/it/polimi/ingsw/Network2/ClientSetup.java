@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Network2;
 
 
+import it.polimi.ingsw.view.cli.Cli;
 import it.polimi.ingsw.view.gui.Gui;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -35,8 +36,8 @@ public class ClientSetup extends Application {
     }
 
     public static void startCLI() {
-        System.out.println("CLI mode selected. Enter commands:");
-
+        Thread cliThread = new Thread(new Cli());
+        cliThread.start();
     }
 }
 

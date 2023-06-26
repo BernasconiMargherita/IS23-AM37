@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 import static it.polimi.ingsw.view.cli.ColorCodes.getColorCode;
 
-public class Cli extends ClientManager {
+public class Cli extends ClientManager implements Runnable {
 
     private String protocol;
     ColourTile[][] shelf;
@@ -37,26 +37,22 @@ public class Cli extends ClientManager {
     private String[] colors;
 
 
-
-
-
-
-
+    @Override
+    public void run() {
+        this.in = new Scanner(System.in);
+        this.out = new MyShelfiePrintStream();
+        protocol = in.next();
+        createConnection(protocol);
+    }
 
     @Override
     public void createConnection(String connection) {
-        this.in = new Scanner(System.in);
-        this.out = new MyShelfiePrintStream();
-        out.println("Welcome!\n");
-        out.println("\n Write connection type (TCP or RMI):");
-        protocol = in.nextLine();
         if (protocol.equals("TCP") || protocol.equals("tcp")) {
-            createConnection("TCP");
+            super.createConnection("TCP");
 
         }
         if (protocol.equals("RMI") || protocol.equals("rmi")) {
-            createConnection("RMI");
-
+            super.createConnection("RMI");
         }
         UID = getClient().getUID();
         login();
