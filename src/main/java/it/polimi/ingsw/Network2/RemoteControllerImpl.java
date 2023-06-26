@@ -346,7 +346,7 @@ System.out.println("la lobby è lunga : " + lobby.size());
 
 
     @Override
-    public void remove(int gameID, Coordinates[] positions, Long UID) throws RemoteException {
+    public void remove(int gameID, ArrayList<Coordinates> positions, Long UID) throws RemoteException {
         try {
             masterController.getGameController(gameID).remove(positions);
             clients.get(gameID).get(getPosition(UID, gameID)).sendMessage(new RemoveResponse(gameID,UID));
@@ -405,7 +405,7 @@ System.out.println("la lobby è lunga : " + lobby.size());
                     shelfColours[j][k] = shelf[j][k].getAssignedTile().getColour();
                 }
                 else{
-                    shelfColours[i][j] = ColourTile.FREE;
+                    shelfColours[j][k] = ColourTile.FREE;
                 }
             }
         }

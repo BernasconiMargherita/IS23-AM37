@@ -17,7 +17,7 @@
       </font>
    </Label>
    <TextField fx:id="usernameField" layoutX="698.0" layoutY="517.0" visible="false" />
-   <Button fx:id="reSendButton" layoutX="624.0" layoutY="517.0" mnemonicParsing="false" onMouseClicked="#reSendUsername" text="Button" visible="false" />
+   <Button fx:id="reSendButton" layoutX="624.0" layoutY="517.0" mnemonicParsing="false" onMouseClicked="#reSendUsername" text="Send" visible="false" />
    <Label fx:id="rimettiUsername" alignment="CENTER" contentDisplay="CENTER" layoutX="564.0" layoutY="373.0" prefHeight="56.0" prefWidth="341.0" textFill="#a81010" visible="false">
       <font>
          <Font size="14.0" />

@@ -6,6 +6,8 @@ import it.polimi.ingsw.model.Player.Player;
 import it.polimi.ingsw.model.Tile.Tile;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class GameControllerTest {
@@ -125,7 +127,11 @@ class GameControllerTest {
         }
         Tile[] tiles;
         try {
-            tiles = gameController.remove(new Coordinates[]{new Coordinates(1, 5), new Coordinates(1, 4)});
+            ArrayList<Coordinates> coordinates=new  ArrayList<Coordinates>();
+            coordinates.add(new Coordinates(1, 5));
+            coordinates.add(new Coordinates(1, 4));
+            tiles = gameController.remove(coordinates);
+
         } catch (EmptySlotException | InvalidPositionsException | InvalidSlotException e) {
             throw new RuntimeException(e);
         }

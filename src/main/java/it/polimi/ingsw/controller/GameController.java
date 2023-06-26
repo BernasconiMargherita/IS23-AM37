@@ -65,7 +65,7 @@ public class GameController implements Serializable {
         if (game.getGameState() != GameState.WAITING_PLAYERS) throw new GameAlreadyStarted("Game already started");
 
         if (!players.isEmpty()) {
-            if (nickname.equals(getPlayerByNickname(nickname).getNickname())) throw new UsernameException("Username already taken");
+            if (isPlayerPresent(nickname)) throw new UsernameException("Username already taken");
         }
 
         players.add(newPlayer);
@@ -137,7 +137,7 @@ public class GameController implements Serializable {
         game.refillBoard();
     }
 
-    public Tile[] remove(Coordinates[] positions) throws EmptySlotException, InvalidPositionsException, InvalidSlotException {
+    public Tile[] remove(ArrayList<Coordinates> positions) throws EmptySlotException, InvalidPositionsException, InvalidSlotException {
         return game.remove(currentPlayer, positions);
     }
 
@@ -183,6 +183,10 @@ public class GameController implements Serializable {
             if (player.getNickname().equals(nickname)) return player;
         }
         return null;
+    }
+
+    public boolean isPlayerPresent(String nickname){
+        return getPlayerByNickname(nickname) != null;
     }
 
     public Player chooseWinner() {
@@ -246,5 +250,8 @@ public class GameController implements Serializable {
         return numOfPlayers;
     }
 
+    public boolean isEndGameTokenTaken(){
+        return game.isEndGameTokenTaken();
+    }
 
 }
