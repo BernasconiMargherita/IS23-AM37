@@ -18,7 +18,10 @@
     <ImageView fx:id="shelf" fitHeight="409.0" fitWidth="400.0" layoutX="1028.0" layoutY="74.0">
         <Image url="@../assets/boards/bookshelf.png" />
     </ImageView>
-     <ImageView fx:id="board" fitHeight="662.0" fitWidth="700.0" layoutX="39.0" layoutY="34.0"> </ImageView>
+     <ImageView fx:id="board" fitHeight="662.0" fitWidth="700.0" layoutX="39.0" layoutY="34.0">
+      <image>
+         <Image url="@../assets/boards/livingroom.png" />
+      </image></ImageView>
 
 
    <GridPane fx:id="boardMask" layoutX="39.0" layoutY="34.0" prefHeight="700.0" prefWidth="700.0" AnchorPane.bottomAnchor="266.0" AnchorPane.leftAnchor="39.0" AnchorPane.rightAnchor="761.0" AnchorPane.topAnchor="34.0">
@@ -129,5 +132,13 @@
    <Button fx:id="column3" layoutX="1202.0" layoutY="34.0" mnemonicParsing="false" onMouseClicked="#sendTurn" prefHeight="25.0" prefWidth="53.0" text="3" visible="false" />
    <Button fx:id="column4" layoutX="1264.0" layoutY="34.0" mnemonicParsing="false" onMouseClicked="#sendTurn" prefHeight="25.0" prefWidth="53.0" text="4" visible="false" />
    <Button fx:id="column5" layoutX="1334.0" layoutY="34.0" mnemonicParsing="false" onMouseClicked="#sendTurn" prefHeight="25.0" prefWidth="53.0" text="5" visible="false" />
+   <GridPane fx:id="endGameToken" layoutX="606.0" layoutY="490.0" prefHeight="74.0" prefWidth="74.0" rotate="7.1">
+     <columnConstraints>
+       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+     </columnConstraints>
+     <rowConstraints>
+       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+     </rowConstraints>
+   </GridPane>
 
 </AnchorPane>
