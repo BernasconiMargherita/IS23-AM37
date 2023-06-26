@@ -434,7 +434,7 @@ System.out.println("la lobby è lunga : " + lobby.size());
         boolean endGameToken;
         commonTokens[0] = masterController.getGameController(gameID).getCommonTargets().get(0).getHighestToken();
         commonTokens[1] = masterController.getGameController(gameID).getCommonTargets().get(1).getHighestToken();
-        endGameToken = false; // bisogna cambiarlo
+        endGameToken = masterController.getGameController(gameID).isEndGameTokenTaken();
         for(int i=0; i<clients.get(gameID).size();i++){
             clients.get(gameID).get(i).sendMessage(new BoardResponse(colours,gameID,clients.get(gameID).get(i).getUID(), commonTokens, endGameToken));
         }
