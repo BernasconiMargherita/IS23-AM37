@@ -76,5 +76,12 @@ public class Message implements Serializable {
     public ArrayList<CardCommonTarget> getCommonTargets() {
         return null;
     }
+    public int[] getCommonTokens() {
+        return null;
+    }
+
+    public boolean isEndGameToken() {
+        return false;
+    }
 
 }

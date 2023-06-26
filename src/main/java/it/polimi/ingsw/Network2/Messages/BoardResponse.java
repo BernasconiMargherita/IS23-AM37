@@ -26,4 +26,12 @@ public class BoardResponse extends Message implements Serializable {
     public ColourTile[][] getBoard() {
         return board;
     }
+
+    public int[] getCommonTokens() {
+        return commonTokens;
+    }
+
+    public boolean isEndGameToken() {
+        return endGameToken;
+    }
 }
