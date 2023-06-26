@@ -20,7 +20,6 @@ import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Random;
 
 public class GameSceneController {
     private static final int SHELF_ROWS = 6;
@@ -106,6 +105,7 @@ public class GameSceneController {
 
     public void updateBoard(BoardResponse boardMessage) {
         turnBoard = boardMessage.getBoard();
+        emptyGridPane(boardMask);
         for (int row = 0; row < BOARD_SIZE; row++) {
             for (int col = 0; col < BOARD_SIZE; col++) {
                 if (!turnBoard[row][col].equals(ColourTile.FREE)) {
@@ -230,7 +230,10 @@ public class GameSceneController {
     }
 
     public void turnResponse(TurnResponse turnResponse) {
-        if (turnResponse.getStatus()==0) updateShelf(turnResponse);
+        if (turnResponse.getStatus()==0) {
+            updateShelf(turnResponse);
+            disableGUI();
+        }
         else {
             column1.setVisible(true);
             column2.setVisible(true);
@@ -243,14 +246,22 @@ public class GameSceneController {
 
     private void updateShelf(TurnResponse turnResponse) {
         ColourTile[][] turnShelf = turnResponse.getShelf();
-            for (int row = 0; row < SHELF_ROWS; row++) {
-                for (int col = 0; col < SHELF_COLUMNS; col++) {
-                    if (!turnShelf[row][col].equals(ColourTile.FREE)) {
-                        ImageView tile = createShelfTile(turnShelf[row][col], row, col);
-                        shelfMask.add(tile, col, row);
-                    }
+        emptyGridPane(shelfMask);
+        for (int row = SHELF_ROWS - 1; row >= 0; row--) {
+            for (int col = 0; col < SHELF_COLUMNS; col++) {
+                int adjustedRow = SHELF_ROWS - 1 - row;
+
+                if (!turnShelf[adjustedRow][col].equals(ColourTile.FREE)) {
+                    ImageView tile = createShelfTile(turnShelf[adjustedRow][col], adjustedRow, col);
+                    shelfMask.add(tile, col, row);
                 }
             }
+        }
+    }
+
+
+    private void emptyGridPane(GridPane gridPane) {
+        gridPane.getChildren().clear();
     }
 
     private ImageView createShelfTile(ColourTile colourTile, int row, int col) {
@@ -269,8 +280,8 @@ public class GameSceneController {
         ImageView imageView = new ImageView();
         imageView.setImage(new Image(TileImage));
 
-        imageView.setFitWidth(55);
-        imageView.setFitHeight(55);
+        imageView.setFitWidth(40);
+        imageView.setFitHeight(40);
 
         return imageView;
     }
@@ -296,7 +307,11 @@ public class GameSceneController {
         boardMask.setDisable(true);
         shelfMask.setDisable(true);
         hand.setDisable(true);
-
+        tileHand.clear();
+        emptyGridPane(hand);
+        for (Label box:boxArray) {
+            box.setText("");
+        }
     }
 
     public void cardsResponse(CardsResponse cardsResponse) {
@@ -362,10 +377,11 @@ public class GameSceneController {
         Button clickedButton = (Button) mouseEvent.getSource();
         String buttonText = clickedButton.getText();
         int column = Integer.parseInt(buttonText);
+        column=column-1;
 
         Client client = GuiMaster.getInstance().getClient();
         String[] colours=createColoursArray();
-        client.sendMessage(new TurnMessage(client.getGameID(), client.getUID(), 1, client.getUsername(), colours));
+        client.sendMessage(new TurnMessage(client.getGameID(), client.getUID(), column, client.getUsername(), colours));
     }
 
     private String[] createColoursArray() {
