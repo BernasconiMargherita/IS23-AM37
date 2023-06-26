@@ -6,12 +6,10 @@ import it.polimi.ingsw.Utils.Coordinates;
 import it.polimi.ingsw.model.CommonCards.CardCommonTarget;
 import it.polimi.ingsw.model.CommonCards.CommonList;
 import it.polimi.ingsw.model.PersonalCards.CardPersonalTarget;
+import it.polimi.ingsw.model.Tile.ColourTile;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
-
-import it.polimi.ingsw.model.Tile.ColourTile;
 
 import static it.polimi.ingsw.view.cli.ColorCodes.getColorCode;
 
@@ -129,6 +127,11 @@ public class Cli extends ClientManager {
         for(int i = 0; i<3 ; i++){
             colors[i] = ColourTile.FREE.toString();
         }
+        for(int i = 0; i<6; i++){
+            for(int j = 0; j<5; j++){
+                shelf[i][j] = ColourTile.FREE;
+            }
+        }
         //ok
     }
     @Override
@@ -144,7 +147,16 @@ public class Cli extends ClientManager {
             colors[i] = ColourTile.FREE.toString();
         }
         getClient().sendMessage(new BoardMessage(username, gameID, UID));
-        ArrayList<Coordinates> coordinates = new ArrayList<>();
+        try {
+            wait(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        display();
+    }
+
+
+    public void display(){
         out.println("What do you want to see?\n1: Common cards\n2: Personal card\n3: Board\n4: EndGameToken\n5:shelf \nIf you want remove tiles write 6 ");
         int num = -1;
         while(num<=0 || num>6){
@@ -166,9 +178,14 @@ public class Cli extends ClientManager {
                 out.println("EndGameToken still in game");
             }
         } else if (num == 5) {
+            printShelf(shelf);
+        }else remove();
+    }
 
-        } else {
-            for(int i=0; i<3; i++){
+
+    public void remove(){
+        ArrayList<Coordinates> coordinates = new ArrayList<>();
+        for(int i=0; i<3; i++){
                 if(i!=1){
                     out.println("Do you want to remove other cards?");
                     if(in.nextLine().equals("no")){
@@ -203,8 +220,6 @@ public class Cli extends ClientManager {
             }
 
             getClient().sendMessage(new RemoveMessage(coordinates, gameID, UID, username));
-        }
-        //ok ma manca controllo ortogonali e lato libero
 
     }
 
@@ -212,27 +227,49 @@ public class Cli extends ClientManager {
     @Override
     public void updateBoard(BoardResponse boardResponse){
         board = boardResponse.getBoard();
-        commonTokens = boardResponse.getCommonToken();
+        commonTokens = boardResponse.getCommonTokens();
         endGameToken = boardResponse.isEndGameToken();
+    }
+
+    public void turn(){
+        out.println("Choose the column:");
+        int column = in.nextInt();
+        getClient().sendMessage(new TurnMessage(gameID, UID, column,username, colors ));
     }
 
     @Override
     public void removeResponse (RemoveResponse removeResponse){
+        if(removeResponse.isInvalidSequence()){
+            out.println("The tile sequence you provided is invalid");
+            remove();
+            return;
+        }
         out.println("Remove successful");
-        out.println("Choose the column:");
-        int column = in.nextInt();
-
-        getClient().sendMessage(new TurnMessage(gameID, UID, column,username, colors ));
+        turn();
         //ok
     }
 
     @Override
     public void turnResponse (TurnResponse turnResponse){
+        if(turnResponse.getStatus()==-1){
+            out.println("The selected column has too many tiles");
+            turn();
+            return;
+        }
         out.println("Insert tile successful");
+        int j=0;
+        for(int i = 0; i < 6; i++){
+            if(shelf[i][column] != ColourTile.FREE && !(colors[j].equals(ColourTile.FREE.toString()))){
+                shelf[i][column] = ColourTile.valueOf(colors[j]);
+                j++;
+            }
+        }
+
     }
 
     @Override
     public void endGame (EndMessage endGameMessage){
+        out.println("The game is finished! \nThe winner is " + endGameMessage.getWinner());
     }
     public void printCommonTargets(CommonList cardCommonTarget0, CommonList cardCommonTarget1){
         printCommon(cardCommonTarget0, 0);
