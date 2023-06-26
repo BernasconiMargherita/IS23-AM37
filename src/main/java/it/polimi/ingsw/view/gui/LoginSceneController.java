@@ -68,6 +68,7 @@ public class LoginSceneController {
             usernameError.setText("Inserisci un username!");
         } else {
             Client client = guiMaster.getClient();
+            client.setUsername(username);
             client.sendMessage(new PreLoginMessage(-1,client.getUID(),username));
         }
     }

@@ -16,6 +16,10 @@ public class Message implements Serializable {
         this.gameID=gameID;
         this.UID=UID;
     }
+    public String toJson() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
+    }
 
     public String toJson() {
         Gson gson = new Gson();

@@ -2,8 +2,10 @@ package it.polimi.ingsw.Network2;
 
 
 import com.google.gson.Gson;
-import it.polimi.ingsw.Network2.Messages.Message;
-import it.polimi.ingsw.Network2.Messages.UIDResponse;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import it.polimi.ingsw.Network2.Messages.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -47,9 +49,7 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
     }
 
     public void sendMessage(Message message) {
-        Gson gson = new Gson();
-
-
+        System.out.println(message.typeMessage());
         out.println(message.toJson());
         out.flush();
     }
@@ -105,15 +105,31 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
     public void run() {
         while (!Thread.currentThread().isInterrupted()) {
             try {
-                String response = in.readLine();
-                if (response != null) {
+
+
                     synchronized (messageList) {
                         Gson gson=new Gson();
-                        Message message=gson.fromJson(response, Message.class);
-
-                        onMessage(message);
+                        String request = in.readLine();
+                        JsonElement rootElement = JsonParser.parseString(request);
+                        JsonObject jsonObject = rootElement.getAsJsonObject();
+                        String type = jsonObject.get("typeMessage").getAsString();
+                        switch (type) {
+                            case "LoginResponse" -> onMessage(gson.fromJson(request, LoginResponse.class));
+                            case "InitResponse" -> onMessage(gson.fromJson(request, InitResponse.class));
+                            case "BoardResponse" -> onMessage(gson.fromJson(request, BoardResponse.class));
+                            case "RemoveResponse" -> onMessage(gson.fromJson(request, RemoveResponse.class));
+                            case "WakeMessage" -> onMessage(gson.fromJson(request, WakeMessage.class));
+                            case "TurnResponse" -> onMessage(gson.fromJson(request, TurnResponse.class));
+                            case "EndMessage" -> onMessage(gson.fromJson(request, EndMessage.class));
+                            case "SetResponse"->onMessage(gson.fromJson(request, SetResponse.class));
+                            case "FirstResponse"->onMessage(gson.fromJson(request, FirstResponse.class));
+                            case "PreLoginResponse"->onMessage(gson.fromJson(request, PreLoginResponse.class));
+                            case "UsernameError"-> onMessage(gson.fromJson(request, UsernameError.class));
+                            case "CardsResponse"-> onMessage(gson.fromJson(request, CardsResponse.class));
+                            case "ReFirstResponse"-> onMessage(gson.fromJson(request, ReFirstResponse.class));
+                        }
                     }
-                }
+
             }catch (IOException e){
                 closeConnection();
             }

@@ -7,16 +7,26 @@ import java.io.Serializable;
  */
 public enum CommonList implements Serializable {
 
-    SIX_GROUPS_OF_TWO,
-    FOUR_EQUALS_ANGLES,
-    FOUR_GROUPS_OF_FOUR,
-    TWO_GROUPS_IN_SQUARE,
-    THREE_COLUMNS_THREE_DIFFERENT_TYPES,
-    EIGHT_EQUALS,
-    FIVE_IN_DIGONAL,
-    FOUR_ROWS_THREE_DIFFERENT_TYPES,
-    TWO_COLUMNS_ALL_DIFFERENT,
-    TWO_ROWS_ALL_DIFFERENT,
-    FIVE_IN_A_X,
-    IN_DESCENDING_ORDER;
+    SIX_GROUPS_OF_TWO(4),
+    FOUR_EQUALS_ANGLES(8),
+    FOUR_GROUPS_OF_FOUR(3),
+    TWO_GROUPS_IN_SQUARE(1),
+    THREE_COLUMNS_THREE_DIFFERENT_TYPES(5),
+    EIGHT_EQUALS(9),
+    FIVE_IN_DIGONAL(11),
+    FOUR_ROWS_THREE_DIFFERENT_TYPES(7),
+    TWO_COLUMNS_ALL_DIFFERENT(2),
+    TWO_ROWS_ALL_DIFFERENT(6),
+    FIVE_IN_A_X(10),
+    IN_DESCENDING_ORDER(12);
+
+    private final int id;
+
+    CommonList(int id) {
+        this.id=id;
+    }
+
+    public int getId() {
+        return id;
+    }
 }

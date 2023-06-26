@@ -3,8 +3,10 @@ package it.polimi.ingsw.Network2.Messages;
 import com.google.gson.Gson;
 
 public class FirstResponse extends Message{
+    private String typeMessage ;
     public FirstResponse(int gameID,long UID) {
         super(gameID,UID);
+        this.typeMessage = "FirstResponse";
     }
 
     @Override
