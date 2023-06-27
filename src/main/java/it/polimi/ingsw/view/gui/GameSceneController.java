@@ -91,6 +91,7 @@ public class GameSceneController {
         GuiMaster guiMaster = GuiMaster.getInstance();
         guiMaster.setGameSceneController(this);
 
+        
         board.fitWidthProperty().bind(boardMask.widthProperty());
         boxArray=new Label[]{box1, box2, box3};
 

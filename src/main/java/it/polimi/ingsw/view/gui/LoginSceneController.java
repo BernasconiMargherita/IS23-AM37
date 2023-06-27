@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui;
 import it.polimi.ingsw.Network2.Client;
 import it.polimi.ingsw.Network2.Messages.*;
 import javafx.fxml.FXML;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -10,6 +11,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Screen;
+
 import java.util.Objects;
 
 
@@ -19,6 +22,7 @@ public class LoginSceneController {
     public Button communication;
     public Button loginButton;
     public Label usernameLabel;
+    public GridPane ShelfieLogo;
     @FXML
     private TextField usernameField;
     @FXML
@@ -45,12 +49,25 @@ public class LoginSceneController {
         guiMaster.setLoginSceneController(this);
         createScene();
     }
-
     public void createScene() {
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
 
-        Image image = new Image("/assets/Publisher material/Title 2000x2000px.png");
-        imageView.setImage(image);
+        double screenWidth = screenBounds.getWidth();
+        double screenHeight = screenBounds.getHeight();
 
+        double stageWidth = screenWidth * 0.8;
+        double stageHeight = screenHeight * 0.8;
+
+        rootPane.setPrefWidth(stageWidth);
+        rootPane.setPrefHeight(stageHeight);
+
+        gridPane.setPrefWidth(rootPane.getWidth()*0.4);
+        gridPane.setPrefHeight(rootPane.getHeight()*0.4);
+
+
+
+        imageView.fitWidthProperty().bind(ShelfieLogo.widthProperty());
+        imageView.fitHeightProperty().bind(ShelfieLogo.heightProperty());
         String backgroundImage = Objects.requireNonNull(getClass().getResource("/assets/misc/sfondo parquet.jpg")).toExternalForm();
         rootPane.setStyle("-fx-background-image: url('" + backgroundImage + "'); -fx-background-size: cover;");
 
@@ -61,6 +78,7 @@ public class LoginSceneController {
         RMI.setToggleGroup(toggleGroup);
         TCP.setToggleGroup(toggleGroup);
     }
+
 
     public void login() {
         username = usernameField.getText();

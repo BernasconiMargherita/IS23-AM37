@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui;
 import it.polimi.ingsw.Network2.Client;
 import it.polimi.ingsw.Network2.Messages.*;
 import javafx.fxml.FXML;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -11,6 +12,7 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Screen;
 
 import java.util.Objects;
 
@@ -39,6 +41,17 @@ public class ConnectionSceneController {
     }
 
     public void createScene() {
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+
+        double screenWidth = screenBounds.getWidth();
+        double screenHeight = screenBounds.getHeight();
+
+        double stageWidth = screenWidth * 0.8;
+        double stageHeight = screenHeight * 0.8;
+
+        rootPane.setPrefWidth(stageWidth);
+        rootPane.setPrefHeight(stageHeight);
+        
         String backgroundImage = Objects.requireNonNull(getClass().getResource("/assets/misc/sfondo parquet.jpg")).toExternalForm();
         rootPane.setStyle("-fx-background-image: url('" + backgroundImage + "'); -fx-background-size: cover;");
         loadingMessage.setText("Wait for other Players");

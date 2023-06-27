@@ -3,9 +3,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="rootPane" prefHeight="1000.0" prefWidth="1500.0" stylesheets="@styles/login.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.FirstConnectionSceneController">
+<AnchorPane fx:id="rootPane" stylesheets="@styles/login.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.FirstConnectionSceneController">
     
-    <GridPane fx:id="gridPane" layoutX="488.0" layoutY="419.0" prefHeight="163.0" prefWidth="524.0">
+    <GridPane fx:id="gridPane" layoutX="244.0" prefHeight="163.0" prefWidth="524.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="100.0">
 
         <columnConstraints>
             <ColumnConstraints hgrow="ALWAYS" maxWidth="377.0" minWidth="118.0" prefWidth="189.0" />
