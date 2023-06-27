@@ -1,6 +1,8 @@
 package it.polimi.ingsw.view.cli;
 
+import it.polimi.ingsw.Network2.ClientListener;
 import it.polimi.ingsw.Network2.ClientManager;
+import it.polimi.ingsw.Network2.ClientUpdateListener;
 import it.polimi.ingsw.Network2.Messages.*;
 import it.polimi.ingsw.Utils.Coordinates;
 import it.polimi.ingsw.model.CommonCards.CardCommonTarget;
@@ -13,11 +15,10 @@ import java.util.Scanner;
 
 import static it.polimi.ingsw.view.cli.ColorCodes.getColorCode;
 
-public class Cli extends ClientManager implements Runnable {
+public class Cli extends ClientManager implements Runnable, ClientListener, ClientUpdateListener {
 
     private String protocol;
     ColourTile[][] shelf;
-    private Scanner in;
     private String message;
     private MyShelfiePrintStream out;
     private String username;
@@ -26,7 +27,6 @@ public class Cli extends ClientManager implements Runnable {
     private CardPersonalTarget cardPersonalTarget;
     private ArrayList<CardCommonTarget> cardCommonTargets;
     private String winner;
-
     private ColourTile[][] board;
     private final String ANSI_RESET = "\u001B[0m";
     private CommonList cardCommonTarget0;
@@ -35,13 +35,20 @@ public class Cli extends ClientManager implements Runnable {
     private int[] commonTokens;
     private  boolean endGameToken;
     private String[] colors;
+    private Scanner in ;
 
+    public Cli(Scanner scanner) {
+        super();
+        in = scanner;
+
+    }
 
     @Override
     public void run() {
-        this.in = new Scanner(System.in);
         this.out = new MyShelfiePrintStream();
-        protocol = in.next();
+        out.println(("Welcome , choose your connection : "));
+        protocol = in.nextLine();
+
         createConnection(protocol);
     }
 
@@ -420,10 +427,10 @@ public class Cli extends ClientManager implements Runnable {
                     }
                 }
             }
-
         }
         //ok
     }
+
     public void printShelf(ColourTile[][] colourTiles){
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 5; j++) {
@@ -432,8 +439,4 @@ public class Cli extends ClientManager implements Runnable {
             System.out.print("\n");
         }
     }
-
-
-
-
 }

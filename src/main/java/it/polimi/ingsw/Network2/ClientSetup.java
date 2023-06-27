@@ -20,14 +20,14 @@ public class ClientSetup extends Application {
                 launch(args);
                 break;
             } else if (mode.equalsIgnoreCase("cli")) {
-                startCLI();
+                startCLI(scanner);
                 break;
             } else {
                 System.out.println("Invalid mode selected. Exiting.");
             }
         }
 
-        scanner.close();
+
     }
 
     public void start(Stage primaryStage) {
@@ -35,9 +35,8 @@ public class ClientSetup extends Application {
         gui.start(primaryStage);
     }
 
-    public static void startCLI() {
-        Thread cliThread = new Thread(new Cli());
-        cliThread.start();
+    public static void startCLI(Scanner scanner) {
+        Cli cli = new Cli(scanner);
     }
 }
 
