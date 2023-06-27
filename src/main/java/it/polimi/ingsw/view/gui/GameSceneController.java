@@ -28,6 +28,7 @@ import java.util.Objects;
 public class GameSceneController {
     private static final int SHELF_ROWS = 6;
     private static final int SHELF_COLUMNS = 5;
+    private static final int BOARD_SIZE = 11;
     @FXML
     public AnchorPane rootPane;
     @FXML
@@ -45,7 +46,6 @@ public class GameSceneController {
     @FXML
     public Label tileError;
 
-    private static final int BOARD_SIZE = 11;
     @FXML
     public GridPane hand;
     @FXML
@@ -115,6 +115,10 @@ public class GameSceneController {
         if (boardMessage.isEndGameTokenTaken()) emptyGridPane(endGameToken);
         else loadEndGameToken();
         turnBoard = boardMessage.getBoard();
+        createBoard(turnBoard);
+    }
+
+    private void createBoard(ColourTile[][] turnBoard) {
         emptyGridPane(boardMask);
         for (int row = 0; row < BOARD_SIZE; row++) {
             for (int col = 0; col < BOARD_SIZE; col++) {
@@ -124,7 +128,6 @@ public class GameSceneController {
                 }
             }
         }
-
     }
 
     private void loadEndGameToken() {
@@ -173,6 +176,9 @@ public class GameSceneController {
                 tile.setImage(null);
                 ImageView handTile = createHandTile(finalPath);
                 hand.add(handTile, findFirstEmptyColumn(hand), 0);
+
+            } else if (tileHandTmp.size()==3) {
+                return;
             } else {
 
                 int lastCoordinateIndex = tileHandTmp.size() - 1;
@@ -285,17 +291,20 @@ public class GameSceneController {
 
     public void turnResponse(TurnResponse turnResponse) {
         if (turnResponse.getStatus()==0) {
-
+            tileError.setVisible(false);
             updateShelf(turnResponse);
             disableGUI();
 
         }
         else {
-            column1.setVisible(true);
-            column2.setVisible(true);
-            column3.setVisible(true);
-            column4.setVisible(true);
-            column5.setVisible(true);
+            tileError.setVisible(true);
+            emptyGridPane(hand);
+            tileHandTmp.clear();
+            tileHand.clear();
+            for (Label box:boxArray) {
+                box.setText("");
+            }
+            createBoard(turnBoard);
         }
 
     }
@@ -391,6 +400,7 @@ public class GameSceneController {
         for (Label box:boxArray) {
             box.setText("");
         }
+        tileError.setVisible(false);
     }
 
     public void cardsResponse(CardsResponse cardsResponse) {
