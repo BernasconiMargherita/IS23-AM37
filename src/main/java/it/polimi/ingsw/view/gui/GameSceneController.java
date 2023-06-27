@@ -28,6 +28,7 @@ import java.util.Objects;
 public class GameSceneController {
     private static final int SHELF_ROWS = 6;
     private static final int SHELF_COLUMNS = 5;
+    private static final int BOARD_SIZE = 11;
     @FXML
     public AnchorPane rootPane;
     @FXML
@@ -45,7 +46,6 @@ public class GameSceneController {
     @FXML
     public Label tileError;
 
-    private static final int BOARD_SIZE = 11;
     @FXML
     public GridPane hand;
     @FXML
@@ -115,6 +115,10 @@ public class GameSceneController {
         if (boardMessage.isEndGameTokenTaken()) emptyGridPane(endGameToken);
         else loadEndGameToken();
         turnBoard = boardMessage.getBoard();
+        createBoard(turnBoard);
+    }
+
+    private void createBoard(ColourTile[][] turnBoard) {
         emptyGridPane(boardMask);
         for (int row = 0; row < BOARD_SIZE; row++) {
             for (int col = 0; col < BOARD_SIZE; col++) {
@@ -124,7 +128,6 @@ public class GameSceneController {
                 }
             }
         }
-
     }
 
     private void loadEndGameToken() {
@@ -165,23 +168,58 @@ public class GameSceneController {
 
     private void ChooseTile(int row, int col, String finalPath) {
         ImageView tile = findTile(row, col);
-        boolean allCoordinatesMatch = true;
-        if ((turnBoard[row + 1][col].equals(ColourTile.FREE)) || (turnBoard[row - 1][col].equals(ColourTile.FREE)) || (turnBoard[row][col + 1].equals(ColourTile.FREE)) || (turnBoard[row][col - 1].equals(ColourTile.FREE))) {
-            for (Coordinates coordinate : tileHandTmp) {
-                if (coordinate.getRow() != row && coordinate.getColumn() != col) {
-                    allCoordinatesMatch = false;
-                    break;
-                }
-            }
+        Coordinates newTile=new Coordinates(row, col);
 
-            if (allCoordinatesMatch) {
-                tileHandTmp.add(new Coordinates(row, col));
+        if ((turnBoard[row + 1][col].equals(ColourTile.FREE)) || (turnBoard[row - 1][col].equals(ColourTile.FREE)) || (turnBoard[row][col + 1].equals(ColourTile.FREE)) || (turnBoard[row][col - 1].equals(ColourTile.FREE))) {
+            if (tileHandTmp.isEmpty()) {
+                tileHandTmp.add(newTile);
                 tile.setImage(null);
                 ImageView handTile = createHandTile(finalPath);
                 hand.add(handTile, findFirstEmptyColumn(hand), 0);
+
+            } else if (tileHandTmp.size()==3) {
+                return;
+            } else {
+
+                int lastCoordinateIndex = tileHandTmp.size() - 1;
+                Coordinates lastCoordinate = tileHandTmp.get(lastCoordinateIndex);
+                int lastRow = lastCoordinate.getRow();
+                int lastCol = lastCoordinate.getColumn();
+
+                boolean hasSameRow = (row == lastRow);
+                boolean hasSameCol = (col == lastCol);
+                boolean isAdjacent = false;
+
+                for (Coordinates coordinate : tileHandTmp) {
+                    if (row != coordinate.getRow()) {
+                        hasSameRow = false;
+                    }
+                    if (col != coordinate.getColumn()) {
+                        hasSameCol = false;
+                    }
+                }
+
+                for (Coordinates coordinate : tileHandTmp) {
+                    int coordinateRow = coordinate.getRow();
+                    int coordinateCol = coordinate.getColumn();
+
+                    if ((row == coordinateRow && (col == coordinateCol + 1 || col == coordinateCol - 1)) ||
+                            (col == coordinateCol && (row == coordinateRow + 1 || row == coordinateRow - 1))) {
+                        isAdjacent = true;
+                        break;
+                    }
+                }
+
+                if ((hasSameRow || hasSameCol) && isAdjacent) {
+                    tileHandTmp.add(newTile);
+                    tile.setImage(null);
+                    ImageView handTile = createHandTile(finalPath);
+                    hand.add(handTile, findFirstEmptyColumn(hand), 0);
+                }
             }
         }
     }
+
 
 
     private int findFirstEmptyColumn(GridPane hand) {
@@ -253,15 +291,20 @@ public class GameSceneController {
 
     public void turnResponse(TurnResponse turnResponse) {
         if (turnResponse.getStatus()==0) {
+            tileError.setVisible(false);
             updateShelf(turnResponse);
             disableGUI();
+
         }
         else {
-            column1.setVisible(true);
-            column2.setVisible(true);
-            column3.setVisible(true);
-            column4.setVisible(true);
-            column5.setVisible(true);
+            tileError.setVisible(true);
+            emptyGridPane(hand);
+            tileHandTmp.clear();
+            tileHand.clear();
+            for (Label box:boxArray) {
+                box.setText("");
+            }
+            createBoard(turnBoard);
         }
 
     }
@@ -315,13 +358,23 @@ public class GameSceneController {
 
         Label winnerLabel = new Label("The winner is: " + endGameMessage.getWinner());
 
-        VBox modalVBox = new VBox(winnerLabel);
-        modalVBox.setStyle("-fx-padding: 20px");
+        Button closeButton = new Button("Close game");
+        closeButton.setOnAction(event -> {
+            closeConnection();
+            modalStage.close();
+        });
+
+        VBox modalVBox = new VBox(winnerLabel, closeButton);
+        modalVBox.setStyle("-fx-padding: 20px; -fx-spacing: 10px");
 
         Scene modalScene = new Scene(modalVBox);
 
         modalStage.setScene(modalScene);
         modalStage.showAndWait();
+    }
+
+    private void closeConnection() {
+        GuiMaster.getInstance().closeConnection();
     }
 
     public void wakeUp(WakeMessage wakeMessage) {
@@ -347,6 +400,7 @@ public class GameSceneController {
         for (Label box:boxArray) {
             box.setText("");
         }
+        tileError.setVisible(false);
     }
 
     public void cardsResponse(CardsResponse cardsResponse) {

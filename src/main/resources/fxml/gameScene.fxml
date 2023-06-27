@@ -18,10 +18,7 @@
     <ImageView fx:id="shelf" fitHeight="409.0" fitWidth="400.0" layoutX="1028.0" layoutY="74.0">
         <Image url="@../assets/boards/bookshelf.png" />
     </ImageView>
-     <ImageView fx:id="board" fitHeight="662.0" fitWidth="700.0" layoutX="39.0" layoutY="34.0">
-      <image>
-         <Image url="@../assets/boards/livingroom.png" />
-      </image></ImageView>
+     <ImageView fx:id="board" fitHeight="662.0" fitWidth="700.0" layoutX="39.0" layoutY="34.0" />
 
 
    <GridPane fx:id="boardMask" layoutX="39.0" layoutY="34.0" prefHeight="700.0" prefWidth="700.0" AnchorPane.bottomAnchor="266.0" AnchorPane.leftAnchor="39.0" AnchorPane.rightAnchor="761.0" AnchorPane.topAnchor="34.0">
@@ -118,7 +115,7 @@
          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       </rowConstraints>
    </GridPane>
-   <Label fx:id="turnText" layoutX="750.0" layoutY="469.0" prefHeight="81.0" prefWidth="251.0" text="WAIT YOUR TURN!" textFill="#d30505">
+   <Label fx:id="turnText" layoutX="806.0" layoutY="469.0" prefHeight="81.0" prefWidth="251.0" text="WAIT YOUR TURN!" textAlignment="CENTER" textFill="#d30505">
       <font>
          <Font size="15.0" />
       </font>
@@ -140,5 +137,10 @@
        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
      </rowConstraints>
    </GridPane>
+   <Label fx:id="tileError" layoutX="846.0" layoutY="198.0" prefHeight="81.0" prefWidth="251.0" text="The chosen column is full!" textAlignment="CENTER" textFill="#d30505" visible="false">
+      <font>
+         <Font size="15.0" />
+      </font>
+   </Label>
 
 </AnchorPane>
