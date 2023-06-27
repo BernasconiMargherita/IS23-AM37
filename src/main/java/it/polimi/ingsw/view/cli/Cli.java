@@ -290,8 +290,8 @@ public class Cli extends ClientManager  {
 
     public void printCommon(CommonList cardCommonTarget, int i){
         out.println("            Token: " + commonTokens[i] + "\n\n\n");
-        switch (cardCommonTarget) {
-            case SIX_GROUPS_OF_TWO:
+        switch (cardCommonTarget.getId()) {
+            case 4:
                 out.println("------------------------------" +
                         "   |           six               |" +
                         "   |         couples             |" +
@@ -300,7 +300,7 @@ public class Cli extends ClientManager  {
                         "   |  (each couple can be of     |" +
                         "   |     a different colour)     |" +
                         "   -------------------------------");
-            case FOUR_EQUALS_ANGLES:
+            case 8:
                 out.println("------------------------------" +
                         "   |           on                |" +
                         "   |          each               |" +
@@ -309,7 +309,7 @@ public class Cli extends ClientManager  {
                         "   |       the same colour       |" +
                         "   |                             |" +
                         "   -------------------------------");
-            case FOUR_GROUPS_OF_FOUR :
+            case 3 :
                 out.println("------------------------------" +
                         "   |          four               |" +
                         "   |         groups              |" +
@@ -319,7 +319,7 @@ public class Cli extends ClientManager  {
                         "   |     a different colour)     |" +
                         "   -------------------------------");
 
-            case TWO_GROUPS_IN_SQUARE :
+            case 1 :
                 out.println("------------------------------" +
                         "   |           two               |" +
                         "   |         groups of           |" +
@@ -329,7 +329,7 @@ public class Cli extends ClientManager  {
                         "   |     the same colour)        |" +
                         "   -------------------------------");
 
-            case THREE_COLUMNS_THREE_DIFFERENT_TYPES:
+            case 5:
                 out.println("------------------------------" +
                         "   |           three             |" +
                         "   |        columns of           |" +
@@ -339,7 +339,7 @@ public class Cli extends ClientManager  {
                         "   |    different colours)       |" +
                         "   -------------------------------");
 
-            case EIGHT_EQUALS :
+            case 9 :
                 out.println("------------------------------" +
                         "   |           eight             |" +
                         "   |         tails of            |" +
@@ -349,7 +349,7 @@ public class Cli extends ClientManager  {
                         "   |          relevant)          |" +
                         "   -------------------------------");
 
-            case FIVE_IN_DIGONAL :
+            case 11 :
                 out.println("------------------------------" +
                         "   |           five              |" +
                         "   |         tails of            |" +
@@ -359,7 +359,7 @@ public class Cli extends ClientManager  {
                         "   |                             |" +
                         "   -------------------------------");
 
-            case FOUR_ROWS_THREE_DIFFERENT_TYPES :
+            case 7 :
                 out.println("------------------------------" +
                         "   |           four              |" +
                         "   |        rows of              |" +
@@ -369,7 +369,7 @@ public class Cli extends ClientManager  {
                         "   |    different colours)       |" +
                         "   -------------------------------");
 
-            case TWO_COLUMNS_ALL_DIFFERENT :
+            case 2 :
                 out.println("------------------------------" +
                         "   |           two               |" +
                         "   |        columns of           |" +
@@ -379,7 +379,7 @@ public class Cli extends ClientManager  {
                         "   |                             |" +
                         "   -------------------------------");
 
-            case TWO_ROWS_ALL_DIFFERENT :
+            case 6 :
                 out.println("------------------------------" +
                         "   |           two               |" +
                         "   |          rows of            |" +
@@ -389,7 +389,7 @@ public class Cli extends ClientManager  {
                         "   |                             |" +
                         "   -------------------------------");
 
-            case FIVE_IN_A_X :
+            case 10 :
                 out.println(   "------------------------------\n" +
                         "   |           five              |\n" +
                         "   |         tails of the        |\n" +
@@ -398,7 +398,7 @@ public class Cli extends ClientManager  {
                         "   |             a X             |\n" +
                         "   |                             |\n" +
                         "   -------------------------------\n");
-            case IN_DESCENDING_ORDER :
+            case 12 :
                 out.println("   ------------------------------\n" +
                         "   |        five columns         |\n" +
                         "   |      in descending or       |\n" +
