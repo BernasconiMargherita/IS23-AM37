@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.CommonCards.CardCommonTarget;
 import it.polimi.ingsw.model.CommonCards.CommonList;
 import it.polimi.ingsw.model.PersonalCards.CardPersonalTarget;
 import it.polimi.ingsw.model.Tile.ColourTile;
-import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -212,7 +211,20 @@ public class Cli extends ClientManager  {
 
     public void remove(){
         ArrayList<Coordinates> coordinates = new ArrayList<>();
-        for(int i=0; i<3; i++){
+        int freeColumnSpace = 0;
+        int count = 0;
+        for(int i = 0; i< 5; i++){
+            for (int j =0; j < 6; j++){
+                if(shelf[j][i]== ColourTile.FREE){
+                    count++;
+                }
+            }
+            if(count>freeColumnSpace){
+                freeColumnSpace = count;
+            }
+            count = 0;
+        }
+        for(int i=0; i<freeColumnSpace; i++){
                 if(i!=0){
                     out.println("Do you want to remove other cards?");
                     if(in.nextLine().equals("no")){

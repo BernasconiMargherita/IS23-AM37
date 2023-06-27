@@ -127,8 +127,10 @@ public class Board implements Serializable {
     public boolean refillIsNecessary() {
         for (int i = 1; i < MAX_BOARD_ROWS; i++) {
             for (int j = 1; j < MAX_BOARD_COLUMNS; j++) {
-                if ((boardMask[i][j]) && ((!(board[i + 1][j].isFree())) || (!(board[i - 1][j].isFree())) || (!(board[i][j + 1].isFree())) || (!(board[i][j - 1].isFree()))))
-                    return false;
+                if(boardMask[i][j]){
+                    if ((boardMask[i][j])&&(!board[i][j].isFree()) && ((!(board[i + 1][j].isFree())) || (!(board[i - 1][j].isFree())) || (!(board[i][j + 1].isFree())) || (!(board[i][j - 1].isFree()))))
+                        return false;
+                }
             }
         }
         return true;
