@@ -52,6 +52,8 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
     @Override
     public void onMessage(Message message) throws RemoteException {
 
+        System.out.println(message.typeMessage());
+
 
         if (message.typeMessage().equals("LoginMessage")) {
             registerPlayer(message.getGameID(), message.getNickname(), message.getUID());
@@ -71,7 +73,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
             turn(message.getGameID(), message.getColours(), message.getColumn(), message.getNickname(), message.getUID());
         }
         if (message.typeMessage().equals("BoardMessage")) {
-            sendBoard(message.getGameID(), message.getNickname(), message.getUID());
+            sendBoard(message.getGameID());
         }
 
 
@@ -79,9 +81,9 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
 
     public void preRegistration(Message message) throws RemoteException {
+        System.out.println("la lobby è lunga : " + lobby.size() + message.getNickname());
         for (int i = 0; i < lobby.size(); i++) {
-
-System.out.println("la lobby è lunga : " + lobby.size());
+            System.out.println("la lobby n " + i + " è lunga : " + lobby.get(i).size() +"     ..." + message.getNickname());
             if (lobby.get(i).size() == 0) {
                 lobby.get(i).add(new Pair<>(message.getUID(), message.getNickname()));
                 int gameID = startGame();
@@ -217,14 +219,13 @@ System.out.println("la lobby è lunga : " + lobby.size());
         sendCards(gameID);
 
         int pos = -1;
-        for (int i = 0; i < lobby.size(); i++) {
+        for (int i = 0; i < lobby.size(); i++){
             if (lobby.get(i).get(0).getKey().equals(message.getUID())) {
                 pos = i;
                 System.out.println("la pos è " + pos);
                 break;
             }
         }
-
         if (lobby.get(pos).size() > maxPlayers) {
             System.out.println("entra in lobby.get(pos).size() > maxPlayers");
 
@@ -262,6 +263,18 @@ System.out.println("la lobby è lunga : " + lobby.size());
                 }
             }
         }
+
+        Long tempUID = clients.get(gameID).get(0).getUID();
+        int maxLobbyIndex = -1;
+        for(int i = 0; i<lobby.size(); i++){
+            if(lobby.get(i).get(0).getKey().equals(tempUID)){
+                maxLobbyIndex = i;
+            }
+        }
+        lobby.remove(maxLobbyIndex);
+        lobby.add(new ArrayList<>());
+
+
 
     }
 
@@ -324,6 +337,7 @@ System.out.println("la lobby è lunga : " + lobby.size());
     public void initGame(int gameID) throws RemoteException {
         try {
             this.masterController.getGameController(gameID).initGame();
+
             for (int i = 0; i < clients.get(gameID).size(); i++) {
                 Message initResponse = new InitResponse(gameID,clients.get(gameID).get(i).getUID());
                 clients.get(gameID).get(i).sendMessage(initResponse);
@@ -414,7 +428,7 @@ System.out.println("la lobby è lunga : " + lobby.size());
     }
 
 
-    public void sendBoard(int gameID, String nickname, Long UID) throws RemoteException{
+    public void sendBoard(int gameID) throws RemoteException{
         TileSlot[][] board = masterController.getGameController(gameID).getBoard();
         ColourTile[][] colours = new ColourTile[11][11];
         for(int i = 0; i < 11; i++){
