@@ -135,14 +135,25 @@ public class Board implements Serializable {
     }
 
 
+    /**
+     * getter of the board
+     * @return board
+     */
     public TileSlot[][] getBoard() {
         return this.board;
     }
 
+    /**
+     * sets as taken the EndGameToken
+     */
     public void takeEndGameToken() {
         endGameToken.setTaken();
     }
 
+    /**
+     * to check if EndGameToken is taken
+     * @return if token is taken
+     */
     public boolean isEndGameTokenTaken(){
         return endGameToken.isTaken();
     }
