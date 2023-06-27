@@ -67,7 +67,7 @@ public class Cli extends ClientManager  {
         out.println("Choose your username\n");
         username = in.nextLine();
         getClient().sendMessage(new PreLoginMessage(-1, UID, username));
-        //ok
+
     }
 
     public void firstSetter(int gameID){
@@ -86,7 +86,7 @@ public class Cli extends ClientManager  {
     public void firstResponse(FirstResponse firstResponse) {
         gameID = firstResponse.getGameID();
         firstSetter(gameID);
-        //ok
+
     }
     @Override
     public void reFirstResponse(ReFirstResponse reFirstResponse) {
@@ -110,7 +110,7 @@ public class Cli extends ClientManager  {
     @Override
     public void loginResponse(LoginResponse loginResponse) {
         out.println("Successful login\nWaiting...");
-        //ok
+        gameID=loginResponse.getGameID();
     }
     @Override
     public void usernameError(UsernameError usernameError) {
