@@ -16,6 +16,9 @@ import javafx.stage.Screen;
 import java.util.Objects;
 
 
+/**
+ * Controller that manages the login of the player
+ */
 
 public class LoginSceneController {
     public GridPane gridPane;
@@ -43,12 +46,19 @@ public class LoginSceneController {
     private String username;
     private GuiMaster guiMaster;
 
+    /**
+     * Method to initialize the scene, also setting the controller in the Gui Master
+     */
     @FXML
     public void initialize() {
         guiMaster = GuiMaster.getInstance();
         guiMaster.setLoginSceneController(this);
         createScene();
     }
+
+    /**
+     * Method that creates the scene
+     */
     public void createScene() {
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
 
@@ -80,6 +90,9 @@ public class LoginSceneController {
     }
 
 
+    /**
+     * Method that retrieves the inputted username and sends a PreLoginMessage to the Server
+     */
     public void login() {
         username = usernameField.getText();
         if (username == null || username.trim().isEmpty()) {
@@ -92,7 +105,9 @@ public class LoginSceneController {
     }
 
 
-
+    /**
+     * Method to retrieve the chosen protocol and initialize the connection
+     */
     public void communicationChoice(MouseEvent mouseEvent) {
 
         RadioButton selected = (RadioButton) toggleGroup.getSelectedToggle();
@@ -113,13 +128,18 @@ public class LoginSceneController {
         usernameLabel.setVisible(true);
     }
 
+    /**
+     * Method invoked when a firstResponse arrives, that tells the client that it is a first Player
+     */
     public void firstResponse(FirstResponse firstResponse) {
         GuiMaster.getInstance().getClient().setGameID(firstResponse.getGameID());
         Scene scene=gridPane.getScene();
         GuiMaster.setLayout(scene, "/fxml/firstConnectionScene.fxml");
     }
 
-
+    /**
+     * Method invoked when a PreLoginResponse arrives, that moves the client to the waiting screen
+     */
     public void preLoginResponse(PreLoginResponse preLoginResponse) {
         Scene scene=gridPane.getScene();
         GuiMaster.setLayout(scene, "/fxml/connectionScene.fxml");

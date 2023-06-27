@@ -9,8 +9,14 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.InputStream;
-
+/**
+ * Class for starting the Graphical User Interface, made with JavaFX
+ */
 public class Gui extends Application {
+    /**
+     * Method to start the gui, setting the stage
+     * @param stage
+     */
     @Override
     public void start(Stage stage) {
 
@@ -37,8 +43,9 @@ public class Gui extends Application {
     }
 
 
-
-
+    /**
+     * Method that stops the Gui
+     */
     @Override
     public void stop() {
         System.exit(0);

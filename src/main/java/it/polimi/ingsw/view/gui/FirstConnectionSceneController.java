@@ -13,6 +13,9 @@ import javafx.scene.layout.*;
 
 import java.util.Objects;
 
+/**
+ * Controller that manages the connection of the first player of every game
+ */
 public class FirstConnectionSceneController {
 
     public RadioButton TwoPlayers;
@@ -26,6 +29,9 @@ public class FirstConnectionSceneController {
     private ToggleGroup toggleGroup;
     private GuiMaster guiMaster;
 
+    /**
+     * Method to initialize the scene, also setting the controller in the Gui Master
+     */
     @FXML
     public void initialize() {
         guiMaster = GuiMaster.getInstance();
@@ -33,6 +39,9 @@ public class FirstConnectionSceneController {
         createScene();
     }
 
+    /**
+     * Method that creates the scene
+     */
     public void createScene() {
         String backgroundImage = Objects.requireNonNull(getClass().getResource("/assets/misc/sfondo parquet.jpg")).toExternalForm();
         rootPane.setStyle("-fx-background-image: url('" + backgroundImage + "'); -fx-background-size: cover;");
@@ -52,6 +61,9 @@ public class FirstConnectionSceneController {
 
     }
 
+    /**
+     * Method invoked when the player selects a number of players
+     */
     public void selectNumOfPlayers() {
         RadioButton selected = (RadioButton) toggleGroup.getSelectedToggle();
         if (!TwoPlayers.isSelected() && !ThreePlayers.isSelected()&& !FourPlayers.isSelected()) {
@@ -64,6 +76,10 @@ public class FirstConnectionSceneController {
         }
     }
 
+    /**
+     * Method that is called when the Set Response arrives, and changes the scene
+     * @param setResponse the message that confirms that the setting of the players is successful
+     */
     public void setResponse(SetResponse setResponse) {
         Scene scene=gridPane.getScene();
         GuiMaster.setLayout(scene,"/fxml/connectionScene.fxml");

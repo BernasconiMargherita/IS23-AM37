@@ -25,6 +25,9 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * Controller that manages the Game scene in all aspects
+ */
 public class GameSceneController {
     private static final int SHELF_ROWS = 6;
     private static final int SHELF_COLUMNS = 5;
@@ -84,7 +87,9 @@ public class GameSceneController {
     private final ArrayList<Coordinates> tileHand=new ArrayList<>();
     private final ArrayList<Coordinates> tileHandTmp=new ArrayList<>();
 
-
+    /**
+     * Method to initialize the scene, also setting the controller in the Gui Master
+     */
     @FXML
     public void initialize() {
 
@@ -109,6 +114,11 @@ public class GameSceneController {
 
     }
 
+    /**
+     * Method that is invoked when a BoardResponse arrives,updating the board to the previous turn
+     * and reloading the scoring tokens on the common card
+     * @param boardMessage a Message that contains information about the board and the tokens
+     */
     public void updateBoard(BoardResponse boardMessage) {
         int[] tokens = boardMessage.getCommonTokens();
         loadScoringToken(tokens[0],scoringToken1);
@@ -119,6 +129,10 @@ public class GameSceneController {
         createBoard(turnBoard);
     }
 
+    /**
+     * Method used to create the tiles of the board and adding them to the board
+     * @param turnBoard the board in the state of the current turn
+     */
     private void createBoard(ColourTile[][] turnBoard) {
         emptyGridPane(boardMask);
         for (int row = 0; row < BOARD_SIZE; row++) {
@@ -131,6 +145,9 @@ public class GameSceneController {
         }
     }
 
+    /**
+     * method to load the image of the end game token
+     */
     private void loadEndGameToken() {
         String path="/assets/scoring tokens/end game.jpg";
         String EndGameTokenImage = Objects.requireNonNull(getClass().getResource(path)).toExternalForm();
@@ -142,6 +159,13 @@ public class GameSceneController {
         endGameToken.add(imageView,0,0);
     }
 
+    /**
+     * Method to create a single tile to put on the board, also adding the appropriate Event Listener
+     * @param colourTile the colour of the tile
+     * @param row the row of the tile on the board
+     * @param col the column of the tile on the board
+     * @return the ImageView to add to the board
+     */
     private ImageView createBoardTile(ColourTile colourTile, int row, int col) {
         String path = "/assets/item tiles/";
         switch (colourTile){
@@ -167,6 +191,13 @@ public class GameSceneController {
 
     }
 
+    /**
+     * Listener added to every tile on the Board,that adds the tile to the hand,
+     * checking also if the selected tile is valid
+     * @param row  the row of the tile on the board
+     * @param col the column of the tile on the board
+     * @param finalPath path used to create the tile in the hand with consistency
+     */
     private void ChooseTile(int row, int col, String finalPath) {
         ImageView tile = findTile(row, col);
         Coordinates newTile=new Coordinates(row, col);
@@ -222,7 +253,10 @@ public class GameSceneController {
     }
 
 
-
+    /**
+     * @param hand the Temporary hand of the player
+     * @return the int that represents the first empty column of the hand where to place the tile
+     */
     private int findFirstEmptyColumn(GridPane hand) {
         int numColumns = 3;
 
@@ -234,6 +268,12 @@ public class GameSceneController {
         return -1;
     }
 
+    /**
+     * method to check if the column passed is empty
+     * @param column the column to check
+     * @param hand the hand of the player
+     * @return if the column is empty or not
+     */
     private boolean isColumnEmpty(int column, GridPane hand) {
         for (javafx.scene.Node node : hand.getChildren()) {
             Integer columnIndex = GridPane.getColumnIndex(node);
@@ -244,6 +284,11 @@ public class GameSceneController {
         return true;
     }
 
+    /**
+     * Method that creates a Tile to place in the Temporary Hand, adding also the listener
+     * @param finalPath path to the image
+     * @return the ImageView that represents the tile
+     */
     private ImageView createHandTile(String finalPath) {
         String TileImage = Objects.requireNonNull(getClass().getResource(finalPath)).toExternalForm();
         ImageView imageView = new ImageView();
@@ -259,6 +304,11 @@ public class GameSceneController {
         return imageView;
     }
 
+    /**
+     * Method to add the tiles in the Temporary hand to the Hand,
+     * permitting to the player to choose in which order to place the shelf
+     * @param i the position where to add the tile
+     */
     private void addToHand(int i) {
         Coordinates coordinates=tileHandTmp.get(i);
         tileHand.add(coordinates);
@@ -268,6 +318,12 @@ public class GameSceneController {
     }
 
 
+    /**
+     * method to find a specific image view in the board
+     * @param row the row
+     * @param col the column
+     * @return the Image View
+     */
     private ImageView findTile(int row, int col) {
 
         ImageView targetImageView = null;
@@ -282,6 +338,11 @@ public class GameSceneController {
         return targetImageView;
     }
 
+    /**
+     * Method invoked when a removeResponse arrives,
+     * making the buttons of the selection of the column disappear
+     * @param removeResponse a message that confirms that the hand is valid
+     */
     public void removeResponse(RemoveResponse removeResponse) {
         column1.setVisible(true);
         column2.setVisible(true);
@@ -290,6 +351,11 @@ public class GameSceneController {
         column5.setVisible(true);
     }
 
+    /**
+     * Method that ends a player Turn, disabling the Gui to prevent the sending of messages or makes the player remake the turn
+     * @param turnResponse a message that tells if the insert in the shelf of the player is valid or not
+     *                     it also contains the update shelf after the insert of the new tiles
+     */
     public void turnResponse(TurnResponse turnResponse) {
         if (turnResponse.getStatus()==0) {
             tileError.setVisible(false);
@@ -310,6 +376,9 @@ public class GameSceneController {
 
     }
 
+    /**
+     * Method to update the shelf after the turn ends
+     */
     private void updateShelf(TurnResponse turnResponse) {
         ColourTile[][] turnShelf = turnResponse.getShelf();
         emptyGridPane(shelfMask);
@@ -318,7 +387,7 @@ public class GameSceneController {
                 int adjustedRow = SHELF_ROWS - 1 - row;
 
                 if (!turnShelf[adjustedRow][col].equals(ColourTile.FREE)) {
-                    ImageView tile = createShelfTile(turnShelf[adjustedRow][col], adjustedRow, col);
+                    ImageView tile = createShelfTile(turnShelf[adjustedRow][col]);
                     shelfMask.add(tile, col, row);
                 }
             }
@@ -326,11 +395,20 @@ public class GameSceneController {
     }
 
 
+    /**
+     * method to empty a gridPane like the shelf or board of all the Image Views
+     * @param gridPane the pane to empty
+     */
     private void emptyGridPane(GridPane gridPane) {
         gridPane.getChildren().clear();
     }
 
-    private ImageView createShelfTile(ColourTile colourTile, int row, int col) {
+    /**
+     * Method that creates a tile for the shelf
+     * @param colourTile the color of the tile
+     * @return the imageView to add
+     */
+    private ImageView createShelfTile(ColourTile colourTile) {
         String path = "/assets/item tiles/";
         switch (colourTile){
 
@@ -352,6 +430,10 @@ public class GameSceneController {
         return imageView;
     }
 
+    /**
+     * Method that manages the end of the game, showing the winner
+     * @param endGameMessage a Message that contains information about the winner of the game
+     */
     public void endGame(EndMessage endGameMessage) {
         Stage modalStage = new Stage();
         modalStage.initModality(Modality.APPLICATION_MODAL);
@@ -374,16 +456,26 @@ public class GameSceneController {
         modalStage.showAndWait();
     }
 
+    /**
+     * Method to close the connection
+     */
     private void closeConnection() {
         GuiMaster.getInstance().closeConnection();
     }
 
+    /**
+     * Method that starts a player turn, invoked when a wakeMessage arrives,and sends a BoardMessage to request the board
+     * @param wakeMessage a message that wakes up the player when it is its turn
+     */
     public void wakeUp(WakeMessage wakeMessage) {
         enableGUI();
         Client client=GuiMaster.getInstance().getClient();
         client.sendMessage(new BoardMessage(client.getUsername(), client.getGameID(), client.getUID()));
     }
 
+    /**
+     * Method to enable aspects of the GUI
+     */
     private void enableGUI() {
         turnText.setVisible(false);
         boardMask.setDisable(false);
@@ -391,6 +483,9 @@ public class GameSceneController {
         hand.setDisable(false);
     }
 
+    /**
+     * Method to disable aspects of the GUI
+     */
     private void disableGUI() {
         turnText.setVisible(true);
         boardMask.setDisable(true);
@@ -404,6 +499,10 @@ public class GameSceneController {
         tileError.setVisible(false);
     }
 
+    /**
+     * Method invoked when a CardResponse arrives, makes the card visible to the player
+     * @param cardsResponse a message that contains information about the common and personal cards
+     */
     public void cardsResponse(CardsResponse cardsResponse) {
         CardPersonalTarget personalTarget = cardsResponse.getCardPersonalTarget();
         showPersonalTarget(personalTarget);
@@ -411,6 +510,10 @@ public class GameSceneController {
         showCommonTargets(commonTargets);
     }
 
+    /**
+     * Method to display the common card on the GUI
+     * @param commonTargets the List of cards
+     */
     private void showCommonTargets(ArrayList<CardCommonTarget> commonTargets) {
         String path1= "/assets/commonGoalCards/" +commonTargets.get(0).getCommonType().getId()+".jpg";
         loadCommonTargetImage(path1, commonTarget1);
@@ -421,6 +524,11 @@ public class GameSceneController {
 
     }
 
+    /**
+     * Method to display the scoring tokens on the common Cards
+     * @param highestToken the value of the highest token of the stack
+     * @param scoringToken the grid pane where to load the token
+     */
     private void loadScoringToken(int highestToken, GridPane scoringToken) {
         String path="/assets/scoring tokens/scoring_"+ highestToken +".jpg";
         String tokenImage = Objects.requireNonNull(getClass().getResource(path)).toExternalForm();
@@ -431,6 +539,11 @@ public class GameSceneController {
         scoringToken.add(imageView,0,0);
     }
 
+    /**
+     * Method to retrieve the common card image and fitting it in the imageView
+     * @param path the path of the image
+     * @param commonTarget the grid pane where to load the card
+     */
     private void loadCommonTargetImage(String path, GridPane commonTarget) {
         String cardImage = Objects.requireNonNull(getClass().getResource(path)).toExternalForm();
         ImageView imageView = new ImageView();
@@ -440,6 +553,10 @@ public class GameSceneController {
         commonTarget.add(imageView,0,0);
     }
 
+    /**
+     * Method to display the personal card on the GUI
+     * @param personalTarget the card
+     */
     private void showPersonalTarget(CardPersonalTarget personalTarget) {
         String path = "/assets/personal goal cards/Personal_Goals" + personalTarget.id() + ".png";
         String cardImage = Objects.requireNonNull(getClass().getResource(path)).toExternalForm();
@@ -450,6 +567,9 @@ public class GameSceneController {
         personalCard.add(imageView,0,0);
     }
 
+    /**
+     * Method to send the hand of the player to the Server, for checking if it's valid
+     */
     public void sendHand(ActionEvent actionEvent) {
         sendHandButton.setVisible(false);
         tileHandTmp.clear();
@@ -457,6 +577,10 @@ public class GameSceneController {
         client.sendMessage(new RemoveMessage(tileHand, client.getGameID(), client.getUID(), client.getUsername()));
     }
 
+    /**
+     * Method to send the TurnMessage to the server, that contains information
+     * about the order in which to place the tiles, and the column in which to add them
+     */
     public void sendTurn(MouseEvent mouseEvent) {
         column1.setVisible(false);
         column2.setVisible(false);
@@ -474,6 +598,9 @@ public class GameSceneController {
         client.sendMessage(new TurnMessage(client.getGameID(), client.getUID(), column, client.getUsername(), colours));
     }
 
+    /**
+     * @return the array of colour of the tiles based on the hand of the player
+     */
     private String[] createColoursArray() {
         String[] colours=new String[tileHand.size()];
 
