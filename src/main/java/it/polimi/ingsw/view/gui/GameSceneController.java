@@ -165,22 +165,39 @@ public class GameSceneController {
 
     private void ChooseTile(int row, int col, String finalPath) {
         ImageView tile = findTile(row, col);
-        boolean allCoordinatesMatch = true;
-        if ((turnBoard[row + 1][col].equals(ColourTile.FREE)) || (turnBoard[row - 1][col].equals(ColourTile.FREE)) || (turnBoard[row][col + 1].equals(ColourTile.FREE)) || (turnBoard[row][col - 1].equals(ColourTile.FREE))) {
-            for (Coordinates coordinate : tileHandTmp) {
-                if (coordinate.getRow() != row && coordinate.getColumn() != col) {
-                    allCoordinatesMatch = false;
-                    break;
-                }
-            }
+        boolean allAdjacencyMatch = true;
 
-            if (allCoordinatesMatch) {
-                tileHandTmp.add(new Coordinates(row, col));
-                tile.setImage(null);
-                ImageView handTile = createHandTile(finalPath);
-                hand.add(handTile, findFirstEmptyColumn(hand), 0);
-            }
-        }
+         if ((turnBoard[row + 1][col].equals(ColourTile.FREE)) || (turnBoard[row - 1][col].equals(ColourTile.FREE)) || (turnBoard[row][col + 1].equals(ColourTile.FREE)) || (turnBoard[row][col - 1].equals(ColourTile.FREE))) {
+
+             if (tileHandTmp.size()==0){
+                 tileHandTmp.add(new Coordinates(row, col));
+                 tile.setImage(null);
+                 ImageView handTile = createHandTile(finalPath);
+                 hand.add(handTile, findFirstEmptyColumn(hand), 0);
+             } else {
+                 int firstRow = tileHandTmp.get(0).getRow();
+                 int firstCol = tileHandTmp.get(0).getColumn();
+
+                 for (int i = 1; i < tileHandTmp.size(); i++) {
+                     Coordinates currentCoordinate = tileHandTmp.get(i);
+                     int currentRow = currentCoordinate.getRow();
+                     int currentCol = currentCoordinate.getColumn();
+
+                     if (!((currentRow == firstRow && currentCol == firstCol + i) ||
+                             (currentCol == firstCol && currentRow == firstRow + i))) {
+                         allAdjacencyMatch = false;
+                         break;
+                     }
+                 }
+                 if (allAdjacencyMatch) {
+
+                     tileHandTmp.add(new Coordinates(row, col));
+                     tile.setImage(null);
+                     ImageView handTile = createHandTile(finalPath);
+                     hand.add(handTile, findFirstEmptyColumn(hand), 0);
+                 }
+             }
+         }
     }
 
 

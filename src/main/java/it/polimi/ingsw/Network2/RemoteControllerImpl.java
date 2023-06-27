@@ -372,6 +372,10 @@ System.out.println("la lobby è lunga : " + lobby.size());
 
                     masterController.getGameController(gameID).turn(tiles, column);
                     getShelfByNickname(gameID, nickname, i, shelfColours);
+                    Message message = new TurnResponse(0,gameID,UID, shelfColours);
+                    clients.get(gameID).get(getPosition(UID, gameID)).sendMessage(message);
+
+                    currentPlayer(gameID);
 
                 } catch (EmptySlotException | InvalidPositionsException | InvalidSlotException |
                          NoSpaceInColumnException | SoldOutTilesException | GameAlreadyStarted e) {
@@ -387,10 +391,7 @@ System.out.println("la lobby è lunga : " + lobby.size());
                         clients.get(gameID).get(i).sendMessage(new EndMessage(winner,gameID,UID));
                     }
                 }
-                Message message = new TurnResponse(0,gameID,UID, shelfColours);
-                clients.get(gameID).get(getPosition(UID, gameID)).sendMessage(message);
 
-                currentPlayer(gameID);
 
 
             }
