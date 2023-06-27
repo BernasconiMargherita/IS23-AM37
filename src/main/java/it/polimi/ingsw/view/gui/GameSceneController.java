@@ -165,40 +165,55 @@ public class GameSceneController {
 
     private void ChooseTile(int row, int col, String finalPath) {
         ImageView tile = findTile(row, col);
-        boolean allAdjacencyMatch = true;
+        Coordinates newTile=new Coordinates(row, col);
 
-         if ((turnBoard[row + 1][col].equals(ColourTile.FREE)) || (turnBoard[row - 1][col].equals(ColourTile.FREE)) || (turnBoard[row][col + 1].equals(ColourTile.FREE)) || (turnBoard[row][col - 1].equals(ColourTile.FREE))) {
+        if ((turnBoard[row + 1][col].equals(ColourTile.FREE)) || (turnBoard[row - 1][col].equals(ColourTile.FREE)) || (turnBoard[row][col + 1].equals(ColourTile.FREE)) || (turnBoard[row][col - 1].equals(ColourTile.FREE))) {
+            if (tileHandTmp.isEmpty()) {
+                tileHandTmp.add(newTile);
+                tile.setImage(null);
+                ImageView handTile = createHandTile(finalPath);
+                hand.add(handTile, findFirstEmptyColumn(hand), 0);
+            } else {
 
-             if (tileHandTmp.size()==0){
-                 tileHandTmp.add(new Coordinates(row, col));
-                 tile.setImage(null);
-                 ImageView handTile = createHandTile(finalPath);
-                 hand.add(handTile, findFirstEmptyColumn(hand), 0);
-             } else {
-                 int firstRow = tileHandTmp.get(0).getRow();
-                 int firstCol = tileHandTmp.get(0).getColumn();
+                int lastCoordinateIndex = tileHandTmp.size() - 1;
+                Coordinates lastCoordinate = tileHandTmp.get(lastCoordinateIndex);
+                int lastRow = lastCoordinate.getRow();
+                int lastCol = lastCoordinate.getColumn();
 
-                 for (int i = 1; i < tileHandTmp.size(); i++) {
-                     Coordinates currentCoordinate = tileHandTmp.get(i);
-                     int currentRow = currentCoordinate.getRow();
-                     int currentCol = currentCoordinate.getColumn();
+                boolean hasSameRow = (row == lastRow);
+                boolean hasSameCol = (col == lastCol);
+                boolean isAdjacent = false;
 
-                     if (!((currentRow == firstRow && currentCol == firstCol + i) ||
-                             (currentCol == firstCol && currentRow == firstRow + i))) {
-                         allAdjacencyMatch = false;
-                         break;
-                     }
-                 }
-                 if (allAdjacencyMatch) {
+                for (Coordinates coordinate : tileHandTmp) {
+                    if (row != coordinate.getRow()) {
+                        hasSameRow = false;
+                    }
+                    if (col != coordinate.getColumn()) {
+                        hasSameCol = false;
+                    }
+                }
 
-                     tileHandTmp.add(new Coordinates(row, col));
-                     tile.setImage(null);
-                     ImageView handTile = createHandTile(finalPath);
-                     hand.add(handTile, findFirstEmptyColumn(hand), 0);
-                 }
-             }
-         }
+                for (Coordinates coordinate : tileHandTmp) {
+                    int coordinateRow = coordinate.getRow();
+                    int coordinateCol = coordinate.getColumn();
+
+                    if ((row == coordinateRow && (col == coordinateCol + 1 || col == coordinateCol - 1)) ||
+                            (col == coordinateCol && (row == coordinateRow + 1 || row == coordinateRow - 1))) {
+                        isAdjacent = true;
+                        break;
+                    }
+                }
+
+                if ((hasSameRow || hasSameCol) && isAdjacent) {
+                    tileHandTmp.add(newTile);
+                    tile.setImage(null);
+                    ImageView handTile = createHandTile(finalPath);
+                    hand.add(handTile, findFirstEmptyColumn(hand), 0);
+                }
+            }
+        }
     }
+
 
 
     private int findFirstEmptyColumn(GridPane hand) {
