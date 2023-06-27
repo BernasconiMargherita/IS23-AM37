@@ -13,11 +13,10 @@ import java.util.Scanner;
 
 import static it.polimi.ingsw.view.cli.ColorCodes.getColorCode;
 
-public class Cli extends ClientManager implements Runnable {
+public class Cli extends ClientManager  {
 
     private String protocol;
     ColourTile[][] shelf;
-    private Scanner in;
     private String message;
     private MyShelfiePrintStream out;
     private String username;
@@ -26,7 +25,6 @@ public class Cli extends ClientManager implements Runnable {
     private CardPersonalTarget cardPersonalTarget;
     private ArrayList<CardCommonTarget> cardCommonTargets;
     private String winner;
-
     private ColourTile[][] board;
     private final String ANSI_RESET = "\u001B[0m";
     private CommonList cardCommonTarget0;
@@ -35,13 +33,19 @@ public class Cli extends ClientManager implements Runnable {
     private int[] commonTokens;
     private  boolean endGameToken;
     private String[] colors;
+    private Scanner in ;
+
+    public Cli(Scanner scanner) {
+        super();
+        in = scanner;
+
+    }
 
 
-    @Override
-    public void run() {
-        this.in = new Scanner(System.in);
+    public void start() {
         this.out = new MyShelfiePrintStream();
-        protocol = in.next();
+        out.println(("Welcome , choose your connection : "));
+        protocol = in.nextLine();
         createConnection(protocol);
     }
 
@@ -118,6 +122,7 @@ public class Cli extends ClientManager implements Runnable {
 
     @Override
     public void initResponse(InitResponse initResponse) {
+        ColourTile[][] shelf = new ColourTile[6][5];
         out.println("The game is loading...");
         colors = new String[3];
         for(int i = 0; i<3 ; i++){
@@ -132,8 +137,8 @@ public class Cli extends ClientManager implements Runnable {
     }
     @Override
     public void cardsResponse(CardsResponse cardsResponse) {
-        cardCommonTargets = cardsResponse.getCommonTargets();
-        cardPersonalTarget = cardsResponse.getCardPersonalTarget();
+        this.cardCommonTargets = cardsResponse.getCommonTargets();
+        this.cardPersonalTarget = cardsResponse.getCardPersonalTarget();
         //ok
 
     }
@@ -143,11 +148,6 @@ public class Cli extends ClientManager implements Runnable {
             colors[i] = ColourTile.FREE.toString();
         }
         getClient().sendMessage(new BoardMessage(username, gameID, UID));
-        try {
-            wait(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
         display();
     }
 
@@ -168,7 +168,7 @@ public class Cli extends ClientManager implements Runnable {
         } else if( num == 3){
             printBoard(board);
         } else if( num == 4){
-            if(!endGameToken){
+            if(endGameToken){
                 out.println("EndGameToken already taken");
             } else {
                 out.println("EndGameToken still in game");
@@ -420,10 +420,10 @@ public class Cli extends ClientManager implements Runnable {
                     }
                 }
             }
-
         }
         //ok
     }
+
     public void printShelf(ColourTile[][] colourTiles){
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 5; j++) {
@@ -432,8 +432,4 @@ public class Cli extends ClientManager implements Runnable {
             System.out.print("\n");
         }
     }
-
-
-
-
 }

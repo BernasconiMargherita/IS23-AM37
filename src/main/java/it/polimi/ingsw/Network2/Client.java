@@ -6,7 +6,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-public class Client extends UnicastRemoteObject implements ClientCallback  {
+public class Client extends UnicastRemoteObject{
     private int gameID;
     private String username;
     private final CommunicationProtocol communicationProtocol;
@@ -16,10 +16,7 @@ public class Client extends UnicastRemoteObject implements ClientCallback  {
         this.communicationProtocol = communicationProtocol;
     }
 
-    @Override
-    public void notify(String message) throws RemoteException {
 
-    }
     //da client a server
     public void sendMessage(Message message) {
         try {
