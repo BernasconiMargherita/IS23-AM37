@@ -148,7 +148,21 @@ public class Cli extends ClientManager  {
             colors[i] = ColourTile.FREE.toString();
         }
         getClient().sendMessage(new BoardMessage(username, gameID, UID));
+        Thread timerThread = new Thread(() -> startTimer());
+        timerThread.start();
+    }
+
+    public void startTimer(){
+        while (board==null) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         display();
+        Thread.currentThread().interrupt();
+
     }
 
 
@@ -221,10 +235,12 @@ public class Cli extends ClientManager  {
 
 
     @Override
-    public void updateBoard(BoardResponse boardResponse){
-        board = boardResponse.getBoard();
-        commonTokens = boardResponse.getCommonTokens();
-        endGameToken = boardResponse.isEndGameToken();
+    public void updateBoard(BoardResponse boardMessage){
+        out.println("\n\n mi è arrivata la board \n\n");
+
+        board = boardMessage.getBoard();
+        commonTokens = boardMessage.getCommonTokens();
+        endGameToken = boardMessage.isEndGameToken();
     }
 
     public void turn(){
@@ -401,7 +417,7 @@ public class Cli extends ClientManager  {
     public void printBoard(ColourTile[][] colourTiles) {
         for (int i = 0; i < 11; i++) {
             for (int j = 0; j < 11; j++) {
-                System.out.print(getColorCode(colourTiles[i][j]) + "***" + ANSI_RESET);
+                System.out.print(getColorCode(colourTiles[i][j]) + "*** " + ANSI_RESET);
             }
             System.out.print("\n");
         }
@@ -409,14 +425,14 @@ public class Cli extends ClientManager  {
     }
     public void printPersonalTargets( CardPersonalTarget cardPersonalTarget){
         for(int i=5; i>=0; i--){
-            for(int j=0; j<4; j++){
+            for(int j=0; j<5; j++){
                 for(int z=0; z<6; z++){
                     if(cardPersonalTarget.personalCardTiles()[z].coordinates().getRow()==i &&
                             cardPersonalTarget.personalCardTiles()[z].coordinates().getColumn() == j){
-                        System.out.println(getColorCode(cardPersonalTarget.personalCardTiles()[z].colourTile()) + "***" + ANSI_RESET);
+                        System.out.println(getColorCode(cardPersonalTarget.personalCardTiles()[z].colourTile()) + "*** " + ANSI_RESET);
                     }
                     if(cardPersonalTarget.personalCardTiles()[z].coordinates().getColumn()== 4){
-                        System.out.println(getColorCode(cardPersonalTarget.personalCardTiles()[z].colourTile()) + "***\n" + ANSI_RESET);
+                        System.out.println(getColorCode(cardPersonalTarget.personalCardTiles()[z].colourTile()) + "\n" + ANSI_RESET);
                     }
                 }
             }

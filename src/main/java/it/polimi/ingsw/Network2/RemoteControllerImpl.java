@@ -52,6 +52,8 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
     @Override
     public void onMessage(Message message) throws RemoteException {
 
+        System.out.println(message.typeMessage());
+
 
         if (message.typeMessage().equals("LoginMessage")) {
             registerPlayer(message.getGameID(), message.getNickname(), message.getUID());
@@ -71,7 +73,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
             turn(message.getGameID(), message.getColours(), message.getColumn(), message.getNickname(), message.getUID());
         }
         if (message.typeMessage().equals("BoardMessage")) {
-            sendBoard(message.getGameID(), message.getNickname(), message.getUID());
+            sendBoard(message.getGameID());
         }
 
 
@@ -426,7 +428,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
     }
 
 
-    public void sendBoard(int gameID, String nickname, Long UID) throws RemoteException{
+    public void sendBoard(int gameID) throws RemoteException{
         TileSlot[][] board = masterController.getGameController(gameID).getBoard();
         ColourTile[][] colours = new ColourTile[11][11];
         for(int i = 0; i < 11; i++){
