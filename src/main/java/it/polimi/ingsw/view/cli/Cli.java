@@ -166,37 +166,53 @@ public class Cli extends ClientManager  {
     }
 
 
-    public void display(){
+    public void display() {
         out.println("What do you want to see?\n1: Common cards\n2: Personal card\n3: Board\n4: EndGameToken\n5:shelf \nIf you want remove tiles write 6 ");
-        int num = -1;
-        while(num<=0 || num>6){
-            num = in.nextInt();
-            if(num<=0 || num>6){
-                out.println("Enter a valid number PLEASE");
+            int num = -1;
+            while (num <= 0 || num > 6) {
+                num = in.nextInt();
+                if (num <= 0 || num > 6) {
+                    out.println("Enter a valid number PLEASE");
+                }
             }
-        }
-        if( num ==1 ){
-            printCommonTargets(cardCommonTargets.get(0).getCommonType(), cardCommonTargets.get(1).getCommonType());
-        } else if ( num == 2){
-            printPersonalTargets(cardPersonalTarget);
-        } else if( num == 3){
-            printBoard(board);
-        } else if( num == 4){
-            if(endGameToken){
-                out.println("EndGameToken already taken");
-            } else {
-                out.println("EndGameToken still in game");
+            if (num == 1) {
+                printCommonTargets(cardCommonTargets.get(0).getCommonType(), cardCommonTargets.get(1).getCommonType());
+                display();
+                return;
+            } else if (num == 2) {
+                printPersonalTargets(cardPersonalTarget);
+                display();
+                return;
+            } else if (num == 3) {
+                printBoard(board);
+                display();
+                return;
+            } else if (num == 4) {
+                if (endGameToken) {
+                    out.println("EndGameToken already taken");
+                } else {
+                    out.println("EndGameToken still in game");
+                }
+                display();
+                return;
+            } else if (num == 5) {
+                printShelf(shelf);
+                display();
+                return;
+            } else remove();
             }
-        } else if (num == 5) {
-            printShelf(shelf);
-        }else remove();
-    }
+
+
+
+
+
+
 
 
     public void remove(){
         ArrayList<Coordinates> coordinates = new ArrayList<>();
         for(int i=0; i<3; i++){
-                if(i!=1){
+                if(i!=0){
                     out.println("Do you want to remove other cards?");
                     if(in.nextLine().equals("no")){
                         break;
@@ -207,8 +223,9 @@ public class Cli extends ClientManager  {
                 int x = in.nextInt();
                 out.println("Insert column:");
                 int y = in.nextInt();
+                in.nextLine();
                 while(true){
-                    out.println("Are your sure? Answer yes or no");
+                    System.out.println("Are you sure? Answer yes or no");
                     String no = in.nextLine();
                     if (no.equals("no")){
                         out.println("Do you want to change row or column?");
