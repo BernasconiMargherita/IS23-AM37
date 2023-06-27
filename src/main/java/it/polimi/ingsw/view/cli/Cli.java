@@ -1,8 +1,6 @@
 package it.polimi.ingsw.view.cli;
 
-import it.polimi.ingsw.Network2.ClientListener;
 import it.polimi.ingsw.Network2.ClientManager;
-import it.polimi.ingsw.Network2.ClientUpdateListener;
 import it.polimi.ingsw.Network2.Messages.*;
 import it.polimi.ingsw.Utils.Coordinates;
 import it.polimi.ingsw.model.CommonCards.CardCommonTarget;
@@ -15,7 +13,7 @@ import java.util.Scanner;
 
 import static it.polimi.ingsw.view.cli.ColorCodes.getColorCode;
 
-public class Cli extends ClientManager implements Runnable, ClientListener, ClientUpdateListener {
+public class Cli extends ClientManager  {
 
     private String protocol;
     ColourTile[][] shelf;
@@ -43,12 +41,11 @@ public class Cli extends ClientManager implements Runnable, ClientListener, Clie
 
     }
 
-    @Override
-    public void run() {
+
+    public void start() {
         this.out = new MyShelfiePrintStream();
         out.println(("Welcome , choose your connection : "));
         protocol = in.nextLine();
-
         createConnection(protocol);
     }
 
@@ -125,6 +122,7 @@ public class Cli extends ClientManager implements Runnable, ClientListener, Clie
 
     @Override
     public void initResponse(InitResponse initResponse) {
+        ColourTile[][] shelf = new ColourTile[6][5];
         out.println("The game is loading...");
         colors = new String[3];
         for(int i = 0; i<3 ; i++){
@@ -139,8 +137,8 @@ public class Cli extends ClientManager implements Runnable, ClientListener, Clie
     }
     @Override
     public void cardsResponse(CardsResponse cardsResponse) {
-        cardCommonTargets = cardsResponse.getCommonTargets();
-        cardPersonalTarget = cardsResponse.getCardPersonalTarget();
+        this.cardCommonTargets = cardsResponse.getCommonTargets();
+        this.cardPersonalTarget = cardsResponse.getCardPersonalTarget();
         //ok
 
     }
@@ -150,11 +148,6 @@ public class Cli extends ClientManager implements Runnable, ClientListener, Clie
             colors[i] = ColourTile.FREE.toString();
         }
         getClient().sendMessage(new BoardMessage(username, gameID, UID));
-        try {
-            wait(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
         display();
     }
 
@@ -175,7 +168,7 @@ public class Cli extends ClientManager implements Runnable, ClientListener, Clie
         } else if( num == 3){
             printBoard(board);
         } else if( num == 4){
-            if(!endGameToken){
+            if(endGameToken){
                 out.println("EndGameToken already taken");
             } else {
                 out.println("EndGameToken still in game");
