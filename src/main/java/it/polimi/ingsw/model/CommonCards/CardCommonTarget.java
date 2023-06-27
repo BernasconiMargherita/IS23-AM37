@@ -3,10 +3,12 @@ package it.polimi.ingsw.model.CommonCards;
 import java.io.Serializable;
 import java.util.Stack;
 
-
+/**
+ * class that represents the type of common Target based on the number of players
+ */
 public class CardCommonTarget implements Serializable {
     /**
-     * boolean assignedCommonCard: identifies the first or second common card of the board
+     *  assignedCommonCard: identifies the first or second common card of the board
      */
 
     private final int assignedCommonCard;
@@ -32,7 +34,7 @@ public class CardCommonTarget implements Serializable {
      * constructor that assign to the card:
      *
      * @param commonType         enum value of the common card
-     * @param assignedCommonCard which of the two card the scoring token is assigned to
+     * @param assignedCommonCard which one of the two card the scoring token is assigned to
      */
     public CardCommonTarget(CommonList commonType, int assignedCommonCard, int numOfPlayers) {
 

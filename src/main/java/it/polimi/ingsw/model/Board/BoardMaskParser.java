@@ -7,6 +7,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Serializable;
 
+/**
+ * parser (JSON) of
+ */
 public class BoardMaskParser implements Serializable {
 
     private BoardMask boardMask;
