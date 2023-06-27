@@ -349,11 +349,9 @@ System.out.println("la lobby è lunga : " + lobby.size());
     public void remove(int gameID, ArrayList<Coordinates> positions, Long UID) throws RemoteException {
         try {
             masterController.getGameController(gameID).remove(positions);
-            clients.get(gameID).get(getPosition(UID, gameID)).sendMessage(new RemoveResponse(gameID,UID));
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
+            clients.get(gameID).get(getPosition(UID, gameID)).sendMessage(new RemoveResponse(gameID,UID,false));
+        } catch (InvalidPositionsException | EmptySlotException | InvalidSlotException e) {
+            clients.get(gameID).get(getPosition(UID, gameID)).sendMessage(new RemoveResponse(gameID,UID,true));
         }
     }
 
@@ -372,28 +370,26 @@ System.out.println("la lobby è lunga : " + lobby.size());
 
                     masterController.getGameController(gameID).turn(tiles, column);
                     getShelfByNickname(gameID, nickname, i, shelfColours);
-                    Message message = new TurnResponse(0,gameID,UID, shelfColours);
-                    clients.get(gameID).get(getPosition(UID, gameID)).sendMessage(message);
-
-                    currentPlayer(gameID);
 
                 } catch (EmptySlotException | InvalidPositionsException | InvalidSlotException |
                          NoSpaceInColumnException | SoldOutTilesException | GameAlreadyStarted e) {
-                    clients.get(gameID).get(getPosition(UID, gameID)).sendMessage(new TurnResponse(-1,gameID,UID, null));
+                    clients.get(gameID).get(getPosition(UID, gameID)).sendMessage(new TurnResponse(-1,gameID,UID, null, -1));
+                    return;
 
                 } catch (EndGameException e) {
                     getShelfByNickname(gameID, nickname, i, shelfColours);
 
-                    Message message = new TurnResponse(0,gameID,UID, shelfColours);
+                    Message message = new TurnResponse(0,gameID,UID, shelfColours, column);
                     clients.get(gameID).get(getPosition(UID, gameID)).sendMessage(message);
                     String winner = getWinner(gameID);
                     for (int j = 0; j < clients.get(gameID).size(); j++) {
                         clients.get(gameID).get(i).sendMessage(new EndMessage(winner,gameID,UID));
                     }
+                    return;
                 }
-
-
-
+                Message message = new TurnResponse(0,gameID,UID, shelfColours, column);
+                clients.get(gameID).get(getPosition(UID, gameID)).sendMessage(message);
+                currentPlayer(gameID);
             }
         }
     }

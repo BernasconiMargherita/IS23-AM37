@@ -10,9 +10,7 @@ public class BoardResponse extends Message implements Serializable {
     private int[] commonTokens;
     boolean endGameToken;
 
-
-
-    public BoardResponse(ColourTile[][] board, int gameID, long UID, int[] commonTokens, boolean endGameToken){
+    public BoardResponse(ColourTile[][] board,int gameID,long UID, int[] commonTokens, boolean endGameToken){
         super(gameID,UID);
         this.board = board;
         this.typeMessage = "BoardResponse";

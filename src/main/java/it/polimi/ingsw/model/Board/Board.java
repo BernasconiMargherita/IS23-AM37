@@ -12,6 +12,7 @@ import it.polimi.ingsw.model.Tile.TileDeck;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Class that represents the gaming board
@@ -94,6 +95,12 @@ public class Board implements Serializable {
      */
 
     public Tile[] removeCardFromBoard(ArrayList<Coordinates> positions) throws EmptySlotException, InvalidSlotException, InvalidPositionsException {
+
+        for (int i = 1; i < positions.size(); i++) {
+            if (!Objects.equals(positions.get(i - 1).getRow(), positions.get(i).getRow()) && !Objects.equals(positions.get(i-1).getColumn(), positions.get(i).getColumn())) {
+                throw new InvalidPositionsException("The selected positions are invalid");
+            }
+        }
 
         Tile[] selectedTile = new Tile[positions.size()];
         for (int i = 0; i < positions.size(); i++) {
