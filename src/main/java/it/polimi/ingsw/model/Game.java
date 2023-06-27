@@ -68,7 +68,7 @@ public class Game implements Serializable {
      * @param currentPlayer the player that is currently playing his turn
      * @param positions     array of the selected tiles coordinates
      */
-    public Tile[] remove(Player currentPlayer, Coordinates[] positions) throws InvalidPositionsException, EmptySlotException, InvalidSlotException {
+    public Tile[] remove(Player currentPlayer, ArrayList<Coordinates> positions) throws InvalidPositionsException, EmptySlotException, InvalidSlotException {
         Tile[] removedTile;
 
         removedTile = board.removeCardFromBoard(positions);
@@ -121,13 +121,16 @@ public class Game implements Serializable {
     public void isShelfFull(Player currentPlayer) {
         if (currentPlayer.isShelfFull()) {
             setLastTurn(true);
+            board.takeEndGameToken();
             currentPlayer.addScore(1);
+
         }
     }
 
     public TileSlot[][] getBoard(){
         return board.getBoard();
     }
+
 
     public ArrayList<CardCommonTarget> getCommonTargets(){
         return commonDeck;
@@ -157,6 +160,8 @@ public class Game implements Serializable {
         isLastTurn = lastTurn;
     }
 
-
+    public boolean isEndGameTokenTaken(){
+        return board.isEndGameTokenTaken();
+    }
 }
 

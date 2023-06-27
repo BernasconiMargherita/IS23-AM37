@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Network2;
 
 
+import it.polimi.ingsw.view.cli.Cli;
 import it.polimi.ingsw.view.gui.Gui;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -19,14 +20,14 @@ public class ClientSetup extends Application {
                 launch(args);
                 break;
             } else if (mode.equalsIgnoreCase("cli")) {
-                startCLI();
+                startCLI(scanner);
                 break;
             } else {
                 System.out.println("Invalid mode selected. Exiting.");
             }
         }
 
-        scanner.close();
+
     }
 
     public void start(Stage primaryStage) {
@@ -34,9 +35,8 @@ public class ClientSetup extends Application {
         gui.start(primaryStage);
     }
 
-    public static void startCLI() {
-        System.out.println("CLI mode selected. Enter commands:");
-
+    public static void startCLI(Scanner scanner) {
+        Cli cli = new Cli(scanner);
     }
 }
 

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import it.polimi.ingsw.Utils.Coordinates;
 import it.polimi.ingsw.model.CommonCards.CardCommonTarget;
 import it.polimi.ingsw.model.PersonalCards.CardPersonalTarget;
+import it.polimi.ingsw.model.Tile.ColourTile;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -55,6 +56,9 @@ public class Message implements Serializable {
     public String getProtocol() {
         return null;
     }
+    public int getStatus() {
+        return -1;
+    }
 
     public long getUID() {
         return UID;
@@ -68,7 +72,7 @@ public class Message implements Serializable {
         return null;
     }
 
-    public Coordinates[] getPositions() {
+    public ArrayList<Coordinates> getPositions() {
         return null;
     }
     public String[] getColours() {
@@ -80,6 +84,16 @@ public class Message implements Serializable {
 
     public ArrayList<CardCommonTarget> getCommonTargets() {
         return null;
+    }
+    public ColourTile[][] getShelf() {
+        return null;
+    }
+    public int[] getCommonTokens() {
+        return null;
+    }
+
+    public boolean isEndGameToken() {
+        return false;
     }
 
 }

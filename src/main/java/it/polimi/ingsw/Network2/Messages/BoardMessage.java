@@ -6,7 +6,6 @@ import java.io.Serializable;
 
 public class BoardMessage extends Message implements Serializable {
     private String nickname;
-    private int gameID;
     private String typeMessage ;
 
     public BoardMessage(String nickname, int gameID,Long UID) {

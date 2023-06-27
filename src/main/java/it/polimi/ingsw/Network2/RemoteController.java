@@ -6,6 +6,7 @@ import it.polimi.ingsw.Utils.Coordinates;
 import java.net.Socket;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 
 public interface RemoteController extends Remote {
@@ -22,7 +23,7 @@ public interface RemoteController extends Remote {
 
     int startGame() throws RemoteException;
 
-    void remove(int gameID, Coordinates[] positions, Long UID) throws RemoteException;
+    void remove(int gameID, ArrayList<Coordinates> positions, Long UID) throws RemoteException;
 
     void turn(int gameID ,String[] colors, int column,String nickname, Long UID) throws RemoteException;
 
