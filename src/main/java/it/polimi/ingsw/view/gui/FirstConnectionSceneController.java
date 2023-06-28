@@ -26,6 +26,8 @@ public class FirstConnectionSceneController {
     public Label numError;
     public Label loadingMessage;
     public ProgressIndicator progressIndicator;
+    @FXML
+    public AnchorPane anchorPane;
     private ToggleGroup toggleGroup;
     private GuiMaster guiMaster;
 
@@ -43,8 +45,8 @@ public class FirstConnectionSceneController {
      * Method that creates the scene
      */
     public void createScene() {
-        String backgroundImage = Objects.requireNonNull(getClass().getResource("/assets/misc/sfondo parquet.jpg")).toExternalForm();
-        rootPane.setStyle("-fx-background-image: url('" + backgroundImage + "'); -fx-background-size: cover;");
+        String backgroundImage = Objects.requireNonNull(getClass().getResource("/assets/misc/sfondo_parquet.jpg")).toExternalForm();
+        anchorPane.setStyle("-fx-background-image: url('" + backgroundImage + "'); -fx-background-size: cover;");
 
         ColumnConstraints columnConstraints = new ColumnConstraints();
         columnConstraints.setHgrow(Priority.ALWAYS);

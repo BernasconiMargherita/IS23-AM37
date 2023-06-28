@@ -27,6 +27,8 @@ public class ConnectionSceneController {
     public Label loadingMessage;
     @FXML
     public ProgressIndicator progressIndicator;
+    @FXML
+    public AnchorPane anchorPane;
     private GuiMaster guiMaster;
     @FXML
     private TextField usernameField;
@@ -62,8 +64,8 @@ public class ConnectionSceneController {
         rootPane.setPrefWidth(stageWidth);
         rootPane.setPrefHeight(stageHeight);
         
-        String backgroundImage = Objects.requireNonNull(getClass().getResource("/assets/misc/sfondo parquet.jpg")).toExternalForm();
-        rootPane.setStyle("-fx-background-image: url('" + backgroundImage + "'); -fx-background-size: cover;");
+        String backgroundImage = Objects.requireNonNull(getClass().getResource("/assets/misc/sfondo_parquet.jpg")).toExternalForm();
+        anchorPane.setStyle("-fx-background-image: url('" + backgroundImage + "'); -fx-background-size: cover;");
         loadingMessage.setText("Wait for other Players");
     }
 

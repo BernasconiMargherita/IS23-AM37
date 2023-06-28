@@ -83,6 +83,8 @@ public class GameSceneController {
     @FXML
     public Button column5;
     public GridPane endGameToken;
+    @FXML
+    public AnchorPane anchorPane;
     private ColourTile[][] turnBoard;
     private final ArrayList<Coordinates> tileHand=new ArrayList<>();
     private final ArrayList<Coordinates> tileHandTmp=new ArrayList<>();
@@ -103,8 +105,8 @@ public class GameSceneController {
         String boardImage = Objects.requireNonNull(getClass().getResource("/assets/boards/livingroom.png")).toExternalForm();
         board.setImage(new Image(boardImage));
 
-        String backgroundImage = Objects.requireNonNull(getClass().getResource("/assets/misc/sfondo parquet.jpg")).toExternalForm();
-        rootPane.setStyle("-fx-background-image: url('" + backgroundImage + "'); -fx-background-size: cover;");
+        String backgroundImage = Objects.requireNonNull(getClass().getResource("/assets/misc/sfondo_parquet.jpg")).toExternalForm();
+        anchorPane.setStyle("-fx-background-image: url('" + backgroundImage + "'); -fx-background-size: cover;");
         
         turnText.setVisible(false);
         disableGUI();
@@ -153,8 +155,8 @@ public class GameSceneController {
         String EndGameTokenImage = Objects.requireNonNull(getClass().getResource(path)).toExternalForm();
         ImageView imageView = new ImageView();
         imageView.setImage(new Image(EndGameTokenImage));
-        imageView.setFitWidth(70);
-        imageView.setFitHeight(70);
+        imageView.setFitWidth(35);
+        imageView.setFitHeight(35);
 
         endGameToken.add(imageView,0,0);
     }
@@ -182,8 +184,8 @@ public class GameSceneController {
         ImageView imageView = new ImageView();
         imageView.setImage(new Image(TileImage));
 
-        imageView.setFitWidth(55);
-        imageView.setFitHeight(55);
+        imageView.setFitWidth(30);
+        imageView.setFitHeight(30);
 
         String finalPath = path;
         imageView.setOnMouseClicked(event -> ChooseTile(row,col, finalPath));
@@ -294,8 +296,8 @@ public class GameSceneController {
         ImageView imageView = new ImageView();
         imageView.setImage(new Image(TileImage));
 
-        imageView.setFitWidth(80);
-        imageView.setFitHeight(80);
+        imageView.setFitWidth(45);
+        imageView.setFitHeight(45);
 
         int pos=tileHandTmp.size()-1;
 
@@ -424,8 +426,8 @@ public class GameSceneController {
         ImageView imageView = new ImageView();
         imageView.setImage(new Image(TileImage));
 
-        imageView.setFitWidth(40);
-        imageView.setFitHeight(40);
+        imageView.setFitWidth(30);
+        imageView.setFitHeight(30);
 
         return imageView;
     }
@@ -533,8 +535,8 @@ public class GameSceneController {
         String path="/assets/scoring tokens/scoring_"+ highestToken +".jpg";
         String tokenImage = Objects.requireNonNull(getClass().getResource(path)).toExternalForm();
         ImageView imageView = new ImageView();
-        imageView.setFitWidth(80);
-        imageView.setFitHeight(80);
+        imageView.setFitWidth(50);
+        imageView.setFitHeight(50);
         imageView.setImage(new Image(tokenImage));
         scoringToken.add(imageView,0,0);
     }
@@ -547,8 +549,8 @@ public class GameSceneController {
     private void loadCommonTargetImage(String path, GridPane commonTarget) {
         String cardImage = Objects.requireNonNull(getClass().getResource(path)).toExternalForm();
         ImageView imageView = new ImageView();
-        imageView.setFitWidth(300);
-        imageView.setFitHeight(200);
+        imageView.setFitWidth(150);
+        imageView.setFitHeight(100);
         imageView.setImage(new Image(cardImage));
         commonTarget.add(imageView,0,0);
     }
@@ -561,8 +563,8 @@ public class GameSceneController {
         String path = "/assets/personal goal cards/Personal_Goals" + personalTarget.id() + ".png";
         String cardImage = Objects.requireNonNull(getClass().getResource(path)).toExternalForm();
         ImageView imageView = new ImageView();
-        imageView.setFitWidth(200);
-        imageView.setFitHeight(300);
+        imageView.setFitWidth(120);
+        imageView.setFitHeight(200);
         imageView.setImage(new Image(cardImage));
         personalCard.add(imageView,0,0);
     }

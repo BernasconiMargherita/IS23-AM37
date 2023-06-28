@@ -25,7 +25,7 @@ public class Gui extends Application {
         double screenWidth = screenBounds.getWidth();
         double screenHeight = screenBounds.getHeight();
 
-        double stageWidth = screenWidth * 0.8;
+        double stageWidth = screenWidth * 0.6;
         double stageHeight = screenHeight * 0.8;
 
         stage.setWidth(stageWidth);

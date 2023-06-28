@@ -5,145 +5,145 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="rootPane" stylesheets="@styles/login.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.GameSceneController">
-
-    <VBox layoutX="1014.0" layoutY="113.0" AnchorPane.bottomAnchor="214.0" AnchorPane.leftAnchor="1416.0" AnchorPane.rightAnchor="84.0" AnchorPane.topAnchor="113.0">
-
-        <HBox alignment="CENTER_LEFT" spacing="10" />
-
-    </VBox>
-     <ListView fx:id="chatListView" layoutX="1088.0" layoutY="622.0" prefHeight="235.0" prefWidth="200.0" AnchorPane.bottomAnchor="125.0" AnchorPane.leftAnchor="1088.0" AnchorPane.rightAnchor="212.0" AnchorPane.topAnchor="622.0" />
-      <TextField fx:id="messageTextField" layoutX="1098.0" layoutY="884.0" onAction="#sendChatMessage" prefWidth="150.0" AnchorPane.bottomAnchor="73.00000000000004" AnchorPane.leftAnchor="1098.0" AnchorPane.rightAnchor="252.33333333333348" AnchorPane.topAnchor="884.0" />
-      <Button layoutX="1255.0" layoutY="885.0" onAction="#sendChatMessage" text="Invia" AnchorPane.bottomAnchor="72.00000000000004" AnchorPane.leftAnchor="1255.0" AnchorPane.rightAnchor="204.00000000000014" AnchorPane.topAnchor="885.0" />
-    <ImageView fx:id="shelf" fitHeight="300.0" fitWidth="312.0" layoutX="1028.0" layoutY="183.0" AnchorPane.bottomAnchor="499.0" AnchorPane.leftAnchor="1028.0" AnchorPane.rightAnchor="160.0" AnchorPane.topAnchor="183.0">
-        <Image url="@../assets/boards/bookshelf.png" />
-    </ImageView>
-     <ImageView fx:id="board" fitHeight="350.0" fitWidth="345.0" layoutX="116.0" layoutY="247.0" AnchorPane.bottomAnchor="389.0" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="1039.0" AnchorPane.topAnchor="247.0">
-      <image>
-         <Image url="@../assets/boards/livingroom.png" />
-      </image></ImageView>
-
-
-   <GridPane fx:id="boardMask" gridLinesVisible="true" layoutX="116.0" layoutY="247.0" prefHeight="350.0" prefWidth="351.0" AnchorPane.bottomAnchor="389.0" AnchorPane.leftAnchor="116.0" AnchorPane.rightAnchor="1033.0" AnchorPane.topAnchor="247.0">
-      <rowConstraints>
-         <RowConstraints maxHeight="119.0" minHeight="15.666666666666664" prefHeight="15.666666666666664" valignment="CENTER" />
-         <RowConstraints maxHeight="99.0" minHeight="0.0" prefHeight="34.0" valignment="CENTER" />
-         <RowConstraints maxHeight="87.0" minHeight="0.0" prefHeight="35.33333333333334" valignment="CENTER" />
-         <RowConstraints maxHeight="85.0" minHeight="2.0" prefHeight="35.33333333333334" valignment="CENTER" />
-         <RowConstraints maxHeight="82.0" minHeight="0.0" prefHeight="35.66666666666666" valignment="CENTER" />
-         <RowConstraints maxHeight="84.0" minHeight="10.0" prefHeight="33.33333333333334" valignment="CENTER" />
-         <RowConstraints maxHeight="83.0" minHeight="26.0" prefHeight="36.0" valignment="CENTER" />
-         <RowConstraints maxHeight="82.0" minHeight="25.666666666666686" prefHeight="34.333333333333314" valignment="CENTER" />
-         <RowConstraints maxHeight="83.0" minHeight="29.333333333333314" prefHeight="34.666666666666686" valignment="CENTER" />
-         <RowConstraints maxHeight="80.0" minHeight="15.666666666666686" prefHeight="34.0" valignment="CENTER" />
-         <RowConstraints maxHeight="71.0" minHeight="9.333333333333314" prefHeight="13.333333333333314" valignment="CENTER" />
-      </rowConstraints>
-      <columnConstraints>
-         <ColumnConstraints halignment="CENTER" maxWidth="13.0" minWidth="5.0" prefWidth="13.0" />
-         <ColumnConstraints halignment="CENTER" maxWidth="82.0" minWidth="5.0" prefWidth="33.333333333333336" />
-         <ColumnConstraints halignment="CENTER" maxWidth="85.0" minWidth="5.0" prefWidth="38.33333333333333" />
-         <ColumnConstraints halignment="CENTER" maxWidth="119.0" minWidth="6.0" prefWidth="33.33333333333333" />
-         <ColumnConstraints halignment="CENTER" maxWidth="153.0" minWidth="10.0" prefWidth="34.33333333333334" />
-         <ColumnConstraints halignment="CENTER" maxWidth="176.33333333333334" minWidth="10.0" prefWidth="32.66666666666666" />
-         <ColumnConstraints halignment="CENTER" maxWidth="170.0" minWidth="10.0" prefWidth="37.0" />
-         <ColumnConstraints halignment="CENTER" maxWidth="142.33333333333334" minWidth="10.0" prefWidth="32.66666666666666" />
-         <ColumnConstraints halignment="CENTER" maxWidth="134.0" minWidth="10.0" prefWidth="37.0" />
-         <ColumnConstraints halignment="CENTER" maxWidth="106.0" minWidth="10.0" prefWidth="33.333333333333314" />
-         <ColumnConstraints halignment="CENTER" maxWidth="68.0" minWidth="10.0" prefWidth="25.333333333333314" />
-      </columnConstraints></GridPane>
-   <GridPane fx:id="shelfMask" layoutX="1058.0" layoutY="196.0" prefHeight="243.0" prefWidth="251.0" AnchorPane.bottomAnchor="543.0" AnchorPane.leftAnchor="1058.0" AnchorPane.rightAnchor="191.00000000000014" AnchorPane.topAnchor="196.00000000000003">
-     <columnConstraints>
-       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="90.0" minWidth="10.0" prefWidth="59.333333333333336" />
-         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="88.0" minWidth="10.0" prefWidth="50.333333333333336" />
-         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="83.0" minWidth="10.0" prefWidth="50.33333333333334" />
-         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="90.0" minWidth="10.0" prefWidth="48.33333333333334" />
-       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="88.0" minWidth="10.0" prefWidth="54.33333333333334" />
-     </columnConstraints>
-     <rowConstraints>
-         <RowConstraints maxHeight="144.0" minHeight="10.0" prefHeight="49.333333333333336" valignment="CENTER" vgrow="SOMETIMES" />
-         <RowConstraints maxHeight="144.0" minHeight="10.0" prefHeight="36.666666666666664" valignment="CENTER" vgrow="SOMETIMES" />
-       <RowConstraints maxHeight="144.0" minHeight="2.0" prefHeight="37.33333333333334" valignment="CENTER" vgrow="SOMETIMES" />
-       <RowConstraints maxHeight="172.0" minHeight="0.0" prefHeight="41.666666666666686" valignment="CENTER" vgrow="SOMETIMES" />
-       <RowConstraints maxHeight="151.0" minHeight="10.0" prefHeight="42.33333333333334" valignment="CENTER" vgrow="SOMETIMES" />
-         <RowConstraints maxHeight="131.0" minHeight="10.0" prefHeight="42.0" valignment="CENTER" vgrow="SOMETIMES" />
-     </rowConstraints>
-   </GridPane>
-   <GridPane fx:id="hand" gridLinesVisible="true" layoutX="1076.0" layoutY="513.0" prefHeight="73.0" prefWidth="216.0" AnchorPane.bottomAnchor="395.6666666666667" AnchorPane.leftAnchor="1076.0" AnchorPane.rightAnchor="208.0" AnchorPane.topAnchor="513.0">
-     <columnConstraints>
-         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-     </columnConstraints>
-     <rowConstraints>
-       <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
-     </rowConstraints>
-   </GridPane>
-   <GridPane fx:id="personalCard" gridLinesVisible="true" layoutX="750.0" layoutY="636.0" prefHeight="263.0" prefWidth="173.0" AnchorPane.bottomAnchor="83.00000000000006" AnchorPane.leftAnchor="750.0" AnchorPane.rightAnchor="577.0000000000001" AnchorPane.topAnchor="636.0">
-      <columnConstraints>
-         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-      </columnConstraints>
-      <rowConstraints>
-         <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
-      </rowConstraints>
-   </GridPane>
-   <GridPane fx:id="commonTarget2" gridLinesVisible="true" layoutX="406.0" layoutY="766.0" prefHeight="138.0" prefWidth="251.0" AnchorPane.bottomAnchor="78.33333333333337" AnchorPane.leftAnchor="406.0" AnchorPane.rightAnchor="843.0000000000001" AnchorPane.topAnchor="766.0">
-      <columnConstraints>
-         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-      </columnConstraints>
-      <rowConstraints>
-         <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
-      </rowConstraints>
-   </GridPane>
-   <GridPane fx:id="commonTarget1" gridLinesVisible="true" layoutX="112.0" layoutY="648.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="238.0" AnchorPane.leftAnchor="112.0" AnchorPane.rightAnchor="1188.0" AnchorPane.topAnchor="648.0">
-      <columnConstraints>
-         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-      </columnConstraints>
-      <rowConstraints>
-         <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
-      </rowConstraints>
-   </GridPane>
-   <GridPane fx:id="scoringToken1" gridLinesVisible="true" layoutX="218.0" layoutY="813.0" prefHeight="54.0" prefWidth="60.0" rotate="-6.3" AnchorPane.bottomAnchor="119.0" AnchorPane.leftAnchor="216.0" AnchorPane.rightAnchor="1224.0" AnchorPane.topAnchor="813.0">
-     <columnConstraints>
-       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-     </columnConstraints>
-     <rowConstraints>
-       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-     </rowConstraints>
-   </GridPane>
-   <GridPane fx:id="scoringToken2" gridLinesVisible="true" layoutX="570.0" layoutY="803.0" prefHeight="67.0" prefWidth="69.0" rotate="-7.1" AnchorPane.bottomAnchor="112.00000000000004" AnchorPane.leftAnchor="570.0" AnchorPane.rightAnchor="861.0000000000001" AnchorPane.topAnchor="803.0">
-      <columnConstraints>
-         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-      </columnConstraints>
-      <rowConstraints>
-         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      </rowConstraints>
-   </GridPane>
-   <Label fx:id="turnText" layoutX="720.0" layoutY="472.0" prefHeight="81.0" prefWidth="251.0" text="WAIT YOUR TURN!" textAlignment="CENTER" textFill="#d30505" AnchorPane.bottomAnchor="429.00000000000006" AnchorPane.leftAnchor="720.0" AnchorPane.rightAnchor="529.0000000000001" AnchorPane.topAnchor="471.99999999999994">
-      <font>
-         <Font size="15.0" />
-      </font>
-   </Label>
-   <Button fx:id="sendHandButton" layoutX="1286.0" layoutY="591.0" mnemonicParsing="false" onAction="#sendHand" prefHeight="25.0" prefWidth="96.0" text="Check hand" visible="false" AnchorPane.bottomAnchor="365.6666666666667" AnchorPane.leftAnchor="1286.0" AnchorPane.rightAnchor="118.0" AnchorPane.topAnchor="591.0" />
-   <Label fx:id="box1" layoutX="1113.0" layoutY="596.0" AnchorPane.bottomAnchor="369.00000000000006" AnchorPane.leftAnchor="1113.0" AnchorPane.rightAnchor="387.3333333333335" AnchorPane.topAnchor="596.0" />
-   <Label fx:id="box2" layoutX="1187.0" layoutY="594.0" AnchorPane.bottomAnchor="369.00000000000006" AnchorPane.leftAnchor="1187.0" AnchorPane.rightAnchor="313.3333333333335" AnchorPane.topAnchor="596.0000000000001" />
-   <Label fx:id="box3" layoutX="1253.0" layoutY="595.0" AnchorPane.bottomAnchor="370.00000000000017" AnchorPane.leftAnchor="1253.0" AnchorPane.rightAnchor="247.33333333333348" AnchorPane.topAnchor="594.9999999999999" />
-   <Button fx:id="column1" layoutX="1063.0" layoutY="150.0" mnemonicParsing="false" onMouseClicked="#sendTurn" prefHeight="25.0" prefWidth="41.0" text="1" visible="false" AnchorPane.bottomAnchor="807.0000000000001" AnchorPane.leftAnchor="1063.0" AnchorPane.rightAnchor="396.00000000000017" AnchorPane.topAnchor="150.0" />
-   <Button fx:id="column2" layoutX="1112.0" layoutY="150.0" mnemonicParsing="false" onMouseClicked="#sendTurn" prefHeight="25.0" prefWidth="41.0" text="2" visible="false" AnchorPane.bottomAnchor="807.0000000000001" AnchorPane.leftAnchor="1112.0" AnchorPane.rightAnchor="347.00000000000017" AnchorPane.topAnchor="150.00000000000003" />
-   <Button fx:id="column3" layoutX="1162.0" layoutY="150.0" mnemonicParsing="false" onMouseClicked="#sendTurn" prefHeight="25.0" prefWidth="41.0" text="3" visible="false" AnchorPane.bottomAnchor="807.0000000000001" AnchorPane.leftAnchor="1162.0" AnchorPane.rightAnchor="297.00000000000017" AnchorPane.topAnchor="150.00000000000003" />
-   <Button fx:id="column4" layoutX="1214.0" layoutY="150.0" mnemonicParsing="false" onMouseClicked="#sendTurn" prefHeight="25.0" prefWidth="41.0" text="4" visible="false" AnchorPane.bottomAnchor="807.0000000000001" AnchorPane.leftAnchor="1214.0" AnchorPane.rightAnchor="245.00000000000014" AnchorPane.topAnchor="150.0" />
-   <Button fx:id="column5" layoutX="1264.0" layoutY="150.0" mnemonicParsing="false" onMouseClicked="#sendTurn" prefHeight="25.0" prefWidth="41.0" text="5" visible="false" AnchorPane.bottomAnchor="807.0000000000001" AnchorPane.leftAnchor="1264.0" AnchorPane.rightAnchor="195.00000000000014" AnchorPane.topAnchor="150.0" />
-   <GridPane fx:id="endGameToken" gridLinesVisible="true" layoutX="393.0" layoutY="492.0" prefHeight="41.0" prefWidth="41.0" rotate="7.1" AnchorPane.bottomAnchor="453.0" AnchorPane.leftAnchor="393.0" AnchorPane.rightAnchor="1066.0" AnchorPane.topAnchor="492.0">
-     <columnConstraints>
-       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-     </columnConstraints>
-     <rowConstraints>
-       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-     </rowConstraints>
-   </GridPane>
-   <Label fx:id="tileError" layoutX="783.0" layoutY="198.0" prefHeight="81.0" prefWidth="251.0" text="The chosen column is full!" textAlignment="CENTER" textFill="#d30505" visible="false" AnchorPane.bottomAnchor="703.0000000000001" AnchorPane.leftAnchor="783.0" AnchorPane.rightAnchor="466.0000000000001" AnchorPane.topAnchor="198.0">
-      <font>
-         <Font size="15.0" />
-      </font>
-   </Label>
-
+<AnchorPane fx:id="anchorPane" stylesheets="@styles/login.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.GameSceneController">
+   <children>
+      <AnchorPane fx:id="rootPane" prefHeight="700.0" prefWidth="994.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="1000.0" AnchorPane.topAnchor="0.0">
+           <ListView fx:id="chatListView" layoutX="762.0" layoutY="532.0" prefHeight="126.0" prefWidth="183.0" />
+            <TextField fx:id="messageTextField" layoutX="763.0" layoutY="674.0" onAction="#sendChatMessage" prefHeight="25.0" prefWidth="183.0" />
+            <Button layoutX="701.0" layoutY="674.0" onAction="#sendChatMessage" prefHeight="25.0" prefWidth="58.0" text="Invia" />
+          <ImageView fx:id="shelf" fitHeight="247.0" fitWidth="251.0" layoutX="705.0" layoutY="117.0">
+              <Image url="@../assets/boards/bookshelf.png" />
+          </ImageView>
+           <ImageView fx:id="board" fitHeight="350.0" fitWidth="345.0" layoutX="78.0" layoutY="108.0">
+            <image>
+               <Image url="@../assets/boards/livingroom.png" />
+            </image>
+         </ImageView>
+      
+      
+         <GridPane fx:id="boardMask" layoutX="78.0" layoutY="108.0" prefHeight="350.0" prefWidth="345.0">
+            <rowConstraints>
+               <RowConstraints maxHeight="119.0" minHeight="15.666666666666664" prefHeight="15.666666666666664" valignment="CENTER" />
+               <RowConstraints maxHeight="99.0" minHeight="0.0" prefHeight="34.0" valignment="CENTER" />
+               <RowConstraints maxHeight="87.0" minHeight="0.0" prefHeight="35.33333333333334" valignment="CENTER" />
+               <RowConstraints maxHeight="85.0" minHeight="2.0" prefHeight="35.33333333333334" valignment="CENTER" />
+               <RowConstraints maxHeight="82.0" minHeight="0.0" prefHeight="35.66666666666666" valignment="CENTER" />
+               <RowConstraints maxHeight="84.0" minHeight="10.0" prefHeight="33.33333333333334" valignment="CENTER" />
+               <RowConstraints maxHeight="83.0" minHeight="26.0" prefHeight="36.0" valignment="CENTER" />
+               <RowConstraints maxHeight="82.0" minHeight="25.666666666666686" prefHeight="34.333333333333314" valignment="CENTER" />
+               <RowConstraints maxHeight="83.0" minHeight="29.333333333333314" prefHeight="34.666666666666686" valignment="CENTER" />
+               <RowConstraints maxHeight="80.0" minHeight="15.666666666666686" prefHeight="37.0" valignment="CENTER" />
+               <RowConstraints maxHeight="71.0" minHeight="8.0" prefHeight="11.0" valignment="CENTER" />
+            </rowConstraints>
+            <columnConstraints>
+               <ColumnConstraints halignment="CENTER" maxWidth="13.0" minWidth="5.0" prefWidth="13.0" />
+               <ColumnConstraints halignment="CENTER" maxWidth="82.0" minWidth="5.0" prefWidth="33.333333333333336" />
+               <ColumnConstraints halignment="CENTER" maxWidth="85.0" minWidth="5.0" prefWidth="38.33333333333333" />
+               <ColumnConstraints halignment="CENTER" maxWidth="119.0" minWidth="6.0" prefWidth="33.33333333333333" />
+               <ColumnConstraints halignment="CENTER" maxWidth="153.0" minWidth="10.0" prefWidth="35.0" />
+               <ColumnConstraints halignment="CENTER" maxWidth="176.33333333333334" minWidth="10.0" prefWidth="35.0" />
+               <ColumnConstraints halignment="CENTER" maxWidth="170.0" minWidth="10.0" prefWidth="34.0" />
+               <ColumnConstraints halignment="CENTER" maxWidth="142.33333333333334" minWidth="10.0" prefWidth="33.0" />
+               <ColumnConstraints halignment="CENTER" maxWidth="134.0" minWidth="10.0" prefWidth="38.0" />
+               <ColumnConstraints halignment="CENTER" maxWidth="106.0" minWidth="10.0" prefWidth="33.0" />
+               <ColumnConstraints halignment="CENTER" maxWidth="68.0" minWidth="10.0" prefWidth="17.0" />
+            </columnConstraints>
+         </GridPane>
+         <GridPane fx:id="shelfMask" layoutX="733.0" layoutY="130.0" prefHeight="201.0" prefWidth="200.0">
+           <columnConstraints>
+             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="90.0" minWidth="10.0" prefWidth="43.0" />
+               <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="88.0" minWidth="10.0" prefWidth="43.0" />
+               <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="83.0" minWidth="10.0" prefWidth="42.0" />
+               <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="90.0" minWidth="10.0" prefWidth="37.0" />
+             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="88.0" minWidth="10.0" prefWidth="44.0" />
+           </columnConstraints>
+           <rowConstraints>
+               <RowConstraints maxHeight="144.0" minHeight="10.0" prefHeight="38.0" valignment="CENTER" vgrow="SOMETIMES" />
+               <RowConstraints maxHeight="144.0" minHeight="10.0" prefHeight="33.0" valignment="CENTER" vgrow="SOMETIMES" />
+             <RowConstraints maxHeight="144.0" minHeight="2.0" prefHeight="37.0" valignment="CENTER" vgrow="SOMETIMES" />
+             <RowConstraints maxHeight="172.0" minHeight="0.0" prefHeight="31.0" valignment="CENTER" vgrow="SOMETIMES" />
+             <RowConstraints maxHeight="151.0" minHeight="10.0" prefHeight="32.0" valignment="CENTER" vgrow="SOMETIMES" />
+               <RowConstraints maxHeight="131.0" minHeight="10.0" prefHeight="34.0" valignment="CENTER" vgrow="SOMETIMES" />
+           </rowConstraints>
+         </GridPane>
+         <GridPane fx:id="hand" gridLinesVisible="true" layoutX="758.0" layoutY="385.0" prefHeight="46.0" prefWidth="150.0">
+           <columnConstraints>
+               <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+           </columnConstraints>
+           <rowConstraints>
+             <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+           </rowConstraints>
+         </GridPane>
+         <GridPane fx:id="personalCard" layoutX="548.0" layoutY="384.0" prefHeight="194.0" prefWidth="122.0">
+            <columnConstraints>
+               <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+            </rowConstraints>
+         </GridPane>
+         <GridPane fx:id="commonTarget2" layoutX="319.0" layoutY="495.0" prefHeight="78.0" prefWidth="164.0">
+            <columnConstraints>
+               <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+            </rowConstraints>
+         </GridPane>
+         <GridPane fx:id="commonTarget1" layoutX="78.0" layoutY="493.0" prefHeight="78.0" prefWidth="164.0">
+            <columnConstraints>
+               <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+            </rowConstraints>
+         </GridPane>
+         <GridPane fx:id="scoringToken1" layoutX="171.0" layoutY="507.0" prefHeight="54.0" prefWidth="60.0" rotate="-6.3">
+           <columnConstraints>
+             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+           </columnConstraints>
+           <rowConstraints>
+             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+           </rowConstraints>
+         </GridPane>
+         <GridPane fx:id="scoringToken2" layoutX="406.0" layoutY="503.0" prefHeight="60.0" prefWidth="66.0" rotate="-7.1">
+            <columnConstraints>
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+         </GridPane>
+         <Label fx:id="turnText" layoutX="454.0" layoutY="263.0" prefHeight="68.0" prefWidth="138.0" text="WAIT YOUR TURN!" textAlignment="CENTER" textFill="#d30505">
+            <font>
+               <Font size="15.0" />
+            </font>
+         </Label>
+         <Button fx:id="sendHandButton" layoutX="797.0" layoutY="481.0" onAction="#sendHand" prefHeight="25.0" prefWidth="81.0" text="Check hand" visible="false" />
+         <Label fx:id="box1" layoutX="779.0" layoutY="437.0" prefHeight="17.0" prefWidth="7.0" />
+         <Label fx:id="box2" layoutX="822.0" layoutY="437.0" prefHeight="17.0" prefWidth="15.0" />
+         <Label fx:id="box3" layoutX="879.0" layoutY="437.0" prefHeight="17.0" prefWidth="15.0" />
+         <Button fx:id="column1" layoutX="730.0" layoutY="80.0" onMouseClicked="#sendTurn" prefHeight="25.0" prefWidth="29.0" text="1" visible="false" />
+         <Button fx:id="column2" layoutX="775.0" layoutY="80.0" onMouseClicked="#sendTurn" prefHeight="25.0" prefWidth="29.0" text="2" visible="false" />
+         <Button fx:id="column3" layoutX="816.0" layoutY="80.0" onMouseClicked="#sendTurn" prefHeight="25.0" prefWidth="29.0" text="3" visible="false" />
+         <Button fx:id="column4" layoutX="857.0" layoutY="80.0" onMouseClicked="#sendTurn" prefHeight="25.0" prefWidth="29.0" text="4" visible="false" />
+         <Button fx:id="column5" layoutX="899.0" layoutY="80.0" onMouseClicked="#sendTurn" prefHeight="25.0" prefWidth="29.0" text="5" visible="false" />
+         <GridPane fx:id="endGameToken" layoutX="358.0" layoutY="352.0" prefHeight="35.0" prefWidth="41.0" rotate="7.1">
+           <columnConstraints>
+             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+           </columnConstraints>
+           <rowConstraints>
+             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+           </rowConstraints>
+         </GridPane>
+         <Label fx:id="tileError" layoutX="466.0" layoutY="165.0" prefHeight="46.0" prefWidth="183.0" text="The chosen column is full!" textAlignment="CENTER" textFill="#d30505" visible="false">
+            <font>
+               <Font size="15.0" />
+            </font>
+         </Label>
+      
+      </AnchorPane>
+   </children>
 </AnchorPane>

@@ -6,7 +6,6 @@ import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -26,6 +25,8 @@ public class LoginSceneController {
     public Button loginButton;
     public Label usernameLabel;
     public GridPane ShelfieLogo;
+    @FXML
+    public AnchorPane anchorPane;
     @FXML
     private TextField usernameField;
     @FXML
@@ -78,8 +79,8 @@ public class LoginSceneController {
 
         imageView.fitWidthProperty().bind(ShelfieLogo.widthProperty());
         imageView.fitHeightProperty().bind(ShelfieLogo.heightProperty());
-        String backgroundImage = Objects.requireNonNull(getClass().getResource("/assets/misc/sfondo parquet.jpg")).toExternalForm();
-        rootPane.setStyle("-fx-background-image: url('" + backgroundImage + "'); -fx-background-size: cover;");
+        String backgroundImage = Objects.requireNonNull(getClass().getResource("/assets/misc/sfondo_parquet.jpg")).toExternalForm();
+        anchorPane.setStyle("-fx-background-image: url('" + backgroundImage + "'); -fx-background-size: cover;");
 
         usernameField.setVisible(false);
         usernameLabel.setVisible(false);
