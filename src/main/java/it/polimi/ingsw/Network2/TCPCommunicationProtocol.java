@@ -79,7 +79,6 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
             in.close();
             out.close();
             socket.close();
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -110,10 +109,6 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
         sendMessage(new PingMessage(-1,UID));
     }
 
-    @Override
-    public void onDisconnection() throws RemoteException {
-
-    }
 
     @Override
     public void onMessage(Message message) {
@@ -157,7 +152,7 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
                             case "CardsResponse"-> onMessage(gson.fromJson(request, CardsResponse.class));
                             case "ReFirstResponse"-> onMessage(gson.fromJson(request, ReFirstResponse.class));
                             case "PingMessage"->ping();
-                            case "DisconnectionMessage"->onDisconnection();
+                            case "DisconnectionMessage"->onMessage(gson.fromJson(request, DisconnectionMessage.class));
                         }
                     }
 

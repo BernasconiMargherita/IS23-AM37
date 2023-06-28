@@ -22,7 +22,7 @@ public interface ServerInterface extends Remote {
      *
      * @throws RemoteException if a communication-related exception occurs
      */
-    void disconnect() throws RemoteException;
+    void disconnect(Long UID) throws RemoteException;
 
     /**
      * Adds an RMI client to the server and returns a unique identifier (UID) assigned to the client.

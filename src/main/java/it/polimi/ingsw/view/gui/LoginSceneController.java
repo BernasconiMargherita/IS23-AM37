@@ -133,6 +133,7 @@ public class LoginSceneController {
      * Method invoked when a firstResponse arrives, that tells the client that it is a first Player
      */
     public void firstResponse(FirstResponse firstResponse) {
+        GuiMaster.getInstance().getClient().setFirst();
         GuiMaster.getInstance().getClient().setGameID(firstResponse.getGameID());
         Scene scene=gridPane.getScene();
         GuiMaster.setLayout(scene, "/fxml/firstConnectionScene.fxml");

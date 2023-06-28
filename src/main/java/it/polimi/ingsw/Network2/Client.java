@@ -14,7 +14,7 @@ public class Client extends UnicastRemoteObject{
     private int gameID;
     private String username;
     private final CommunicationProtocol communicationProtocol;
-
+    private boolean first = false;
     /**
      * Constructs a new Client object with the specified communication protocol.
      *
@@ -136,6 +136,14 @@ public class Client extends UnicastRemoteObject{
      */
     public void setGameID(int gameID) {
         this.gameID = gameID;
+    }
+
+    public boolean isFirst() {
+        return first;
+    }
+
+    public void setFirst() {
+        this.first = true;
     }
 }
 

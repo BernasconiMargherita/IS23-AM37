@@ -17,14 +17,13 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 import java.net.Socket;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
 /**
  * RemoteControllerImpl class is an implementation of the RemoteController interface.
  * It provides remote control functionality for managing game sessions.
  */
-public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteController, Serializable {
+public class RemoteControllerImpl implements RemoteController, Serializable {
 
     private static final long PING_INTERVAL = 5000;
     private final MasterController masterController;
@@ -33,6 +32,8 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
     private final HashMap<Integer, List<Connection>> clients;
     private int currentGameID;
     private final ArrayList<ArrayList<Pair<Long, String>>> lobby;
+    private ArrayList<Timer> lobbyTimers;
+    private ArrayList<Timer> gameTimers;
 
 
     /**
@@ -42,19 +43,22 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
      * @throws RemoteException if there is an error in the remote communication
      */
     public RemoteControllerImpl() throws RemoteException {
-        super();
+
         lobby = new ArrayList<>();
         lobby.add(new ArrayList<>());
         tempTcp = new HashMap<>();
         tempRmi = new HashMap<>();
         clients = new HashMap<>();
         masterController = new MasterController();
+        lobbyTimers = new ArrayList<>();
+        gameTimers = new ArrayList<>();
         currentGameID = -1;
-
     }
 
-    public void startLobbyPingTimer(int pos) {
-        Timer timer = new Timer();
+
+
+
+    public void startLobbyPingTimer(int pos, Timer timer) {
         System.out.println("timer partito!");
         timer.schedule(new TimerTask() {
             @Override
@@ -70,8 +74,9 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
                             }
                             else {
                                 Socket client = tempTcp.get(clientId);
+                                System.out.println("entra in TCP !!!?");
                                 PrintWriter out = new PrintWriter(client.getOutputStream(),true);
-                                out.print(new PingMessage(-1,clientId).toJson());
+                                out.println(new PingMessage(-1,clientId).toJson());
                                 out.flush();
                             }
                             return false;
@@ -87,7 +92,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
                             if (tempRmi.containsKey(clientId)) {
                                 CommunicationProtocol client = tempRmi.get(clientId);
                                 try {
-                                    client.onDisconnection();
+                                    client.onMessage(new DisconnectionMessage(-1, clientId));
                                 } catch (RemoteException e) {
                                     throw new RuntimeException(e);
                                 }
@@ -100,14 +105,67 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
                                 } catch (IOException e) {
                                     throw new RuntimeException(e);
                                 }
-                                out.print(new DisconnectionMessage(-1,clientId).toJson());
+                                out.println(new DisconnectionMessage(-1,clientId).toJson());
                                 out.flush();
                             }
+
                         }
+                        lobbyTimers.get(pos).cancel();
+                        lobbyTimers.remove(pos);
                     }
             }
         }, 0,PING_INTERVAL);
     }
+
+
+
+
+
+    public void startGamePingTimer(int gameID, Timer timer) {
+        System.out.println("timer PARTITA partito!");
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                int playersBeforePing=clients.get(gameID).size();
+                System.out.println("giocatori prima del ping: (partita) "+ playersBeforePing);
+                clients.get(gameID).removeIf(entry -> {
+                    Long clientId = entry.getUID();
+                    try {
+                        if (tempRmi.containsKey(clientId)) {
+                            CommunicationProtocol client = tempRmi.get(clientId);
+                            client.ping();
+                        }
+                        else {
+                            Socket client = tempTcp.get(clientId);
+                            System.out.println("entra in TCP !!!?");
+                            PrintWriter out = new PrintWriter(client.getOutputStream(),true);
+                            out.println(new PingMessage(-1,clientId).toJson());
+                            out.flush();
+                        }
+                        return false;
+                    } catch (Exception e) {
+                        return true;
+                    }
+                });
+                System.out.println("giocatori dopo il ping: (partita) "+ clients.get(gameID).size());
+                if (playersBeforePing>clients.get(gameID).size()){
+
+                    for (int i=0;i<clients.get(gameID).size();i++){
+                        Long clientId = clients.get(gameID).get(i).getUID();
+                        clients.get(gameID).get(i).sendMessage(new DisconnectionMessage(-1, clientId));
+                    }
+                    gameTimers.get(gameID).cancel();
+                    gameTimers.remove(gameID);
+                    clients.remove(gameID);
+                    masterController.removeGameController(gameID);
+                }
+            }
+        }, 0,PING_INTERVAL);
+    }
+
+
+
+
 
     @Override
     public void onMessage(Message message) throws RemoteException {
@@ -144,7 +202,8 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
                     addClient(message.getUID(), message.getNickname(), gameID);
                     registerPlayer(gameID, message.getNickname(), message.getUID());
                     clients.get(gameID).get(getPosition(message.getUID(), gameID)).sendMessage(new FirstResponse(gameID, message.getUID()));
-                    startLobbyPingTimer(i);
+                    lobbyTimers.add(new Timer());
+                    startLobbyPingTimer(i, lobbyTimers.get(lobbyTimers.size()-1));
                     break;
                 }
                 Gson gson = new Gson();
@@ -163,6 +222,11 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
             }
         }
+    }
+
+    @Override
+    public void removeRmiClient(Long UID) {
+        tempRmi.remove(UID);
     }
 
     /**
@@ -380,9 +444,13 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
                 }
             }
             lobby.remove(maxLobbyIndex);
+            lobbyTimers.get(maxLobbyIndex).cancel();
+            lobbyTimers.remove(maxLobbyIndex);
             lobby.add(new ArrayList<>());
 
         }
+        gameTimers.add(new Timer());
+        startGamePingTimer(gameID,gameTimers.get(gameTimers.size()-1));
 
     }
 
@@ -549,6 +617,8 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
                     for (int j = 0; j < clients.get(gameID).size(); j++) {
                         clients.get(gameID).get(j).sendMessage(new EndMessage(winner,gameID,UID));
                     }
+                    gameTimers.get(gameID).cancel();
+
                     return;
                 }
                 Message message = new TurnResponse(0,gameID,UID, shelfColours, column);

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.Network2.Client;
+import it.polimi.ingsw.Network2.Messages.DisconnectionMessage;
 import it.polimi.ingsw.Network2.Messages.SetMessage;
 import it.polimi.ingsw.Network2.Messages.SetResponse;
 import javafx.fxml.FXML;
@@ -87,4 +88,8 @@ public class FirstConnectionSceneController {
         GuiMaster.setLayout(scene,"/fxml/connectionScene.fxml");
     }
 
+    public void disconnectionMessage(DisconnectionMessage disconnectionMessage) {
+        GuiMaster.getInstance().getClient().closeConnection();
+        //far vedere al cliente
+    }
 }

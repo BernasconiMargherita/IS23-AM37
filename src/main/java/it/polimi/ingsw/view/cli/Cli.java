@@ -98,9 +98,11 @@ public class Cli extends ClientManager {
      * @param gameID the game ID.
      */
     public void firstSetter(int gameID) {
+        getClient().setFirst();
         out.println("Choose number of players");
         int numPlayers = validInt(2,4);
         getClient().sendMessage(new SetMessage(numPlayers, gameID, UID));
+
         //ok
     }
 
@@ -117,6 +119,8 @@ public class Cli extends ClientManager {
         firstSetter(gameID);
         //ok
     }
+
+
 
     @Override
     public void setResponse(SetResponse setResponse) {
@@ -706,6 +710,11 @@ public class Cli extends ClientManager {
         return input;
     }
 
+
+    @Override
+    public void disconnectionMessage(DisconnectionMessage disconnectionMessage) {
+
+    }
 
 
 

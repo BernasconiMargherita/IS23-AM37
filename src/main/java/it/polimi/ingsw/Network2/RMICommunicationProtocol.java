@@ -71,7 +71,7 @@ public class RMICommunicationProtocol extends UnicastRemoteObject implements Com
     @Override
     public void closeConnection() {
         try {
-            server.disconnect();
+            server.disconnect(UID);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
@@ -98,11 +98,6 @@ public class RMICommunicationProtocol extends UnicastRemoteObject implements Com
         System.out.println("ping arrivato");
     }
 
-    @Override
-    public void onDisconnection() throws RemoteException {
-        System.out.println("Partita finita. disconnessione");
-        this.server=null;
 
-    }
 }
 

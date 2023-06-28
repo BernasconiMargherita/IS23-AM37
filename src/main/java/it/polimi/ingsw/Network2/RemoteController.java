@@ -131,4 +131,6 @@ public interface RemoteController extends Remote {
      * @throws RemoteException if a communication-related exception occurs
      */
     void preRegistration(Message message) throws RemoteException;
+
+    void removeRmiClient(Long uid);
 }

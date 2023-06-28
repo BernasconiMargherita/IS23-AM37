@@ -63,6 +63,6 @@ public interface CommunicationProtocol extends Remote {
 
     void ping() throws RemoteException;
 
-    void onDisconnection() throws RemoteException;
+
 }
 

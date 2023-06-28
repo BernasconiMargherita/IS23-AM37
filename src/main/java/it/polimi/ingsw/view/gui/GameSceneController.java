@@ -688,4 +688,8 @@ public class GameSceneController {
         }
         createBoard(turnBoard);
     }
+
+    public void disconnectionMessage(DisconnectionMessage disconnectionMessage) {
+        //
+    }
 }

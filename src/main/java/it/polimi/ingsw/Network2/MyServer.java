@@ -100,8 +100,8 @@ public class MyServer extends UnicastRemoteObject implements ServerInterface {
     }
 
     @Override
-    public void disconnect() throws RemoteException {
-
+    public void disconnect(Long UID) throws RemoteException {
+        server.removeRmiClient(UID);
     }
 
 

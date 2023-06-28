@@ -170,4 +170,30 @@ public class GuiMaster extends ClientManager {
                 connectionSceneController.reFirstResponse(reFirstResponse));
     }
 
+    @Override
+    public void disconnectionMessage(DisconnectionMessage disconnectionMessage) {
+        if(getClient().isFirst() && firstConnectionSceneController!= null){
+           if(gameSceneController==null){
+               if(connectionSceneController==null){
+                   Platform.runLater(() ->
+                           firstConnectionSceneController.disconnectionMessage(disconnectionMessage));
+               }else{
+                   Platform.runLater(() ->
+                           connectionSceneController.disconnectionMessage(disconnectionMessage));
+               }
+           }else {
+               Platform.runLater(() ->
+                       gameSceneController.disconnectionMessage(disconnectionMessage));
+           }
+        } else if(!getClient().isFirst() && connectionSceneController!= null){
+            if(gameSceneController==null){
+                Platform.runLater(() ->
+                        connectionSceneController.disconnectionMessage(disconnectionMessage));
+            }else {
+                Platform.runLater(() ->
+                        gameSceneController.disconnectionMessage(disconnectionMessage));
+            }
+        }
+    }
+
 }

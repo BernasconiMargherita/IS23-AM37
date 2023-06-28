@@ -111,4 +111,8 @@ public interface ClientListener {
      */
     void reFirstResponse(ReFirstResponse reFirstResponse);
 
+    /**
+     * Called when arrives a DisconnectionMessage
+     */
+    void disconnectionMessage(DisconnectionMessage disconnectionMessage);
 }

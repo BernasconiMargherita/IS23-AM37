@@ -57,8 +57,7 @@ public class MasterController implements Serializable {
      * removes a game-controller from the map when a game is over, to avoid an overcrowded map
      */
     public void removeGameController(int gameID) {
-        gameMap.remove(gameID);
-
+        gameMap.put(gameID, new GameController());
         this.gameID = gameID;
     }
 

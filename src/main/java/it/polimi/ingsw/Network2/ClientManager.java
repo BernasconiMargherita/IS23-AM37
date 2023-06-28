@@ -44,8 +44,11 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
             case "UsernameError"-> handleUsernameError((UsernameError) message);
             case "CardsResponse"-> handleCardResponse((CardsResponse) message);
             case "ReFirstResponse"-> handleReFirstResponse((ReFirstResponse) message);
+            case "DisconnectionMessage"-> handleDisconnectionMessage((DisconnectionMessage) message);
         }
     }
+
+
 
     /**
      *  Handler methods for different types of messages
@@ -101,6 +104,9 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
 
     private void handleWakeMessage(WakeMessage message) {
         queue.add(()->wakeUp(message));
+    }
+    private void handleDisconnectionMessage(DisconnectionMessage message) {
+        queue.add(()->disconnectionMessage(message));
     }
 
     @Override

@@ -129,4 +129,8 @@ public class ConnectionSceneController {
         Scene scene=rootPane.getScene();
         GuiMaster.setLayout(scene,"/fxml/firstConnectionScene.fxml");
     }
+
+    public void disconnectionMessage(DisconnectionMessage disconnectionMessage) {
+        //
+    }
 }
