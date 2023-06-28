@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.CommonCards.CardCommonTarget;
 import it.polimi.ingsw.model.CommonCards.CommonList;
 import it.polimi.ingsw.model.PersonalCards.CardPersonalTarget;
 import it.polimi.ingsw.model.Tile.ColourTile;
-import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -50,18 +49,28 @@ public class Cli extends ClientManager {
         this.out = new MyShelfiePrintStream();
         out.println(("Welcome , choose your connection : "));
         protocol = in.nextLine();
+        while(true){
+            if (!(protocol.equals("TCP") || protocol.equals("tcp") || protocol.equals("RMI") || protocol.equals("rmi"))) {
+                out.println("Invalid selection, choose tcp or rmi");
+                protocol = in.nextLine();
+            } else break;
+        }
         createConnection(protocol);
     }
 
     @Override
     public void createConnection(String connection) {
         if (protocol.equals("TCP") || protocol.equals("tcp")) {
-            super.createConnection("TCP");
+                super.createConnection("TCP");
+        }
+            if (protocol.equals("RMI") || protocol.equals("rmi")) {
+                super.createConnection("RMI");
 
-        }
-        if (protocol.equals("RMI") || protocol.equals("rmi")) {
-            super.createConnection("RMI");
-        }
+            } else {
+                out.println("Invalid input, write tcp or rmi connection");
+
+            }
+
         UID = getClient().getUID();
         login();
         //ok
@@ -76,13 +85,7 @@ public class Cli extends ClientManager {
 
     public void firstSetter(int gameID) {
         out.println("Choose number of players");
-        int numPlayers = -1;
-        while (numPlayers < 2 || numPlayers > 4) {
-            numPlayers = in.nextInt();
-            if (numPlayers < 2 || numPlayers > 4) {
-                out.println("Number of players not valid, please enter a number between 2 and 4");
-            }
-        }
+        int numPlayers = validInt(2,4);
         getClient().sendMessage(new SetMessage(numPlayers, gameID, UID));
         //ok
     }
@@ -373,7 +376,7 @@ public class Cli extends ClientManager {
     }
 
     public void printCommon(int id, int i) {
-        out.println("            Token: " + commonTokens[i] + "\n\n\n");
+        out.println("            Token: " + commonTokens[i] + "\n");
         switch (id) {
             case 4: {
                 out.println("""
@@ -601,7 +604,28 @@ public class Cli extends ClientManager {
                 out.print("\n");
         }
 
-    }}}
+        }
+    }
+    public int validInt(int min, int max){
+        int input= -1;
+        while (true){
+            if (in.hasNextInt()) {
+                input = in.nextInt();
+                if (input<min || input> max) {
+                    out.println("Invalid digit");
+                } else break;
+            } else {
+                String input0 = in.next();
+                System.out.println("Invalid digit");
+            }
+        }
+        return input;
+    }
+
+
+
+
+}
 
 
 

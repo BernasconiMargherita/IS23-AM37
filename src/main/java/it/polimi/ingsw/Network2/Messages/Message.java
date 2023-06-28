@@ -22,10 +22,7 @@ public class Message implements Serializable {
         return gson.toJson(this);
     }
 
-    public String toJson() {
-        Gson gson = new Gson();
-        return gson.toJson(this);
-    }
+
 
     public int getMaxPlayers() {
         return -1;
