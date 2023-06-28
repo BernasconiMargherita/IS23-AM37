@@ -523,41 +523,51 @@ public class Utils implements Serializable {
      */
     public int ricorsiva(TileSlot[][] copy, ColourTile colour, int j, int k, boolean[][] visited) {
         if (j < 5 && k < 4) {
-
-            if (visited[j][k] || copy[j][k].isFree() || (copy[j + 1][k].getAssignedTile().getColour() != colour && copy[j][k + 1].getAssignedTile().getColour() != colour)) {
+            if (visited[j][k] || copy[j][k].isFree() ||
+                    (!copy[j][k].isFree() && copy[j][k].getAssignedTile().getColour() != colour) ||
+                    (!copy[j + 1][k].isFree() && copy[j + 1][k].getAssignedTile().getColour() != colour) ||
+                    (!copy[j][k + 1].isFree() && copy[j][k + 1].getAssignedTile().getColour() != colour)) {
                 return 0;
             }
 
             visited[j][k] = true;
 
-            if (copy[j + 1][k].getAssignedTile().getColour() == colour && copy[j][k + 1].getAssignedTile().getColour() == colour) {
+            if (!copy[j + 1][k].isFree() && copy[j + 1][k].getAssignedTile().getColour() == colour &&
+                    !copy[j][k + 1].isFree() && copy[j][k + 1].getAssignedTile().getColour() == colour) {
                 return 2 + ricorsiva(copy, colour, j + 1, k, visited) + ricorsiva(copy, colour, j, k + 1, visited);
             }
-            if (copy[j + 1][k].getAssignedTile().getColour() == colour && copy[j][k + 1].getAssignedTile().getColour() != colour) {
+            if (!copy[j + 1][k].isFree() && copy[j + 1][k].getAssignedTile().getColour() == colour &&
+                    (!copy[j][k + 1].isFree() && copy[j][k + 1].getAssignedTile().getColour() != colour)) {
                 return 1 + ricorsiva(copy, colour, j + 1, k, visited);
-
             }
-            if (copy[j + 1][k].getAssignedTile().getColour() != colour && copy[j][k + 1].getAssignedTile().getColour() == colour) {
+            if ((!copy[j + 1][k].isFree() && copy[j + 1][k].getAssignedTile().getColour() != colour) &&
+                    !copy[j][k + 1].isFree() && copy[j][k + 1].getAssignedTile().getColour() == colour) {
                 return 1 + ricorsiva(copy, colour, j, k + 1, visited);
             }
         } else if (j == 5 && k < 4) {
-            if (copy[j][k + 1].getAssignedTile().getColour() == colour) {
+            if (!copy[j][k + 1].isFree() && copy[j][k + 1].getAssignedTile().getColour() == colour) {
                 return 1 + ricorsiva(copy, colour, j, k + 1, visited);
-            } else return 0;
-
+            } else {
+                return 0;
+            }
         } else if (j < 5 && k == 4) {
-            if (copy[j + 1][k].getAssignedTile().getColour() == colour) {
+            if (!copy[j + 1][k].isFree() && copy[j + 1][k].getAssignedTile().getColour() == colour) {
                 return 1 + ricorsiva(copy, colour, j + 1, k, visited);
-            } else return 0;
-
+            } else {
+                return 0;
+            }
         } else if (j == 5 && k == 4) {
-            if (copy[j][k].getAssignedTile().getColour() == colour) {
+            if (!copy[j][k].isFree() && copy[j][k].getAssignedTile().getColour() == colour) {
                 return 1;
-            } else return 0;
+            } else {
+                return 0;
+            }
         }
 
         return 0;
     }
+
+
 
 
     /**

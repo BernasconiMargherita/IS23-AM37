@@ -15,7 +15,6 @@ import java.io.InputStream;
 public class Gui extends Application {
     /**
      * Method to start the gui, setting the stage
-     * @param stage
      */
     @Override
     public void start(Stage stage) {

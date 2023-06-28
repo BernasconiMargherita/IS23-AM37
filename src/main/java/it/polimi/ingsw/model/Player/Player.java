@@ -144,7 +144,7 @@ public class Player implements Serializable {
     }
 
     public void groupScore() {
-        utils.groupScore(personalShelf);
+        addScore(utils.groupScore(personalShelf));
     }
 }
 

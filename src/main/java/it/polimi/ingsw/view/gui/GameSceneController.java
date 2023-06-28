@@ -377,6 +377,9 @@ public class GameSceneController {
        }
     }
 
+    /**
+     * Method to count the number of empty spaces on a column in a gridpane
+     */
     public int countEmptyBoxesInColumn(GridPane gridPane, int columnIndex) {
         int emptyBoxCount = 0;
 
@@ -390,6 +393,9 @@ public class GameSceneController {
         return emptyBoxCount;
     }
 
+    /**
+     * Method to get a specific gridPane node from a grid pane
+     */
     private Node getNodeFromGridPane(GridPane gridPane, int columnIndex, int rowIndex) {
         for (Node node : gridPane.getChildren()) {
             if (GridPane.getColumnIndex(node) == columnIndex && GridPane.getRowIndex(node) == rowIndex) {
@@ -399,6 +405,10 @@ public class GameSceneController {
         return null;
     }
 
+
+    /**
+     * Method to get the max value of empty spaces in the shelf among all the columns
+     */
     public int getMaxEmptyBoxesInColumns(GridPane gridPane) {
         int maxEmptyBoxCount = 0;
 
@@ -495,6 +505,9 @@ public class GameSceneController {
         closeButton.setOnAction(event -> {
             closeConnection();
             modalStage.close();
+
+            Stage mainStage = (Stage) closeButton.getScene().getWindow();
+            mainStage.close();
         });
 
         VBox modalVBox = new VBox(winnerLabel, closeButton);
@@ -663,6 +676,9 @@ public class GameSceneController {
         return colours;
     }
 
+    /**
+     * Method invoked when the reset button is pressed,resetting the current turn.
+     */
     public void remakeTurn(MouseEvent mouseEvent) {
         emptyGridPane(hand);
         tileHandTmp.clear();

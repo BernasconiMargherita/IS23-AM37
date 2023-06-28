@@ -383,7 +383,7 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
                     clients.get(gameID).get(getPosition(UID, gameID)).sendMessage(message);
                     String winner = getWinner(gameID);
                     for (int j = 0; j < clients.get(gameID).size(); j++) {
-                        clients.get(gameID).get(i).sendMessage(new EndMessage(winner,gameID,UID));
+                        clients.get(gameID).get(j).sendMessage(new EndMessage(winner,gameID,UID));
                     }
                     return;
                 }
