@@ -92,6 +92,8 @@ public class GameSceneController {
     private final ArrayList<Coordinates> tileHand=new ArrayList<>();
     private final ArrayList<Coordinates> tileHandTmp=new ArrayList<>();
     private ColourTile[][] turnShelf;
+    @FXML
+    private Button remakeTurnButton;
 
 
     /**
@@ -422,17 +424,6 @@ public class GameSceneController {
             disableGUI();
 
         }
-        else {
-            tileError.setVisible(true);
-            emptyGridPane(hand);
-            tileHandTmp.clear();
-            tileHand.clear();
-            for (Label box:boxArray) {
-                box.setText("");
-            }
-            createBoard(turnBoard);
-        }
-
     }
 
     /**
@@ -540,6 +531,7 @@ public class GameSceneController {
         boardMask.setDisable(false);
         shelfMask.setDisable(false);
         hand.setDisable(false);
+        remakeTurnButton.setVisible(true);
     }
 
     /**
@@ -630,6 +622,7 @@ public class GameSceneController {
      * Method to send the hand of the player to the Server, for checking if it's valid
      */
     public void sendHand(ActionEvent actionEvent) {
+        remakeTurnButton.setVisible(false);
         sendHandButton.setVisible(false);
         tileHandTmp.clear();
         Client client = GuiMaster.getInstance().getClient();
@@ -668,5 +661,15 @@ public class GameSceneController {
         }
 
         return colours;
+    }
+
+    public void remakeTurn(MouseEvent mouseEvent) {
+        emptyGridPane(hand);
+        tileHandTmp.clear();
+        tileHand.clear();
+        for (Label box:boxArray) {
+            box.setText("");
+        }
+        createBoard(turnBoard);
     }
 }

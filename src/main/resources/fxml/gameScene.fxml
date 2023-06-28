@@ -121,7 +121,7 @@
                <Font size="15.0" />
             </font>
          </Label>
-         <Button fx:id="sendHandButton" layoutX="797.0" layoutY="481.0" onAction="#sendHand" prefHeight="25.0" prefWidth="81.0" text="Check hand" visible="false" />
+         <Button fx:id="sendHandButton" layoutX="797.0" layoutY="481.0" onAction="#sendHand" prefHeight="25.0" prefWidth="81.0" text="Confirm" visible="false" />
          <Label fx:id="box1" layoutX="779.0" layoutY="437.0" prefHeight="17.0" prefWidth="7.0" />
          <Label fx:id="box2" layoutX="822.0" layoutY="437.0" prefHeight="17.0" prefWidth="15.0" />
          <Label fx:id="box3" layoutX="879.0" layoutY="437.0" prefHeight="17.0" prefWidth="15.0" />
@@ -143,6 +143,7 @@
                <Font size="15.0" />
             </font>
          </Label>
+         <Button fx:id="remakeTurnButton" layoutX="916.0" layoutY="396.0" mnemonicParsing="false" onMouseClicked="#remakeTurn" text="Remake" />
       
       </AnchorPane>
    </children>
