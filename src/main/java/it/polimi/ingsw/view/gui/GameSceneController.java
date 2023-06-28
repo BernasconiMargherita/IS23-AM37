@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.PersonalCards.CardPersonalTarget;
 import it.polimi.ingsw.model.Tile.ColourTile;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -72,6 +73,8 @@ public class GameSceneController {
     @FXML
     public Label box3;
     public Label[] boxArray;
+
+    public Button[] columnArray;
     @FXML
     public Button column1;
     @FXML
@@ -88,6 +91,10 @@ public class GameSceneController {
     private ColourTile[][] turnBoard;
     private final ArrayList<Coordinates> tileHand=new ArrayList<>();
     private final ArrayList<Coordinates> tileHandTmp=new ArrayList<>();
+    private ColourTile[][] turnShelf;
+    @FXML
+    private Button remakeTurnButton;
+
 
     /**
      * Method to initialize the scene, also setting the controller in the Gui Master
@@ -101,6 +108,7 @@ public class GameSceneController {
         
         board.fitWidthProperty().bind(boardMask.widthProperty());
         boxArray=new Label[]{box1, box2, box3};
+        columnArray=new Button[]{column1,column2,column3,column4,column5};
 
         String boardImage = Objects.requireNonNull(getClass().getResource("/assets/boards/livingroom.png")).toExternalForm();
         board.setImage(new Image(boardImage));
@@ -203,55 +211,57 @@ public class GameSceneController {
     private void ChooseTile(int row, int col, String finalPath) {
         ImageView tile = findTile(row, col);
         Coordinates newTile=new Coordinates(row, col);
-
-        if ((turnBoard[row + 1][col].equals(ColourTile.FREE)) || (turnBoard[row - 1][col].equals(ColourTile.FREE)) || (turnBoard[row][col + 1].equals(ColourTile.FREE)) || (turnBoard[row][col - 1].equals(ColourTile.FREE))) {
-            if (tileHandTmp.isEmpty()) {
-                tileHandTmp.add(newTile);
-                tile.setImage(null);
-                ImageView handTile = createHandTile(finalPath);
-                hand.add(handTile, findFirstEmptyColumn(hand), 0);
-
-            } else if (tileHandTmp.size()==3) {
-                return;
-            } else {
-
-                int lastCoordinateIndex = tileHandTmp.size() - 1;
-                Coordinates lastCoordinate = tileHandTmp.get(lastCoordinateIndex);
-                int lastRow = lastCoordinate.getRow();
-                int lastCol = lastCoordinate.getColumn();
-
-                boolean hasSameRow = (row == lastRow);
-                boolean hasSameCol = (col == lastCol);
-                boolean isAdjacent = false;
-
-                for (Coordinates coordinate : tileHandTmp) {
-                    if (row != coordinate.getRow()) {
-                        hasSameRow = false;
-                    }
-                    if (col != coordinate.getColumn()) {
-                        hasSameCol = false;
-                    }
-                }
-
-                for (Coordinates coordinate : tileHandTmp) {
-                    int coordinateRow = coordinate.getRow();
-                    int coordinateCol = coordinate.getColumn();
-
-                    if ((row == coordinateRow && (col == coordinateCol + 1 || col == coordinateCol - 1)) ||
-                            (col == coordinateCol && (row == coordinateRow + 1 || row == coordinateRow - 1))) {
-                        isAdjacent = true;
-                        break;
-                    }
-                }
-
-                if ((hasSameRow || hasSameCol) && isAdjacent) {
+        if (tileHandTmp.size()<getMaxEmptyBoxesInColumns(shelfMask)){
+            if ((turnBoard[row + 1][col].equals(ColourTile.FREE)) || (turnBoard[row - 1][col].equals(ColourTile.FREE)) || (turnBoard[row][col + 1].equals(ColourTile.FREE)) || (turnBoard[row][col - 1].equals(ColourTile.FREE))) {
+                if (tileHandTmp.isEmpty()) {
                     tileHandTmp.add(newTile);
                     tile.setImage(null);
                     ImageView handTile = createHandTile(finalPath);
                     hand.add(handTile, findFirstEmptyColumn(hand), 0);
+
+                } else if (tileHandTmp.size()==3) {
+                    return;
+                } else {
+
+                    int lastCoordinateIndex = tileHandTmp.size() - 1;
+                    Coordinates lastCoordinate = tileHandTmp.get(lastCoordinateIndex);
+                    int lastRow = lastCoordinate.getRow();
+                    int lastCol = lastCoordinate.getColumn();
+
+                    boolean hasSameRow = (row == lastRow);
+                    boolean hasSameCol = (col == lastCol);
+                    boolean isAdjacent = false;
+
+                    for (Coordinates coordinate : tileHandTmp) {
+                        if (row != coordinate.getRow()) {
+                            hasSameRow = false;
+                        }
+                        if (col != coordinate.getColumn()) {
+                            hasSameCol = false;
+                        }
+                    }
+
+                    for (Coordinates coordinate : tileHandTmp) {
+                        int coordinateRow = coordinate.getRow();
+                        int coordinateCol = coordinate.getColumn();
+
+                        if ((row == coordinateRow && (col == coordinateCol + 1 || col == coordinateCol - 1)) ||
+                                (col == coordinateCol && (row == coordinateRow + 1 || row == coordinateRow - 1))) {
+                            isAdjacent = true;
+                            break;
+                        }
+                    }
+
+                    if ((hasSameRow || hasSameCol) && isAdjacent) {
+                        tileHandTmp.add(newTile);
+                        tile.setImage(null);
+                        ImageView handTile = createHandTile(finalPath);
+                        hand.add(handTile, findFirstEmptyColumn(hand), 0);
+                    }
                 }
             }
         }
+
     }
 
 
@@ -312,11 +322,24 @@ public class GameSceneController {
      * @param i the position where to add the tile
      */
     private void addToHand(int i) {
-        Coordinates coordinates=tileHandTmp.get(i);
-        tileHand.add(coordinates);
-        Label label = boxArray[i];
-        label.setText(String.valueOf(tileHand.size()));
-        if(tileHand.size()==tileHandTmp.size()) sendHandButton.setVisible(true);
+        if ((tileHand.size()<tileHandTmp.size())&&!isTileAlreadyPresent(i)) {
+            Coordinates coordinates = tileHandTmp.get(i);
+            tileHand.add(coordinates);
+            Label label = boxArray[i];
+            label.setText(String.valueOf(tileHand.size()));
+            if (tileHand.size() == tileHandTmp.size()) sendHandButton.setVisible(true);
+        }
+    }
+
+    /**
+     * methods that checks if a tile is already present in the hand
+     * @param i the index of the coordinates to add
+     */
+    private boolean isTileAlreadyPresent(int i) {
+        for (Coordinates coordinates:tileHand){
+            if (tileHand.contains(tileHandTmp.get(i))) return true;
+        }
+        return false;
     }
 
 
@@ -346,11 +369,47 @@ public class GameSceneController {
      * @param removeResponse a message that confirms that the hand is valid
      */
     public void removeResponse(RemoveResponse removeResponse) {
-        column1.setVisible(true);
-        column2.setVisible(true);
-        column3.setVisible(true);
-        column4.setVisible(true);
-        column5.setVisible(true);
+
+       for (int i=0;i<columnArray.length;i++){
+           if (countEmptyBoxesInColumn(shelfMask,i)>=tileHand.size()) {
+               columnArray[i].setVisible(true);
+           }
+       }
+    }
+
+    public int countEmptyBoxesInColumn(GridPane gridPane, int columnIndex) {
+        int emptyBoxCount = 0;
+
+        for (int row = 0; row < gridPane.getRowCount(); row++) {
+            Node node = getNodeFromGridPane(gridPane, columnIndex, row);
+            if (node == null) {
+                emptyBoxCount++;
+            }
+        }
+
+        return emptyBoxCount;
+    }
+
+    private Node getNodeFromGridPane(GridPane gridPane, int columnIndex, int rowIndex) {
+        for (Node node : gridPane.getChildren()) {
+            if (GridPane.getColumnIndex(node) == columnIndex && GridPane.getRowIndex(node) == rowIndex) {
+                return node;
+            }
+        }
+        return null;
+    }
+
+    public int getMaxEmptyBoxesInColumns(GridPane gridPane) {
+        int maxEmptyBoxCount = 0;
+
+        for (int columnIndex = 0; columnIndex < gridPane.getColumnCount(); columnIndex++) {
+            int emptyBoxCount = countEmptyBoxesInColumn(gridPane, columnIndex);
+            if (emptyBoxCount > maxEmptyBoxCount) {
+                maxEmptyBoxCount = emptyBoxCount;
+            }
+        }
+
+        return maxEmptyBoxCount;
     }
 
     /**
@@ -365,24 +424,13 @@ public class GameSceneController {
             disableGUI();
 
         }
-        else {
-            tileError.setVisible(true);
-            emptyGridPane(hand);
-            tileHandTmp.clear();
-            tileHand.clear();
-            for (Label box:boxArray) {
-                box.setText("");
-            }
-            createBoard(turnBoard);
-        }
-
     }
 
     /**
      * Method to update the shelf after the turn ends
      */
     private void updateShelf(TurnResponse turnResponse) {
-        ColourTile[][] turnShelf = turnResponse.getShelf();
+        turnShelf = turnResponse.getShelf();
         emptyGridPane(shelfMask);
         for (int row = SHELF_ROWS - 1; row >= 0; row--) {
             for (int col = 0; col < SHELF_COLUMNS; col++) {
@@ -483,6 +531,7 @@ public class GameSceneController {
         boardMask.setDisable(false);
         shelfMask.setDisable(false);
         hand.setDisable(false);
+        remakeTurnButton.setVisible(true);
     }
 
     /**
@@ -573,6 +622,7 @@ public class GameSceneController {
      * Method to send the hand of the player to the Server, for checking if it's valid
      */
     public void sendHand(ActionEvent actionEvent) {
+        remakeTurnButton.setVisible(false);
         sendHandButton.setVisible(false);
         tileHandTmp.clear();
         Client client = GuiMaster.getInstance().getClient();
@@ -611,5 +661,15 @@ public class GameSceneController {
         }
 
         return colours;
+    }
+
+    public void remakeTurn(MouseEvent mouseEvent) {
+        emptyGridPane(hand);
+        tileHandTmp.clear();
+        tileHand.clear();
+        for (Label box:boxArray) {
+            box.setText("");
+        }
+        createBoard(turnBoard);
     }
 }

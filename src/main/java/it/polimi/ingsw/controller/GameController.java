@@ -126,7 +126,7 @@ public class GameController implements Serializable {
      * @throws EndGameException          if the Game is Ended
      * @throws SoldOutTilesException     if the Tiles in the Bag are ended
      */
-    public void turn(Tile[] tilesToAdd, int column) throws EmptySlotException, InvalidPositionsException, InvalidSlotException, NoSpaceInColumnException, EndGameException, SoldOutTilesException, GameAlreadyStarted {
+    public void turn(Tile[] tilesToAdd, int column) throws EmptySlotException, InvalidPositionsException, InvalidSlotException, NoSpaceInColumnException, SoldOutTilesException, GameAlreadyStarted, EndGameException {
         if (!game.getGameState().equals(GameState.IN_GAME)) throw new GameAlreadyStarted("Game already started");
 
         game.addInShelf(tilesToAdd, currentPlayer, column);

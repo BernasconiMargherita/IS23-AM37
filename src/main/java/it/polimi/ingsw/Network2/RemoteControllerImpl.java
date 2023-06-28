@@ -54,29 +54,15 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
         System.out.println(message.typeMessage());
 
-
-        if (message.typeMessage().equals("LoginMessage")) {
-            registerPlayer(message.getGameID(), message.getNickname(), message.getUID());
+        switch (message.typeMessage()){
+            case "LoginMessage"-> registerPlayer(message.getGameID(), message.getNickname(), message.getUID());
+            case "PreLoginMessage"-> preRegistration(message);
+            case "SetMessage"->setMaxPlayers(message);
+            case "RemoveMessage"->remove(message.getGameID(), message.getPositions(), message.getUID());
+            case "TurnMessage"->turn(message.getGameID(), message.getColours(), message.getColumn(), message.getNickname(), message.getUID());
+            case "BoardMessage"->sendBoard(message.getGameID());
+            default -> throw new IllegalStateException("Unexpected value: " + message.typeMessage());
         }
-
-        if (message.typeMessage().equals("PreLoginMessage")) {
-            preRegistration(message);
-        }
-
-        if (message.typeMessage().equals("SetMessage")) {
-            setMaxPlayers(message);
-        }
-        if (message.typeMessage().equals("RemoveMessage")) {
-            remove(message.getGameID(), message.getPositions(), message.getUID());
-        }
-        if (message.typeMessage().equals("TurnMessage")) {
-            turn(message.getGameID(), message.getColours(), message.getColumn(), message.getNickname(), message.getUID());
-        }
-        if (message.typeMessage().equals("BoardMessage")) {
-            sendBoard(message.getGameID());
-        }
-
-
     }
 
 
