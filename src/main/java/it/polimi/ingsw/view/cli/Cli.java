@@ -225,6 +225,9 @@ public class Cli extends ClientManager  {
             }
             count = 0;
         }
+
+        if (freeColumnSpace>3) freeColumnSpace=3;
+
         for(int i=0; i<freeColumnSpace; i++){
                 if(i!=0){
                     out.println("Do you want to remove other cards?");

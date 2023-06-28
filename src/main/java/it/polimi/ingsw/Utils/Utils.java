@@ -468,7 +468,7 @@ public class Utils implements Serializable {
     }
 
     /**
-     * method that counts how many points each playes got with the common target cards
+     * method that counts how many points each playes got with the groups of the same colour
      *
      * @param shelf player's shelf
      * @return player's points

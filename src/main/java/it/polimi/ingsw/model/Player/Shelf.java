@@ -72,8 +72,8 @@ public class Shelf implements Serializable {
     public boolean isFull() {
 
         int count = 0;
-        for (int i = 0; i < 4; i++) {
-            if (!shelf[MAX_SHELF_COLUMNS][i].isFree()) {
+        for (int i = 0; i < 5; i++) {
+            if (!shelf[MAX_SHELF_ROWS-1][i].isFree()) {
                 count++;
             }
 
