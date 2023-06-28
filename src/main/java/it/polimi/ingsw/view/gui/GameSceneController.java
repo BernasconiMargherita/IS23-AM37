@@ -312,11 +312,24 @@ public class GameSceneController {
      * @param i the position where to add the tile
      */
     private void addToHand(int i) {
-        Coordinates coordinates=tileHandTmp.get(i);
-        tileHand.add(coordinates);
-        Label label = boxArray[i];
-        label.setText(String.valueOf(tileHand.size()));
-        if(tileHand.size()==tileHandTmp.size()) sendHandButton.setVisible(true);
+        if ((tileHand.size()<tileHandTmp.size())&&!isTileAlreadyPresent(i)) {
+            Coordinates coordinates = tileHandTmp.get(i);
+            tileHand.add(coordinates);
+            Label label = boxArray[i];
+            label.setText(String.valueOf(tileHand.size()));
+            if (tileHand.size() == tileHandTmp.size()) sendHandButton.setVisible(true);
+        }
+    }
+
+    /**
+     * methods that checks if a tile is already present in the hand
+     * @param i the index of the coordinates to add
+     */
+    private boolean isTileAlreadyPresent(int i) {
+        for (Coordinates coordinates:tileHand){
+            if (tileHand.contains(tileHandTmp.get(i))) return true;
+        }
+        return false;
     }
 
 
