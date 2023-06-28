@@ -6,6 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Serializable;
 
+/**
+ * Represents a PersonalParser that handles the serialization and deserialization of Personal Cards.
+ * This class provides functionality to read and access the Personal Cards from a JSON file.
+ */
 public class PersonalParser implements Serializable {
 
     /**

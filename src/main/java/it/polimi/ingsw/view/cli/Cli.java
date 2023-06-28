@@ -13,6 +13,9 @@ import java.util.Scanner;
 
 import static it.polimi.ingsw.view.cli.ColorCodes.getColorCode;
 
+/**
+ * this class represents a command-line interface (CLI) for the game client.
+ */
 public class Cli extends ClientManager {
     ArrayList<Coordinates> tempCoordinates;
 
@@ -38,6 +41,11 @@ public class Cli extends ClientManager {
     private static final String TEXT_BLACK = "\u001B[30m";
     private boolean emptyShelf;
 
+    /**
+     * Constructs a CLI object with the specified scanner for user input.
+     *
+     * @param scanner the scanner object for user input.
+     */
     public Cli(Scanner scanner) {
         super();
         in = scanner;
@@ -45,6 +53,9 @@ public class Cli extends ClientManager {
     }
 
 
+    /**
+     * Starts the CLI and prompts the user to choose a connection protocol (TCP or RMI).
+     */
     public void start() {
         this.out = new MyShelfiePrintStream();
         out.println(("Welcome , choose your connection : "));
@@ -71,6 +82,9 @@ public class Cli extends ClientManager {
         //ok
     }
 
+    /**
+     * Prompts the user to enter a username for login.
+     */
     protected void login() {
         out.println("Choose your username\n");
         username = in.nextLine();
@@ -78,6 +92,11 @@ public class Cli extends ClientManager {
 
     }
 
+    /**
+     * Prompts the user to choose the number of players in the game.
+     *
+     * @param gameID the game ID.
+     */
     public void firstSetter(int gameID) {
         out.println("Choose number of players");
         int numPlayers = validInt(2,4);
@@ -161,6 +180,10 @@ public class Cli extends ClientManager {
 
     }
 
+    /**
+     * Starts a timer until the board is loaded.
+     * Waits for the board to be initialized before proceeding.
+     */
     public void startTimer() {
         while (board == null) {
             try {
@@ -174,18 +197,32 @@ public class Cli extends ClientManager {
 
     }
 
+    /**
+     * Displays the remove option based on the remove parameter.
+     *
+     * @param remove true if remove option should be displayed, false otherwise.
+     */
     public void displayRemove(boolean remove) {
         if (remove) {
             remove();
         }
     }
 
+    /**
+     * Displays the turn option based on the turn parameter.
+     *
+     * @param turn true if turn option should be displayed, false otherwise.
+     */
     public void displayTurn(boolean turn) {
         if (turn) {
             turn();
         }
     }
 
+    /**
+     * Allows the user to make a turn choice.
+     * Prompts the user to choose an action and continues until an exit condition is met.
+     */
     public void turnChoice() {
         boolean loop = true;
         while (loop) {
@@ -194,6 +231,10 @@ public class Cli extends ClientManager {
         }
     }
 
+    /**
+     * Allows the user to make a remove choice.
+     * Prompts the user to choose an action and continues until an exit condition is met.
+     */
     public void removeChoice() {
         boolean loop = true;
         while (loop) {
@@ -203,6 +244,13 @@ public class Cli extends ClientManager {
     }
 
 
+    /**
+     * Displays the menu options and handles the user's choice.
+     * Returns true if the user wants to continue, false if the user wants to exit.
+     *
+     * @param type boolean
+     * @return true to continue, false to exit.
+     */
     public boolean display(boolean type) {
         out.println("What do you want to do?\n1: View common cards\n2: View personal card\n3: View board\n4: View endGameToken\n5: View shelf ");
         if (type) {
@@ -241,6 +289,9 @@ public class Cli extends ClientManager {
     }
 
 
+    /**
+     * Method for removing tiles from the shelf.
+     */
     public void remove() {
         ArrayList<Coordinates> coordinates = new ArrayList<>();
         int freeColumnSpace = 0;
@@ -311,6 +362,10 @@ public class Cli extends ClientManager {
         endGameToken = boardMessage.isEndGameToken();
     }
 
+    /**
+     * Executes a turn in the game by prompting the user to choose a column,
+     * and sending a TurnMessage to the client with the chosen column
+     */
     public void turn() {
         out.println("Choose the column:");
         int column = in.nextInt();
@@ -365,11 +420,23 @@ public class Cli extends ClientManager {
         out.println("The game is finished! \nThe winner is " + endGameMessage.getWinner());
     }
 
+    /**
+     * Prints the common targets of two CardCommonTarget cards
+     *
+     * @param cardCommonTarget0 The first CardCommonTarget card.
+     * @param cardCommonTarget1 The second CardCommonTarget card.
+     */
     public void printCommonTargets(CardCommonTarget cardCommonTarget0, CardCommonTarget cardCommonTarget1) {
         printCommon(cardCommonTarget0.getCommonType().getId(), 0);
         printCommon(cardCommonTarget1.getCommonType().getId(), 1);
     }
 
+    /**
+     * Prints the common target based on the provided ID.
+     *
+     * @param id The ID of the common target.
+     * @param i  The index of the common target.
+     */
     public void printCommon(int id, int i) {
         out.println("            Token: " + commonTokens[i] + "\n");
         switch (id) {
@@ -533,6 +600,11 @@ public class Cli extends ClientManager {
     }
 
 
+    /**
+     * Prints the game board represented by a 2D array of ColourTile cards.
+     *
+     * @param colourTiles The 2D array of ColourTile cards representing the game board.
+     */
     public void printBoard(ColourTile[][] colourTiles) {
         for (int i = 0; i < 11; i++) {
             System.out.print(" " + i + "  ");
@@ -547,6 +619,11 @@ public class Cli extends ClientManager {
         //ok
     }
 
+    /**
+     * Prints the personal targets of a CardPersonalTarget card.
+     *
+     * @param cardPersonalTarget The CardPersonalTarget card.
+     */
     public void printPersonalTargets(CardPersonalTarget cardPersonalTarget) {
         for (int i = 5; i >= 0; i--) {
             for (int j = 0; j < 5; j++) {
@@ -578,6 +655,11 @@ public class Cli extends ClientManager {
     //ok
 
 
+    /**
+     * Prints the shelf represented by a 2D array of ColourTile cards.
+     *
+     * @param colourTiles The 2D array of ColourTile cards representing the shelf.
+     */
     public void printShelf(ColourTile[][] colourTiles) {
         for(int i = 0; i < 5; i++) {
             out.print(" " + i + "  ");
@@ -601,6 +683,13 @@ public class Cli extends ClientManager {
 
         }
     }
+    /**
+     * Validates and retrieves an integer input within the specified range.
+     *
+     * @param min The minimum allowed value.
+     * @param max The maximum allowed value.
+     * @return The validated integer input.
+     */
     public int validInt(int min, int max){
         int input= -1;
         while (true){

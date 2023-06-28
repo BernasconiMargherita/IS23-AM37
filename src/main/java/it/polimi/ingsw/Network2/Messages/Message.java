@@ -9,6 +9,9 @@ import it.polimi.ingsw.model.Tile.ColourTile;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * Superclass of all the messages exchanged  between the client and the server
+ */
 public class Message implements Serializable {
 
     private final Long UID;

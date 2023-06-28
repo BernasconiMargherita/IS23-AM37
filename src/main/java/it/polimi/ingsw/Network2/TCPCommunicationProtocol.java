@@ -17,6 +17,9 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The TCPCommunicationProtocol class represents a communication protocol using TCP for remote communication.
+ */
 public class TCPCommunicationProtocol extends UnicastRemoteObject implements CommunicationProtocol,Runnable {
     private final String serverIp;
     private final int serverPort;
@@ -26,6 +29,13 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
     private Socket socket = null;
     private final ArrayList<Message> messageList;
 
+    /**
+     * Constructs a TCPCommunicationProtocol object with the specified server IP and port.
+     *
+     * @param serverIp   the IP address of the server
+     * @param serverPort the port number of the server
+     * @throws RemoteException if a remote communication-related exception occurs
+     */
     public TCPCommunicationProtocol(String serverIp, int serverPort) throws RemoteException {
         super();
         this.serverIp = serverIp;
@@ -36,6 +46,10 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
 
     }
 
+    /**
+     * Establishes the communication by creating a socket connection with the server and initializing input and output streams.
+     * Throws a RuntimeException if an IOException occurs during the socket creation or stream initialization.
+     */
     private void startCommunication() {
 
         try {
@@ -48,6 +62,11 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
 
     }
 
+    /**
+     * Sends a message using the TCP communication protocol.
+     *
+     * @param message the message to be sent
+     */
     public void sendMessage(Message message) {
         System.out.println(message.typeMessage());
         out.println(message.toJson());
@@ -86,6 +105,17 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
     }
 
     @Override
+    public void ping() {
+        System.out.println("ping");
+        sendMessage(new PingMessage(-1,UID));
+    }
+
+    @Override
+    public void onDisconnection() throws RemoteException {
+
+    }
+
+    @Override
     public void onMessage(Message message) {
         messageList.add(message);
     }
@@ -105,8 +135,6 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
     public void run() {
         while (!Thread.currentThread().isInterrupted()) {
             try {
-
-
                     synchronized (messageList) {
                         Gson gson=new Gson();
                         String request = in.readLine();
@@ -128,6 +156,8 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
                             case "UsernameError"-> onMessage(gson.fromJson(request, UsernameError.class));
                             case "CardsResponse"-> onMessage(gson.fromJson(request, CardsResponse.class));
                             case "ReFirstResponse"-> onMessage(gson.fromJson(request, ReFirstResponse.class));
+                            case "PingMessage"->ping();
+                            case "DisconnectionMessage"->onDisconnection();
                         }
                     }
 

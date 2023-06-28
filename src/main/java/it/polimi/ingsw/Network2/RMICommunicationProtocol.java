@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Network2;
 
 
-import it.polimi.ingsw.Network2.Messages.ErrorMessage;
 import it.polimi.ingsw.Network2.Messages.Message;
 
 import java.io.Serializable;
@@ -13,12 +12,24 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The RMICommunicationProtocol class represents an implementation of the CommunicationProtocol interface
+ * using the RMI (Remote Method Invocation) protocol for communication between the client and server.
+ * It extends the UnicastRemoteObject class to enable remote object communication,
+ * and implements the Serializable interface for object serialization.
+ */
 public class RMICommunicationProtocol extends UnicastRemoteObject implements CommunicationProtocol, Serializable {
     private final String serverUrl;
     private ArrayList<Message> messageList=new ArrayList<>();
     private ServerInterface server;
     long UID;
 
+    /**
+     * Constructs a new RMICommunicationProtocol instance with the specified server URL.
+     *
+     * @param serverUrl the URL of the server to connect to
+     * @throws RemoteException if a remote exception occurs during the RMI setup
+     */
     public RMICommunicationProtocol(String serverUrl) throws RemoteException {
         super();
         Registry registry = LocateRegistry.getRegistry("localhost", 5001);
@@ -30,6 +41,12 @@ public class RMICommunicationProtocol extends UnicastRemoteObject implements Com
         this.serverUrl = "RemoteController";
     }
 
+    /**
+     * Sends a message to the server using the RMI protocol.
+     *
+     * @param message the message to be sent
+     * @throws RemoteException if a remote exception occurs during the RMI communication
+     */
     public void sendMessage(Message message) throws RemoteException {
         try {
             server.onMessage(message);
@@ -40,7 +57,7 @@ public class RMICommunicationProtocol extends UnicastRemoteObject implements Com
 
     @Override
     public void onMessage(Message message) throws RemoteException {
-        messageList.add(message);
+            messageList.add(message);
     }
 
     @Override
@@ -74,6 +91,18 @@ public class RMICommunicationProtocol extends UnicastRemoteObject implements Com
     @Override
     public long getUID() throws RemoteException{
         return UID;
+    }
+
+    @Override
+    public void ping() throws RemoteException {
+        System.out.println("ping arrivato");
+    }
+
+    @Override
+    public void onDisconnection() throws RemoteException {
+        System.out.println("Partita finita. disconnessione");
+        this.server=null;
+
     }
 }
 
