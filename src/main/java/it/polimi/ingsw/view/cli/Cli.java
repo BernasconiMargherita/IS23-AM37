@@ -51,7 +51,7 @@ public class Cli extends ClientManager {
         protocol = in.nextLine();
         while(true){
             if (!(protocol.equals("TCP") || protocol.equals("tcp") || protocol.equals("RMI") || protocol.equals("rmi"))) {
-                out.println("Invalid selection, choose tcp or rmi");
+                out.println("Invalid selection, choose TCP or RMI");
                 protocol = in.nextLine();
             } else break;
         }
@@ -63,14 +63,9 @@ public class Cli extends ClientManager {
         if (protocol.equals("TCP") || protocol.equals("tcp")) {
                 super.createConnection("TCP");
         }
-            if (protocol.equals("RMI") || protocol.equals("rmi")) {
-                super.createConnection("RMI");
-
-            } else {
-                out.println("Invalid input, write tcp or rmi connection");
-
-            }
-
+        if (protocol.equals("RMI") || protocol.equals("rmi")) {
+            super.createConnection("RMI");
+        }
         UID = getClient().getUID();
         login();
         //ok
@@ -269,7 +264,8 @@ public class Cli extends ClientManager {
         for (int i = 0; i < freeColumnSpace; i++) {
             if (i != 0) {
                 out.println("Do you want to remove other cards?");
-                if (in.nextLine().equals("no")) {
+                String is = in.next();
+                if (is.equals("no")) {
                     break;
                 }
             }
@@ -291,11 +287,11 @@ public class Cli extends ClientManager {
                     } else {
                         out.println("Insert your new column");
                         y = in.nextInt();
-                    }
+                    } break;
                 }
-                if (no.equals("yes")) {
+                else if (no.equals("yes")) {
                     coordinates.add(new Coordinates(x, y));
-                    break;
+
                 }
             }
             colors[i] = board[x][y].toString();
@@ -308,7 +304,6 @@ public class Cli extends ClientManager {
 
     @Override
     public void updateBoard(BoardResponse boardMessage) {
-        out.println("\n\n mi è arrivata la board \n\n");
 
         board = boardMessage.getBoard();
 
