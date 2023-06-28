@@ -468,7 +468,7 @@ public class Utils implements Serializable {
     }
 
     /**
-     * method that counts how many points each playes got with the groups of the same colour
+     * method that counts how many points each playes got with the common target cards
      *
      * @param shelf player's shelf
      * @return player's points
@@ -513,14 +513,16 @@ public class Utils implements Serializable {
         return addedScore;
     }
 
+
     /**
+     * Recursive helper method for calculating the score of a player.
      *
-     * @param copy
-     * @param colour
-     * @param j
-     * @param k
-     * @param visited
-     * @return
+     * @param copy    A copy of the shelf's tile slots.
+     * @param colour  The color of the tiles.
+     * @param j       The row index.
+     * @param k       The column index.
+     * @param visited A boolean matrix to track visited tiles.
+     * @return The score of the player.
      */
     public int ricorsiva(TileSlot[][] copy, ColourTile colour, int j, int k, boolean[][] visited) {
         if (j < 5 && k < 4) {
@@ -569,9 +571,9 @@ public class Utils implements Serializable {
     }
 
 
-
-
+//
     /**
+     *
      *
      * @param shelf
      * @param personalCardTiles
@@ -582,6 +584,12 @@ public class Utils implements Serializable {
         }
     }
 
+    /**
+     * Creates a copy of the given shelf matrix.
+     *
+     * @param shelfMatrix The shelf matrix to copy.
+     * @return The copied shelf matrix.
+     */
     public TileSlot[][] copy(TileSlot[][] shelfMatrix) {
         TileSlot[][] copy = new TileSlot[6][5];
 

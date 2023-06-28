@@ -21,8 +21,8 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
 /**
- * This class represents the implementation of the RemoteController interface. It provides the methods
- * to manage the remote operations of the game.
+ * RemoteControllerImpl class is an implementation of the RemoteController interface.
+ * It provides remote control functionality for managing game sessions.
  */
 public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteController, Serializable {
 
@@ -37,7 +37,9 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
     /**
      * Constructor for RemoteControllerImpl class.
-     * Creates a new instance of MasterController and sets the currentGameID to 0.
+     * Creates a new instance of MasterController and sets the currentGameID to -1.
+     *
+     * @throws RemoteException if there is an error in the remote communication
      */
     public RemoteControllerImpl() throws RemoteException {
         super();
@@ -124,6 +126,12 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
     }
 
 
+    /**
+     * Performs pre-registration for the given message.
+     *
+     * @param message the message for pre-registration
+     * @throws RemoteException if there is an error in the remote communication
+     */
     public void preRegistration(Message message) throws RemoteException {
         synchronized (lobby){
             System.out.println("la lobby è lunga : " + lobby.size() + message.getNickname());
@@ -157,6 +165,14 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
         }
     }
 
+    /**
+     * Checks and handles the presence of TCP and RMI connections for the given message.
+     *
+     * @param message   the message to be checked
+     * @param gson      the Gson instance for JSON serialization
+     * @param preLogMess the message for pre-login response
+     * @throws RemoteException if there is an error in the remote communication
+     */
     public void containsTcpTemp(Message message, Gson gson, Message preLogMess) throws RemoteException {
         if (tempTcp.containsKey(message.getUID())) {
             try {
@@ -177,6 +193,12 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
         return;
     }
 
+    /**
+     * Sets the maximum number of players for the game.
+     *
+     * @param message the message containing the game ID and maximum players
+     * @throws RemoteException if there is an error in the remote communication
+     */
     public void setMaxPlayers(Message message) throws RemoteException {
         int gameID = message.getGameID();
         int maxPlayers = message.getMaxPlayers();
@@ -186,6 +208,12 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
         timerThread.start();
     }
 
+    /**
+     * Starts a timer for the SetMessage operation to wait for the specified number of players.
+     *
+     * @param message     the message containing the game ID and maximum players
+     * @param maxPlayers  the maximum number of players
+     */
     private void startTimerSetMessage(Message message, int maxPlayers) {
         while (!checkPlayerCount(message, maxPlayers)) {
             try {
@@ -202,6 +230,13 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
         }
     }
 
+    /**
+     * Checks if the required number of players has been reached for the SetMessage operation.
+     *
+     * @param message    the message containing the game ID and maximum players
+     * @param maxPlayers the maximum number of players
+     * @return true if the required number of players is reached, false otherwise
+     */
     private boolean checkPlayerCount(Message message, int maxPlayers) {
         for (ArrayList<Pair<Long, String>> pairs : lobby) {
             if (pairs.get(0).getKey().equals(message.getUID())) {
@@ -211,6 +246,13 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
         return false;
     }
 
+    /**
+     * Manages the lobby for the given message and maximum players.
+     *
+     * @param message    the message containing the game ID and maximum players
+     * @param maxPlayers the maximum number of players
+     * @throws RemoteException if there is an error in the remote communication
+     */
     public void lobbyManagement(Message message, int maxPlayers) throws RemoteException {
 
         int gameID = message.getGameID();
@@ -237,6 +279,12 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
         timerThread.start();
     }
 
+    /**
+     * Starts a timer for the TurnMessage operation to wait for the maximum number of players to join.
+     *
+     * @param message     the message containing the game ID, colours, column, nickname, and UID
+     * @param maxPlayers  the maximum number of players
+     */
     private void startTimerUsername(Message message, int maxPlayers) {
         while (!checkMaxPlayer(message, maxPlayers)) {
             try {
@@ -253,10 +301,24 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
         }
     }
 
+    /**
+     * Checks if the maximum number of players has joined for the TurnMessage operation.
+     *
+     * @param message    the message containing the game ID, colours, column, nickname, and UID
+     * @param maxPlayers the maximum number of players
+     * @return true if the maximum number of players has joined, false otherwise
+     */
     private boolean checkMaxPlayer(Message message, int maxPlayers) {
         return masterController.getGameController(message.getGameID()).getMaxPlayers() == masterController.getGameController(message.getGameID()).getNumOfPlayers();
     }
 
+    /**
+     * Initializes the game for the given message and maximum players.
+     *
+     * @param message    the message containing the game ID, colours, column, nickname, and UID
+     * @param maxPlayers the maximum number of players
+     * @throws RemoteException if there is an error in the remote communication
+     */
     public void init(Message message,int maxPlayers) throws RemoteException {
         int gameID = message.getGameID();
 
@@ -324,6 +386,12 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
     }
 
+    /**
+     * Adds a client with the specified UID, nickname, and game ID.
+     * @param UID The UID of the client.
+     * @param nickname The nickname of the client.
+     * @param gameID The ID of the game.
+     */
     protected void addClient(Long UID, String nickname, int gameID) {
         if (tempTcp.containsKey(UID)) {
             clients.get(gameID).add(new TCPConnect(tempTcp.get(UID), UID, nickname));
@@ -336,10 +404,22 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
     }
 
 
+    /**
+     * Adds an RMI client with the given UID and communication protocol.
+     * @param UID The UID of the RMI client.
+     * @param protocol The communication protocol for the client.
+     * @throws RemoteException If an error occurs during remote communication.
+     */
     public void addRmiCl(long UID, CommunicationProtocol protocol) throws RemoteException {
         tempRmi.put(UID, protocol);
     }
 
+    /**
+     * Adds a TCP client with the given UID and socket.
+     * @param UID The UID of the TCP client.
+     * @param socket The socket associated with the client.
+     * @throws RemoteException If an error occurs during remote communication.
+     */
     public void addTcpCl(long UID, Socket socket) throws RemoteException {
         tempTcp.put(UID, socket);
     }
@@ -370,6 +450,10 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
 
     }
 
+    /**
+     * Sends the cards to the players in the specified game.
+     * @param gameID The ID of the game.
+     */
     public void sendCards(int gameID){
         ArrayList<CardCommonTarget> commonTargets = masterController.getGameController(gameID).getCommonTargets();
         for (int i = 0; i < clients.get(gameID).size(); i++) {
@@ -380,6 +464,11 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
     }
 
 
+    /**
+     * Initializes the game for the specified game ID.
+     * @param gameID The ID of the game.
+     * @throws RemoteException If an error occurs during remote communication.
+     */
     public void initGame(int gameID) throws RemoteException {
         try {
             this.masterController.getGameController(gameID).initGame();
@@ -394,6 +483,11 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
         }
     }
 
+    /**
+     * Determines the current player for the specified game and initiates their turn.
+     * @param gameID The ID of the game.
+     * @throws RemoteException If an error occurs during remote communication.
+     */
     public void currentPlayer(int gameID) throws RemoteException {
         String player = masterController.getGameController(gameID).getCurrentPlayer().getNickname();
         for (int j = 0; j < clients.get(gameID).size(); j++) {
@@ -416,6 +510,16 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
     }
 
 
+    /**
+     * Executes a player's turn with the specified colors, column, nickname, and UID for the given game.
+     *
+     * @param gameID The ID of the game.
+     * @param colors The colors of the tiles to place.
+     * @param column The column in which to place the tiles.
+     * @param nickname The nickname of the player.
+     * @param UID The UID of the player.
+     * @throws RemoteException If an error occurs during remote communication.
+     */
     public void turn(int gameID, String[] colors, int column, String nickname, Long UID) throws RemoteException {
         for (int i = 0; i < clients.get(gameID).size(); i++) {
             if (masterController.getGameController(gameID).getPlayers().get(i).getNickname().equals(nickname)) {
@@ -454,6 +558,13 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
         }
     }
 
+    /**
+     * Retrieves the shelf colors for the specified game, player nickname
+     * @param gameID The ID of the game.
+     * @param nickname The nickname of the player.
+     * @param i
+     * @param shelfColours The array to store the shelf colors.
+     */
     public void getShelfByNickname(int gameID, String nickname, int i, ColourTile[][] shelfColours) {
         TileSlot[][] shelf = masterController.getGameController(gameID).getShelf(nickname);
         for(int j = 0; j < 6; j++){
@@ -469,11 +580,22 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
     }
 
 
+    /**
+     * Retrieves the winner of the specified game.
+     * @param gameID The ID of the game.
+     * @return The nickname of the winner.
+     * @throws RemoteException If an error occurs during remote communication.
+     */
     public String getWinner(int gameID) throws RemoteException {
         return masterController.getGameController(gameID).endGame().getNickname();
     }
 
 
+    /**
+     * Sends the board state to all clients in the specified game.
+     * @param gameID The ID of the game.
+     * @throws RemoteException If an error occurs during remote communication.
+     */
     public void sendBoard(int gameID) throws RemoteException{
         TileSlot[][] board = masterController.getGameController(gameID).getBoard();
         ColourTile[][] colours = new ColourTile[11][11];
@@ -504,6 +626,12 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
         clients.get(gameID).get(client).sendMessage(message);
     }
 
+    /**
+     * Gets the position of the player with the specified UID in the given game.
+     * @param UID The UID of the player.
+     * @param gameID The ID of the game.
+     * @return The position of the player.
+     */
     public int getPosition(Long UID ,int gameID){
             for(int i = 0; i < clients.get(gameID).size();i++){
                 if(clients.get(gameID).get(i).getUID().equals(UID)){

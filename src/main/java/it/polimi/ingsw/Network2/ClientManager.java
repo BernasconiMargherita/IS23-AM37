@@ -7,6 +7,11 @@ import java.util.NoSuchElementException;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+/**
+ * The class ClientManager serves as a base class for managing the client-side functionality.
+ * It implements the ClientListener and ClientUpdateListener interfaces and provides a mechanism to handle
+ * different types of messages received from the server.
+ */
 public abstract class ClientManager implements ClientListener, ClientUpdateListener, Runnable {
 
     private ClientUpdate clientUpdater;
@@ -14,6 +19,9 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
 
     private final Queue<Runnable> queue= new LinkedBlockingQueue<>();
 
+    /**
+     * Constructs a ClientManager object and starts a new thread for running the message handling loop.
+     */
     public ClientManager() {
         new Thread(this).start();
     }
@@ -38,6 +46,10 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
             case "ReFirstResponse"-> handleReFirstResponse((ReFirstResponse) message);
         }
     }
+
+    /**
+     *  Handler methods for different types of messages
+     */
 
     private void handleReFirstResponse(ReFirstResponse message) {
         queue.add(()->reFirstResponse(message));
@@ -106,6 +118,11 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
         }
     }
 
+    /**
+     * Creates a connection to the server using the specified connection type.
+     *
+     * @param connection The type of connection ("TCP" or "RMI") to establish with the server.
+     */
     public void createConnection(String connection) {
         CommunicationProtocol communicationProtocol;
 
@@ -133,10 +150,16 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
         startUpdater();
     }
 
+    /**
+     * Starts the client updater, which is responsible for receiving updates from the server and notifying the client manager.
+     */
     private void startUpdater() {
         clientUpdater = new ClientUpdate(client, this);
     }
 
+    /**
+     * Closes the connection to the server.
+     */
     public void closeConnection() {
         if (clientUpdater != null) {
             clientUpdater.stop();
@@ -145,6 +168,12 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
         client.closeConnection();
         client = null;
     }
+
+    /**
+     * Returns the Client object associated with this ClientManager.
+     *
+     * @return The Client object.
+     */
     public Client getClient() {
         return client;
     }

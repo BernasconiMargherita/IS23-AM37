@@ -15,7 +15,6 @@ public class PreLoginMessage extends Message{
         Gson gson = new Gson();
         return gson.toJson(this);
     }
-
     @Override
     public String typeMessage() {
         return "PreLoginMessage";

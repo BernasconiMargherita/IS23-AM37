@@ -22,6 +22,8 @@ public class Message implements Serializable {
         return gson.toJson(this);
     }
 
+
+
     public int getMaxPlayers() {
         return -1;
     }
