@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class PersonalDeck implements Serializable {
     /**
-     * ArrayList<CardPersonalTarget> personalDeck : arrayList that contains (numOfPlayers) personalCards
+     * ArrayList CardPersonalTarget personalDeck : arrayList that contains (numOfPlayers) personalCards
      */
     private final ArrayList<CardPersonalTarget> personalDeck;
     /**

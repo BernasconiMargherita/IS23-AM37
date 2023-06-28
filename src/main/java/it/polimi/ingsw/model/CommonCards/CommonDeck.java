@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class CommonDeck implements Serializable {
     /**
-     * ArrayList<CrdCommonTarget> commonDeck : ArrayList of commonCard (lenght -> 2)
+     * ArrayList CardCommonTarget commonDeck : ArrayList of commonCard (lenght -> 2)
      */
     private final ArrayList<CardCommonTarget> commonDeck;
 
