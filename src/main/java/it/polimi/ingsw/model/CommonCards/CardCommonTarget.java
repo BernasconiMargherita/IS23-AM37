@@ -20,7 +20,7 @@ public class CardCommonTarget implements Serializable {
     private final CommonList commonType;
 
     /**
-     * Stack<ScoringToken> stackToken : stack of scoring tokens
+     * Stack ScoringToken stackToken : stack of scoring tokens
      */
     private final Stack<ScoringToken> stackToken;
     /**
