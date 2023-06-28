@@ -3,9 +3,6 @@ package it.polimi.ingsw.model.Board;
 import java.io.Serializable;
 
 /**
- *
- */
-/**
  * Represents a board mask that stores information about available tiles for different numbers of players.
  * The mask is used to determine which tiles are available on the board based on the number of players.
  */

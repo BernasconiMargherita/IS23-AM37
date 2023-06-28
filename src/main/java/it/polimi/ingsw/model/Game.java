@@ -127,39 +127,68 @@ public class Game implements Serializable {
         }
     }
 
+    /**
+     * Retrieves the game board.
+     *
+     * @return The 2D array representing the game board.
+     */
     public TileSlot[][] getBoard(){
         return board.getBoard();
     }
 
 
+    /**
+     * Retrieves the list of common targets.
+     *
+     * @return The ArrayList of CardCommonTarget cards
+     */
     public ArrayList<CardCommonTarget> getCommonTargets(){
         return commonDeck;
     }
 
 
+
     /**
-     * Method to choose the Winner of the Game based on the score
+     * Retrieves the current game state.
      *
-     * @return the winner Player
+     * @return The GameState object representing the current game state.
      */
-
-
     public GameState getGameState() {
         return gameState;
     }
 
+    /**
+     * Sets the game state.
+     *
+     * @param gameState The GameState object representing the new game state.
+     */
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
     }
 
+    /**
+     * Checks if it is the last turn.
+     *
+     * @return true if it is the last turn, false otherwise.
+     */
     public boolean isLastTurn() {
         return isLastTurn;
     }
 
+    /**
+     * Sets the last turn status.
+     *
+     * @param lastTurn true if it is the last turn, false otherwise.
+     */
     public void setLastTurn(boolean lastTurn) {
         isLastTurn = lastTurn;
     }
 
+    /**
+     * Checks if the end game token has been taken.
+     *
+     * @return true if the end game token has been taken, false otherwise.
+     */
     public boolean isEndGameTokenTaken(){
         return board.isEndGameTokenTaken();
     }

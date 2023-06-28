@@ -95,54 +95,63 @@ public class Player implements Serializable {
     }
 
     /**
+     * Checks if the player is the first one.
      *
-     * @return if the player is the first one
+     * @return true if the player is the first one, false otherwise.
      */
     public boolean isFirstPlayer() {
         return isFirstPlayer;
     }
 
     /**
+     * Checks if the shelf is full.
      *
-     * @return if the shelf is full
+     * @return true if the shelf is full, false otherwise.
      */
     public boolean isShelfFull() {
         return personalShelf.isFull();
     }
 
     /**
-     * getter of players's personal shelf
-     * @return personalShelf
+     * Retrieves the player's personal shelf.
+     *
+     * @return the personal shelf.
      */
     public Shelf getPersonalShelf() {
         return personalShelf;
     }
 
     /**
-     * sets if common goal is completed
-     * @param objective
+     * Sets the completion status of a common goal.
+     *
+     * @param objective the objective to set as completed.
      */
     public void setCompleted(int objective) {
         completedCommon[objective] = true;
     }
 
     /**
+     * Checks if a common goal is completed.
      *
-     * @param objective
-     * @return if common goal is completed
+     * @param objective the objective to check.
+     * @return true if the common goal is completed, false otherwise.
      */
     public boolean isCompleted(int objective) {
         return completedCommon[objective];
     }
 
     /**
-     * getter of the score of each player
-     * @return score
+     * Retrieves the score of the player.
+     *
+     * @return the player's score.
      */
     public int getScore() {
         return score;
     }
 
+    /**
+     * Updates the player's score by adding the group score of their personal shelf.
+     */
     public void groupScore() {
         addScore(utils.groupScore(personalShelf));
     }
