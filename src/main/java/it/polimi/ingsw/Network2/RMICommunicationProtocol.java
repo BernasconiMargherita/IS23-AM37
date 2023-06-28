@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Network2;
 
 
-import it.polimi.ingsw.Network2.Messages.ErrorMessage;
 import it.polimi.ingsw.Network2.Messages.Message;
 
 import java.io.Serializable;
@@ -40,7 +39,7 @@ public class RMICommunicationProtocol extends UnicastRemoteObject implements Com
 
     @Override
     public void onMessage(Message message) throws RemoteException {
-        messageList.add(message);
+            messageList.add(message);
     }
 
     @Override
@@ -74,6 +73,18 @@ public class RMICommunicationProtocol extends UnicastRemoteObject implements Com
     @Override
     public long getUID() throws RemoteException{
         return UID;
+    }
+
+    @Override
+    public void ping() throws RemoteException {
+        System.out.println("ping arrivato");
+    }
+
+    @Override
+    public void onDisconnection() throws RemoteException {
+        System.out.println("Partita finita. disconnessione");
+        this.server=null;
+
     }
 }
 

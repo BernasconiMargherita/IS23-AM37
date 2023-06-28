@@ -86,6 +86,17 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
     }
 
     @Override
+    public void ping() {
+        System.out.println("ping");
+        sendMessage(new PingMessage(-1,UID));
+    }
+
+    @Override
+    public void onDisconnection() throws RemoteException {
+
+    }
+
+    @Override
     public void onMessage(Message message) {
         messageList.add(message);
     }
@@ -105,8 +116,6 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
     public void run() {
         while (!Thread.currentThread().isInterrupted()) {
             try {
-
-
                     synchronized (messageList) {
                         Gson gson=new Gson();
                         String request = in.readLine();
@@ -128,6 +137,8 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
                             case "UsernameError"-> onMessage(gson.fromJson(request, UsernameError.class));
                             case "CardsResponse"-> onMessage(gson.fromJson(request, CardsResponse.class));
                             case "ReFirstResponse"-> onMessage(gson.fromJson(request, ReFirstResponse.class));
+                            case "PingMessage"->ping();
+                            case "DisconnectionMessage"->onDisconnection();
                         }
                     }
 

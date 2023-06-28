@@ -483,20 +483,21 @@ public class Utils implements Serializable {
         for (int j = 0; j < MAX_SHELF_ROWS - 1; j++) {
             for (int k = 0; k < MAX_SHELF_COLUMNS - 1; k++) {
                 ColourTile colour;
-                colour = copy[j][k].getAssignedTile().getColour();
+                if (!copy[j][k].isFree()) {
+                    colour = copy[j][k].getAssignedTile().getColour();
 
-                boolean[][] visited =
-                        {{false, false, false, false, false, false, false, false, false, false, false},
-                                {false, false, false, false, false, false, false, false, false, false, false},
-                                {false, false, false, false, false, false, false, false, false, false, false},
-                                {false, false, false, false, false, false, false, false, false, false, false},
-                                {false, false, false, false, false, false, false, false, false, false, false},
-                                {false, false, false, false, false, false, false, false, false, false, false}};
+                    boolean[][] visited =
+                            {{false, false, false, false, false, false, false, false, false, false, false},
+                                    {false, false, false, false, false, false, false, false, false, false, false},
+                                    {false, false, false, false, false, false, false, false, false, false, false},
+                                    {false, false, false, false, false, false, false, false, false, false, false},
+                                    {false, false, false, false, false, false, false, false, false, false, false},
+                                    {false, false, false, false, false, false, false, false, false, false, false}};
 
-                if (!copy[j][k].isFree() && !visited[j][k]) {
-                    match = 1 + ricorsiva(copy, colour, j, k, visited);
+                    if (!visited[j][k]) {
+                        match = 1 + ricorsiva(copy, colour, j, k, visited);
+                    }
                 }
-
             }
         }
         if (match == 3) {

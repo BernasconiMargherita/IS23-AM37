@@ -13,5 +13,9 @@ public interface CommunicationProtocol extends Remote {
     void closeConnection() throws RemoteException;
     void setup() throws RemoteException;
     long getUID() throws RemoteException;
+
+    void ping() throws RemoteException;
+
+    void onDisconnection() throws RemoteException;
 }
 
