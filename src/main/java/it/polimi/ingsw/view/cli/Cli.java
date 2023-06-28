@@ -18,7 +18,7 @@ public class Cli extends ClientManager {
     ArrayList<Coordinates> tempCoordinates;
 
     private String protocol;
-    private ColourTile[][] shelf = new ColourTile[6][5];
+    private ColourTile[][] shelf;
     private String message;
     private MyShelfiePrintStream out;
     private String username;
@@ -37,6 +37,7 @@ public class Cli extends ClientManager {
     private String[] colors;
     private Scanner in;
     private static final String TEXT_BLACK = "\u001B[30m";
+    private boolean emptyShelf;
 
     public Cli(Scanner scanner) {
         super();
@@ -137,11 +138,8 @@ public class Cli extends ClientManager {
         for (int i = 0; i < 3; i++) {
             colors[i] = ColourTile.FREE.toString();
         }
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 5; j++) {
-                shelf[i][j] = ColourTile.FREE;
-            }
-        }
+        emptyShelf = true;
+
         //ok
     }
 
@@ -158,9 +156,11 @@ public class Cli extends ClientManager {
         for (int i = 0; i < 3; i++) {
             colors[i] = ColourTile.FREE.toString();
         }
+
         getClient().sendMessage(new BoardMessage(username, gameID, UID));
         Thread timerThread = new Thread(() -> startTimer());
         timerThread.start();
+
     }
 
     public void startTimer() {
@@ -247,17 +247,19 @@ public class Cli extends ClientManager {
         ArrayList<Coordinates> coordinates = new ArrayList<>();
         int freeColumnSpace = 0;
         int count = 0;
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 6; j++) {
-                if (shelf[j][i] == ColourTile.FREE) {
-                    count++;
+        if(!emptyShelf){
+            for (int i = 0; i < 5; i++) {
+                for (int j = 0; j < 6; j++) {
+                    if (shelf[j][i] == ColourTile.FREE) {
+                        count++;
+                    }
                 }
+                if (count > freeColumnSpace) {
+                    freeColumnSpace = count;
+                }
+                count = 0;
             }
-            if (count > freeColumnSpace) {
-                freeColumnSpace = count;
-            }
-            count = 0;
-        }
+        }else freeColumnSpace = 3;
         if(freeColumnSpace>3){
             freeColumnSpace = 3;
         }
@@ -295,7 +297,6 @@ public class Cli extends ClientManager {
             }
             colors[i] = board[x][y].toString();
         }
-
         tempCoordinates = coordinates;
         getClient().sendMessage(new RemoveMessage(coordinates, gameID, UID, username));
 
@@ -307,6 +308,7 @@ public class Cli extends ClientManager {
         out.println("\n\n mi è arrivata la board \n\n");
 
         board = boardMessage.getBoard();
+
         commonTokens = boardMessage.getCommonTokens();
         endGameToken = boardMessage.isEndGameToken();
     }
@@ -314,7 +316,17 @@ public class Cli extends ClientManager {
     public void turn() {
         out.println("Choose the column:");
         int column = in.nextInt();
-        getClient().sendMessage(new TurnMessage(gameID, UID, column, username, colors));
+        ArrayList<String> tempColors = new ArrayList<>();
+        for (String color : colors) {
+            if (!color.equals(ColourTile.FREE.toString())) {
+                tempColors.add(color);
+            }
+        }
+        String[] coloursTurn = new String[tempColors.size()];
+        for (int i = 0; i < tempColors.size(); i++) {
+            coloursTurn[i] = tempColors.get(i);
+        }
+        getClient().sendMessage(new TurnMessage(gameID, UID, column, username, coloursTurn));
     }
 
     @Override
@@ -342,12 +354,10 @@ public class Cli extends ClientManager {
         }
         out.println("Insert tile successful");
         shelf = turnResponse.getShelf();
-        int j = 0;
-        for (int i = 0; i < 6; i++) {
-            if (shelf[i][column] != ColourTile.FREE && !(colors[j].equals(ColourTile.FREE.toString()))) {
-                shelf[i][column] = ColourTile.valueOf(colors[j]);
-                j++;
-            }
+        printShelf(shelf);
+        emptyShelf = false;
+        for (int i = 0; i < 3; i++) {
+            colors[i] = ColourTile.FREE.toString();
         }
 
     }
@@ -571,33 +581,28 @@ public class Cli extends ClientManager {
 
 
     public void printShelf(ColourTile[][] colourTiles) {
-        for (int i = 0; i < 5; i++) {
+        for(int i = 0; i < 5; i++) {
             out.print(" " + i + "  ");
         }
         out.print("\n");
-        for (int i = 5; i >=0; i--) {
-            for (int j = 0; j < 5; j++) {
-                System.out.print(getColorCode(colourTiles[i][j]) + "*** " + ANSI_RESET);
-            }
-            out.print("\n");
-        }
-    }
-}
-
-/*
-    private void updateShelf(TurnResponse turnResponse) {
-        ColourTile[][] turnShelf = turnResponse.getShelf();
-        emptyGridPane(shelfMask);
-        for (int row = SHELF_ROWS - 1; row >= 0; row--) {
-            for (int col = 0; col < SHELF_COLUMNS; col++) {
-                int adjustedRow = SHELF_ROWS - 1 - row;
-
-                if (!turnShelf[adjustedRow][col].equals(ColourTile.FREE)) {
-                    ImageView tile = createShelfTile(turnShelf[adjustedRow][col], adjustedRow, col);
-                    shelfMask.add(tile, col, row);
+        if(!emptyShelf){
+            for (int i = 5; i >=0; i--) {
+                for (int j = 0; j < 5; j++) {
+                    System.out.print(getColorCode(colourTiles[i][j]) + "*** " + ANSI_RESET);
                 }
+                out.print("\n");
             }
-        }
-    }
+        }else{
 
-     */
+            for (int i = 5; i >=0; i--) {
+                for (int j = 0; j < 5; j++) {
+                    System.out.print(TEXT_BLACK + "*** " + ANSI_RESET);
+                }
+                out.print("\n");
+        }
+
+    }}}
+
+
+
+
