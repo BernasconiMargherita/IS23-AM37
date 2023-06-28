@@ -114,6 +114,7 @@ public class Cli extends ClientManager  {
     }
     @Override
     public void usernameError(UsernameError usernameError) {
+        gameID = usernameError.getGameID();
         out.println("Username already exists\nPlease enter new one");
         username = in.nextLine();
         getClient().sendMessage(new LoginMessage(username, gameID, UID));
@@ -464,10 +465,14 @@ public class Cli extends ClientManager  {
 
     public void printBoard(ColourTile[][] colourTiles) {
         for (int i = 0; i < 11; i++) {
+            System.out.print(" "+i+"  ");
+        }
+        System.out.print("\n");
+        for (int i = 0; i < 11; i++) {
             for (int j = 0; j < 11; j++) {
                 System.out.print(getColorCode(colourTiles[i][j]) + "*** " + ANSI_RESET);
             }
-            System.out.print("\n");
+            System.out.print(" "+ i +"\n");
         }
         //ok
     }
@@ -489,11 +494,14 @@ public class Cli extends ClientManager  {
     }
 
     public void printShelf(ColourTile[][] colourTiles){
+        for (int i = 0; i < 5; i++) {
+            out.print(" "+i+"  \n");
+        }
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 5; j++) {
-                System.out.print(getColorCode(colourTiles[i][j]) + "***" + ANSI_RESET);
+                System.out.print(getColorCode(colourTiles[i][j]) + "*** " + ANSI_RESET);
             }
-            System.out.print("\n");
+            System.out.print(" "+i+"\n");
         }
     }
 }
