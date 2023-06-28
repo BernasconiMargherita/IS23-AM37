@@ -8,8 +8,18 @@ import javafx.stage.Stage;
 
 import java.util.Scanner;
 
+/**
+ * The ClientSetup class is the entry point of the client application.
+ * It provides the option to choose between GUI mode and CLI mode for running the client.
+ */
 public class ClientSetup extends Application {
 
+    /**
+     * The main method of the client application.
+     * It prompts the user to choose between GUI mode and CLI mode and launches the application accordingly.
+     *
+     * @param args Command-line arguments
+     */
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
@@ -30,11 +40,23 @@ public class ClientSetup extends Application {
 
     }
 
+    /**
+     * The start method of the JavaFX application in GUI mode.
+     * It creates an instance of the Gui class and starts the GUI application.
+     *
+     * @param primaryStage The primary stage for the JavaFX application
+     */
     public void start(Stage primaryStage) {
         Gui gui = new Gui();
         gui.start(primaryStage);
     }
 
+    /**
+     * Starts the application in CLI mode.
+     * It creates an instance of the Cli class and starts the CLI application.
+     *
+     * @param scanner The scanner object used for CLI input
+     */
     public static void startCLI(Scanner scanner) {
         new Cli(scanner).start();
     }

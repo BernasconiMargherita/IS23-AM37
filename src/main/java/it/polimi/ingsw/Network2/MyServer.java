@@ -13,7 +13,10 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-
+//
+/**
+ * MANCA
+ */
 public class MyServer extends UnicastRemoteObject implements ServerInterface {
     private static final RemoteController server;
 
@@ -25,10 +28,21 @@ public class MyServer extends UnicastRemoteObject implements ServerInterface {
         }
     }
 
+    /**
+     * Constructs a MyServer object and exports it as a remote object.
+     *
+     * @throws RemoteException if a communication-related exception occurs
+     */
     protected MyServer() throws RemoteException {
         super();
     }
 
+    /**
+     * The main method of the server that starts the RMI server and listens for TCP socket connections.
+     *
+     * @param args command line arguments
+     * @throws Exception if an exception occurs
+     */
     public static void main(String[] args) throws Exception {
 
         int portNumber;
@@ -74,6 +88,13 @@ public class MyServer extends UnicastRemoteObject implements ServerInterface {
 
 
     }
+
+    /**
+     * Called when a message is received from a client.
+     *
+     * @param message the received message
+     * @throws RemoteException if a communication-related exception occurs
+     */
     public void onMessage(Message message) throws RemoteException {
         server.onMessage(message);
     }
@@ -84,6 +105,13 @@ public class MyServer extends UnicastRemoteObject implements ServerInterface {
     }
 
 
+    /**
+     * Adds an RMI client to the server.
+     *
+     * @param protocol the communication protocol of the RMI client
+     * @return the unique ID assigned to the RMI client
+     * @throws RemoteException if a communication-related exception occurs
+     */
     public long addRmiClient(CommunicationProtocol protocol) throws RemoteException{
         long rmiId = System.currentTimeMillis();
         try {
@@ -95,7 +123,10 @@ public class MyServer extends UnicastRemoteObject implements ServerInterface {
     }
 }
 
- class ClientHandler extends Thread {
+/**
+ * The ClientHandler class represents a thread that handles communication with a TCP socket client.
+ */
+class ClientHandler extends Thread {
     private long socketId;
     private Socket clientSocket;
     private BufferedReader in;
@@ -103,12 +134,22 @@ public class MyServer extends UnicastRemoteObject implements ServerInterface {
 
     private ServerInterface myServer;
 
+    /**
+     * Constructs a ClientHandler object with the specified client socket, socket ID, and server interface.
+     *
+     * @param socket    the client socket
+     * @param socketId  the socket ID
+     * @param myServer  the server interface
+     */
     public ClientHandler(Socket socket,long socketId,ServerInterface myServer) {
         this.clientSocket = socket;
         this.myServer=myServer;
         this.socketId = socketId;
     }
 
+    /**
+     * Runs the thread and handles communication with the client.
+     */
     public void run() {
         try {
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -123,6 +164,11 @@ public class MyServer extends UnicastRemoteObject implements ServerInterface {
         }
     }
 
+    /**
+     * Handles a message received from the client.
+     *
+     * @param request the received message
+     */
     private void onMessage(String request) {
         try {
             Gson gson = new Gson();

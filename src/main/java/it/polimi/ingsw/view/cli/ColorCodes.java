@@ -2,6 +2,10 @@ package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.model.Tile.ColourTile;
 
+/**
+ * The ColorCodes class provides static methods to retrieve ANSI color codes for different colors.
+ * The color codes are used to format the output with colors in supported terminals.
+ */
 public class ColorCodes {
     private ColorCodes() {
 
@@ -19,6 +23,12 @@ public class ColorCodes {
     private String color;
 
 
+    /**
+     * Returns the ANSI color code associated with the specified color.
+     *
+     * @param color The color for which to retrieve the ANSI color code.
+     * @return The ANSI color code as a string, or null if the color is not recognized.
+     */
     static String getColorCode(ColourTile color) {
 
         switch (color) {
