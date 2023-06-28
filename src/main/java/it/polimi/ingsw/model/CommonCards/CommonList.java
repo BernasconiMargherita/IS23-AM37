@@ -26,6 +26,11 @@ public enum CommonList implements Serializable {
         this.id=id;
     }
 
+    /**
+     * getter of the id of the CommonList
+     *
+     * @return CommonList id
+     */
     public int getId() {
         return id;
     }

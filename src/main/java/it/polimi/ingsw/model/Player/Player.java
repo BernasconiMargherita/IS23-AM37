@@ -31,10 +31,20 @@ public class Player implements Serializable {
         this.completedCommon = new boolean[]{false, false};
     }
 
+    /**
+     * getter of player's nickname
+     *
+     * @return nickname
+     */
     public String getNickname() {
         return nickname;
     }
 
+    /**
+     * getter of personal target
+     *
+     * @return cardPersonalTarget
+     */
     public CardPersonalTarget getCardPersonalTarget() {
         return cardPersonalTarget;
     }
@@ -69,40 +79,72 @@ public class Player implements Serializable {
         }
     }
 
+    /**
+     * sets personal card
+     * @param personalCard
+     */
     public void setPersonalCard(CardPersonalTarget personalCard) {
         this.cardPersonalTarget = personalCard;
     }
 
+    /**
+     * sets first player
+     */
     public void setFirstPlayer() {
         this.isFirstPlayer = true;
     }
 
+    /**
+     *
+     * @return if the player is the first one
+     */
     public boolean isFirstPlayer() {
         return isFirstPlayer;
     }
 
+    /**
+     *
+     * @return if the shelf is full
+     */
     public boolean isShelfFull() {
         return personalShelf.isFull();
     }
 
+    /**
+     * getter of players's personal shelf
+     * @return personalShelf
+     */
     public Shelf getPersonalShelf() {
         return personalShelf;
     }
 
+    /**
+     * sets if common goal is completed
+     * @param objective
+     */
     public void setCompleted(int objective) {
         completedCommon[objective] = true;
     }
 
+    /**
+     *
+     * @param objective
+     * @return if common goal is completed
+     */
     public boolean isCompleted(int objective) {
         return completedCommon[objective];
     }
 
+    /**
+     * getter of the score of each player
+     * @return score
+     */
     public int getScore() {
         return score;
     }
 
     public void groupScore() {
-        utils.groupScore(personalShelf);
+        addScore(utils.groupScore(personalShelf));
     }
 }
 

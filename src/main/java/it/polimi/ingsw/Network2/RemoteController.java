@@ -30,7 +30,7 @@ public interface RemoteController extends Remote {
     void registerPlayer(int gameID , String nickname, Long UID) throws RemoteException;
 
     String getWinner(int gameID) throws RemoteException;
-    void sendBoard(int gameID, String nickname, Long UID) throws RemoteException;
+    void sendBoard(int gameID) throws RemoteException;
 
     void setMaxPlayers(Message message) throws RemoteException;
     void preRegistration(Message message) throws RemoteException;

@@ -36,7 +36,7 @@ public class ClientSetup extends Application {
     }
 
     public static void startCLI(Scanner scanner) {
-        Cli cli = new Cli(scanner);
+        new Cli(scanner).start();
     }
 }
 

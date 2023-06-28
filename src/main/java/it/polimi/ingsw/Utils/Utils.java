@@ -37,6 +37,13 @@ public class Utils implements Serializable {
         return completedGoals;
     }
 
+    /**
+     * method that compares each shelf and the common targets to check if anyone got the points
+     *
+     * @param shelf     shelf of the player
+     * @param commonCard common target cardd
+     * @return
+     */
     public boolean checkCommonTarget(Shelf shelf, CardCommonTarget commonCard) {
 
         TileSlot[][] shelfMatrix = shelf.getShelf();
@@ -294,12 +301,26 @@ public class Utils implements Serializable {
         return false;
     }
 
+    /**
+     * method that, given a column j, counts if the column is full
+     *
+     * @param shelfMatrix player's shelf
+     * @param j given column
+     * @return numbers of full rows in the column
+     */
     private int countFull(TileSlot[][] shelfMatrix, int j) {
         int i = 0;
         while (i < 6 && !shelfMatrix[i][j].isFree()) i++;
         return i;
     }
 
+    /**
+     * method that checks if the tiles in a row or column are all different ( used in checkCommonTarget )
+     *
+     * @param shelfMatrix player's shelf
+     * @param type row or column
+     * @return numColours
+     */
     public int checkAllDifferent(TileSlot[] shelfMatrix, String type) {
 
         int numColours = 0;
@@ -337,6 +358,13 @@ public class Utils implements Serializable {
     }
 
 
+    /**
+     * method that checks, for all four possible diagonals, if the tiles are the same colour
+     *
+     * @param shelfMatrix player's shelf
+     * @param coordinates coordinates of the first tile of the diagonal
+     * @return true if all tiles are different
+     */
     public boolean checkDiagonal(TileSlot[][] shelfMatrix, Coordinates coordinates) {
 
 
@@ -397,6 +425,15 @@ public class Utils implements Serializable {
     }
 
 
+    /**
+     * method that checks if four adjacent tiles are the same colour
+     *
+     * @param tileSlot1
+     * @param tileSlot2
+     * @param tileSlot3
+     * @param tileSlot4
+     * @return true if they are all the same colour
+     */
     public boolean checkGroupsOfFour(TileSlot tileSlot1, TileSlot tileSlot2, TileSlot tileSlot3, TileSlot tileSlot4) {
         if (!(tileSlot1.isFree()) && !(tileSlot2.isFree()) && !(tileSlot3.isFree()) && !(tileSlot4.isFree()) &&
                 tileSlot1.getAssignedTile().getColour() == tileSlot2.getAssignedTile().getColour() &&
@@ -412,6 +449,13 @@ public class Utils implements Serializable {
         return false;
     }
 
+    /**
+     * method that checks if two adjacent tiles are the same colour
+     *
+     * @param tileSlot1
+     * @param tileSlot2
+     * @return true if they are all the same colour
+     */
     public boolean checkGroupsOfTwo(TileSlot tileSlot1, TileSlot tileSlot2) {
         if (!(tileSlot1.isFree()) && !(tileSlot2.isFree()) &&
                 tileSlot1.getAssignedTile().getColour() == tileSlot2.getAssignedTile().getColour()) {
@@ -423,6 +467,12 @@ public class Utils implements Serializable {
         return false;
     }
 
+    /**
+     * method that counts how many points each playes got with the groups of the same colour
+     *
+     * @param shelf player's shelf
+     * @return player's points
+     */
     public int groupScore(Shelf shelf) {
         TileSlot[][] shelfMatrix = shelf.getShelf();
         TileSlot[][] copy = copy(shelfMatrix);
@@ -462,45 +512,69 @@ public class Utils implements Serializable {
         return addedScore;
     }
 
+    /**
+     *
+     * @param copy
+     * @param colour
+     * @param j
+     * @param k
+     * @param visited
+     * @return
+     */
     public int ricorsiva(TileSlot[][] copy, ColourTile colour, int j, int k, boolean[][] visited) {
         if (j < 5 && k < 4) {
-
-            if (visited[j][k] || copy[j][k].isFree() || (copy[j + 1][k].getAssignedTile().getColour() != colour && copy[j][k + 1].getAssignedTile().getColour() != colour)) {
+            if (visited[j][k] || copy[j][k].isFree() ||
+                    (!copy[j][k].isFree() && copy[j][k].getAssignedTile().getColour() != colour) ||
+                    (!copy[j + 1][k].isFree() && copy[j + 1][k].getAssignedTile().getColour() != colour) ||
+                    (!copy[j][k + 1].isFree() && copy[j][k + 1].getAssignedTile().getColour() != colour)) {
                 return 0;
             }
 
             visited[j][k] = true;
 
-            if (copy[j + 1][k].getAssignedTile().getColour() == colour && copy[j][k + 1].getAssignedTile().getColour() == colour) {
+            if (!copy[j + 1][k].isFree() && copy[j + 1][k].getAssignedTile().getColour() == colour &&
+                    !copy[j][k + 1].isFree() && copy[j][k + 1].getAssignedTile().getColour() == colour) {
                 return 2 + ricorsiva(copy, colour, j + 1, k, visited) + ricorsiva(copy, colour, j, k + 1, visited);
             }
-            if (copy[j + 1][k].getAssignedTile().getColour() == colour && copy[j][k + 1].getAssignedTile().getColour() != colour) {
+            if (!copy[j + 1][k].isFree() && copy[j + 1][k].getAssignedTile().getColour() == colour &&
+                    (!copy[j][k + 1].isFree() && copy[j][k + 1].getAssignedTile().getColour() != colour)) {
                 return 1 + ricorsiva(copy, colour, j + 1, k, visited);
-
             }
-            if (copy[j + 1][k].getAssignedTile().getColour() != colour && copy[j][k + 1].getAssignedTile().getColour() == colour) {
+            if ((!copy[j + 1][k].isFree() && copy[j + 1][k].getAssignedTile().getColour() != colour) &&
+                    !copy[j][k + 1].isFree() && copy[j][k + 1].getAssignedTile().getColour() == colour) {
                 return 1 + ricorsiva(copy, colour, j, k + 1, visited);
             }
         } else if (j == 5 && k < 4) {
-            if (copy[j][k + 1].getAssignedTile().getColour() == colour) {
+            if (!copy[j][k + 1].isFree() && copy[j][k + 1].getAssignedTile().getColour() == colour) {
                 return 1 + ricorsiva(copy, colour, j, k + 1, visited);
-            } else return 0;
-
+            } else {
+                return 0;
+            }
         } else if (j < 5 && k == 4) {
-            if (copy[j + 1][k].getAssignedTile().getColour() == colour) {
+            if (!copy[j + 1][k].isFree() && copy[j + 1][k].getAssignedTile().getColour() == colour) {
                 return 1 + ricorsiva(copy, colour, j + 1, k, visited);
-            } else return 0;
-
+            } else {
+                return 0;
+            }
         } else if (j == 5 && k == 4) {
-            if (copy[j][k].getAssignedTile().getColour() == colour) {
+            if (!copy[j][k].isFree() && copy[j][k].getAssignedTile().getColour() == colour) {
                 return 1;
-            } else return 0;
+            } else {
+                return 0;
+            }
         }
 
         return 0;
     }
 
 
+
+
+    /**
+     *
+     * @param shelf
+     * @param personalCardTiles
+     */
     public void shelfDebug(Shelf shelf, PersonalCardTile[] personalCardTiles) {
         for (PersonalCardTile personalCardTile : personalCardTiles) {
             shelf.getShelf()[personalCardTile.coordinates().getRow()][personalCardTile.coordinates().getColumn()].assignTile(new Tile(personalCardTile.colourTile()));

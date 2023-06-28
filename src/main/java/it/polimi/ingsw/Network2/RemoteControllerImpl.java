@@ -52,36 +52,24 @@ public class RemoteControllerImpl extends UnicastRemoteObject implements RemoteC
     @Override
     public void onMessage(Message message) throws RemoteException {
 
+        System.out.println(message.typeMessage());
 
-        if (message.typeMessage().equals("LoginMessage")) {
-            registerPlayer(message.getGameID(), message.getNickname(), message.getUID());
+        switch (message.typeMessage()){
+            case "LoginMessage"-> registerPlayer(message.getGameID(), message.getNickname(), message.getUID());
+            case "PreLoginMessage"-> preRegistration(message);
+            case "SetMessage"->setMaxPlayers(message);
+            case "RemoveMessage"->remove(message.getGameID(), message.getPositions(), message.getUID());
+            case "TurnMessage"->turn(message.getGameID(), message.getColours(), message.getColumn(), message.getNickname(), message.getUID());
+            case "BoardMessage"->sendBoard(message.getGameID());
+            default -> throw new IllegalStateException("Unexpected value: " + message.typeMessage());
         }
-
-        if (message.typeMessage().equals("PreLoginMessage")) {
-            preRegistration(message);
-        }
-
-        if (message.typeMessage().equals("SetMessage")) {
-            setMaxPlayers(message);
-        }
-        if (message.typeMessage().equals("RemoveMessage")) {
-            remove(message.getGameID(), message.getPositions(), message.getUID());
-        }
-        if (message.typeMessage().equals("TurnMessage")) {
-            turn(message.getGameID(), message.getColours(), message.getColumn(), message.getNickname(), message.getUID());
-        }
-        if (message.typeMessage().equals("BoardMessage")) {
-            sendBoard(message.getGameID(), message.getNickname(), message.getUID());
-        }
-
-
     }
 
 
     public void preRegistration(Message message) throws RemoteException {
+        System.out.println("la lobby è lunga : " + lobby.size() + message.getNickname());
         for (int i = 0; i < lobby.size(); i++) {
-
-System.out.println("la lobby è lunga : " + lobby.size());
+            System.out.println("la lobby n " + i + " è lunga : " + lobby.get(i).size() +"     ..." + message.getNickname());
             if (lobby.get(i).size() == 0) {
                 lobby.get(i).add(new Pair<>(message.getUID(), message.getNickname()));
                 int gameID = startGame();
@@ -217,14 +205,13 @@ System.out.println("la lobby è lunga : " + lobby.size());
         sendCards(gameID);
 
         int pos = -1;
-        for (int i = 0; i < lobby.size(); i++) {
+        for (int i = 0; i < lobby.size(); i++){
             if (lobby.get(i).get(0).getKey().equals(message.getUID())) {
                 pos = i;
                 System.out.println("la pos è " + pos);
                 break;
             }
         }
-
         if (lobby.get(pos).size() > maxPlayers) {
             System.out.println("entra in lobby.get(pos).size() > maxPlayers");
 
@@ -262,6 +249,18 @@ System.out.println("la lobby è lunga : " + lobby.size());
                 }
             }
         }
+
+        Long tempUID = clients.get(gameID).get(0).getUID();
+        int maxLobbyIndex = -1;
+        for(int i = 0; i<lobby.size(); i++){
+            if(lobby.get(i).get(0).getKey().equals(tempUID)){
+                maxLobbyIndex = i;
+            }
+        }
+        lobby.remove(maxLobbyIndex);
+        lobby.add(new ArrayList<>());
+
+
 
     }
 
@@ -324,6 +323,7 @@ System.out.println("la lobby è lunga : " + lobby.size());
     public void initGame(int gameID) throws RemoteException {
         try {
             this.masterController.getGameController(gameID).initGame();
+
             for (int i = 0; i < clients.get(gameID).size(); i++) {
                 Message initResponse = new InitResponse(gameID,clients.get(gameID).get(i).getUID());
                 clients.get(gameID).get(i).sendMessage(initResponse);
@@ -383,7 +383,7 @@ System.out.println("la lobby è lunga : " + lobby.size());
                     clients.get(gameID).get(getPosition(UID, gameID)).sendMessage(message);
                     String winner = getWinner(gameID);
                     for (int j = 0; j < clients.get(gameID).size(); j++) {
-                        clients.get(gameID).get(i).sendMessage(new EndMessage(winner,gameID,UID));
+                        clients.get(gameID).get(j).sendMessage(new EndMessage(winner,gameID,UID));
                     }
                     return;
                 }
@@ -414,7 +414,7 @@ System.out.println("la lobby è lunga : " + lobby.size());
     }
 
 
-    public void sendBoard(int gameID, String nickname, Long UID) throws RemoteException{
+    public void sendBoard(int gameID) throws RemoteException{
         TileSlot[][] board = masterController.getGameController(gameID).getBoard();
         ColourTile[][] colours = new ColourTile[11][11];
         for(int i = 0; i < 11; i++){
