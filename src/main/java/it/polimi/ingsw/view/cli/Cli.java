@@ -575,7 +575,7 @@ public class Cli extends ClientManager {
             out.print(" " + i + "  ");
         }
         out.print("\n");
-        for (int i = 0; i < 6; i++) {
+        for (int i = 5; i >=0; i--) {
             for (int j = 0; j < 5; j++) {
                 System.out.print(getColorCode(colourTiles[i][j]) + "*** " + ANSI_RESET);
             }
