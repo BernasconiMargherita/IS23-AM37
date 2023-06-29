@@ -9,9 +9,12 @@ Il risultato finale copre completamente le regole definite dal gioco e permette 
 
 ### UML<br>
 
-I seguenti diagrammi delle classi rappresentano il modello secondo il quale il gioco dovrebbe essere stato implementato, e i diagrammi del prodotto finale nelle parti critiche riscontrate.<br>
-- [UML iniziale](URL del link)
-- [UML finale](URL del link)
+I seguenti diagrammi delle classi rappresentano rispettivamente gli UML di alto livello e di dettagli del server e dei client, e l'UML del protocollo di comunicazione:<br>
+
+- [UML alto livello](URL del link)
+- [UML dettaglio](URL del link)
+- [UML protocollo](URL del link)
+
 
 ### JavaDoc <br>
 
@@ -47,7 +50,9 @@ Per lanciare il client in modalità CLI digitare il seguente comando:<br>
 java -jar client.jar cli
  
 
-**GUI**
+**GUI**<br>
+Per poter lanciare il client con l'interfaccia grafica è necessario importare le dipendenze di JavaFx. 
+A questo punto digitare il seguente comando che importa le dipendenze e lancia il client:
 
 
 ### Server<br>
