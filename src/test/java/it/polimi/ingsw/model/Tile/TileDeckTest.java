@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.Tile;
 import it.polimi.ingsw.Exception.SoldOutTilesException;
 import org.junit.jupiter.api.Test;
 
-class TileDeckTest {
+public class TileDeckTest {
     @Test
     void randomDrawAll() {
         TileDeck tileDeck = new TileDeck();

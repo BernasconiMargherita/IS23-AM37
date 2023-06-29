@@ -3,7 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.Player.Player;
 import org.junit.jupiter.api.Test;
 
-class GameTest {
+public class GameTest {
 
     static Game FullGame() {
         Game game = new Game();

@@ -1,5 +1,5 @@
 package it.polimi.ingsw.Utils;
 
-class CoordinatesTest {
+ public class CoordinatesTest {
 
 }

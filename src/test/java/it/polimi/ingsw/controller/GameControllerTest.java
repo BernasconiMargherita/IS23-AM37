@@ -10,10 +10,10 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-class GameControllerTest {
+public class GameControllerTest {
 
     @Test
-    void login() {
+    public void login() {
         GameController gameController = new GameController();
         try {
             gameController.login("Nicola");
@@ -30,7 +30,7 @@ class GameControllerTest {
     }
 
     @Test
-    void login5Players() {
+    public void login5Players() {
         GameController gameController = new GameController();
         try {
             gameController.login("Nicola");
@@ -48,7 +48,7 @@ class GameControllerTest {
     }
 
     @Test
-    void loginUsername() {
+    public void loginUsername() {
         GameController gameController = new GameController();
         try {
             gameController.login("Nicola");
@@ -65,7 +65,7 @@ class GameControllerTest {
     }
 
     @Test
-    void GameAlreadyStarted() {
+    public void GameAlreadyStarted() {
         GameController gameController = new GameController();
         try {
             gameController.login("Nicola");
@@ -101,7 +101,7 @@ class GameControllerTest {
 
 
     @Test
-    void turn() {
+    public void turn() {
         GameController gameController = new GameController();
         Player firstPlayer = null;
         try {
@@ -151,18 +151,18 @@ class GameControllerTest {
 
 
     @Test
-    void endGame() {
+    public void endGame() {
     }
 
     @Test
-    void nextTurn() {
+    public void nextTurn() {
     }
 
     @Test
-    void getPlayerByNickname() {
+    public void getPlayerByNickname() {
     }
 
     @Test
-    void setMaxPlayers() {
+    public void setMaxPlayers() {
     }
 }

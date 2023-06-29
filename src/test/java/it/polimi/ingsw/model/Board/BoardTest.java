@@ -17,7 +17,6 @@ import java.util.ArrayList;
 /**
  * Unit test for simple App.
  */
-
 public class BoardTest {
     @Test
     public void twoPlayersCorrectTilesDisposition() throws SoldOutTilesException {
@@ -91,7 +90,7 @@ public class BoardTest {
     }
 
     @Test
-    void emptySlotOnBoard() throws EmptySlotException, InvalidSlotException, SoldOutTilesException{
+    public void emptySlotOnBoard() throws EmptySlotException, InvalidSlotException, SoldOutTilesException{
         Board board = new Board(2);
         Tile[] tiles = new Tile[1];
 
@@ -110,7 +109,7 @@ public class BoardTest {
 
     @Test
 
-    void invalidSlotOnBoard() throws EmptySlotException, InvalidSlotException , SoldOutTilesException, InvalidPositionsException{
+    public void invalidSlotOnBoard() throws EmptySlotException, InvalidSlotException , SoldOutTilesException, InvalidPositionsException{
         Board board = new Board(2);
         Tile[] tiles = new Tile[1];
 
@@ -130,7 +129,7 @@ public class BoardTest {
     @Test
 
 
-    void validPositionsInBoard() throws InvalidPositionsException, InvalidSlotException, EmptySlotException, SoldOutTilesException{
+    public void validPositionsInBoard() throws InvalidPositionsException, InvalidSlotException, EmptySlotException, SoldOutTilesException{
         Board board = new Board(4);
         Tile[] tiles;
 
@@ -156,7 +155,7 @@ public class BoardTest {
     }
 
     @Test
-    void getNullTile(){
+    public void getNullTile(){
         try {
             Board board=new Board(2);
             ColourTile colourTile = board.getBoard()[0][0].getAssignedTile().getColour();

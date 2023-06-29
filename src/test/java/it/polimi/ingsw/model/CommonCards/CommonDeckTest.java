@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 
-class CommonDeckTest {
+public class CommonDeckTest {
 
     @Test
     void twoDifferentCards() {

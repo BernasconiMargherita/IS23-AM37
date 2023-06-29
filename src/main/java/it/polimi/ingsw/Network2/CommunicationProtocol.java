@@ -61,7 +61,15 @@ public interface CommunicationProtocol extends Remote {
      */
     long getUID() throws RemoteException;
 
+    /**
+     * handles the ping service, receiving the one from the server and resetting the timer for the server disconnection
+     */
     void ping() throws RemoteException;
+
+    /**
+     * resets the client timer that ensures the responsiveness of the server
+     */
+    void resetTimer() throws RemoteException;
 
 
 }

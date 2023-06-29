@@ -16,11 +16,14 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * The TCPCommunicationProtocol class represents a communication protocol using TCP for remote communication.
  */
 public class TCPCommunicationProtocol extends UnicastRemoteObject implements CommunicationProtocol,Runnable {
+    private static final long PING_TIMEOUT = 8000;
     private final String serverIp;
     private final int serverPort;
     private PrintWriter out;
@@ -28,6 +31,7 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
     private long UID;
     private Socket socket = null;
     private final ArrayList<Message> messageList;
+    private Timer timer;
 
     /**
      * Constructs a TCPCommunicationProtocol object with the specified server IP and port.
@@ -104,9 +108,25 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
     }
 
     @Override
-    public void ping() {
+    public void ping() throws RemoteException {
         System.out.println("ping");
         sendMessage(new PingMessage(-1,UID));
+        resetTimer();
+    }
+
+    @Override
+    public void resetTimer() {
+        if (timer != null) {
+            timer.cancel();
+        }
+
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                onMessage(new DisconnectionMessage(-1,UID,true));
+            }
+        }, PING_TIMEOUT);
     }
 
 

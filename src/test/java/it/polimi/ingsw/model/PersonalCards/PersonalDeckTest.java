@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.PersonalCards;
 
 import org.junit.jupiter.api.Test;
 
-class PersonalDeckTest {
+public class PersonalDeckTest {
     @Test
     void personalDeckTest() {
         PersonalDeck personalDeck = new PersonalDeck(2);

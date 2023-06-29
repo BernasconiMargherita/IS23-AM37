@@ -6,6 +6,7 @@ import it.polimi.ingsw.Utils.Coordinates;
 import it.polimi.ingsw.model.CommonCards.CardCommonTarget;
 import it.polimi.ingsw.model.PersonalCards.CardPersonalTarget;
 import it.polimi.ingsw.model.Tile.ColourTile;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -95,6 +96,8 @@ public class GameSceneController {
     @FXML
     private Button remakeTurnButton;
 
+    private GuiMaster guiMaster;
+
 
     /**
      * Method to initialize the scene, also setting the controller in the Gui Master
@@ -102,7 +105,7 @@ public class GameSceneController {
     @FXML
     public void initialize() {
 
-        GuiMaster guiMaster = GuiMaster.getInstance();
+        guiMaster = GuiMaster.getInstance();
         guiMaster.setGameSceneController(this);
 
         
@@ -503,11 +506,11 @@ public class GameSceneController {
 
         Button closeButton = new Button("Close game");
         closeButton.setOnAction(event -> {
-            closeConnection();
+            guiMaster.closeConnection();
             modalStage.close();
 
-            Stage mainStage = (Stage) closeButton.getScene().getWindow();
-            mainStage.close();
+            Platform.exit();
+            System.exit(0);
         });
 
         VBox modalVBox = new VBox(winnerLabel, closeButton);
@@ -519,12 +522,6 @@ public class GameSceneController {
         modalStage.showAndWait();
     }
 
-    /**
-     * Method to close the connection
-     */
-    private void closeConnection() {
-        GuiMaster.getInstance().closeConnection();
-    }
 
     /**
      * Method that starts a player turn, invoked when a wakeMessage arrives,and sends a BoardMessage to request the board
@@ -690,6 +687,42 @@ public class GameSceneController {
     }
 
     public void disconnectionMessage(DisconnectionMessage disconnectionMessage) {
-        //
+        Stage modalStage = new Stage();
+        modalStage.initModality(Modality.APPLICATION_MODAL);
+        modalStage.setTitle("Disconnection");
+        Button closeButton = null;
+        Label errorLabel = null;
+        if (disconnectionMessage.isServerError()) {
+            errorLabel = new Label("Server down, game finished");
+
+            closeButton = new Button("Close Game");
+            Button finalCloseButton = closeButton;
+
+            closeButton.setOnAction(event -> {
+                modalStage.close();
+
+                Platform.exit();
+            });
+
+        } else {
+            errorLabel = new Label("Someone disconnected, game finished");
+
+            closeButton = new Button("Return to login");
+            closeButton.setOnAction(event -> {
+                guiMaster.closeConnection();
+                modalStage.close();
+
+                Scene scene = rootPane.getScene();
+                GuiMaster.setLayout(scene, "/fxml/loginScene.fxml");
+            });
+        }
+
+        VBox modalVBox = new VBox(errorLabel, closeButton);
+        modalVBox.setStyle("-fx-padding: 20px; -fx-spacing: 10px");
+
+        Scene modalScene = new Scene(modalVBox);
+
+        modalStage.setScene(modalScene);
+        modalStage.showAndWait();
     }
 }

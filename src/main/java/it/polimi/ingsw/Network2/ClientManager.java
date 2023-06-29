@@ -26,6 +26,10 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
         new Thread(this).start();
     }
 
+    /**
+     * the implementation of the onUpdate method, that handles the various message, adding them to a queue of runnable
+     * @param message The incoming message
+     */
     @Override
     public void onUpdate(Message message) {
         System.out.println(message.typeMessage());

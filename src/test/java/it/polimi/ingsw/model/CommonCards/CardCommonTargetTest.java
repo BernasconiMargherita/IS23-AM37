@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.CommonCards;
 
 import org.junit.jupiter.api.Test;
 
-class CardCommonTargetTest {
+public class CardCommonTargetTest {
 
     @Test
     void getScoringToken() {

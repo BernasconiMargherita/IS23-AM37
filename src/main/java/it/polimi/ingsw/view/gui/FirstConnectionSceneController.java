@@ -4,13 +4,13 @@ import it.polimi.ingsw.Network2.Client;
 import it.polimi.ingsw.Network2.Messages.DisconnectionMessage;
 import it.polimi.ingsw.Network2.Messages.SetMessage;
 import it.polimi.ingsw.Network2.Messages.SetResponse;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.util.Objects;
 
@@ -89,7 +89,44 @@ public class FirstConnectionSceneController {
     }
 
     public void disconnectionMessage(DisconnectionMessage disconnectionMessage) {
-        GuiMaster.getInstance().getClient().closeConnection();
-        //far vedere al cliente
+
+        Stage modalStage = new Stage();
+        modalStage.initModality(Modality.APPLICATION_MODAL);
+        modalStage.setTitle("Disconnection");
+        Button closeButton = null;
+        Label errorLabel = null;
+        if (disconnectionMessage.isServerError()) {
+            errorLabel = new Label("Server down, game finished");
+
+            closeButton = new Button("Close Game");
+            Button finalCloseButton = closeButton;
+
+            closeButton.setOnAction(event -> {
+                modalStage.close();
+
+                Platform.exit();
+
+            });
+
+        } else {
+            errorLabel = new Label("Someone disconnected, game finished");
+
+            closeButton = new Button("Return to login");
+            closeButton.setOnAction(event -> {
+                guiMaster.closeConnection();
+                modalStage.close();
+
+                Scene scene = rootPane.getScene();
+                GuiMaster.setLayout(scene, "/fxml/loginScene.fxml");
+            });
+        }
+
+        VBox modalVBox = new VBox(errorLabel, closeButton);
+        modalVBox.setStyle("-fx-padding: 20px; -fx-spacing: 10px");
+
+        Scene modalScene = new Scene(modalVBox);
+
+        modalStage.setScene(modalScene);
+        modalStage.showAndWait();
     }
 }

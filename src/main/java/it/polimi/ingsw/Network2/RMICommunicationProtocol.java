@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Network2;
 
 
+import it.polimi.ingsw.Network2.Messages.DisconnectionMessage;
 import it.polimi.ingsw.Network2.Messages.Message;
 
 import java.io.Serializable;
@@ -11,6 +12,8 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * The RMICommunicationProtocol class represents an implementation of the CommunicationProtocol interface
@@ -19,10 +22,12 @@ import java.util.List;
  * and implements the Serializable interface for object serialization.
  */
 public class RMICommunicationProtocol extends UnicastRemoteObject implements CommunicationProtocol, Serializable {
+    private static final long PING_TIMEOUT = 8000;
     private final String serverUrl;
     private ArrayList<Message> messageList=new ArrayList<>();
     private ServerInterface server;
     long UID;
+    private Timer timer;
 
     /**
      * Constructs a new RMICommunicationProtocol instance with the specified server URL.
@@ -70,12 +75,14 @@ public class RMICommunicationProtocol extends UnicastRemoteObject implements Com
 
     @Override
     public void closeConnection() {
-        try {
-            server.disconnect(UID);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
+        if (server!=null) {
+            try {
+                server.disconnect(UID);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+            server = null;
         }
-        server = null;
     }
 
     @Override
@@ -95,7 +102,26 @@ public class RMICommunicationProtocol extends UnicastRemoteObject implements Com
 
     @Override
     public void ping() throws RemoteException {
-        System.out.println("ping arrivato");
+        System.out.println("Ping received");
+        resetTimer();
+    }
+
+    public void resetTimer() {
+        if (timer != null) {
+            timer.cancel();
+        }
+
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    onMessage(new DisconnectionMessage(-1,UID, true));
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }, PING_TIMEOUT);
     }
 
 

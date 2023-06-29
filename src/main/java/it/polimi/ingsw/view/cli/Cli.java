@@ -713,7 +713,9 @@ public class Cli extends ClientManager {
 
     @Override
     public void disconnectionMessage(DisconnectionMessage disconnectionMessage) {
-
+        closeConnection();
+        out.println("Disconnection occurred,game finished\n");
+        out.println("If you want to play again type yes,type no for close\n");
     }
 
 

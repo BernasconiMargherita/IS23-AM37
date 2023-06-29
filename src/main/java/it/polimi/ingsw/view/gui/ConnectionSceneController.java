@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.Network2.Client;
 import it.polimi.ingsw.Network2.Messages.*;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
@@ -12,7 +13,10 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Screen;
+import javafx.stage.Stage;
 
 import java.util.Objects;
 
@@ -131,6 +135,41 @@ public class ConnectionSceneController {
     }
 
     public void disconnectionMessage(DisconnectionMessage disconnectionMessage) {
-        //
+        Stage modalStage = new Stage();
+        modalStage.initModality(Modality.APPLICATION_MODAL);
+        modalStage.setTitle("Disconnection");
+        Button closeButton = null;
+        Label errorLabel = null;
+        if (disconnectionMessage.isServerError()) {
+            errorLabel = new Label("Server down, game finished");
+
+            closeButton = new Button("Close Game");
+            Button finalCloseButton = closeButton;
+
+            closeButton.setOnAction(event -> {
+                modalStage.close();
+                Platform.exit();
+            });
+
+        } else {
+            errorLabel = new Label("Someone disconnected, game finished");
+
+            closeButton = new Button("Return to login");
+            closeButton.setOnAction(event -> {
+                guiMaster.closeConnection();
+                modalStage.close();
+
+                Scene scene = rootPane.getScene();
+                GuiMaster.setLayout(scene, "/fxml/loginScene.fxml");
+            });
+        }
+
+        VBox modalVBox = new VBox(errorLabel, closeButton);
+        modalVBox.setStyle("-fx-padding: 20px; -fx-spacing: 10px");
+
+        Scene modalScene = new Scene(modalVBox);
+
+        modalStage.setScene(modalScene);
+        modalStage.showAndWait();
     }
 }

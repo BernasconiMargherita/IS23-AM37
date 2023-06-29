@@ -56,8 +56,10 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
     }
 
 
-
-
+    /**
+     * starts the ping service in the lobby, disconnecting all the players in a same lobby if someone disconnected
+     * @param pos the number of the lobby
+     */
     public void startLobbyPingTimer(int pos, Timer timer) {
         System.out.println("timer partito!");
         timer.schedule(new TimerTask() {
@@ -92,7 +94,7 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
                             if (tempRmi.containsKey(clientId)) {
                                 CommunicationProtocol client = tempRmi.get(clientId);
                                 try {
-                                    client.onMessage(new DisconnectionMessage(-1, clientId));
+                                    client.onMessage(new DisconnectionMessage(-1, clientId, false));
                                 } catch (RemoteException e) {
                                     throw new RuntimeException(e);
                                 }
@@ -105,21 +107,24 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
                                 } catch (IOException e) {
                                     throw new RuntimeException(e);
                                 }
-                                out.println(new DisconnectionMessage(-1,clientId).toJson());
+                                out.println(new DisconnectionMessage(-1,clientId, false).toJson());
                                 out.flush();
                             }
 
                         }
                         lobbyTimers.get(pos).cancel();
                         lobbyTimers.remove(pos);
+                        lobby.remove(pos);
                     }
             }
         }, 0,PING_INTERVAL);
     }
 
 
-
-
+    /**
+     * Starts the ping service in the game, disconnecting all the players in a same game if someone disconnected
+     * @param gameID the game id of the game
+     */
 
     public void startGamePingTimer(int gameID, Timer timer) {
         System.out.println("timer PARTITA partito!");
@@ -152,7 +157,7 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
 
                     for (int i=0;i<clients.get(gameID).size();i++){
                         Long clientId = clients.get(gameID).get(i).getUID();
-                        clients.get(gameID).get(i).sendMessage(new DisconnectionMessage(-1, clientId));
+                        clients.get(gameID).get(i).sendMessage(new DisconnectionMessage(-1, clientId, false));
                     }
                     gameTimers.get(gameID).cancel();
                     gameTimers.remove(gameID);
@@ -185,7 +190,7 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
 
 
     /**
-     * Performs pre-registration for the given message.
+     * Performs pre-registration for the player that sent the message.
      *
      * @param message the message for pre-registration
      * @throws RemoteException if there is an error in the remote communication
@@ -193,6 +198,9 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
     public void preRegistration(Message message) throws RemoteException {
         synchronized (lobby){
             System.out.println("la lobby è lunga : " + lobby.size() + message.getNickname());
+
+            if (lobby.size()==0)lobby.add(new ArrayList<>());
+
             for (int i = 0; i < lobby.size(); i++) {
                 System.out.println("la lobby n " + i + " è lunga : " + lobby.get(i).size() + "     ..." + message.getNickname());
                 if (lobby.get(i).size() == 0) {
@@ -224,6 +232,10 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
         }
     }
 
+    /**
+     * removes an RMI client from the list of all rmi connection if a disconnection occurs
+     * @param UID the unique identifier of the client
+     */
     @Override
     public void removeRmiClient(Long UID) {
         tempRmi.remove(UID);

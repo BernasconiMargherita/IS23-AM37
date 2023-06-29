@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-class PlayerTest {
+public class PlayerTest {
     @Test
     void testAddScore() {
         Player player = new Player("testPlayer");
