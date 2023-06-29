@@ -37,7 +37,7 @@ public class RMICommunicationProtocol extends UnicastRemoteObject implements Com
      */
     public RMICommunicationProtocol(String serverUrl) throws RemoteException {
         super();
-        Registry registry = LocateRegistry.getRegistry("localhost", 5001);
+        Registry registry = LocateRegistry.getRegistry("localhost", 5010);
         try {
             server = (ServerInterface) registry.lookup(serverUrl);
         } catch (NotBoundException e) {
