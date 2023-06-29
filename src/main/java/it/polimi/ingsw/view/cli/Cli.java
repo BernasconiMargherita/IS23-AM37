@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.CommonCards.CommonList;
 import it.polimi.ingsw.model.PersonalCards.CardPersonalTarget;
 import it.polimi.ingsw.model.Tile.ColourTile;
 
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -40,6 +41,7 @@ public class Cli extends ClientManager {
     private Scanner in;
     private static final String TEXT_BLACK = "\u001B[30m";
     private boolean emptyShelf;
+    private ArrayList<String> chatList;
 
     /**
      * Constructs a CLI object with the specified scanner for user input.
@@ -49,7 +51,7 @@ public class Cli extends ClientManager {
     public Cli(Scanner scanner) {
         super();
         in = scanner;
-
+        chatList = new ArrayList<>();
     }
 
 
@@ -290,8 +292,8 @@ public class Cli extends ClientManager {
             printShelf(shelf);
             return true;
         } else if (num == 6){
-                chatMessage(new ChatMessage(-1,4554,"ciao"));
-                return true;
+            chatMode();
+            return true;
         } else return false;
     }
 
@@ -424,6 +426,7 @@ public class Cli extends ClientManager {
         for (int i = 0; i < 3; i++) {
             colors[i] = ColourTile.FREE.toString();
         }
+        chatMode();
 
     }
 
@@ -729,7 +732,49 @@ public class Cli extends ClientManager {
 
     @Override
     public void chatMessage(ChatMessage chatMessage) {
+        chatList.add(chatMessage.getMessage());
 
+    }
+
+    public void sendChatMessage(String message, String nickname){
+        getClient().sendMessage(new ChatMessage(gameID, UID, getClient().getUsername()+ " : " + message));
+    }
+
+    public void chatMode(){
+        while (true){
+            out.println("1: View chat\n2: Send private message\n3: Send broadcast message\n4: Exit from chatMode");
+            int choice = in.nextInt();
+            boolean exit = false;
+            switch(choice){
+                case 1 : {
+                    for (String s : chatList) {
+                        out.println(s);
+                    }
+                }
+
+                case 2 : {
+                    out.println("Choose the player please : ");
+                    for(int i=0; i < getPlayers().size(); i++){
+                        out.println(i +" : " + getPlayers().get(i));
+                    }
+                    String privateNick = getPlayers().get(validInt(0, getPlayers().size()-1));
+                    out.println("Please enter the message you wanna send : ");
+                    String message = in.nextLine();
+                    sendChatMessage(getClient().getUsername()+ " whispers to "+ privateNick+ " : " + message, privateNick);
+                }
+
+                case 3 : {
+                    out.println("Please enter the message you wanna send : ");
+                    sendChatMessage(in.nextLine(), null);
+                }
+
+                case 4 : {
+                    exit = true;
+                    break;
+                }
+            }
+            if(exit)break;
+        }
     }
 
 
