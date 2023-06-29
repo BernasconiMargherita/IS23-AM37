@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.CommonCards.CommonList;
 import it.polimi.ingsw.model.PersonalCards.CardPersonalTarget;
 import it.polimi.ingsw.model.Tile.ColourTile;
 
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -40,6 +41,7 @@ public class Cli extends ClientManager {
     private Scanner in;
     private static final String TEXT_BLACK = "\u001B[30m";
     private boolean emptyShelf;
+    private ArrayList<String> chatList;
 
     /**
      * Constructs a CLI object with the specified scanner for user input.
@@ -49,7 +51,7 @@ public class Cli extends ClientManager {
     public Cli(Scanner scanner) {
         super();
         in = scanner;
-
+        chatList = new ArrayList<>();
     }
 
 
@@ -256,17 +258,17 @@ public class Cli extends ClientManager {
      * @return true to continue, false to exit.
      */
     public boolean display(boolean type) {
-        out.println("What do you want to do?\n1: View common cards\n2: View personal card\n3: View board\n4: View endGameToken\n5: View shelf ");
+        out.println("What do you want to do?\n1: View common cards\n2: View personal card\n3: View board\n4: View endGameToken\n5: View shelf\n6: Chat");
         if (type) {
-            out.println("6: Remove tiles from board");
+            out.println("7: Remove tiles from board");
         } else {
-            out.println("6: Insert in column");
+            out.println("7: Insert in column");
         }
 
         int num = -1;
-        while (num <= 0 || num > 6) {
+        while (num <= 0 || num > 7) {
             num = in.nextInt();
-            if (num <= 0 || num > 6) {
+            if (num <= 0 || num > 7) {
                 out.println("Enter a valid number PLEASE");
             }
         }
@@ -288,6 +290,9 @@ public class Cli extends ClientManager {
             return true;
         } else if (num == 5) {
             printShelf(shelf);
+            return true;
+        } else if (num == 6){
+            chatMode();
             return true;
         } else return false;
     }
@@ -331,22 +336,27 @@ public class Cli extends ClientManager {
             int y = in.nextInt();
             in.nextLine();
             while (true) {
+
                 System.out.println("Are you sure? Answer yes or no");
-                String no = in.nextLine();
-                if (no.equals("no")) {
-                    out.println("Do you want to change row or column?");
-                    String change = in.nextLine();
-                    if (change.equals("row")) {
+                String response = in.nextLine();
+                if (response.equals("no")) {
+                    while(true){
                         out.println("Insert your new row");
                         x = in.nextInt();
-                    } else {
                         out.println("Insert your new column");
                         y = in.nextInt();
-                    } break;
+                        System.out.println("Are you sure? Answer yes or no");
+                        String secResponse = in.nextLine();
+                        if(secResponse.equals("yes")){
+                            coordinates.add(new Coordinates(x,y));
+                            break;
+                        }
+                    }
+                    break;
                 }
-                else if (no.equals("yes")) {
+                else if (response.equals("yes")) {
                     coordinates.add(new Coordinates(x, y));
-
+                    break;
                 }
             }
             colors[i] = board[x][y].toString();
@@ -416,6 +426,7 @@ public class Cli extends ClientManager {
         for (int i = 0; i < 3; i++) {
             colors[i] = ColourTile.FREE.toString();
         }
+        chatMode();
 
     }
 
@@ -721,7 +732,49 @@ public class Cli extends ClientManager {
 
     @Override
     public void chatMessage(ChatMessage chatMessage) {
+        chatList.add(chatMessage.getMessage());
 
+    }
+
+    public void sendChatMessage(String message, String nickname){
+        getClient().sendMessage(new ChatMessage(gameID, UID, getClient().getUsername()+ " : " + message));
+    }
+
+    public void chatMode(){
+        while (true){
+            out.println("1: View chat\n2: Send private message\n3: Send broadcast message\n4: Exit from chatMode");
+            int choice = in.nextInt();
+            boolean exit = false;
+            switch(choice){
+                case 1 : {
+                    for (String s : chatList) {
+                        out.println(s);
+                    }
+                }
+
+                case 2 : {
+                    out.println("Choose the player please : ");
+                    for(int i=0; i < getPlayers().size(); i++){
+                        out.println(i +" : " + getPlayers().get(i));
+                    }
+                    String privateNick = getPlayers().get(validInt(0, getPlayers().size()-1));
+                    out.println("Please enter the message you wanna send : ");
+                    String message = in.nextLine();
+                    sendChatMessage(getClient().getUsername()+ " whispers to "+ privateNick+ " : " + message, privateNick);
+                }
+
+                case 3 : {
+                    out.println("Please enter the message you wanna send : ");
+                    sendChatMessage(in.nextLine(), null);
+                }
+
+                case 4 : {
+                    exit = true;
+                    break;
+                }
+            }
+            if(exit)break;
+        }
     }
 
 
