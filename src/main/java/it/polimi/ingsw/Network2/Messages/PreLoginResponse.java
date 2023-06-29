@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Network2.Messages;
 
 /**
- * The PreLoginResponse class represents a pre-login response in the application.
+ * The PreLoginResponse class represents a pre-login response in the game.
  */
 public class PreLoginResponse extends Message{
     private String typeMessage ;

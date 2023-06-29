@@ -3,7 +3,7 @@ package it.polimi.ingsw.Network2.Messages;
 import com.google.gson.Gson;
 
 /**
- * The FirstResponse class represents the first response in the application.
+ * The FirstResponse class represents the first response in the game.
  */
 
 public class FirstResponse extends Message{
@@ -12,7 +12,7 @@ public class FirstResponse extends Message{
      * Constructs a FirstResponse object with the specified game ID and unique identifier.
      *
      * @param gameID The ID of the game associated with the first response.
-     * @param UID    The unique identifier of the message.
+     * @param UID    The unique identifier of the client.
      */
     public FirstResponse(int gameID,long UID) {
         super(gameID,UID);

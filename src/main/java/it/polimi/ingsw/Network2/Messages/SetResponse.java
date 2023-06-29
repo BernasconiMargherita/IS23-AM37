@@ -3,7 +3,7 @@ package it.polimi.ingsw.Network2.Messages;
 import java.io.Serializable;
 
 /**
- * The SetResponse class represents a response to the set message in the application.
+ * The SetResponse class represents a response to the set message in the game.
  */
 public class SetResponse extends Message implements Serializable {
     /**

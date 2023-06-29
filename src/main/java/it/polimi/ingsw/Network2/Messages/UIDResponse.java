@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Network2.Messages;
 
 /**
- * The UIDResponse class represents a response containing a unique identifier (UID) in the application.
+ * The UIDResponse class represents a response containing a unique identifier (UID) in the game.
  */
 public class UIDResponse extends Message {
     private String typeMessage ;

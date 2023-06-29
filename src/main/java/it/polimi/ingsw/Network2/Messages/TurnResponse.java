@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.Tile.ColourTile;
 import java.io.Serializable;
 
 /**
- * The TurnResponse class represents a response to a player's turn in the application.
+ * The TurnResponse class represents a response to a player's turn in the game.
  */
 public class TurnResponse extends Message implements Serializable {
 
