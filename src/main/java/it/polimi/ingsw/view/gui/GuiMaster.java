@@ -196,4 +196,9 @@ public class GuiMaster extends ClientManager {
         }
     }
 
+    @Override
+    public void chatMessage(ChatMessage chatMessage) {
+        Platform.runLater(() ->
+                gameSceneController.receivedChatMessage(chatMessage));
+    }
 }

@@ -1,12 +1,14 @@
 package it.polimi.ingsw.Network2.Messages;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * The InitResponse class represents the initial response in the application.
  */
 public class InitResponse extends Message implements Serializable {
 
+    private final ArrayList<String> players;
     private String typeMessage ;
 
     /**
@@ -15,12 +17,15 @@ public class InitResponse extends Message implements Serializable {
      * @param gameID The ID of the game associated with the initial response.
      * @param UID    The unique identifier of the message.
      */
-    public InitResponse(int gameID,long UID) {
+    public InitResponse(int gameID, long UID, ArrayList<String> players) {
         super(gameID,UID);
         this.typeMessage = "InitResponse";
+        this.players=players;
     }
 
-
+    public ArrayList<String> getPlayers() {
+        return players;
+    }
 
     @Override
     public String typeMessage() {

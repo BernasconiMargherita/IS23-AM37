@@ -719,6 +719,10 @@ public class Cli extends ClientManager {
         System.exit(0);
     }
 
+    @Override
+    public void chatMessage(ChatMessage chatMessage) {
+
+    }
 
 
 }

@@ -177,6 +177,7 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
                             case "ReFirstResponse"-> onMessage(gson.fromJson(request, ReFirstResponse.class));
                             case "PingMessage"->ping();
                             case "DisconnectionMessage"->onMessage(gson.fromJson(request, DisconnectionMessage.class));
+                            case "ChatMessage"->onMessage(gson.fromJson(request, ChatMessage.class));
                         }
                     }
 

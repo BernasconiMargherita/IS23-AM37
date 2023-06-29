@@ -7,14 +7,13 @@ import it.polimi.ingsw.model.CommonCards.CardCommonTarget;
 import it.polimi.ingsw.model.PersonalCards.CardPersonalTarget;
 import it.polimi.ingsw.model.Tile.ColourTile;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -41,7 +40,7 @@ public class GameSceneController {
     @FXML
     public ImageView shelf;
     @FXML
-    public ListView<ChatMessage> chatListView;
+    public ListView<String> chatListView;
     @FXML
     public TextField messageTextField;
     @FXML
@@ -89,6 +88,14 @@ public class GameSceneController {
     public GridPane endGameToken;
     @FXML
     public AnchorPane anchorPane;
+    @FXML
+    public Button privateMessageButton;
+    @FXML
+    public RadioButton firstPlayer;
+    @FXML
+    public RadioButton secondPlayer;
+    @FXML
+    public RadioButton thirdPlayer;
     private ColourTile[][] turnBoard;
     private final ArrayList<Coordinates> tileHand=new ArrayList<>();
     private final ArrayList<Coordinates> tileHandTmp=new ArrayList<>();
@@ -97,6 +104,8 @@ public class GameSceneController {
     private Button remakeTurnButton;
 
     private GuiMaster guiMaster;
+    private ObservableList<String> messages;
+    private ToggleGroup playerToggle;
 
 
     /**
@@ -108,6 +117,8 @@ public class GameSceneController {
         guiMaster = GuiMaster.getInstance();
         guiMaster.setGameSceneController(this);
 
+        messages = FXCollections.observableArrayList();
+        chatListView.setItems(messages);
         
         board.fitWidthProperty().bind(boardMask.widthProperty());
         boxArray=new Label[]{box1, box2, box3};
@@ -124,7 +135,10 @@ public class GameSceneController {
 
     }
     public void sendChatMessage(ActionEvent actionEvent) {
-
+        Client client=guiMaster.getClient();
+        String message= client.getUsername()+ " : " +messageTextField.getText();
+        client.sendMessage(new ChatMessage(client.getGameID(), client.getUID(),message));
+        messageTextField.setText("");
     }
 
     /**
@@ -723,5 +737,15 @@ public class GameSceneController {
 
         modalStage.setScene(modalScene);
         modalStage.showAndWait();
+    }
+
+    public void receivedChatMessage(ChatMessage chatMessage) {
+        messages.add(chatMessage.getMessage());
+        chatListView.scrollTo(messages.size() - 1);
+    }
+
+    public void selectUser(MouseEvent mouseEvent) {
+        playerToggle =new ToggleGroup();
+
     }
 }

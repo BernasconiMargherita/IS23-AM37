@@ -9,6 +9,7 @@ import it.polimi.ingsw.Utils.TileSlot;
 import it.polimi.ingsw.controller.MasterController;
 import it.polimi.ingsw.model.CommonCards.CardCommonTarget;
 import it.polimi.ingsw.model.PersonalCards.CardPersonalTarget;
+import it.polimi.ingsw.model.Player.Player;
 import it.polimi.ingsw.model.Tile.ColourTile;
 import it.polimi.ingsw.model.Tile.Tile;
 import javafx.util.Pair;
@@ -182,8 +183,15 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
             case "RemoveMessage"->remove(message.getGameID(), message.getPositions(), message.getUID());
             case "TurnMessage"->turn(message.getGameID(), message.getColours(), message.getColumn(), message.getNickname(), message.getUID());
             case "BoardMessage"->sendBoard(message.getGameID());
+            case "ChatMessage"->chat(message);
             default -> throw new IllegalStateException("Unexpected value: " + message.typeMessage());
         }
+    }
+
+    private void chat(Message message) {
+      for (int i=0; i<clients.get(message.getGameID()).size();i++) {
+          clients.get(message.getGameID()).get(i).sendMessage(message);
+      }
     }
 
 
@@ -550,9 +558,13 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
     public void initGame(int gameID) throws RemoteException {
         try {
             this.masterController.getGameController(gameID).initGame();
+            ArrayList<String> playersNicknames=new ArrayList<>();
+            for (Player player:masterController.getGameController(gameID).getPlayers()){
+                playersNicknames.add(player.getNickname());
+            }
 
             for (int i = 0; i < clients.get(gameID).size(); i++) {
-                Message initResponse = new InitResponse(gameID,clients.get(gameID).get(i).getUID());
+                Message initResponse = new InitResponse(gameID,clients.get(gameID).get(i).getUID(),playersNicknames);
                 clients.get(gameID).get(i).sendMessage(initResponse);
             }
             currentPlayer(gameID);

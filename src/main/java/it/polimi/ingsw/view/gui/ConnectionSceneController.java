@@ -79,6 +79,7 @@ public class ConnectionSceneController {
      * @param initResponse a Message that confirms the init of the game
      */
     public void initResponse(InitResponse initResponse) {
+        guiMaster.setNicknames(initResponse.getPlayers());
         Scene scene=rootPane.getScene();
         GuiMaster.setLayout(scene,"/fxml/gameScene.fxml");
     }

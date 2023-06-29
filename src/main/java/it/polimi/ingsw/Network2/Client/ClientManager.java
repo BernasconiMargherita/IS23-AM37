@@ -6,6 +6,7 @@ import it.polimi.ingsw.Network2.Client.Communication.TCPCommunicationProtocol;
 import it.polimi.ingsw.Network2.Messages.*;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -21,6 +22,9 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
     private Client client;
 
     private final Queue<Runnable> queue= new LinkedBlockingQueue<>();
+    private ArrayList<String> players;
+
+
 
     /**
      * Constructs a ClientManager object and starts a new thread for running the message handling loop.
@@ -52,9 +56,9 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
             case "CardsResponse"-> handleCardResponse((CardsResponse) message);
             case "ReFirstResponse"-> handleReFirstResponse((ReFirstResponse) message);
             case "DisconnectionMessage"-> handleDisconnectionMessage((DisconnectionMessage) message);
+            case "ChatMessage"->handleChatMessage((ChatMessage) message);
         }
     }
-
 
 
     /**
@@ -112,8 +116,12 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
     private void handleWakeMessage(WakeMessage message) {
         queue.add(()->wakeUp(message));
     }
+
     private void handleDisconnectionMessage(DisconnectionMessage message) {
         queue.add(()->disconnectionMessage(message));
+    }
+    private void handleChatMessage(ChatMessage message) {
+        queue.add(()->chatMessage(message));
     }
 
     @Override
@@ -189,5 +197,13 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
      */
     public Client getClient() {
         return client;
+    }
+
+    public void setNicknames(ArrayList<String> players) {
+        this.players=players;
+    }
+
+    public ArrayList<String> getPlayers() {
+        return players;
     }
 }

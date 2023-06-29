@@ -116,4 +116,5 @@ public interface ClientListener {
      */
     void disconnectionMessage(DisconnectionMessage disconnectionMessage);
 
+    void chatMessage(ChatMessage chatMessage);
 }

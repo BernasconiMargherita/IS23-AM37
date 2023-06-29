@@ -205,6 +205,7 @@ class ClientHandler extends Thread {
                 case "RemoveMessage" -> myServer.onMessage(gson.fromJson(request, RemoveMessage.class));
                 case "TurnMessage" -> myServer.onMessage(gson.fromJson(request, TurnMessage.class));
                 case "BoardMessage" -> myServer.onMessage(gson.fromJson(request, BoardMessage.class));
+                case "ChatMessage"->myServer.onMessage(gson.fromJson(request, ChatMessage.class));
             }
         } catch (RemoteException e) {
             e.printStackTrace();
