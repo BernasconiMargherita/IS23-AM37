@@ -6,7 +6,7 @@
 
 
 
-Scopo del progetto è quello di implementare il gioco da tavola MyShelfie, seguendo il pattern architetturale Model View Controller.
+Scopo del progetto è quello di implementare il gioco da tavola [MyShelfie](https://www.craniocreations.it/prodotto/my-shelfie), seguendo il pattern architetturale Model View Controller.
 Il risultato finale copre completamente le regole definite dal gioco e permette di interagirci sia con una interfaccia da linea di comando (CLI) che grafica (GUI), la rete è stata gestita sia con il tradizionale approccio delle socket che con una tecnologia specifica di Java (RMI).<br>
 
 # Documentazione
