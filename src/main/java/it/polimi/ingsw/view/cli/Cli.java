@@ -73,11 +73,11 @@ public class Cli extends ClientManager {
     public void start() {
         this.out = new MyShelfiePrintStream();
         out.println(("Welcome , choose your connection : "));
-        protocol = in.next();
+        protocol = in.next() + in.nextLine();
         while(true){
             if (!(protocol.equals("TCP") || protocol.equals("tcp") || protocol.equals("RMI") || protocol.equals("rmi"))) {
                 out.println("Invalid selection, choose TCP or RMI");
-                protocol = in.next();
+                protocol = in.next() + in.nextLine();
             } else break;
         }
         createConnection(protocol);
@@ -100,7 +100,7 @@ public class Cli extends ClientManager {
      */
     protected void login() {
         out.println("Choose your username\n");
-        username = in.next();
+        username = in.next() + in.nextLine();
         getClient().sendMessage(new PreLoginMessage(-1, UID, username));
         getClient().setUsername(username);
     }
@@ -155,7 +155,7 @@ public class Cli extends ClientManager {
     public void usernameError(UsernameError usernameError) {
         gameID = usernameError.getGameID();
         out.println("Username already exists\nPlease enter new one");
-        username = in.next();
+        username = in.next() + in.nextLine();
         getClient().sendMessage(new LoginMessage(username, gameID, UID));
         getClient().setUsername(username);
     }
@@ -273,7 +273,7 @@ public class Cli extends ClientManager {
 
         int num = -1;
         while (num <= 0 || num > 7) {
-            num = Integer.parseInt(in.next());
+            num = Integer.parseInt(in.next() + in.nextLine());
             if (num <= 0 || num > 7) {
                 out.println("Enter a valid number PLEASE");
             }
@@ -333,27 +333,27 @@ public class Cli extends ClientManager {
         for (int i = 0; i < freeColumnSpace; i++) {
             if (i != 0) {
                 out.println("Do you want to remove other cards?");
-                String is = in.next();
+                String is = in.next() + in.nextLine();
                 if (is.equals("no")) {
                     break;
                 }
             }
             out.println("Insert the coordinates of the cards you want to remove, in order with respect to column insertion in the shelf :\ninsert row:\n");
 
-            int x = Integer.parseInt(in.next());
+            int x = Integer.parseInt(in.next() + in.nextLine());
             out.println("Insert column:");
-            int y = Integer.parseInt(in.next());
+            int y = Integer.parseInt(in.next() + in.nextLine());
             while (true) {
                 System.out.println("Are you sure? Answer yes or no");
-                String response = in.next();
+                String response = in.next() + in.nextLine();
                 if (response.equals("no")) {
                     while(true){
                         out.println("Insert your new row");
-                        x = Integer.parseInt(in.next());
+                        x = Integer.parseInt(in.next() + in.nextLine());
                         out.println("Insert your new column");
-                        y = Integer.parseInt(in.next());
+                        y = Integer.parseInt(in.next() + in.nextLine());
                         System.out.println("Are you sure? Answer yes or no");
-                        String secResponse = in.next();
+                        String secResponse = in.next() + in.nextLine();
                         if(secResponse.equals("yes")){
                             coordinates.add(new Coordinates(x,y));
                             break;
@@ -390,7 +390,7 @@ public class Cli extends ClientManager {
      */
     public void turn() {
         out.println("Choose the column:");
-        int column = Integer.parseInt(in.next());
+        int column = Integer.parseInt(in.next() + in.nextLine());
         ArrayList<String> tempColors = new ArrayList<>();
         for (String color : colors) {
             if (!color.equals(ColourTile.FREE.toString())) {
@@ -693,7 +693,7 @@ public class Cli extends ClientManager {
         int input= -1;
         while (true){
                 try {
-                    input = Integer.parseInt(in.next());
+                    input = Integer.parseInt(in.next() + in.nextLine());
                     if (input<min || input> max) {
                         out.println("Invalid digit");
                     } else break;
@@ -726,7 +726,7 @@ public class Cli extends ClientManager {
     public void chatMode(int type){
         while (true){
             out.println("1: View chat\n2: Send private message\n3: Send broadcast message\n4: Exit from chatMode");
-            int choice =Integer.parseInt(in.next());
+            int choice =Integer.parseInt(in.next() + in.nextLine());
             boolean exit = false;
 
             switch (choice) {
