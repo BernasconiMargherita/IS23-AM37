@@ -3,7 +3,7 @@ package it.polimi.ingsw.Network2.Messages;
 import java.io.Serializable;
 
 /**
- * The LoginMessage class represents a login message in the application.
+ * The LoginMessage class represents a login message in the game.
  */
 public class LoginMessage extends Message implements Serializable {
 

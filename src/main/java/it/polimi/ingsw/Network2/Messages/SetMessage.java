@@ -3,7 +3,7 @@ package it.polimi.ingsw.Network2.Messages;
 import java.io.Serializable;
 
 /**
- * The SetMessage class represents a message for setting the maximum number of players in the application.
+ * The SetMessage class represents a message for setting the maximum number of players in the game.
  */
 public class SetMessage extends Message implements Serializable {
 

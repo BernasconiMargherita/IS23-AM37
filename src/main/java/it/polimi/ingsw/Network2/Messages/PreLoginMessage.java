@@ -3,7 +3,7 @@ package it.polimi.ingsw.Network2.Messages;
 import com.google.gson.Gson;
 
 /**
- * The PreLoginMessage class represents a pre-login message in the application.
+ * The PreLoginMessage class represents a pre-login message in the game.
  */
 public class PreLoginMessage extends Message{
 

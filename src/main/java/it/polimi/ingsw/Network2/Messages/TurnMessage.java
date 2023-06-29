@@ -3,7 +3,7 @@ package it.polimi.ingsw.Network2.Messages;
 import java.io.Serializable;
 
 /**
- * The TurnMessage class represents a message for a player's turn in the application.
+ * The TurnMessage class represents a message for a player's turn in the game.
  */
 public class TurnMessage extends Message implements Serializable {
     private int column;

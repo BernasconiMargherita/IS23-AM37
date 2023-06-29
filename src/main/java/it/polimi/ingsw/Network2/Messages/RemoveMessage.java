@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * The RemoveMessage class represents a message for removing positions in the application.
+ * The RemoveMessage class represents a message for removing positions in the game.
  */
 public class RemoveMessage extends Message implements Serializable {
 

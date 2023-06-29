@@ -573,7 +573,7 @@ public class Utils implements Serializable {
 
 //
     /**
-     *
+     * method created for testing
      *
      * @param shelf
      * @param personalCardTiles

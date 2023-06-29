@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Network2.Messages;
 
 /**
- * The ReFirstResponse class represents a response to the first response in the application.
+ * The ReFirstResponse class represents a response to the first response in the game.
  */
 public class ReFirstResponse extends Message {
     private String typeMessage ;

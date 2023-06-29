@@ -3,7 +3,7 @@ package it.polimi.ingsw.Network2.Messages;
 import java.io.Serializable;
 
 /**
- * The WakeMessage class represents a wake-up message in the application.
+ * The WakeMessage class represents a wake-up message in the game.
  */
 public class WakeMessage extends Message implements Serializable {
     private String typeMessage ;

@@ -3,7 +3,7 @@ package it.polimi.ingsw.Network2.Messages;
 import java.io.Serializable;
 
 /**
- * The ChatMessage class represents a chat message in the application.
+ * The ChatMessage class represents a chat message in the game.
  */
 public class ChatMessage extends Message implements Serializable {
     private final String message;

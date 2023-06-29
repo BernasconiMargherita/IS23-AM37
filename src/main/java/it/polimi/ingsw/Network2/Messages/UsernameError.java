@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Network2.Messages;
 
 /**
- * The UsernameError class represents an error related to a username in the application.
+ * The UsernameError class represents an error related to a username in the game.
  */
 public class UsernameError extends Message{
 

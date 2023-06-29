@@ -2,7 +2,11 @@
 
 **Gruppo AM37**<br>
 
-Scopo del progetto è quello di implementare il gioco da tavola MyShelfie, seguendo il pattern architetturale Model View Controller.
+![Testo alternativo](deliverables/home.jpg)
+
+
+
+Scopo del progetto è quello di implementare il gioco da tavola [MyShelfie](https://www.craniocreations.it/prodotto/my-shelfie), seguendo il pattern architetturale Model View Controller.
 Il risultato finale copre completamente le regole definite dal gioco e permette di interagirci sia con una interfaccia da linea di comando (CLI) che grafica (GUI), la rete è stata gestita sia con il tradizionale approccio delle socket che con una tecnologia specifica di Java (RMI).<br>
 
 # Documentazione
@@ -47,15 +51,22 @@ Il client viene eseguito scegliendo l'interfaccia con cui giocare, le possibili 
 
 **CLI**<br>
 Per lanciare il client in modalità CLI digitare il seguente comando:<br>
-java -jar client.jar cli
+
+      java -jar AM37.jar cli
  
 
 **GUI**<br>
 Per poter lanciare il client con l'interfaccia grafica è necessario importare le dipendenze di JavaFx. 
 A questo punto digitare il seguente comando che importa le dipendenze e lancia il client:
 
+      java -jar AM37.jar gui
+
 
 ### Server<br>
+
+L'esecuzione del server avviene attraverso il seguente comando:
+
+      hhhh  
 
 # Funzionalità
 

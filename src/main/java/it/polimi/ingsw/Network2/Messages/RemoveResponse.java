@@ -3,7 +3,7 @@ package it.polimi.ingsw.Network2.Messages;
 import java.io.Serializable;
 
 /**
- * The RemoveResponse class represents a response to the remove message in the application.
+ * The RemoveResponse class represents a response to the remove message in the game.
  */
 public class RemoveResponse extends Message implements Serializable {
     boolean invalidSequence;
