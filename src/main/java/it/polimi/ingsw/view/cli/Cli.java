@@ -256,17 +256,17 @@ public class Cli extends ClientManager {
      * @return true to continue, false to exit.
      */
     public boolean display(boolean type) {
-        out.println("What do you want to do?\n1: View common cards\n2: View personal card\n3: View board\n4: View endGameToken\n5: View shelf ");
+        out.println("What do you want to do?\n1: View common cards\n2: View personal card\n3: View board\n4: View endGameToken\n5: View shelf\n6: Chat");
         if (type) {
-            out.println("6: Remove tiles from board");
+            out.println("7: Remove tiles from board");
         } else {
-            out.println("6: Insert in column");
+            out.println("7: Insert in column");
         }
 
         int num = -1;
-        while (num <= 0 || num > 6) {
+        while (num <= 0 || num > 7) {
             num = in.nextInt();
-            if (num <= 0 || num > 6) {
+            if (num <= 0 || num > 7) {
                 out.println("Enter a valid number PLEASE");
             }
         }
@@ -289,6 +289,9 @@ public class Cli extends ClientManager {
         } else if (num == 5) {
             printShelf(shelf);
             return true;
+        } else if (num == 6){
+                chatMessage(new ChatMessage(-1,4554,"ciao"));
+                return true;
         } else return false;
     }
 
@@ -331,22 +334,27 @@ public class Cli extends ClientManager {
             int y = in.nextInt();
             in.nextLine();
             while (true) {
+
                 System.out.println("Are you sure? Answer yes or no");
-                String no = in.nextLine();
-                if (no.equals("no")) {
-                    out.println("Do you want to change row or column?");
-                    String change = in.nextLine();
-                    if (change.equals("row")) {
+                String response = in.nextLine();
+                if (response.equals("no")) {
+                    while(true){
                         out.println("Insert your new row");
                         x = in.nextInt();
-                    } else {
                         out.println("Insert your new column");
                         y = in.nextInt();
-                    } break;
+                        System.out.println("Are you sure? Answer yes or no");
+                        String secResponse = in.nextLine();
+                        if(secResponse.equals("yes")){
+                            coordinates.add(new Coordinates(x,y));
+                            break;
+                        }
+                    }
+                    break;
                 }
-                else if (no.equals("yes")) {
+                else if (response.equals("yes")) {
                     coordinates.add(new Coordinates(x, y));
-
+                    break;
                 }
             }
             colors[i] = board[x][y].toString();
