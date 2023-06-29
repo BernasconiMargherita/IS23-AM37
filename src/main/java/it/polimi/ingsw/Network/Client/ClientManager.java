@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Network.Client;
 
+import com.google.gson.Gson;
 import it.polimi.ingsw.Network.Client.Communication.CommunicationProtocol;
 import it.polimi.ingsw.Network.Client.Communication.RMICommunicationProtocol;
 import it.polimi.ingsw.Network.Client.Communication.TCPCommunicationProtocol;
@@ -145,17 +146,19 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
      */
     public void createConnection(String connection) {
         CommunicationProtocol communicationProtocol;
-
+        Gson gson=new Gson();
         if (connection.equalsIgnoreCase("TCP")) {
             try {
-                communicationProtocol = new TCPCommunicationProtocol("localhost", 8090);
+                int port = gson.fromJson("/json/ServerPortTCP.json", Integer.class);
+                communicationProtocol = new TCPCommunicationProtocol("localhost", port);
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
 
         } else {
             try {
-                communicationProtocol = new RMICommunicationProtocol("RemoteController");
+                int port = gson.fromJson("/json/ServerPortRMI.json", Integer.class);
+                communicationProtocol = new RMICommunicationProtocol("RemoteController",port);
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }

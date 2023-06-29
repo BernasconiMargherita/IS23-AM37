@@ -42,28 +42,20 @@ public class MyServer extends UnicastRemoteObject implements ServerInterface {
      */
     public static void main(String[] args) throws Exception {
 
-        int portNumber;
-
-        Gson gson = new Gson();
-
-
-        try{
-            FileReader filePort = new FileReader("src/main/resources/json/ServerPort.json");
-            portNumber = gson.fromJson(filePort, Integer.class);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        int portNumberRMI =Integer.parseInt(args[0]);
+        int portNumberTCP =Integer.parseInt(args[1]);
 
         ServerInterface myServer = new MyServer();
-        Registry registry = LocateRegistry.createRegistry(portNumber);
+        Registry registry = LocateRegistry.createRegistry(portNumberRMI);
         registry.rebind("RemoteController", myServer);
         System.out.println("RMI server is running...");
 
 
         // Creare un socket server TCP
-       try (ServerSocket serverSocket = new ServerSocket(8090)) {
+       try (ServerSocket serverSocket = new ServerSocket(portNumberTCP)) {
            System.out.println("Il server TCP è in esecuzione...");
 
+           Gson gson=new Gson();
            try {
                while (true) {
                    Socket clientSocket = serverSocket.accept();
