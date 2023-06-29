@@ -17,7 +17,7 @@ I seguenti diagrammi delle classi rappresentano rispettivamente gli UML di alto 
 
 - [UML alto livello](URL del link)
 - [UML dettaglio](URL del link)
-- [UML protocollo](URL del link)
+- [UML protocollo](deliverables/uml/SequenceDiagram.pdf)
 
 
 ### JavaDoc <br>
