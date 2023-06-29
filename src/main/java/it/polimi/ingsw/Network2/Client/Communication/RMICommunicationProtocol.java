@@ -63,7 +63,8 @@ public class RMICommunicationProtocol extends UnicastRemoteObject implements Com
 
     @Override
     public void onMessage(Message message) throws RemoteException {
-            messageList.add(message);
+        if (message.typeMessage().equals("DisconnectionMessage")) timer.cancel();
+        messageList.add(message);
     }
 
     @Override

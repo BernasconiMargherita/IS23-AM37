@@ -474,14 +474,17 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
             Long tempUID = clients.get(gameID).get(0).getUID();
             int maxLobbyIndex = -1;
             for (int i = 0; i < lobby.size(); i++) {
-                if (lobby.get(i).get(0).getKey().equals(tempUID)) {
-                    maxLobbyIndex = i;
+                if (lobby.get(i).size()!=0) {
+                    if (lobby.get(i).get(0).getKey().equals(tempUID)) {
+                        maxLobbyIndex = i;
+                    }
                 }
             }
+            lobby.add(new ArrayList<>());
             lobby.remove(maxLobbyIndex);
             lobbyTimers.get(maxLobbyIndex).cancel();
             lobbyTimers.remove(maxLobbyIndex);
-            lobby.add(new ArrayList<>());
+
 
         }
         gameTimers.add(new Timer());

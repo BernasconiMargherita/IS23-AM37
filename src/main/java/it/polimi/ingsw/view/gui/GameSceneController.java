@@ -159,12 +159,13 @@ public class GameSceneController {
             privateMessageButton.setVisible(true);
             privateSelectButton.setVisible(false);
             selectedUser.setText("");
-
             playerToggle.getSelectedToggle().setSelected(false);
+
             for (ToggleButton toggleButton:toggleButtons){
                 if (toggleButton.isVisible()) toggleButton.setVisible(false);
             }
 
+            selectedForPrivateMessage=null;
         }else {
             String message= client.getUsername()+ " : " +messageTextField.getText();
             client.sendMessage(new ChatMessage(client.getGameID(), client.getUID(),message,null));
