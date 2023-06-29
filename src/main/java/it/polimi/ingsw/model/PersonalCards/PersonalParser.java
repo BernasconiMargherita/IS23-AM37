@@ -19,7 +19,7 @@ public class PersonalParser implements Serializable {
 
     /**
      * constructor that deserializes the JSON file: listOfPersonalCards.json
-     * @throws FileNotFoundException
+     * @throws FileNotFoundException if the file is not found
      */
 
     public PersonalParser() throws FileNotFoundException {
@@ -30,7 +30,6 @@ public class PersonalParser implements Serializable {
 
     /**
      * getter of cardPersonalTargets
-     * @return
      */
     public CardPersonalTarget[] getCardPersonalTargets() {
         return cardPersonalTargets;

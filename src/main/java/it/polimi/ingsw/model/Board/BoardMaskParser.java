@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 public class BoardMaskParser implements Serializable {
 
-    private BoardMask boardMask;
+    private final BoardMask boardMask;
 
     /**
      * Constructs a BoardMaskParser and parses the board mask configurations from a JSON file.

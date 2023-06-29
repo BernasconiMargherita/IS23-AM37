@@ -7,7 +7,6 @@ import it.polimi.ingsw.Exception.InvalidPositionsException;
 import it.polimi.ingsw.Exception.InvalidSlotException;
 import it.polimi.ingsw.Exception.SoldOutTilesException;
 import it.polimi.ingsw.Utils.Coordinates;
-import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Tile.ColourTile;
 import it.polimi.ingsw.model.Tile.Tile;
 import org.junit.jupiter.api.Test;
@@ -158,7 +157,7 @@ public class BoardTest {
     public void getNullTile(){
         try {
             Board board=new Board(2);
-            ColourTile colourTile = board.getBoard()[0][0].getAssignedTile().getColour();
+            ColourTile colourTile = board.getBoard()[0][0].getAssignedTile().colour();
         } catch (NullPointerException e) {
             System.out.println("Exception!");
         }

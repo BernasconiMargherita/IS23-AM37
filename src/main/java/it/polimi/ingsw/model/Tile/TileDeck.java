@@ -50,12 +50,4 @@ public class TileDeck implements Serializable {
     }
 
 
-    /**
-     * getter of the tileDeck
-     *
-     * @return tileDeck
-     */
-    public ArrayList<Tile> getTileDeck() {
-        return tileDeck;
-    }
 }

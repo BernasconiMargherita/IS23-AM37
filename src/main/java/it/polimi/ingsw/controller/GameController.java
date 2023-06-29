@@ -138,7 +138,7 @@ public class GameController implements Serializable {
     }
 
     public Tile[] remove(ArrayList<Coordinates> positions) throws EmptySlotException, InvalidPositionsException, InvalidSlotException {
-        return game.remove(currentPlayer, positions);
+        return game.remove(positions);
     }
 
     /**

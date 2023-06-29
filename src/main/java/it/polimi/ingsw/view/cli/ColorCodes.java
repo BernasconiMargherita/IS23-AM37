@@ -7,21 +7,18 @@ import it.polimi.ingsw.model.Tile.ColourTile;
  * The color codes are used to format the output with colors in supported terminals.
  */
 public class ColorCodes {
-    private ColorCodes() {
-
-    }
-
     private static final String TEXT_BLACK = "\u001B[30m";
-
     private static final String TEXT_PURPLE = "\u001B[35m";
-    ;
     private static final String TEXT_GREEN = "\u001B[32m";
     private static final String TEXT_YELLOW = "\u001B[33m";
     private static final String TEXT_BLUE = "\u001B[34m";
     private static final String TEXT_LIGHTBLUE = "\u001B[36m";
     private static final String TEXT_WHITE = "\u001B[37m";
-    private String color;
 
+
+    private ColorCodes() {
+
+    }
 
     /**
      * Returns the ANSI color code associated with the specified color.

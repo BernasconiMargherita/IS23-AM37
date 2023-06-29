@@ -81,7 +81,6 @@ public class Player implements Serializable {
 
     /**
      * sets personal card
-     * @param personalCard
      */
     public void setPersonalCard(CardPersonalTarget personalCard) {
         this.cardPersonalTarget = personalCard;

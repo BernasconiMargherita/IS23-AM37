@@ -13,21 +13,19 @@ module it.polimi.ingsw {
     opens it.polimi.ingsw.model.Player to com.google.gson;
     opens it.polimi.ingsw.model.Tile to com.google.gson;
     opens it.polimi.ingsw.view.gui to javafx.fxml;
-    opens it.polimi.ingsw.Network2.Messages to com.google.gson;
+    opens it.polimi.ingsw.Network.Messages to com.google.gson;
     opens it.polimi.ingsw.model.CommonCards to com.google.gson;
 
-
-
+    exports it.polimi.ingsw.Exception;
     exports it.polimi.ingsw.model.PersonalCards to com.google.gson;
     exports it.polimi.ingsw.model.Tile to com.google.gson;
     exports it.polimi.ingsw.model.Player to com.google.gson;
     exports it.polimi.ingsw.Utils ;
-    exports it.polimi.ingsw.Network.Chat to java.rmi;
     exports it.polimi.ingsw.view.gui;
-    exports it.polimi.ingsw.Network2.Messages to java.rmi;
+    exports it.polimi.ingsw.Network.Messages to java.rmi;
     exports it.polimi.ingsw.model.CommonCards;
-    exports it.polimi.ingsw.Network2.Client to java.rmi, javafx.graphics;
-    exports it.polimi.ingsw.Network2.Server to java.rmi, javafx.graphics;
-    exports it.polimi.ingsw.Network2.Client.Communication to java.rmi, javafx.graphics;
+    exports it.polimi.ingsw.Network.Client to java.rmi, javafx.graphics;
+    exports it.polimi.ingsw.Network.Server to java.rmi, javafx.graphics;
+    exports it.polimi.ingsw.Network.Client.Communication to java.rmi, javafx.graphics;
 
 }

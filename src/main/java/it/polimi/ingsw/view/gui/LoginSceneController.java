@@ -1,7 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.Network2.Client.Client;
-import it.polimi.ingsw.Network2.Messages.*;
+import it.polimi.ingsw.Network.Client.Client;
+import it.polimi.ingsw.Network.Messages.*;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;

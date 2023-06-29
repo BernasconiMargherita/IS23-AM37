@@ -1,10 +1,9 @@
 package it.polimi.ingsw.view.cli;
 
-import it.polimi.ingsw.Network2.Client.ClientManager;
-import it.polimi.ingsw.Network2.Messages.*;
+import it.polimi.ingsw.Network.Client.ClientManager;
+import it.polimi.ingsw.Network.Messages.*;
 import it.polimi.ingsw.Utils.Coordinates;
 import it.polimi.ingsw.model.CommonCards.CardCommonTarget;
-import it.polimi.ingsw.model.CommonCards.CommonList;
 import it.polimi.ingsw.model.PersonalCards.CardPersonalTarget;
 import it.polimi.ingsw.model.Tile.ColourTile;
 
@@ -22,28 +21,22 @@ public class Cli extends ClientManager {
 
     private String protocol;
     private ColourTile[][] shelf;
-    private String message;
     private MyShelfiePrintStream out;
     private String username;
     private long UID;
     private int gameID;
     private CardPersonalTarget cardPersonalTarget;
     private ArrayList<CardCommonTarget> cardCommonTargets;
-    private String winner;
     private ColourTile[][] board;
     private final String ANSI_RESET = "\u001B[0m";
-    private CommonList cardCommonTarget0;
-    private CommonList cardCommonTarget1;
-    private int column;
     private int[] commonTokens;
     private boolean endGameToken;
     private String[] colors;
-    private Scanner in;
+    private final Scanner in;
     private static final String TEXT_BLACK = "\u001B[30m";
     private boolean emptyShelf;
-    static ArrayList<String> chatList;
     private int turn;
-    private ArrayList<String> chatListTmp=new ArrayList<>();
+    private final ArrayList<String> chatList;
 
     /**
      * Constructs a CLI object with the specified scanner for user input.
@@ -58,7 +51,7 @@ public class Cli extends ClientManager {
 
     private void updateChat(int type) {
         while (!Thread.currentThread().isInterrupted()) {
-            for (String message:chatListTmp){
+            for (String message: chatList){
                 out.println(message);
             }
             chatMode(type);
@@ -233,7 +226,7 @@ public class Cli extends ClientManager {
      * Prompts the user to choose an action and continues until an exit condition is met.
      */
     public void turnChoice() {
-        int status=0;
+        int status;
         status = display(false);
         while (status==0){
             status=display(false);
@@ -246,7 +239,7 @@ public class Cli extends ClientManager {
      * Prompts the user to choose an action and continues until an exit condition is met.
      */
     public void removeChoice() {
-        int status=0;
+        int status;
         status = display(true);
         while (status==0){
            status=display(true);
@@ -258,7 +251,7 @@ public class Cli extends ClientManager {
 
     /**
      * Displays the menu options and handles the user's choice.
-     * Returns true if the user wants to continue, false if the user wants to exit.
+     * Returns 0 if the user wants to continue, 1 if the user wants to exit.
      *
      * @param type boolean
      * @return true to continue, false to exit.
@@ -460,150 +453,126 @@ public class Cli extends ClientManager {
     public void printCommon(int id, int i) {
         out.println("            Token: " + commonTokens[i] + "\n");
         switch (id) {
-            case 4 -> {
-                out.println("""
-                           ------------------------------
-                           |           six               |
-                           |         couples             |
-                           |            of               |
-                           |     the same colour         |
-                           |  (each couple can be of     |
-                           |     a different colour)     |
-                           -------------------------------
-                        """);
-            }
-            case 8 -> {
-                out.println("""
-                           ------------------------------
-                           |           on                |
-                           |          each               |
-                           |          angles             |
-                           |         must be             |
-                           |       the same colour       |
-                           |                             |
-                           -------------------------------
-                        """);
-            }
-            case 3 -> {
-                out.println("""
-                           ------------------------------
-                           |          four               |
-                           |         groups              |
-                           |            of               |
-                           |     the same colour         |
-                           |  (each group can be of      |
-                           |     a different colour)     |
-                           -------------------------------
-                        """);
-            }
-            case 1 -> {
-                out.println("""
-                           ------------------------------
-                           |           two               |
-                           |         groups of           |
-                           |     the same colour         |
-                           |  that create a square 2x2   |
-                           |  (each group have to be of  |
-                           |     the same colour)        |
-                           -------------------------------
-                        """);
-            }
-            case 5 -> {
-                out.println("""
-                           ------------------------------
-                           |           three             |
-                           |        columns of           |
-                           |     one, two or three       |
-                           |     different  colours      |
-                           |  (each column can have      |
-                           |    different colours)       |
-                           -------------------------------
-                        """);
-            }
-            case 9 -> {
-                out.println("""
-                           ------------------------------
-                           |           eight             |
-                           |         tails of            |
-                           |     the same colour         |
-                           |                             |
-                           |  (the position is not       |
-                           |          relevant)          |
-                           -------------------------------
-                        """);
-            }
-            case 11 -> {
-                out.println("""
-                           ------------------------------
-                           |           five              |
-                           |         tails of            |
-                           |     the same colour         |
-                           |      in diagonal            |
-                           |                             |
-                           |                             |
-                           -------------------------------
-                        """);
-            }
-            case 7 -> {
-                out.println("""
-                           ------------------------------
-                           |           four              |
-                           |        rows of              |
-                           |     one, two or three       |
-                           |     different  colours      |
-                           |  (each row can have         |
-                           |    different colours)       |
-                           -------------------------------
-                        """);
-            }
-            case 2 -> {
-                out.println("""
-                           ------------------------------
-                           |           two               |
-                           |        columns of           |
-                           |         all six             |
-                           |     different  colours      |
-                           |                             |
-                           |                             |
-                           -------------------------------
-                        """);
-            }
-            case 6 -> {
-                out.println("""
-                           ------------------------------
-                           |           two               |
-                           |          rows of            |
-                           |          five               |
-                           |     different  colours      |
-                           |                             |
-                           |                             |
-                           -------------------------------
-                        """);
-            }
-            case 10 -> {
-                out.println("""
-                        ------------------------------
-                           |           five              |
-                           |         tails of the        |
-                           |        same colour          |
-                           |         that create         |
-                           |             a X             |
-                           |                             |
-                           -------------------------------
-                        """);
-            }
-            case 12 -> {
-                out.println("""
-                           ------------------------------
-                           |        five columns         |
-                           |      in descending or       |
-                           |      in growing  order      |
-                           |      (each column have      |
-                           |  one less tail or one more  |
-                           |  tail of the previous one)  |
-                           -------------------------------
-                        """);
-            }
+            case 4 -> out.println("""
+                       ------------------------------
+                       |           six               |
+                       |         couples             |
+                       |            of               |
+                       |     the same colour         |
+                       |  (each couple can be of     |
+                       |     a different colour)     |
+                       -------------------------------
+                    """);
+            case 8 -> out.println("""
+                       ------------------------------
+                       |           on                |
+                       |          each               |
+                       |          angles             |
+                       |         must be             |
+                       |       the same colour       |
+                       |                             |
+                       -------------------------------
+                    """);
+            case 3 -> out.println("""
+                       ------------------------------
+                       |          four               |
+                       |         groups              |
+                       |            of               |
+                       |     the same colour         |
+                       |  (each group can be of      |
+                       |     a different colour)     |
+                       -------------------------------
+                    """);
+            case 1 -> out.println("""
+                       ------------------------------
+                       |           two               |
+                       |         groups of           |
+                       |     the same colour         |
+                       |  that create a square 2x2   |
+                       |  (each group have to be of  |
+                       |     the same colour)        |
+                       -------------------------------
+                    """);
+            case 5 -> out.println("""
+                       ------------------------------
+                       |           three             |
+                       |        columns of           |
+                       |     one, two or three       |
+                       |     different  colours      |
+                       |  (each column can have      |
+                       |    different colours)       |
+                       -------------------------------
+                    """);
+            case 9 -> out.println("""
+                       ------------------------------
+                       |           eight             |
+                       |         tails of            |
+                       |     the same colour         |
+                       |                             |
+                       |  (the position is not       |
+                       |          relevant)          |
+                       -------------------------------
+                    """);
+            case 11 -> out.println("""
+                       ------------------------------
+                       |           five              |
+                       |         tails of            |
+                       |     the same colour         |
+                       |      in diagonal            |
+                       |                             |
+                       |                             |
+                       -------------------------------
+                    """);
+            case 7 -> out.println("""
+                       ------------------------------
+                       |           four              |
+                       |        rows of              |
+                       |     one, two or three       |
+                       |     different  colours      |
+                       |  (each row can have         |
+                       |    different colours)       |
+                       -------------------------------
+                    """);
+            case 2 -> out.println("""
+                       ------------------------------
+                       |           two               |
+                       |        columns of           |
+                       |         all six             |
+                       |     different  colours      |
+                       |                             |
+                       |                             |
+                       -------------------------------
+                    """);
+            case 6 -> out.println("""
+                       ------------------------------
+                       |           two               |
+                       |          rows of            |
+                       |          five               |
+                       |     different  colours      |
+                       |                             |
+                       |                             |
+                       -------------------------------
+                    """);
+            case 10 -> out.println("""
+                    ------------------------------
+                       |           five              |
+                       |         tails of the        |
+                       |        same colour          |
+                       |         that create         |
+                       |             a X             |
+                       |                             |
+                       -------------------------------
+                    """);
+            case 12 -> out.println("""
+                       ------------------------------
+                       |        five columns         |
+                       |      in descending or       |
+                       |      in growing  order      |
+                       |      (each column have      |
+                       |  one less tail or one more  |
+                       |  tail of the previous one)  |
+                       -------------------------------
+                    """);
         }
     }
 
@@ -690,18 +659,18 @@ public class Cli extends ClientManager {
      * @return The validated integer input.
      */
     public int validInt(int min, int max){
-        int input= -1;
+        int input;
         while (true){
-                try {
-                    input = Integer.parseInt(in.next());
-                    if (input<min || input> max) {
-                        out.println("Invalid digit");
-                    } else break;
+            try {
+                input = Integer.parseInt(in.next());
+                if (input<min || input> max) {
+                    out.println("Invalid digit");
+                } else break;
 
-                }catch (NumberFormatException e){
+            }catch (NumberFormatException e){
                     out.println("Please insert a number");
-                }
             }
+        }
         return input;
     }
 
@@ -715,7 +684,7 @@ public class Cli extends ClientManager {
 
     @Override
     public void chatMessage(ChatMessage chatMessage) {
-        chatListTmp.add(chatMessage.getMessage());
+        chatList.add(chatMessage.getMessage());
 
     }
 

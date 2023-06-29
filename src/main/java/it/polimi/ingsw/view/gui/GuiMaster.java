@@ -1,7 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.Network2.Client.ClientManager;
-import it.polimi.ingsw.Network2.Messages.*;
+import it.polimi.ingsw.Network.Client.ClientManager;
+import it.polimi.ingsw.Network.Messages.*;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

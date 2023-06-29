@@ -32,7 +32,7 @@ public class Board implements Serializable {
     /**
      * The token that begins the final turn
      */
-    private EndGameToken endGameToken;
+    private final EndGameToken endGameToken;
 
 
     /**
