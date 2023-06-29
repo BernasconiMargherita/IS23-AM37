@@ -238,4 +238,11 @@ public class Message implements Serializable {
         return false;
     }
 
+    /**
+     * returns a user to which send a private message
+     */
+    public String getPrivateUser() {
+        return null;
+    }
+
 }

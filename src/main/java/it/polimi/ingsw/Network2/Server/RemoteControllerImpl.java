@@ -168,9 +168,10 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
     }
 
 
-
-
-
+    /**
+     * Method that sorts the various messages arriving to the server
+     * @param message the received message
+     */
     @Override
     public void onMessage(Message message) throws RemoteException {
 
@@ -188,10 +189,26 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
         }
     }
 
+    /**
+     * Method to manage the chat,both in the case of a message to all and in the other of a private message
+     */
     private void chat(Message message) {
-      for (int i=0; i<clients.get(message.getGameID()).size();i++) {
-          clients.get(message.getGameID()).get(i).sendMessage(message);
-      }
+        if (message.getPrivateUser()!=null){
+
+            for (int i=0; i<clients.get(message.getGameID()).size();i++) {
+                if (clients.get(message.getGameID()).get(i).getNickname().equals(message.getPrivateUser())) {
+                    clients.get(message.getGameID()).get(i).sendMessage(message);
+                }
+                if (clients.get(message.getGameID()).get(i).getUID().equals(message.getUID())){
+                    clients.get(message.getGameID()).get(i).sendMessage(message);
+                }
+            }
+        }else {
+            for (int i=0; i<clients.get(message.getGameID()).size();i++) {
+                clients.get(message.getGameID()).get(i).sendMessage(message);
+            }
+        }
+
     }
 
 

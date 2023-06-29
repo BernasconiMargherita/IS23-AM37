@@ -96,6 +96,7 @@ public class GameSceneController {
     public RadioButton secondPlayer;
     @FXML
     public RadioButton thirdPlayer;
+    public Label selectedUser;
     private ColourTile[][] turnBoard;
     private final ArrayList<Coordinates> tileHand=new ArrayList<>();
     private final ArrayList<Coordinates> tileHandTmp=new ArrayList<>();
@@ -107,6 +108,11 @@ public class GameSceneController {
     private ObservableList<String> messages;
     private ToggleGroup playerToggle;
 
+    public ToggleButton[] toggleButtons;
+    @FXML
+    private Button privateSelectButton;
+    private RadioButton selectedForPrivateMessage;
+
 
     /**
      * Method to initialize the scene, also setting the controller in the Gui Master
@@ -116,6 +122,14 @@ public class GameSceneController {
 
         guiMaster = GuiMaster.getInstance();
         guiMaster.setGameSceneController(this);
+
+        playerToggle =new ToggleGroup();
+
+        firstPlayer.setToggleGroup(playerToggle);
+        secondPlayer.setToggleGroup(playerToggle);
+        thirdPlayer.setToggleGroup(playerToggle);
+
+        toggleButtons=new ToggleButton[]{firstPlayer,secondPlayer,thirdPlayer};
 
         messages = FXCollections.observableArrayList();
         chatListView.setItems(messages);
@@ -136,8 +150,26 @@ public class GameSceneController {
     }
     public void sendChatMessage(ActionEvent actionEvent) {
         Client client=guiMaster.getClient();
-        String message= client.getUsername()+ " : " +messageTextField.getText();
-        client.sendMessage(new ChatMessage(client.getGameID(), client.getUID(),message));
+        if (selectedForPrivateMessage!=null){
+
+            String privateUser=selectedForPrivateMessage.getText();
+            String message= client.getUsername()+ " whispers to "+ privateUser+ " : " +messageTextField.getText();
+            client.sendMessage(new ChatMessage(client.getGameID(), client.getUID(),message,privateUser));
+
+            privateMessageButton.setVisible(true);
+            privateSelectButton.setVisible(false);
+            selectedUser.setText("");
+
+            playerToggle.getSelectedToggle().setSelected(false);
+            for (ToggleButton toggleButton:toggleButtons){
+                if (toggleButton.isVisible()) toggleButton.setVisible(false);
+            }
+
+        }else {
+            String message= client.getUsername()+ " : " +messageTextField.getText();
+            client.sendMessage(new ChatMessage(client.getGameID(), client.getUID(),message,null));
+        }
+
         messageTextField.setText("");
     }
 
@@ -744,8 +776,28 @@ public class GameSceneController {
         chatListView.scrollTo(messages.size() - 1);
     }
 
-    public void selectUser(MouseEvent mouseEvent) {
-        playerToggle =new ToggleGroup();
+    public void makeUsersAppear(MouseEvent mouseEvent) {
+        for (int i=0;i<guiMaster.getPlayers().size();i++){
+            if (!guiMaster.getPlayers().get(i).equals(guiMaster.getClient().getUsername())){
+                int pos=findFirstEmptyPosition(toggleButtons);
+                toggleButtons[pos].setText(guiMaster.getPlayers().get(i));
+                toggleButtons[pos].setVisible(true);
+            }
 
+        }
+        privateMessageButton.setVisible(false);
+        privateSelectButton.setVisible(true);
+    }
+    public int findFirstEmptyPosition(ToggleButton[] array) {
+        for (int i = 0; i < array.length; i++) {
+            if (!array[i].isVisible()) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    public void selectUser(MouseEvent mouseEvent) {
+        selectedForPrivateMessage = (RadioButton) playerToggle.getSelectedToggle();
+        selectedUser.setText("you selected: "+selectedForPrivateMessage.getText());
     }
 }
