@@ -2,6 +2,7 @@ package it.polimi.ingsw.Network2;
 
 import it.polimi.ingsw.Network2.Messages.Message;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -91,7 +92,7 @@ public class Client extends UnicastRemoteObject{
     public void closeConnection() {
         try {
             communicationProtocol.closeConnection();
-        } catch (RemoteException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

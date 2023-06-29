@@ -2,6 +2,7 @@ package it.polimi.ingsw.Network2;
 
 import it.polimi.ingsw.Network2.Messages.Message;
 
+import java.io.IOException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public interface CommunicationProtocol extends Remote {
      *
      * @throws RemoteException if a remote communication error occurs
      */
-    void closeConnection() throws RemoteException;
+    void closeConnection() throws IOException;
 
 
     /**

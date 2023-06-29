@@ -50,7 +50,7 @@ public class ClientSetup extends Application {
     public void start(Stage primaryStage) {
         Gui gui = new Gui();
         gui.start(primaryStage);
-        primaryStage.setOnCloseRequest(event -> {
+        primaryStage.setOnHidden(event -> {
             Platform.exit();
             System.exit(0);
         });

@@ -32,6 +32,7 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
     private Socket socket = null;
     private final ArrayList<Message> messageList;
     private Timer timer;
+    private Thread messageReceiver;
 
     /**
      * Constructs a TCPCommunicationProtocol object with the specified server IP and port.
@@ -78,14 +79,15 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
     }
 
     @Override
-    public void closeConnection() {
-        try {
-            in.close();
-            out.close();
+    public void closeConnection() throws IOException {
+        if (!socket.isClosed()) {
             socket.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
+
+        messageReceiver.interrupt();
+
+        in = null;
+        out = null;
 
     }
 
@@ -95,7 +97,7 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
             Gson gson = new Gson();
             UIDResponse uidMessage = gson.fromJson(in.readLine(), UIDResponse.class);
             UID = uidMessage.getUID();
-            Thread messageReceiver = new Thread(this);
+            messageReceiver = new Thread(this);
             messageReceiver.start();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -110,8 +112,10 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
     @Override
     public void ping() throws RemoteException {
         System.out.println("ping");
-        sendMessage(new PingMessage(-1,UID));
-        resetTimer();
+        if (!socket.isClosed()) {
+            sendMessage(new PingMessage(-1, UID));
+            resetTimer();
+        }
     }
 
     @Override
@@ -177,8 +181,16 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
                     }
 
             }catch (IOException e){
-                closeConnection();
+                disconnect();
             }
+        }
+    }
+
+    private void disconnect() {
+        try {
+            closeConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -111,13 +111,12 @@ public class FirstConnectionSceneController {
         } else {
             errorLabel = new Label("Someone disconnected, game finished");
 
-            closeButton = new Button("Return to login");
+            closeButton = new Button("Close Game");
             closeButton.setOnAction(event -> {
                 guiMaster.closeConnection();
                 modalStage.close();
 
-                Scene scene = rootPane.getScene();
-                GuiMaster.setLayout(scene, "/fxml/loginScene.fxml");
+                Platform.exit();
             });
         }
 

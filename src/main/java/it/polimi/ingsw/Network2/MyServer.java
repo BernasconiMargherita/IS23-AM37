@@ -9,6 +9,7 @@ import it.polimi.ingsw.Network2.Messages.*;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -155,12 +156,33 @@ class ClientHandler extends Thread {
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             Gson gson = new Gson();
-            while(true){
-                String request = in.readLine();
+            String request;
+
+            while ((request = in.readLine()) != null) {
                 onMessage(request);
             }
+        }
+        catch (IOException e) {
+           closeConnection();
+        } finally {
+            closeConnection();
+        }
+
+    }
+
+    private void closeConnection() {
+        try {
+            if (in != null) {
+                in.close();
+            }
+            if (out != null) {
+                out.close();
+            }
+            if (clientSocket != null) {
+                clientSocket.close();
+            }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -186,6 +208,10 @@ class ClientHandler extends Thread {
             }
         } catch (RemoteException e) {
             e.printStackTrace();
+        }catch (NullPointerException e) {
+            closeConnection();
+
         }
+
     }
 }

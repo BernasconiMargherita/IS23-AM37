@@ -160,9 +160,6 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
                         clients.get(gameID).get(i).sendMessage(new DisconnectionMessage(-1, clientId, false));
                     }
                     gameTimers.get(gameID).cancel();
-                    gameTimers.remove(gameID);
-                    clients.remove(gameID);
-                    masterController.removeGameController(gameID);
                 }
             }
         }, 0,PING_INTERVAL);
