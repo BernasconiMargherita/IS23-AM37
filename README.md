@@ -1,19 +1,30 @@
 # Prova Finale di Ingegneria del Software - a.a. 2022-2023
 
-## Gruppo AM37
+**Gruppo AM37**<br>
 
 Scopo del progetto è quello di implementare il gioco da tavola MyShelfie, seguendo il pattern architetturale Model View Controller.
 Il risultato finale copre completamente le regole definite dal gioco e permette di interagirci sia con una interfaccia da linea di comando (CLI) che grafica (GUI), la rete è stata gestita sia con il tradizionale approccio delle socket che con una tecnologia specifica di Java (RMI).<br>
 
-## Documentazione
+# Documentazione
 
-**UML**<br>
+### UML<br>
 
-I seguenti diagrammi delle classi rappresentano il primo, il modello secondo il quale il gioco dovrebbe essere stato implementato, il secondo contiene invece i diagrammi del prodotto finale nelle parti critiche riscontrate.<br>
+I seguenti diagrammi delle classi rappresentano rispettivamente gli UML di alto livello e di dettagli del server e dei client, e l'UML del protocollo di comunicazione:<br>
 
-**JavaDoc**<br>
+- [UML alto livello](URL del link)
+- [UML dettaglio](URL del link)
+- [UML protocollo](URL del link)
 
-**Librerie e plugins**<br>
+
+### JavaDoc <br>
+
+La seguente documentazione include una descrizione delle classi e dei metodi utilizzati, seguendo le tecniche di documentazione di Java.<br>
+
+- [JavaDocs](URL del link)
+
+
+
+### Librerie e plugins<br>
 
 | Libreria/Plugin| Descrizione |
 | :--------------| :------    |
@@ -22,30 +33,52 @@ I seguenti diagrammi delle classi rappresentano il primo, il modello secondo il 
 | gson           |    libreria per il supporto al parsing di file in formato json | 
 | JavaFx         |     libreria grafica di Java |
 
-**Jars**<br>
+### Jars<br>
 
-## Funzionalità
+I seguenti jar permettono il lancio del gioco secondo le funzionalità descritte nell'introduzione. Le funzionalità realizzate secondo la specifica del progetto sono elencate sotto. La cartella in cui si trovano il software del client e del server si trova al seguente indirizzo: <br>
 
-**Funzionalità sviluppate**<br>
+- [Jars](URL del link)
+
+# Esecuzione dei Jars
+
+### Client <br> 
+
+Il client viene eseguito scegliendo l'interfaccia con cui giocare, le possibili scelte sono da linea di comando o interfaccia grafica. Le seguenti sezioni descrivono come eseguire il client in un modo o nell'altro.<br>
+
+**CLI**<br>
+Per lanciare il client in modalità CLI digitare il seguente comando:<br>
+java -jar client.jar cli
+ 
+
+**GUI**<br>
+Per poter lanciare il client con l'interfaccia grafica è necessario importare le dipendenze di JavaFx. 
+A questo punto digitare il seguente comando che importa le dipendenze e lancia il client:
+
+
+### Server<br>
+
+# Funzionalità
+
+### Funzionalità sviluppate<br>
 
 - Regole Complete <br>
 - TUI <br>
 - GUI <br>
 - RMI <br>
 - Socket <br>
-- 3 FA<br>
+- 1 FA<br>
 
-**Funzionalità avanzate**<br>
+### Funzionalità avanzate<br>
 
 | Funzionalità                   |          |
 | :----------------------------- | :------: |
 | Patite multiple                |   ✅     | 
 | Persistenza                    |   ❌     | 
 | Resilienza alle disconnessioni |   ❌     | 
-| Chat                           |   ✅     |
+| Chat                           |    ❌    |
 
 
-# Componenti del gruppo
+## Componenti del gruppo
 
 - Bartocci Alessandra
 - Bernasconi Margherita 
