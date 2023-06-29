@@ -73,7 +73,6 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
      * @param message the message to be sent
      */
     public void sendMessage(Message message) {
-        System.out.println(message.typeMessage());
         out.println(message.toJson());
         out.flush();
     }
@@ -111,7 +110,6 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
 
     @Override
     public void ping() throws RemoteException {
-        System.out.println("ping");
         if (!socket.isClosed()) {
             sendMessage(new PingMessage(-1, UID));
             resetTimer();
@@ -160,7 +158,6 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
                         JsonElement rootElement = JsonParser.parseString(request);
                         JsonObject jsonObject = rootElement.getAsJsonObject();
                         String type = jsonObject.get("typeMessage").getAsString();
-                        System.out.println("è arrivato il mess al client ? ->" + type);
                         switch (type) {
                             case "LoginResponse" -> onMessage(gson.fromJson(request, LoginResponse.class));
                             case "InitResponse" -> onMessage(gson.fromJson(request, InitResponse.class));

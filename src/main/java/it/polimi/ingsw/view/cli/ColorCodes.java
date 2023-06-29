@@ -29,26 +29,18 @@ public class ColorCodes {
      * @param color The color for which to retrieve the ANSI color code.
      * @return The ANSI color code as a string, or null if the color is not recognized.
      */
-    static String getColorCode(ColourTile color) {
+   public static String getColorCode(ColourTile color) {
 
-        switch (color) {
-            case GAMES:
-                return TEXT_YELLOW;
-            case CATS:
-                return TEXT_GREEN;
-            case PLANTS:
-                return TEXT_PURPLE;
-            case FRAMES:
-                return TEXT_BLUE;
-            case TROPHIES:
-                return TEXT_LIGHTBLUE;
-            case BOOKS:
-                return TEXT_WHITE;
-            case FREE:
-                return TEXT_BLACK;
-        }
+        return switch (color) {
+            case GAMES -> TEXT_YELLOW;
+            case CATS -> TEXT_GREEN;
+            case PLANTS -> TEXT_PURPLE;
+            case FRAMES -> TEXT_BLUE;
+            case TROPHIES -> TEXT_LIGHTBLUE;
+            case BOOKS -> TEXT_WHITE;
+            case FREE -> TEXT_BLACK;
+        };
 
-        return null;
     }
 }
 

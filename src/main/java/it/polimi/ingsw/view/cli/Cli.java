@@ -41,7 +41,9 @@ public class Cli extends ClientManager {
     private Scanner in;
     private static final String TEXT_BLACK = "\u001B[30m";
     private boolean emptyShelf;
-    private ArrayList<String> chatList;
+    static ArrayList<String> chatList;
+    private int turn;
+    private ArrayList<String> chatListTmp=new ArrayList<>();
 
     /**
      * Constructs a CLI object with the specified scanner for user input.
@@ -54,6 +56,16 @@ public class Cli extends ClientManager {
         chatList = new ArrayList<>();
     }
 
+    private void updateChat(int type) {
+        while (!Thread.currentThread().isInterrupted()) {
+            for (String message:chatListTmp){
+                out.println(message);
+            }
+            chatMode(type);
+            Thread.currentThread().interrupt();
+        }
+    }
+
 
     /**
      * Starts the CLI and prompts the user to choose a connection protocol (TCP or RMI).
@@ -61,11 +73,11 @@ public class Cli extends ClientManager {
     public void start() {
         this.out = new MyShelfiePrintStream();
         out.println(("Welcome , choose your connection : "));
-        protocol = in.nextLine();
+        protocol = in.next();
         while(true){
             if (!(protocol.equals("TCP") || protocol.equals("tcp") || protocol.equals("RMI") || protocol.equals("rmi"))) {
                 out.println("Invalid selection, choose TCP or RMI");
-                protocol = in.nextLine();
+                protocol = in.next();
             } else break;
         }
         createConnection(protocol);
@@ -81,7 +93,6 @@ public class Cli extends ClientManager {
         }
         UID = getClient().getUID();
         login();
-        //ok
     }
 
     /**
@@ -89,9 +100,9 @@ public class Cli extends ClientManager {
      */
     protected void login() {
         out.println("Choose your username\n");
-        username = in.nextLine();
+        username = in.next();
         getClient().sendMessage(new PreLoginMessage(-1, UID, username));
-
+        getClient().setUsername(username);
     }
 
     /**
@@ -105,21 +116,18 @@ public class Cli extends ClientManager {
         int numPlayers = validInt(2,4);
         getClient().sendMessage(new SetMessage(numPlayers, gameID, UID));
 
-        //ok
     }
 
     @Override
     public void firstResponse(FirstResponse firstResponse) {
         gameID = firstResponse.getGameID();
         firstSetter(gameID);
-
     }
 
     @Override
     public void reFirstResponse(ReFirstResponse reFirstResponse) {
         gameID = reFirstResponse.getGameID();
         firstSetter(gameID);
-        //ok
     }
 
 
@@ -128,13 +136,12 @@ public class Cli extends ClientManager {
     public void setResponse(SetResponse setResponse) {
         out.println("Setting finished correctly\nWaiting...");
 
-        //ok
     }
 
     @Override
     public void preLoginResponse(PreLoginResponse preLoginResponse) {
         out.println("Waiting for a game...");
-        //ok
+
     }
 
 
@@ -148,13 +155,17 @@ public class Cli extends ClientManager {
     public void usernameError(UsernameError usernameError) {
         gameID = usernameError.getGameID();
         out.println("Username already exists\nPlease enter new one");
-        username = in.nextLine();
+        username = in.next();
         getClient().sendMessage(new LoginMessage(username, gameID, UID));
-        //ok
+        getClient().setUsername(username);
     }
 
     @Override
     public void initResponse(InitResponse initResponse) {
+
+        turn=0;
+
+        setNicknames(initResponse.getPlayers());
 
         out.println("The game is loading...");
         colors = new String[3];
@@ -163,14 +174,12 @@ public class Cli extends ClientManager {
         }
         emptyShelf = true;
 
-        //ok
     }
 
     @Override
     public void cardsResponse(CardsResponse cardsResponse) {
         this.cardCommonTargets = cardsResponse.getCommonTargets();
         this.cardPersonalTarget = cardsResponse.getCardPersonalTarget();
-        //ok
 
     }
 
@@ -181,7 +190,7 @@ public class Cli extends ClientManager {
         }
 
         getClient().sendMessage(new BoardMessage(username, gameID, UID));
-        Thread timerThread = new Thread(() -> startTimer());
+        Thread timerThread = new Thread(this::startTimer);
         timerThread.start();
 
     }
@@ -206,23 +215,17 @@ public class Cli extends ClientManager {
     /**
      * Displays the remove option based on the remove parameter.
      *
-     * @param remove true if remove option should be displayed, false otherwise.
      */
-    public void displayRemove(boolean remove) {
-        if (remove) {
-            remove();
-        }
+    public void displayRemove() {
+        remove();
     }
 
     /**
      * Displays the turn option based on the turn parameter.
      *
-     * @param turn true if turn option should be displayed, false otherwise.
      */
-    public void displayTurn(boolean turn) {
-        if (turn) {
-            turn();
-        }
+    public void displayTurn() {
+        turn();
     }
 
     /**
@@ -230,11 +233,12 @@ public class Cli extends ClientManager {
      * Prompts the user to choose an action and continues until an exit condition is met.
      */
     public void turnChoice() {
-        boolean loop = true;
-        while (loop) {
-            loop = display(false);
-            displayTurn(!loop);
+        int status=0;
+        status = display(false);
+        while (status==0){
+            status=display(false);
         }
+        if (status==1)displayTurn();
     }
 
     /**
@@ -242,11 +246,13 @@ public class Cli extends ClientManager {
      * Prompts the user to choose an action and continues until an exit condition is met.
      */
     public void removeChoice() {
-        boolean loop = true;
-        while (loop) {
-            loop = display(true);
-            displayRemove(!loop);
+        int status=0;
+        status = display(true);
+        while (status==0){
+           status=display(true);
         }
+        if (status==1)displayRemove();
+
     }
 
 
@@ -257,7 +263,7 @@ public class Cli extends ClientManager {
      * @param type boolean
      * @return true to continue, false to exit.
      */
-    public boolean display(boolean type) {
+    public int display(boolean type) {
         out.println("What do you want to do?\n1: View common cards\n2: View personal card\n3: View board\n4: View endGameToken\n5: View shelf\n6: Chat");
         if (type) {
             out.println("7: Remove tiles from board");
@@ -267,34 +273,37 @@ public class Cli extends ClientManager {
 
         int num = -1;
         while (num <= 0 || num > 7) {
-            num = in.nextInt();
+            num = Integer.parseInt(in.next());
             if (num <= 0 || num > 7) {
                 out.println("Enter a valid number PLEASE");
             }
         }
         if (num == 1) {
             printCommonTargets(cardCommonTargets.get(0), cardCommonTargets.get(1));
-            return true;
+            return 0;
         } else if (num == 2) {
             printPersonalTargets(cardPersonalTarget);
-            return true;
+            return 0;
         } else if (num == 3) {
             printBoard(board);
-            return true;
+            return 0;
         } else if (num == 4) {
             if (endGameToken) {
                 out.println("EndGameToken already taken");
             } else {
                 out.println("EndGameToken still in game");
             }
-            return true;
+            return 0;
         } else if (num == 5) {
             printShelf(shelf);
-            return true;
+            return 0;
         } else if (num == 6){
-            chatMode();
-            return true;
-        } else return false;
+
+            if (type) chatMode(0);
+            else chatMode(1);
+
+            return 2;
+        } else return 1;
     }
 
 
@@ -331,22 +340,20 @@ public class Cli extends ClientManager {
             }
             out.println("Insert the coordinates of the cards you want to remove, in order with respect to column insertion in the shelf :\ninsert row:\n");
 
-            int x = in.nextInt();
+            int x = Integer.parseInt(in.next());
             out.println("Insert column:");
-            int y = in.nextInt();
-            in.nextLine();
+            int y = Integer.parseInt(in.next());
             while (true) {
-
                 System.out.println("Are you sure? Answer yes or no");
-                String response = in.nextLine();
+                String response = in.next();
                 if (response.equals("no")) {
                     while(true){
                         out.println("Insert your new row");
-                        x = in.nextInt();
+                        x = Integer.parseInt(in.next());
                         out.println("Insert your new column");
-                        y = in.nextInt();
+                        y = Integer.parseInt(in.next());
                         System.out.println("Are you sure? Answer yes or no");
-                        String secResponse = in.nextLine();
+                        String secResponse = in.next();
                         if(secResponse.equals("yes")){
                             coordinates.add(new Coordinates(x,y));
                             break;
@@ -369,9 +376,10 @@ public class Cli extends ClientManager {
 
     @Override
     public void updateBoard(BoardResponse boardMessage) {
+        turn++;
+        if(turn==1) out.println("Game started! Wait for your turn...");
 
         board = boardMessage.getBoard();
-
         commonTokens = boardMessage.getCommonTokens();
         endGameToken = boardMessage.isEndGameToken();
     }
@@ -382,7 +390,7 @@ public class Cli extends ClientManager {
      */
     public void turn() {
         out.println("Choose the column:");
-        int column = in.nextInt();
+        int column = Integer.parseInt(in.next());
         ArrayList<String> tempColors = new ArrayList<>();
         for (String color : colors) {
             if (!color.equals(ColourTile.FREE.toString())) {
@@ -407,9 +415,7 @@ public class Cli extends ClientManager {
         for (Coordinates tempCoordinate : tempCoordinates) {
             board[tempCoordinate.getRow()][tempCoordinate.getColumn()] = ColourTile.FREE;
         }
-
         turnChoice();
-        //ok
     }
 
     @Override
@@ -421,12 +427,11 @@ public class Cli extends ClientManager {
         }
         out.println("Insert tile successful");
         shelf = turnResponse.getShelf();
-        printShelf(shelf);
         emptyShelf = false;
         for (int i = 0; i < 3; i++) {
             colors[i] = ColourTile.FREE.toString();
         }
-        chatMode();
+        chatMode(2);
 
     }
 
@@ -455,7 +460,7 @@ public class Cli extends ClientManager {
     public void printCommon(int id, int i) {
         out.println("            Token: " + commonTokens[i] + "\n");
         switch (id) {
-            case 4: {
+            case 4 -> {
                 out.println("""
                            ------------------------------
                            |           six               |
@@ -466,9 +471,8 @@ public class Cli extends ClientManager {
                            |     a different colour)     |
                            -------------------------------
                         """);
-                break;
             }
-            case 8: {
+            case 8 -> {
                 out.println("""
                            ------------------------------
                            |           on                |
@@ -479,9 +483,8 @@ public class Cli extends ClientManager {
                            |                             |
                            -------------------------------
                         """);
-                break;
             }
-            case 3: {
+            case 3 -> {
                 out.println("""
                            ------------------------------
                            |          four               |
@@ -492,9 +495,8 @@ public class Cli extends ClientManager {
                            |     a different colour)     |
                            -------------------------------
                         """);
-                break;
             }
-            case 1: {
+            case 1 -> {
                 out.println("""
                            ------------------------------
                            |           two               |
@@ -505,9 +507,8 @@ public class Cli extends ClientManager {
                            |     the same colour)        |
                            -------------------------------
                         """);
-                break;
             }
-            case 5: {
+            case 5 -> {
                 out.println("""
                            ------------------------------
                            |           three             |
@@ -518,9 +519,8 @@ public class Cli extends ClientManager {
                            |    different colours)       |
                            -------------------------------
                         """);
-                break;
             }
-            case 9: {
+            case 9 -> {
                 out.println("""
                            ------------------------------
                            |           eight             |
@@ -531,9 +531,8 @@ public class Cli extends ClientManager {
                            |          relevant)          |
                            -------------------------------
                         """);
-                break;
             }
-            case 11: {
+            case 11 -> {
                 out.println("""
                            ------------------------------
                            |           five              |
@@ -544,9 +543,8 @@ public class Cli extends ClientManager {
                            |                             |
                            -------------------------------
                         """);
-                break;
             }
-            case 7: {
+            case 7 -> {
                 out.println("""
                            ------------------------------
                            |           four              |
@@ -557,9 +555,8 @@ public class Cli extends ClientManager {
                            |    different colours)       |
                            -------------------------------
                         """);
-                break;
             }
-            case 2: {
+            case 2 -> {
                 out.println("""
                            ------------------------------
                            |           two               |
@@ -570,9 +567,8 @@ public class Cli extends ClientManager {
                            |                             |
                            -------------------------------
                         """);
-                break;
             }
-            case 6: {
+            case 6 -> {
                 out.println("""
                            ------------------------------
                            |           two               |
@@ -583,9 +579,8 @@ public class Cli extends ClientManager {
                            |                             |
                            -------------------------------
                         """);
-                break;
             }
-            case 10: {
+            case 10 -> {
                 out.println("""
                         ------------------------------
                            |           five              |
@@ -596,9 +591,8 @@ public class Cli extends ClientManager {
                            |                             |
                            -------------------------------
                         """);
-                break;
             }
-            case 12: {
+            case 12 -> {
                 out.println("""
                            ------------------------------
                            |        five columns         |
@@ -609,7 +603,6 @@ public class Cli extends ClientManager {
                            |  tail of the previous one)  |
                            -------------------------------
                         """);
-                break;
             }
         }
     }
@@ -631,7 +624,6 @@ public class Cli extends ClientManager {
             }
             System.out.print(" " + i + "\n");
         }
-        //ok
     }
 
     /**
@@ -648,11 +640,7 @@ public class Cli extends ClientManager {
                             cardPersonalTarget.personalCardTiles()[z].coordinates().getColumn() == j) {
                         System.out.print(getColorCode(cardPersonalTarget.personalCardTiles()[z].colourTile()) + "*** " + ANSI_RESET);
                         found = 1;
-                    } /*else if (cardPersonalTarget.personalCardTiles()[z].coordinates().getRow() >= i &&
-                            cardPersonalTarget.personalCardTiles()[z].coordinates().getColumn() < j) {
-                        System.out.print(TEXT_BLACK + "*** " + ANSI_RESET);/*
-                    /*if(cardPersonalTarget.personalCardTiles()[z].coordinates().getColumn()== 4){
-                        System.out.print(getColorCode(cardPersonalTarget.personalCardTiles()[z].colourTile()) + "\n" + ANSI_RESET);*/
+                    }
 
                 }
                 if (found == 0) {
@@ -665,10 +653,6 @@ public class Cli extends ClientManager {
 
         }
     }
-
-
-    //ok
-
 
     /**
      * Prints the shelf represented by a 2D array of ColourTile cards.
@@ -708,23 +692,22 @@ public class Cli extends ClientManager {
     public int validInt(int min, int max){
         int input= -1;
         while (true){
-            if (in.hasNextInt()) {
-                input = in.nextInt();
-                if (input<min || input> max) {
-                    out.println("Invalid digit");
-                } else break;
-            } else {
-                String input0 = in.next();
-                System.out.println("Invalid digit");
+                try {
+                    input = Integer.parseInt(in.next());
+                    if (input<min || input> max) {
+                        out.println("Invalid digit");
+                    } else break;
+
+                }catch (NumberFormatException e){
+                    out.println("Please insert a number");
+                }
             }
-        }
         return input;
     }
 
 
     @Override
     public void disconnectionMessage(DisconnectionMessage disconnectionMessage) {
-        in.nextLine();
         out.println("\nDisconnection occurred,game finished\n");
         closeConnection();
         System.exit(0);
@@ -732,45 +715,54 @@ public class Cli extends ClientManager {
 
     @Override
     public void chatMessage(ChatMessage chatMessage) {
-        chatList.add(chatMessage.getMessage());
+        chatListTmp.add(chatMessage.getMessage());
 
     }
 
     public void sendChatMessage(String message, String nickname){
-        getClient().sendMessage(new ChatMessage(gameID, UID, getClient().getUsername()+ " : " + message));
+        getClient().sendMessage(new ChatMessage(gameID, UID,getClient().getUsername()+ " : " + message, nickname));
     }
 
-    public void chatMode(){
+    public void chatMode(int type){
         while (true){
             out.println("1: View chat\n2: Send private message\n3: Send broadcast message\n4: Exit from chatMode");
-            int choice = in.nextInt();
+            int choice =Integer.parseInt(in.next());
             boolean exit = false;
-            switch(choice){
-                case 1 : {
-                    for (String s : chatList) {
-                        out.println(s);
-                    }
-                }
 
-                case 2 : {
+            switch (choice) {
+                case 1 -> {
+
+                    Thread chatView=new Thread(()->updateChat(type));
+                    chatView.start();
+                    return;
+
+                }
+                case 2 -> {
                     out.println("Choose the player please : ");
-                    for(int i=0; i < getPlayers().size(); i++){
-                        out.println(i +" : " + getPlayers().get(i));
+                    int pos=1;
+                    for (int i = 0; i < getPlayers().size(); i++) {
+                        if (!getPlayers().get(i).equals(getClient().getUsername())) {
+                            out.println(pos + " : " + getPlayers().get(i));
+                            pos++;
+                        }
                     }
-                    String privateNick = getPlayers().get(validInt(0, getPlayers().size()-1));
+                    String privateNick = getPlayers().get(validInt(1, getPlayers().size()));
                     out.println("Please enter the message you wanna send : ");
-                    String message = in.nextLine();
-                    sendChatMessage(getClient().getUsername()+ " whispers to "+ privateNick+ " : " + message, privateNick);
+                    String message = in.next() + in.nextLine();
+                    sendChatMessage( " whispers to " + privateNick + " ' " + message+ " ' ", privateNick);
                 }
-
-                case 3 : {
+                case 3 -> {
                     out.println("Please enter the message you wanna send : ");
-                    sendChatMessage(in.nextLine(), null);
+                    String message = in.next() + in.nextLine();
+                    sendChatMessage(message, null);
                 }
-
-                case 4 : {
+                case 4 -> {
                     exit = true;
-                    break;
+
+                    if (type!=2){
+                        if (type==0) removeChoice();
+                        else turnChoice();
+                    }
                 }
             }
             if(exit)break;

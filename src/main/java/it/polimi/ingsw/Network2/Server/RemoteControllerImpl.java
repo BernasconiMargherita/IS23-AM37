@@ -63,12 +63,10 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
      * @param pos the number of the lobby
      */
     public void startLobbyPingTimer(int pos, Timer timer) {
-        System.out.println("timer partito!");
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 int playersBeforePing=lobby.get(pos).size();
-                System.out.println("giocatori prima del ping:"+ playersBeforePing);
                     lobby.get(pos).removeIf(entry -> {
                         Long clientId = entry.getKey();
                         try {
@@ -78,7 +76,6 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
                             }
                             else {
                                 Socket client = tempTcp.get(clientId);
-                                System.out.println("entra in TCP !!!?");
                                 PrintWriter out = new PrintWriter(client.getOutputStream(),true);
                                 out.println(new PingMessage(-1,clientId).toJson());
                                 out.flush();
@@ -88,7 +85,6 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
                             return true;
                         }
                     });
-                    System.out.println("giocatori dopo il ping:"+ lobby.get(pos).size());
                     if (playersBeforePing>lobby.get(pos).size()){
 
                         for (int i=0;i<lobby.get(pos).size();i++){
@@ -129,12 +125,10 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
      */
 
     public void startGamePingTimer(int gameID, Timer timer) {
-        System.out.println("timer PARTITA partito!");
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 int playersBeforePing=clients.get(gameID).size();
-                System.out.println("giocatori prima del ping: (partita) "+ playersBeforePing);
                 clients.get(gameID).removeIf(entry -> {
                     Long clientId = entry.getUID();
                     try {
@@ -144,7 +138,6 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
                         }
                         else {
                             Socket client = tempTcp.get(clientId);
-                            System.out.println("entra in TCP !!!?");
                             PrintWriter out = new PrintWriter(client.getOutputStream(),true);
                             out.println(new PingMessage(-1,clientId).toJson());
                             out.flush();
@@ -154,7 +147,6 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
                         return true;
                     }
                 });
-                System.out.println("giocatori dopo il ping: (partita) "+ clients.get(gameID).size());
                 if (playersBeforePing>clients.get(gameID).size()){
 
                     for (int i=0;i<clients.get(gameID).size();i++){
@@ -175,7 +167,6 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
     @Override
     public void onMessage(Message message) throws RemoteException {
 
-        System.out.println(message.typeMessage());
 
         switch (message.typeMessage()){
             case "LoginMessage"-> registerPlayer(message.getGameID(), message.getNickname(), message.getUID());
@@ -220,12 +211,10 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
      */
     public void preRegistration(Message message) throws RemoteException {
         synchronized (lobby){
-            System.out.println("la lobby è lunga : " + lobby.size() + message.getNickname());
 
             if (lobby.size()==0)lobby.add(new ArrayList<>());
 
             for (int i = 0; i < lobby.size(); i++) {
-                System.out.println("la lobby n " + i + " è lunga : " + lobby.get(i).size() + "     ..." + message.getNickname());
                 if (lobby.get(i).size() == 0) {
                     lobby.get(i).add(new Pair<>(message.getUID(), message.getNickname()));
                     int gameID = startGame();
@@ -240,7 +229,6 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
                 Gson gson = new Gson();
                 Message preLogMess = new PreLoginResponse(-1, message.getUID());
                 if (lobby.get(i).size() == 1 || lobby.get(i).size() == 2) {
-                    System.out.println("qua ci entra frate flag");
                     lobby.get(i).add(new Pair<>(message.getUID(), message.getNickname()));
                     containsTcpTemp(message, gson, preLogMess);
                     break;
@@ -276,7 +264,6 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
         if (tempTcp.containsKey(message.getUID())) {
             try {
                 PrintWriter out = new PrintWriter(tempTcp.get(message.getUID()).getOutputStream());
-                System.out.println("pure qua deve entrare fratellone flag");
                 out.println(preLogMess.toJson());
                 out.flush();
             } catch (IOException e) {
@@ -429,16 +416,13 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
             for (int i = 0; i < lobby.size(); i++) {
                 if (lobby.get(i).get(0).getKey().equals(message.getUID())) {
                     pos = i;
-                    System.out.println("la pos è " + pos);
                     break;
                 }
             }
             if (lobby.get(pos).size() > maxPlayers) {
-                System.out.println("entra in lobby.get(pos).size() > maxPlayers");
 
 
                 if (pos == lobby.size() - 1) {
-                    System.out.println("entra in pos==lobby.size()-1");
                     lobby.add(new ArrayList<>());
                 } else if (lobby.get(lobby.size() - 1).size() == 4) {
                     lobby.add(new ArrayList<>());
@@ -446,7 +430,6 @@ public class RemoteControllerImpl implements RemoteController, Serializable {
                 for (int j = maxPlayers; j < lobby.get(pos).size(); j++) {
                     for (int k = pos + 1; k < lobby.size(); k++) {
                         if (lobby.get(k).size() == 0) {
-                            System.out.println("è qua che non entra");
                             lobby.get(k).add(new Pair<>(lobby.get(pos).get(j).getKey(), lobby.get(pos).get(j).getValue()));
                             int gameID2 = startGame();
                             clients.put(gameID2, new ArrayList<>());

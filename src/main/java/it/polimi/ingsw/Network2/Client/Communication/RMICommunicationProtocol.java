@@ -104,7 +104,6 @@ public class RMICommunicationProtocol extends UnicastRemoteObject implements Com
 
     @Override
     public void ping() throws RemoteException {
-        System.out.println("Ping received");
         resetTimer();
     }
 

@@ -164,8 +164,6 @@ public class GameController implements Serializable {
     public void nextTurn() throws EndGameException {
         turnChanger = (turnChanger + 1) % players.size();
         currentPlayer = players.get(turnChanger);
-        System.out.print("CURRENTPLAYERIS"+" e' il primo ? " + currentPlayer.isFirstPlayer()+ currentPlayer.getNickname()+" isLastTurn?->"+isLastTurn());
-
         if (isLastTurn() && currentPlayer.isFirstPlayer()) {
             game.setGameState(GameState.END_GAME);
             throw new EndGameException();

@@ -44,7 +44,6 @@ public class ClientUpdate implements Runnable{
                 } while (messages.isEmpty());
 
                 messages.forEach(clientUpdateListener::onUpdate);
-                System.out.println("Update scheduled");
             }
 
             try {

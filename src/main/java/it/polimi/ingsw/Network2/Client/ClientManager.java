@@ -39,7 +39,6 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
      */
     @Override
     public void onUpdate(Message message) {
-        System.out.println(message.typeMessage());
 
         switch (message.typeMessage()) {
             case "LoginResponse" -> handleLoginResponse((LoginResponse) message);
