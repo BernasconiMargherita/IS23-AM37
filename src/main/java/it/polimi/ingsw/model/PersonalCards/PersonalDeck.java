@@ -40,10 +40,10 @@ public class PersonalDeck implements Serializable {
         numbers[0] = random.nextInt(12);
         numbers[1] = random.nextInt(12);
 
-        while (numbers[0] == numbers[1]) numbers[1] = random.nextInt(12) + 1;
+        while (numbers[0] == numbers[1]) numbers[1] = random.nextInt(12);
         numbers[2] = random.nextInt(12);
 
-        while (numbers[2] == numbers[0] || numbers[2] == numbers[1]) numbers[2] = random.nextInt(12) + 1;
+        while (numbers[2] == numbers[0] || numbers[2] == numbers[1]) numbers[2] = random.nextInt(12);
         numbers[3] = random.nextInt(12);
 
         while (numbers[3] == numbers[0] || numbers[3] == numbers[1] || numbers[3] == numbers[2])

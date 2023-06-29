@@ -24,8 +24,10 @@ module it.polimi.ingsw {
     exports it.polimi.ingsw.Utils ;
     exports it.polimi.ingsw.Network.Chat to java.rmi;
     exports it.polimi.ingsw.view.gui;
-    exports it.polimi.ingsw.Network2 to java.rmi, javafx.graphics;
     exports it.polimi.ingsw.Network2.Messages to java.rmi;
     exports it.polimi.ingsw.model.CommonCards;
+    exports it.polimi.ingsw.Network2.Client to java.rmi, javafx.graphics;
+    exports it.polimi.ingsw.Network2.Server to java.rmi, javafx.graphics;
+    exports it.polimi.ingsw.Network2.Client.Communication to java.rmi, javafx.graphics;
 
 }

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view.cli;
 
-import it.polimi.ingsw.Network2.ClientManager;
+import it.polimi.ingsw.Network2.Client.ClientManager;
 import it.polimi.ingsw.Network2.Messages.*;
 import it.polimi.ingsw.Utils.Coordinates;
 import it.polimi.ingsw.model.CommonCards.CardCommonTarget;

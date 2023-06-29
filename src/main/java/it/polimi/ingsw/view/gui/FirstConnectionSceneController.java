@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.Network2.Client;
+import it.polimi.ingsw.Network2.Client.Client;
 import it.polimi.ingsw.Network2.Messages.DisconnectionMessage;
 import it.polimi.ingsw.Network2.Messages.SetMessage;
 import it.polimi.ingsw.Network2.Messages.SetResponse;
