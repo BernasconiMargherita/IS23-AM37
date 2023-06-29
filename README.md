@@ -66,7 +66,7 @@ A questo punto digitare il seguente comando che importa le dipendenze e lancia i
 - GUI <br>
 - RMI <br>
 - Socket <br>
-- 3 FA<br>
+- 1 FA<br>
 
 ### Funzionalità avanzate<br>
 
