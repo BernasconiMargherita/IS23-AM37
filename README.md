@@ -16,7 +16,7 @@ Il risultato finale copre completamente le regole definite dal gioco e permette 
 I seguenti diagrammi delle classi rappresentano rispettivamente gli UML di alto livello e di dettagli del server e dei client, e l'UML del protocollo di comunicazione:<br>
 
 - [UML alto livello](deliverables/uml/client_server/HighLevelCommunicationUML.jpg)
-- [UML dettaglio](URL del link)
+- [UML dettaglio](deliverables/uml/client_server)
 - [UML protocollo](deliverables/uml/SequenceDiagram.pdf)
 
 
