@@ -552,7 +552,6 @@ public class GameSceneController {
 
         Button closeButton = new Button("Close game");
         closeButton.setOnAction(event -> {
-            guiMaster.closeConnection();
             modalStage.close();
 
             Platform.exit();
