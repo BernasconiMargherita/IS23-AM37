@@ -66,7 +66,7 @@ A questo punto digitare il seguente comando che importa le dipendenze e lancia i
 
 L'esecuzione del server avviene attraverso il seguente comando:
 
-      hhhh  
+      java -jar Server.jar portRMI portTCP  
 
 # Funzionalità
 
