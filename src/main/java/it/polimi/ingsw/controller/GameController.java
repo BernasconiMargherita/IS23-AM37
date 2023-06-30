@@ -148,7 +148,6 @@ public class GameController implements Serializable {
      */
     public Player endGame() {
 
-
         for (Player player : players) {
             player.groupScore();
         }

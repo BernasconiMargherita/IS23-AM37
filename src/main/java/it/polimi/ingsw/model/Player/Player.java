@@ -53,7 +53,7 @@ public class Player implements Serializable {
      * Method that stores and modifies score value
      */
     public void addScore(int addedScore) {
-        this.score += addedScore;
+        this.score = score + addedScore;
     }
 
     /**
@@ -75,7 +75,7 @@ public class Player implements Serializable {
         int[] points = {0, 1, 2, 4, 6, 9, 12};
         int check = utils.checkPersonalTarget(personalShelf, cardPersonalTarget);
         if (check > 0) {
-            this.score += points[check];
+            addScore(points[check]);
         }
     }
 

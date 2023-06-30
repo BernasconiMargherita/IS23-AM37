@@ -411,11 +411,60 @@ public class UtilsTest {
         for (int i = 5; i >=0; i--) {
             for (int j = 0; j < 5; j++) {
                 String ANSI_RESET = "\u001B[0m";
-                System.out.print(getColorCode(shelf.getShelf()[i][j].getAssignedTile().getColour()) + "*** " + ANSI_RESET);
+                System.out.print(getColorCode(shelf.getShelf()[i][j].getAssignedTile().colour()) + "*** " + ANSI_RESET);
             }
             System.out.print("\n");
         }
 
+    }
+    @Test
+    void checkUltimateWithSpace(){
+        Shelf shelf = new Shelf();
+        Utils utils=new Utils();
+        for(int i = 0; i< 5; i++){
+            for(int j = 0; j< 6; j++){
+                Random random = new Random();
+                int num = random.nextInt(6);
+                Tile[] tiles = new Tile[1];
+                if(num == 0){
+                    tiles[0] = new Tile(ColourTile.BOOKS);
+                }
+                if(num == 2){
+                    tiles[0] = new Tile(ColourTile.GAMES);
+                }
+                if(num == 3){
+                    tiles[0] = new Tile(ColourTile.PLANTS);
+                }
+                if(num == 4){
+                    tiles[0] = new Tile(ColourTile.TROPHIES);
+                }
+
+                if (tiles[0]!=null) {
+                    try {
+                        shelf.addCardInColumn(i, tiles);
+                    } catch (NoSpaceInColumnException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        }
+
+
+        for(int i = 0; i < 5; i++) {
+            System.out.print(" " + i + "  ");
+        }
+        System.out.print("\n");
+
+        for (int i = 5; i >=0; i--) {
+            for (int j = 0; j < 5; j++) {
+                String ANSI_RESET = "\u001B[0m";
+                if (!shelf.getShelf()[i][j].isFree()) {
+                    System.out.print(getColorCode(shelf.getShelf()[i][j].getAssignedTile().colour()) + "*** " + ANSI_RESET);
+                }else System.out.print(getColorCode(ColourTile.FREE) + "*** " + ANSI_RESET);
+            }
+            System.out.print("\n");
+        }
+        System.out.print("Hai fatto: "+ utils.groupScore(shelf));
     }
 
 }
