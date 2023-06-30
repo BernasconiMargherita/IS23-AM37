@@ -13,7 +13,7 @@ public class ScoringToken implements Serializable {
     int valueToken;
 
     /**
-     * constructor of ScoringToken that assign the prameters to assignedCommonCard and valueToken
+     * constructor of ScoringToken that assign the parameters to assignedCommonCard and valueToken
      *
      * @param assignedCommonCard identifies the first or second common card of the board
      * @param valueToken         value of the ScoringToken

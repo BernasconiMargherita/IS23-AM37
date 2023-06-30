@@ -1,7 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.Network2.Client.Client;
-import it.polimi.ingsw.Network2.Messages.*;
+import it.polimi.ingsw.Network.Client.Client;
+import it.polimi.ingsw.Network.Messages.*;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
@@ -27,6 +27,12 @@ public class LoginSceneController {
     public GridPane ShelfieLogo;
     @FXML
     public AnchorPane anchorPane;
+    public TextField portField;
+    @FXML
+    public Label portLabel;
+    @FXML
+    public Button portButton;
+
     @FXML
     private TextField usernameField;
     @FXML
@@ -118,15 +124,14 @@ public class LoginSceneController {
         }
 
         connection = selected.getText();
-        GuiMaster.getInstance().createConnection(connection);
 
         communication.setVisible(false);
         TCP.setVisible(false);
         RMI.setVisible(false);
+        portField.setVisible(true);
+        portButton.setVisible(true);
+        portLabel.setVisible(true);
 
-        loginButton.setVisible(true);
-        usernameField.setVisible(true);
-        usernameLabel.setVisible(true);
     }
 
     /**
@@ -147,5 +152,23 @@ public class LoginSceneController {
         GuiMaster.setLayout(scene, "/fxml/connectionScene.fxml");
     }
 
+    public void portChoice(MouseEvent mouseEvent) {
+        try {
+            int port = Integer.parseInt(portField.getText());
+
+            portField.setVisible(false);
+            portButton.setVisible(false);
+            portLabel.setVisible(false);
+            loginButton.setVisible(true);
+            usernameField.setVisible(true);
+            usernameLabel.setVisible(true);
+
+            guiMaster.createConnection(connection,port);
+        }catch (NumberFormatException e){
+            usernameError.setText("Inserisci una porta!");
+        }
+
+
+    }
 }
 

@@ -34,7 +34,7 @@ public class Shelf implements Serializable {
 
     /**
      * method that adds up to three selected tiles in Shelf. It counts, in the given column, how many rows are full using the method isFree (form TileSlot)
-     * Tiles are stored in array created by Board and put in the shelf with assignTile method
+     * Tiles are stored in array created by Board and put on the shelf with assignTile method
      *
      * @throws NoSpaceInColumnException if there is not enough space for the selected numbers of tiles
      */

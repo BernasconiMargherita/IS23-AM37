@@ -1,7 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.Network2.Client.Client;
-import it.polimi.ingsw.Network2.Messages.*;
+import it.polimi.ingsw.Network.Client.Client;
+import it.polimi.ingsw.Network.Messages.*;
 import it.polimi.ingsw.Utils.Coordinates;
 import it.polimi.ingsw.model.CommonCards.CardCommonTarget;
 import it.polimi.ingsw.model.PersonalCards.CardPersonalTarget;
@@ -100,7 +100,6 @@ public class GameSceneController {
     private ColourTile[][] turnBoard;
     private final ArrayList<Coordinates> tileHand=new ArrayList<>();
     private final ArrayList<Coordinates> tileHandTmp=new ArrayList<>();
-    private ColourTile[][] turnShelf;
     @FXML
     private Button remakeTurnButton;
 
@@ -270,7 +269,7 @@ public class GameSceneController {
                     hand.add(handTile, findFirstEmptyColumn(hand), 0);
 
                 } else if (tileHandTmp.size()==3) {
-                    return;
+
                 } else {
 
                     int lastCoordinateIndex = tileHandTmp.size() - 1;
@@ -490,7 +489,7 @@ public class GameSceneController {
      * Method to update the shelf after the turn ends
      */
     private void updateShelf(TurnResponse turnResponse) {
-        turnShelf = turnResponse.getShelf();
+        ColourTile[][] turnShelf = turnResponse.getShelf();
         emptyGridPane(shelfMask);
         for (int row = SHELF_ROWS - 1; row >= 0; row--) {
             for (int col = 0; col < SHELF_COLUMNS; col++) {
@@ -549,7 +548,7 @@ public class GameSceneController {
         modalStage.initModality(Modality.APPLICATION_MODAL);
         modalStage.setTitle("Game Over");
 
-        Label winnerLabel = new Label("The winner is: " + endGameMessage.getWinner());
+        Label winnerLabel = new Label("The winner is: " + endGameMessage.getWinner()+"\nYour score: "+endGameMessage.getPoints());
 
         Button closeButton = new Button("Close game");
         closeButton.setOnAction(event -> {

@@ -2,17 +2,14 @@ package it.polimi.ingsw.model.Tile;
 
 import java.io.Serializable;
 
-public class Tile implements Serializable {
-    /**
-     * ColourTile colour : type of the tile (CATS OR BOOKS OR GAMES OR FRAMES OR TROPHIES OR PLANTS)
-     */
-    private final ColourTile colour;
-
+/**
+ * @param colour ColourTile colour : type of the tile (CATS OR BOOKS OR GAMES OR FRAMES OR TROPHIES OR PLANTS)
+ */
+public record Tile(ColourTile colour) implements Serializable {
     /**
      * constructor of Tile : assigning the value of colour
      */
-    public Tile(ColourTile colour) {
-        this.colour = colour;
+    public Tile {
     }
 
 
@@ -21,7 +18,8 @@ public class Tile implements Serializable {
      *
      * @return colour
      */
-    public ColourTile getColour() {
+    @Override
+    public ColourTile colour() {
         return colour;
     }
 }

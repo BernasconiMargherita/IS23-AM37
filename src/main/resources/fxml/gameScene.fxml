@@ -8,7 +8,7 @@
 <AnchorPane fx:id="anchorPane" stylesheets="@styles/login.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.GameSceneController">
    <children>
       <AnchorPane fx:id="rootPane" prefHeight="700.0" prefWidth="994.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="1000.0" AnchorPane.topAnchor="0.0">
-           <ListView fx:id="chatListView" layoutX="689.0" layoutY="441.0" prefHeight="126.0" prefWidth="289.0" />
+           <ListView fx:id="chatListView" layoutX="689.0" layoutY="462.0" prefHeight="105.0" prefWidth="289.0" />
             <TextField fx:id="messageTextField" layoutX="766.0" layoutY="573.0" onAction="#sendChatMessage" prefHeight="25.0" prefWidth="212.0" />
             <Button layoutX="687.0" layoutY="573.0" onAction="#sendChatMessage" prefHeight="25.0" prefWidth="66.0" text="Send" />
           <ImageView fx:id="shelf" fitHeight="247.0" fitWidth="251.0" layoutX="705.0" layoutY="69.0">
@@ -143,7 +143,7 @@
                <Font size="15.0" />
             </font>
          </Label>
-         <Button fx:id="remakeTurnButton" layoutX="808.0" layoutY="398.0" mnemonicParsing="false" onMouseClicked="#remakeTurn" text="Remake" />
+         <Button fx:id="remakeTurnButton" layoutX="808.0" layoutY="425.0" mnemonicParsing="false" onMouseClicked="#remakeTurn" text="Remake" />
          <Button fx:id="privateMessageButton" layoutX="670.0" layoutY="638.0" mnemonicParsing="false" onMouseClicked="#makeUsersAppear" prefHeight="25.0" prefWidth="107.0" text="Private Message" />
          <RadioButton fx:id="firstPlayer" layoutX="802.0" layoutY="613.0" mnemonicParsing="false" visible="false" />
          <RadioButton fx:id="secondPlayer" layoutX="802.0" layoutY="642.0" mnemonicParsing="false" visible="false" />

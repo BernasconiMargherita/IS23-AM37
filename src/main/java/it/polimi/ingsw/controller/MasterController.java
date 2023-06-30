@@ -1,7 +1,5 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.model.GameState;
-
 import java.io.Serializable;
 import java.util.HashMap;
 
@@ -25,16 +23,14 @@ public class MasterController implements Serializable {
      */
 
     public MasterController() {
-        this.gameMap = new HashMap<Integer, GameController>();
+        this.gameMap = new HashMap<>();
         this.gameID = 0;
     }
 
     /**
      * this method creates a new game controller and associates a new gameID
-     *
-     * @return the gameID, that will be used by the Client for future communications
      */
-    public Integer newGameController() {
+    public void newGameController() {
         GameController gameController = new GameController();
         Integer newKey = gameID;
         gameMap.put(newKey, gameController);
@@ -43,7 +39,6 @@ public class MasterController implements Serializable {
             gameID++;
         }
 
-        return newKey;
     }
 
     /**
@@ -53,8 +48,4 @@ public class MasterController implements Serializable {
         return gameMap.get(gameID);
     }
 
-
-    public GameState getGameState(int gameID) {
-        return gameMap.get(gameID).getGameState();
-    }
 }

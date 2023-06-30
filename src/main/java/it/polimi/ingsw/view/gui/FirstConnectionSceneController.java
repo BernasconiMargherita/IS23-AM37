@@ -1,9 +1,9 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.Network2.Client.Client;
-import it.polimi.ingsw.Network2.Messages.DisconnectionMessage;
-import it.polimi.ingsw.Network2.Messages.SetMessage;
-import it.polimi.ingsw.Network2.Messages.SetResponse;
+import it.polimi.ingsw.Network.Client.Client;
+import it.polimi.ingsw.Network.Messages.DisconnectionMessage;
+import it.polimi.ingsw.Network.Messages.SetMessage;
+import it.polimi.ingsw.Network.Messages.SetResponse;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -25,8 +25,6 @@ public class FirstConnectionSceneController {
     public AnchorPane rootPane;
     public GridPane gridPane;
     public Label numError;
-    public Label loadingMessage;
-    public ProgressIndicator progressIndicator;
     @FXML
     public AnchorPane anchorPane;
     private ToggleGroup toggleGroup;
@@ -93,8 +91,8 @@ public class FirstConnectionSceneController {
         Stage modalStage = new Stage();
         modalStage.initModality(Modality.APPLICATION_MODAL);
         modalStage.setTitle("Disconnection");
-        Button closeButton = null;
-        Label errorLabel = null;
+        Button closeButton;
+        Label errorLabel;
         if (disconnectionMessage.isServerError()) {
             errorLabel = new Label("Server down, game finished");
 

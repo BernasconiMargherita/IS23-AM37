@@ -7,14 +7,10 @@ import java.util.Random;
 
 public class CommonDeck implements Serializable {
     /**
-     * ArrayList CardCommonTarget commonDeck : ArrayList of commonCard (lenght -> 2)
+     * ArrayList CardCommonTarget commonDeck : ArrayList of commonCard (length -> 2)
      */
     private final ArrayList<CardCommonTarget> commonDeck;
 
-    /**
-     * int numOfPlayers : number of players
-     */
-    private int numOfPlayers;
 
     /**
      * Method for create two CommonTargetCards randomly picked from the ones that are available
