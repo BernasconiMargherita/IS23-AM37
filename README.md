@@ -56,8 +56,8 @@ Per lanciare il client in modalità CLI digitare il seguente comando:<br>
  
 
 **GUI**<br>
-Per poter lanciare il client con l'interfaccia grafica è necessario importare le dipendenze di JavaFx. 
-A questo punto digitare il seguente comando che importa le dipendenze e lancia il client:
+Per lanciare il client in modalità GUI digitare il seguente comando:<br>
+
 
       java -jar Client.jar gui
 
