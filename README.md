@@ -24,7 +24,7 @@ I seguenti diagrammi delle classi rappresentano rispettivamente gli UML di alto 
 
 La seguente documentazione include una descrizione delle classi e dei metodi utilizzati, seguendo le tecniche di documentazione di Java.<br>
 
-- [JavaDocs](URL del link)
+- [JavaDocs](deliverables/JavaDocs)
 
 
 
