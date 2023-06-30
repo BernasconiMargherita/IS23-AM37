@@ -467,42 +467,38 @@ public class Utils implements Serializable {
     public int groupScore(Shelf shelf) {
         TileSlot[][] shelfMatrix = shelf.getShelf();
         TileSlot[][] copy = copy(shelfMatrix);
-        int match = 0;
-
         int addedScore = 0;
+        boolean[][] visited = new boolean[MAX_SHELF_ROWS][MAX_SHELF_COLUMNS];
 
         for (int j = 0; j < MAX_SHELF_ROWS - 1; j++) {
             for (int k = 0; k < MAX_SHELF_COLUMNS - 1; k++) {
                 ColourTile colour;
-                if (!copy[j][k].isFree()) {
+                if (!copy[j][k].isFree() && !visited[j][k]) {
                     colour = copy[j][k].getAssignedTile().colour();
+                    int match = 1 + ricorsiva(copy, colour, j, k, visited);
 
-                    boolean[][] visited =
-                            {{false, false, false, false, false, false, false, false, false, false, false},
-                                    {false, false, false, false, false, false, false, false, false, false, false},
-                                    {false, false, false, false, false, false, false, false, false, false, false},
-                                    {false, false, false, false, false, false, false, false, false, false, false},
-                                    {false, false, false, false, false, false, false, false, false, false, false},
-                                    {false, false, false, false, false, false, false, false, false, false, false}};
+                    for (int x = j; x < j + match; x++) {
+                        for (int y = k; y < k + match; y++) {
+                            visited[x][y] = true;
+                        }
+                    }
 
-                    if (!visited[j][k]) {
-                        match = 1 + ricorsiva(copy, colour, j, k, visited);
+                    if (match == 3) {
+                        addedScore += 2;
+                    } else if (match == 4) {
+                        addedScore += 3;
+                    } else if (match == 5) {
+                        addedScore += 5;
+                    } else if (match >= 6) {
+                        addedScore += 8;
                     }
                 }
             }
         }
-        if (match == 3) {
-            addedScore = 2;
-        } else if (match == 4) {
-            addedScore = 3;
-        } else if (match == 5) {
-            addedScore = 5;
-        } else if (match >= 6) {
-            addedScore = 8;
-        }
 
         return addedScore;
     }
+
 
 
     /**

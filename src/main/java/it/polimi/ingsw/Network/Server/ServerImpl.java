@@ -609,7 +609,8 @@ public class ServerImpl implements Serializable {
                     clients.get(gameID).get(getPosition(UID, gameID)).sendMessage(message);
                     String winner = getWinner(gameID);
                     for (int j = 0; j < clients.get(gameID).size(); j++) {
-                        clients.get(gameID).get(j).sendMessage(new EndMessage(winner,gameID,UID));
+                        String nick=clients.get(gameID).get(j).getNickname();
+                        clients.get(gameID).get(j).sendMessage(new EndMessage(winner,gameID,UID,masterController.getGameController(gameID).getPlayerByNickname(nick).getScore()));
                     }
                     gameTimers.get(gameID).cancel();
 

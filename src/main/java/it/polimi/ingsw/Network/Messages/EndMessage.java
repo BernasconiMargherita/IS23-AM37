@@ -7,6 +7,7 @@ import java.io.Serializable;
  */
 public class EndMessage extends Message implements Serializable {
 
+    private final int points;
     private String winner;
     private  String typeMessage ;
 
@@ -17,10 +18,11 @@ public class EndMessage extends Message implements Serializable {
      * @param gameID The ID of the game that has ended.
      * @param UID    The unique identifier of the client.
      */
-    public EndMessage(String winner,int gameID,long UID) {
+    public EndMessage(String winner,int gameID,long UID,int points) {
         super(gameID,UID);
         this.winner = winner;
         this.typeMessage = "EndMessage";
+        this.points=points;
     }
 
     /**
@@ -36,5 +38,12 @@ public class EndMessage extends Message implements Serializable {
     @Override
     public String typeMessage() {
         return "EndMessage";
+    }
+
+    /**
+     *returns user points
+     */
+    public int getPoints() {
+        return points;
     }
 }

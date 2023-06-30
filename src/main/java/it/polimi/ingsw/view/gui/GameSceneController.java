@@ -548,7 +548,7 @@ public class GameSceneController {
         modalStage.initModality(Modality.APPLICATION_MODAL);
         modalStage.setTitle("Game Over");
 
-        Label winnerLabel = new Label("The winner is: " + endGameMessage.getWinner());
+        Label winnerLabel = new Label("The winner is: " + endGameMessage.getWinner()+"\nYour score: "+endGameMessage.getPoints());
 
         Button closeButton = new Button("Close game");
         closeButton.setOnAction(event -> {

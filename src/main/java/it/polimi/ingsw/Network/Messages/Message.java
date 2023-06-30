@@ -245,4 +245,11 @@ public class Message implements Serializable {
         return null;
     }
 
+    /**
+     * returns user points
+     */
+    public int getPoints() {
+        return 0;
+    }
+
 }

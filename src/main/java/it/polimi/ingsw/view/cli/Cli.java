@@ -276,8 +276,8 @@ public class Cli extends ClientManager {
         } else {
             out.println("7: Insert in column");
         }
-
-        int num = validInt(0, 7);
+        out.println("8: Exit");
+        int num = validInt(0, 8);
 
         if (num == 1) {
             printCommonTargets(cardCommonTargets.get(0), cardCommonTargets.get(1));
@@ -304,6 +304,11 @@ public class Cli extends ClientManager {
             else chatMode(1);
 
             return 2;
+        } else if (num==8) {
+            out.println("Disconnected. Bye bye!");
+            System.exit(0);
+            return -1;
+
         } else return 1;
     }
 
@@ -438,7 +443,8 @@ public class Cli extends ClientManager {
 
     @Override
     public void endGame(EndMessage endGameMessage) {
-        out.println("The game is finished! \nThe winner is " + endGameMessage.getWinner());
+        out.println("The game is finished! \nThe winner is " + endGameMessage.getWinner()+"\n Your score is: "+endGameMessage.getPoints());
+        System.exit(0);
     }
 
     /**

@@ -78,6 +78,7 @@ public class RMICommunicationProtocol extends UnicastRemoteObject implements Com
         if (server!=null) {
             try {
                 server.disconnect(UID);
+                if (timer!=null) timer.cancel();
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }

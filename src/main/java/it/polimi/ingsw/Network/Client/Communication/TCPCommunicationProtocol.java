@@ -82,7 +82,9 @@ public class TCPCommunicationProtocol extends UnicastRemoteObject implements Com
         if (!socket.isClosed()) {
             socket.close();
         }
-
+        if (timer!=null){
+            timer.cancel();
+        }
         messageReceiver.interrupt();
 
         in = null;
