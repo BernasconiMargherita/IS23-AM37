@@ -80,16 +80,29 @@ public class Cli extends ClientManager {
                 protocol = in.next() + in.nextLine();
             } else break;
         }
-        createConnection(protocol);
+
+        out.println("Please enter the port: ");
+        int port;
+        boolean loop = true;
+        while (true){
+            try {
+                port = Integer.parseInt(in.next() + in.nextLine());
+                break;
+            }catch (NumberFormatException e){
+                out.println("Invalid digit, please enter a number: ");
+            }
+        }
+
+        createConnection(protocol, port);
     }
 
     @Override
-    public void createConnection(String connection) {
+    public void createConnection(String connection, int port) {
         if (protocol.equals("TCP") || protocol.equals("tcp")) {
-                super.createConnection("TCP");
+                super.createConnection("TCP", port);
         }
         if (protocol.equals("RMI") || protocol.equals("rmi")) {
-            super.createConnection("RMI");
+            super.createConnection("RMI", port);
         }
         UID = getClient().getUID();
         login();
