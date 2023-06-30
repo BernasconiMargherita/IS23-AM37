@@ -52,14 +52,14 @@ Il client viene eseguito scegliendo l'interfaccia con cui giocare, le possibili 
 **CLI**<br>
 Per lanciare il client in modalità CLI digitare il seguente comando:<br>
 
-      java -jar client.jar cli
+      java -jar Client.jar cli
  
 
 **GUI**<br>
 Per poter lanciare il client con l'interfaccia grafica è necessario importare le dipendenze di JavaFx. 
 A questo punto digitare il seguente comando che importa le dipendenze e lancia il client:
 
-      java -jar client.jar gui
+      java -jar Client.jar gui
 
 
 ### Server<br>
