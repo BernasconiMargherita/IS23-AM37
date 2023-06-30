@@ -48,8 +48,7 @@ public class CardCommonTarget implements Serializable {
 
         if (numOfPlayers == 2) {
 
-
-            stackToken.push(new ScoringToken(assignedCommonCard, 4));
+            stackToken.push(new ScoringToken(assignedCommonCard, 6));
             stackToken.push(new ScoringToken(assignedCommonCard, 8));
         }
 

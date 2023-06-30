@@ -116,7 +116,7 @@
                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
          </GridPane>
-         <Label fx:id="turnText" layoutX="454.0" layoutY="263.0" prefHeight="68.0" prefWidth="138.0" text="WAIT YOUR TURN!" textAlignment="CENTER" textFill="#d30505">
+         <Label fx:id="turnText" layoutX="482.0" layoutY="188.0" prefHeight="68.0" prefWidth="138.0" text="WAIT YOUR TURN!" textAlignment="CENTER" textFill="#d30505">
             <font>
                <Font size="15.0" />
             </font>
@@ -150,6 +150,8 @@
          <RadioButton fx:id="thirdPlayer" layoutX="802.0" layoutY="669.0" mnemonicParsing="false" visible="false" />
          <Button fx:id="privateSelectButton" layoutX="670.0" layoutY="638.0" mnemonicParsing="false" onMouseClicked="#selectUser" prefHeight="25.0" prefWidth="107.0" text="Confirm User" visible="false" />
          <Label fx:id="selectedUser" layoutX="597.0" layoutY="678.0" prefHeight="17.0" prefWidth="183.0" textAlignment="CENTER" />
+         <Button fx:id="closeButton" layoutX="509.0" layoutY="357.0" mnemonicParsing="false" text="Close Game" visible="false" />
+         <Label fx:id="winnerLabel" layoutX="469.0" layoutY="245.0" prefHeight="92.0" prefWidth="164.0" visible="false" />
       
       </AnchorPane>
    </children>

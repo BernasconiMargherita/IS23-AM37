@@ -150,8 +150,7 @@ public class GameController implements Serializable {
 
         for (Player player : players) {
             player.groupScore();
-            int points = player.checkPersonalTarget();
-            System.out.println("le personali di " + player.getNickname() + " hanno fatto " + points + " punti" );
+            player.checkPersonalTarget();
         }
         return chooseWinner();
     }
@@ -193,12 +192,10 @@ public class GameController implements Serializable {
         int max = 0;
 
         for (Player player : players) {
-            System.out.println(" '' il player "+ player.getNickname() + " ha fatto in totale " + player.getScore() + " '' ");
             if (player.getScore() > max){
                 max = player.getScore();
                 winner = player;
             }
-            System.out.println("il winner per adesso è"  + winner.getNickname() );
         }
 
         return winner;
@@ -244,10 +241,6 @@ public class GameController implements Serializable {
 
     public List<Player> getPlayers() {
         return players;
-    }
-
-    public GameState getGameState() {
-        return game.getGameState();
     }
 
     public int getNumOfPlayers() {

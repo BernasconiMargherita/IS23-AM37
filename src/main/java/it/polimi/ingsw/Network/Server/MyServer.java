@@ -16,7 +16,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 //
 /**
- * MANCA
+ * Class that represents the server, handles the messages incoming from the client and sends messages to the clients
  */
 public class MyServer extends UnicastRemoteObject implements ServerInterface {
     private static final ServerImpl server;

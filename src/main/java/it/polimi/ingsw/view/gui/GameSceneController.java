@@ -97,6 +97,7 @@ public class GameSceneController {
     @FXML
     public RadioButton thirdPlayer;
     public Label selectedUser;
+    public Button closeButton;
     private ColourTile[][] turnBoard;
     private final ArrayList<Coordinates> tileHand=new ArrayList<>();
     private final ArrayList<Coordinates> tileHandTmp=new ArrayList<>();
@@ -111,6 +112,8 @@ public class GameSceneController {
     @FXML
     private Button privateSelectButton;
     private RadioButton selectedForPrivateMessage;
+    @FXML
+    private Label winnerLabel;
 
 
     /**
@@ -544,27 +547,18 @@ public class GameSceneController {
      * @param endGameMessage a Message that contains information about the winner of the game
      */
     public void endGame(EndMessage endGameMessage) {
-        Stage modalStage = new Stage();
-        modalStage.initModality(Modality.APPLICATION_MODAL);
-        modalStage.setTitle("Game Over");
+        turnText.setVisible(true);
+        turnText.setText("PARTITA FINITA");
+        winnerLabel.setVisible(true);
+        winnerLabel.setText("The winner is: " + endGameMessage.getWinner()+"\nYour score: "+endGameMessage.getPoints());
+        guiMaster.closeConnection();
 
-        Label winnerLabel = new Label("The winner is: " + endGameMessage.getWinner()+"\nYour score: "+endGameMessage.getPoints());
-
-        Button closeButton = new Button("Close game");
+        closeButton.setVisible(true);
         closeButton.setOnAction(event -> {
-            modalStage.close();
-
             Platform.exit();
             System.exit(0);
         });
 
-        VBox modalVBox = new VBox(winnerLabel, closeButton);
-        modalVBox.setStyle("-fx-padding: 20px; -fx-spacing: 10px");
-
-        Scene modalScene = new Scene(modalVBox);
-
-        modalStage.setScene(modalScene);
-        modalStage.showAndWait();
     }
 
 

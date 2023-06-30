@@ -89,6 +89,11 @@ public class Cli extends ClientManager {
         createConnection(protocol, port);
     }
 
+    /**
+     * Method for creating the connection
+     * @param connection The type of connection ("TCP" or "RMI") to establish with the server.
+     * @param port the port of the server
+     */
     @Override
     public void createConnection(String connection, int port) {
         if (protocol.equals("TCP") || protocol.equals("tcp")) {
@@ -124,12 +129,21 @@ public class Cli extends ClientManager {
 
     }
 
+    /**
+     * Called when a first response arrives, makes the player select the num of players
+     * @param firstResponse The response to the first game turn.
+     */
+
     @Override
     public void firstResponse(FirstResponse firstResponse) {
         gameID = firstResponse.getGameID();
         firstSetter(gameID);
     }
 
+    /**
+     * sent to a client that becomes a first player after a game is started
+     * @param reFirstResponse The response to the re-first game turn.
+     */
     @Override
     public void reFirstResponse(ReFirstResponse reFirstResponse) {
         gameID = reFirstResponse.getGameID();
@@ -137,26 +151,38 @@ public class Cli extends ClientManager {
     }
 
 
-
+    /**
+     * Confirms that the set of the players was successful
+     * @param setResponse The response to the request for setting a value.
+     */
     @Override
     public void setResponse(SetResponse setResponse) {
         out.println("Setting finished correctly\nWaiting...");
 
     }
 
+    /**
+     * Confirms that the PreLogin phase has ended successfully
+     * @param preLoginResponse The preliminary response to the client's login attempt.
+     */
     @Override
     public void preLoginResponse(PreLoginResponse preLoginResponse) {
         out.println("Waiting for a game...");
 
     }
 
-
+    /**
+     *  Confirms that the Login phase has ended successfully
+     * @param loginResponse The response to the client's login attempt.
+     */
     @Override
     public void loginResponse(LoginResponse loginResponse) {
         out.println("Successful login\nWaiting...");
         gameID = loginResponse.getGameID();
     }
-
+    /**
+     * Used when the chosen username is already taken in this game
+     */
     @Override
     public void usernameError(UsernameError usernameError) {
         gameID = usernameError.getGameID();
@@ -166,6 +192,10 @@ public class Cli extends ClientManager {
         getClient().setUsername(username);
     }
 
+    /**
+     * called when a game begins
+     * @param initResponse The response to the game initialization.
+     */
     @Override
     public void initResponse(InitResponse initResponse) {
 
