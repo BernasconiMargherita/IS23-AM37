@@ -102,16 +102,6 @@ public class Game implements Serializable {
             }
         }
     }
-
-    /**
-     * method that checks if the player ha completed one of his personal goal and then proceeds to add the corresponding score to the player score
-     *
-     * @param currentPlayer the player that is currently playing his turn
-     */
-    public void checkPersonalTarget(Player currentPlayer) {
-        currentPlayer.checkPersonalTarget();
-    }
-
     /**
      * method that checks if the player shelf is full,and if it is, begins the last turn and adds the score of the EndGameToken to the player score
      *

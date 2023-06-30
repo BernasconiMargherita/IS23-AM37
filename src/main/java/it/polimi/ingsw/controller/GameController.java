@@ -131,7 +131,7 @@ public class GameController implements Serializable {
 
         game.addInShelf(tilesToAdd, currentPlayer, column);
         game.checkCommonTarget(currentPlayer);
-        game.checkPersonalTarget(currentPlayer);
+
         game.isShelfFull(currentPlayer);
         nextTurn();
         game.refillBoard();
@@ -150,8 +150,9 @@ public class GameController implements Serializable {
 
         for (Player player : players) {
             player.groupScore();
+            int points = player.checkPersonalTarget();
+            System.out.println("le personali di " + player.getNickname() + " hanno fatto " + points + " punti" );
         }
-
         return chooseWinner();
     }
 
@@ -192,9 +193,14 @@ public class GameController implements Serializable {
         int max = 0;
 
         for (Player player : players) {
-            if (player.getScore() > max)
+            System.out.println(" '' il player "+ player.getNickname() + " ha fatto in totale " + player.getScore() + " '' ");
+            if (player.getScore() > max){
+                max = player.getScore();
                 winner = player;
+            }
+            System.out.println("il winner per adesso è"  + winner.getNickname() );
         }
+
         return winner;
     }
 

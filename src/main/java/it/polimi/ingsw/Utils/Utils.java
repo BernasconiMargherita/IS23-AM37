@@ -497,6 +497,8 @@ public class Utils implements Serializable {
             if (point > 5) RealPoints = RealPoints + 8;
         }
 
+        System.out.println("i punti della group score sono " + RealPoints);
+
         return RealPoints ;
     }
 

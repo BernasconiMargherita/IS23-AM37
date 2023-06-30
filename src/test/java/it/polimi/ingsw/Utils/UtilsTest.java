@@ -370,6 +370,8 @@ public class UtilsTest {
     @Test
     void checkUltimate(){
         Shelf shelf = new Shelf();
+        Utils utils = new Utils();
+
         for(int i = 0; i< 5; i++){
             for(int j = 0; j< 6; j++){
                 Random random = new Random();
@@ -464,6 +466,9 @@ public class UtilsTest {
             }
             System.out.print("\n");
         }
+
+
+
         System.out.print("Hai fatto: "+ utils.groupScore(shelf));
     }
 

@@ -71,12 +71,13 @@ public class Player implements Serializable {
      * method that calls the checkPersonalTarget of utils,
      * and transforms the value returned by the latter into points, finally adds these points to score
      */
-    public void checkPersonalTarget() {
+    public int checkPersonalTarget() {
         int[] points = {0, 1, 2, 4, 6, 9, 12};
         int check = utils.checkPersonalTarget(personalShelf, cardPersonalTarget);
         if (check > 0) {
             addScore(points[check]);
         }
+        return points[check];
     }
 
     /**
