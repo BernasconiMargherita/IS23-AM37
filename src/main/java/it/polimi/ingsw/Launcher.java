@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.Network.Client.ClientSetup;
 import it.polimi.ingsw.view.cli.Cli;
 import javafx.application.Application;
@@ -11,37 +12,6 @@ import java.util.Scanner;
 public class Launcher {
 
     public static void main(final String[] args) {
-        int TPCPort = 0;
-        int RMIPort = 0;
-
-        if(args[1]!=null){
-            RMIPort=Integer.parseInt(args[1]);
-        }else System.exit(-1);
-
-        if(args[2]!=null){
-            TPCPort=Integer.parseInt(args[2]);
-        }else System.exit(-1);
-
-        Gson gson=new Gson();
-        String jsonTCP=gson.toJson(TPCPort);
-        String jsonRMI=gson.toJson(RMIPort);
-
-        FileWriter writer = null;
-        try {
-            writer = new FileWriter("/json/ServerPortTCP.json");
-            writer.write(jsonTCP);
-            writer.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            writer = new FileWriter("/json/ServerPortRMI.json");
-            writer.write(jsonRMI);
-            writer.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
         if (args[0].equalsIgnoreCase("gui")) {
             Application.launch(ClientSetup.class, args);
         } else if (args[0].equalsIgnoreCase("cli")) {

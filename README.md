@@ -41,7 +41,7 @@ La seguente documentazione include una descrizione delle classi e dei metodi uti
 
 I seguenti jar permettono il lancio del gioco secondo le funzionalità descritte nell'introduzione. Le funzionalità realizzate secondo la specifica del progetto sono elencate sotto. La cartella in cui si trovano il software del client e del server si trova al seguente indirizzo: <br>
 
-- [Jars](shade/AM37.jar)
+- [Jars](shade/Server.jar)
 
 # Esecuzione dei Jars
 

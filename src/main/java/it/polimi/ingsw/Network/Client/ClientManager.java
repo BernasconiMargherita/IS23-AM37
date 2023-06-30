@@ -144,12 +144,10 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
      *
      * @param connection The type of connection ("TCP" or "RMI") to establish with the server.
      */
-    public void createConnection(String connection) {
+    public void createConnection(String connection,int port) {
         CommunicationProtocol communicationProtocol;
-        Gson gson=new Gson();
         if (connection.equalsIgnoreCase("TCP")) {
             try {
-                int port = gson.fromJson("/json/ServerPortTCP.json", Integer.class);
                 communicationProtocol = new TCPCommunicationProtocol("localhost", port);
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
@@ -157,7 +155,6 @@ public abstract class ClientManager implements ClientListener, ClientUpdateListe
 
         } else {
             try {
-                int port = gson.fromJson("/json/ServerPortRMI.json", Integer.class);
                 communicationProtocol = new RMICommunicationProtocol("RemoteController",port);
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
