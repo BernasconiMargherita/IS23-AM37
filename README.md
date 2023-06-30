@@ -77,7 +77,7 @@ L'esecuzione del server avviene attraverso il seguente comando:
 - GUI <br>
 - RMI <br>
 - Socket <br>
-- 1 FA<br>
+- 2 FA<br>
 
 ### Funzionalità avanzate<br>
 
@@ -86,7 +86,7 @@ L'esecuzione del server avviene attraverso il seguente comando:
 | Patite multiple                |   ✅     | 
 | Persistenza                    |   ❌     | 
 | Resilienza alle disconnessioni |   ❌     | 
-| Chat                           |    ❌    |
+| Chat                           |    ✅    |
 
 
 ## Componenti del gruppo
