@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Utils;
 
+import it.polimi.ingsw.Exception.NoSpaceInColumnException;
 import it.polimi.ingsw.Exception.SoldOutTilesException;
 import it.polimi.ingsw.model.CommonCards.CardCommonTarget;
 import it.polimi.ingsw.model.CommonCards.CommonList;
@@ -10,6 +11,9 @@ import it.polimi.ingsw.model.Tile.Tile;
 import it.polimi.ingsw.model.Tile.TileDeck;
 import org.junit.jupiter.api.Test;
 
+import java.util.Random;
+
+import static it.polimi.ingsw.view.cli.ColorCodes.getColorCode;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -361,6 +365,57 @@ public class UtilsTest {
         }
 
         assertTrue(utils.checkDiagonal(libraryMatrix, coordinates));
+    }
+
+    @Test
+    void checkUltimate(){
+        Shelf shelf = new Shelf();
+        for(int i = 0; i< 5; i++){
+            for(int j = 0; j< 6; j++){
+                Random random = new Random();
+                int num = random.nextInt(6);
+                Tile[] tiles = new Tile[1];
+                if(num == 0){
+                    tiles[0] = new Tile(ColourTile.BOOKS);
+                }
+                if(num == 1){
+                    tiles[0] = new Tile(ColourTile.FRAMES);
+                }
+                if(num == 2){
+                    tiles[0] = new Tile(ColourTile.GAMES);
+                }
+                if(num == 3){
+                    tiles[0] = new Tile(ColourTile.PLANTS);
+                }
+                if(num == 4){
+                    tiles[0] = new Tile(ColourTile.TROPHIES);
+                }
+                if(num == 5){
+                    tiles[0] = new Tile(ColourTile.CATS);
+                }
+
+                try {
+                    shelf.addCardInColumn(i, tiles);
+                } catch (NoSpaceInColumnException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+
+        for(int i = 0; i < 5; i++) {
+            System.out.print(" " + i + "  ");
+        }
+        System.out.print("\n");
+
+        for (int i = 5; i >=0; i--) {
+            for (int j = 0; j < 5; j++) {
+                String ANSI_RESET = "\u001B[0m";
+                System.out.print(getColorCode(shelf.getShelf()[i][j].getAssignedTile().getColour()) + "*** " + ANSI_RESET);
+            }
+            System.out.print("\n");
+        }
+
     }
 
 }

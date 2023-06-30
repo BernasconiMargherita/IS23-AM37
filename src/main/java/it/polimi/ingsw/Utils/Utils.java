@@ -8,11 +8,13 @@ import it.polimi.ingsw.model.Tile.ColourTile;
 import it.polimi.ingsw.model.Tile.Tile;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class Utils implements Serializable {
     public static final int MAX_SHELF_COLUMNS = 5;
     private static final int MAX_SHELF_ROWS = 6;
+    private boolean[][] visited = new boolean[6][5];
 
     /**
      * method that compares the player's shelf and the personalCard, and returns the number of the completed objectives (0,...,6)
@@ -474,100 +476,57 @@ public class Utils implements Serializable {
      * @return player's points
      */
     public int groupScore(Shelf shelf) {
-        TileSlot[][] shelfMatrix = shelf.getShelf();
-        TileSlot[][] copy = copy(shelfMatrix);
-        int match = 0;
 
-        int addedScore = 0;
-
-        for (int j = 0; j < MAX_SHELF_ROWS - 1; j++) {
-            for (int k = 0; k < MAX_SHELF_COLUMNS - 1; k++) {
-                ColourTile colour;
-                if (!copy[j][k].isFree()) {
-                    colour = copy[j][k].getAssignedTile().getColour();
-
-                    boolean[][] visited =
-                            {{false, false, false, false, false, false, false, false, false, false, false},
-                                    {false, false, false, false, false, false, false, false, false, false, false},
-                                    {false, false, false, false, false, false, false, false, false, false, false},
-                                    {false, false, false, false, false, false, false, false, false, false, false},
-                                    {false, false, false, false, false, false, false, false, false, false, false},
-                                    {false, false, false, false, false, false, false, false, false, false, false}};
-
-                    if (!visited[j][k]) {
-                        match = 1 + ricorsiva(copy, colour, j, k, visited);
-                    }
+        ArrayList<Integer> points = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            for(int j = 0; j< 5; j++){
+                if(!visited[i][j] && !shelf.getShelf()[i][j].isFree()){
+                    points.add(goRight(j+1,i, shelf.getShelf()[i][j].getAssignedTile().getColour(), shelf.getShelf())
+                               + goUp(j,i,shelf.getShelf()[i][j].getAssignedTile().getColour(), shelf.getShelf())
+                               + goDown(j,i-1,shelf.getShelf()[i][j].getAssignedTile().getColour(), shelf.getShelf())
+                               + goLeft(j-1,i,shelf.getShelf()[i][j].getAssignedTile().getColour(), shelf.getShelf()));
                 }
+
             }
+
         }
-        if (match == 3) {
-            addedScore = 2;
-        } else if (match == 4) {
-            addedScore = 3;
-        } else if (match == 5) {
-            addedScore = 5;
-        } else if (match >= 6) {
-            addedScore = 8;
+        int RealPoints = 0;
+        for (Integer point : points) {
+            if (point == 3) RealPoints = RealPoints + 2;
+            if (point == 4) RealPoints = RealPoints + 3;
+            if (point == 5) RealPoints = RealPoints + 5;
+            if (point > 5) RealPoints = RealPoints + 8;
         }
 
-        return addedScore;
+        return RealPoints ;
+    }
+
+    private int goUp(int x, int y, ColourTile colour, TileSlot[][] shelf) {
+        return condition(x, y, colour, shelf);
+    }
+
+    private int goRight(int x, int y, ColourTile colour, TileSlot[][] shelf) {
+        return condition(x, y, colour, shelf);
     }
 
 
-    /**
-     * Recursive helper method for calculating the score of a player.
-     *
-     * @param copy    A copy of the shelf's tile slots.
-     * @param colour  The color of the tiles.
-     * @param j       The row index.
-     * @param k       The column index.
-     * @param visited A boolean matrix to track visited tiles.
-     * @return The score of the player.
-     */
-    public int ricorsiva(TileSlot[][] copy, ColourTile colour, int j, int k, boolean[][] visited) {
-        if (j < 5 && k < 4) {
-            if (visited[j][k] || copy[j][k].isFree() ||
-                    (!copy[j][k].isFree() && copy[j][k].getAssignedTile().getColour() != colour) ||
-                    (!copy[j + 1][k].isFree() && copy[j + 1][k].getAssignedTile().getColour() != colour) ||
-                    (!copy[j][k + 1].isFree() && copy[j][k + 1].getAssignedTile().getColour() != colour)) {
-                return 0;
-            }
+    private int goDown(int x, int y, ColourTile colour, TileSlot[][] shelf) {
+        return condition(x, y, colour, shelf);
+    }
 
-            visited[j][k] = true;
+    private int goLeft(int x, int y, ColourTile colour, TileSlot[][] shelf) {
+        return condition(x, y, colour, shelf);
+    }
 
-            if (!copy[j + 1][k].isFree() && copy[j + 1][k].getAssignedTile().getColour() == colour &&
-                    !copy[j][k + 1].isFree() && copy[j][k + 1].getAssignedTile().getColour() == colour) {
-                return 2 + ricorsiva(copy, colour, j + 1, k, visited) + ricorsiva(copy, colour, j, k + 1, visited);
-            }
-            if (!copy[j + 1][k].isFree() && copy[j + 1][k].getAssignedTile().getColour() == colour &&
-                    (!copy[j][k + 1].isFree() && copy[j][k + 1].getAssignedTile().getColour() != colour)) {
-                return 1 + ricorsiva(copy, colour, j + 1, k, visited);
-            }
-            if ((!copy[j + 1][k].isFree() && copy[j + 1][k].getAssignedTile().getColour() != colour) &&
-                    !copy[j][k + 1].isFree() && copy[j][k + 1].getAssignedTile().getColour() == colour) {
-                return 1 + ricorsiva(copy, colour, j, k + 1, visited);
-            }
-        } else if (j == 5 && k < 4) {
-            if (!copy[j][k + 1].isFree() && copy[j][k + 1].getAssignedTile().getColour() == colour) {
-                return 1 + ricorsiva(copy, colour, j, k + 1, visited);
-            } else {
-                return 0;
-            }
-        } else if (j < 5 && k == 4) {
-            if (!copy[j + 1][k].isFree() && copy[j + 1][k].getAssignedTile().getColour() == colour) {
-                return 1 + ricorsiva(copy, colour, j + 1, k, visited);
-            } else {
-                return 0;
-            }
-        } else if (j == 5 && k == 4) {
-            if (!copy[j][k].isFree() && copy[j][k].getAssignedTile().getColour() == colour) {
-                return 1;
-            } else {
-                return 0;
-            }
+    private int condition(int x, int y, ColourTile colour, TileSlot[][] shelf) {
+        if( x>4 || y >5 || x<0 || y <0 || shelf[x][y].isFree() || colour != shelf[y][x].getAssignedTile().getColour() || visited[y][x]){
+            return 0;
         }
-
-        return 0;
+        visited[y][x] = true;
+        return 1 + goRight(x+1, y, colour, shelf) +
+                + goDown(x, y-1, colour, shelf) +
+                + goLeft(x-1, y, colour, shelf) +
+                + goUp(x, y+1, colour, shelf) ;
     }
 
 
